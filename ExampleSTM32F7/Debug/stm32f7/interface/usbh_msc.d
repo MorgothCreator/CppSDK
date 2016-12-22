@@ -1,0 +1,134 @@
+stm32f7/interface/usbh_msc.o: \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/usbh_msc.cpp \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/usbh_msc.h \
+ C:/GitHub/CppSDK/ExampleSTM32F7/main.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_hcd.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_ll_usb.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_def.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/include/stm32f7xx.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/ffconf.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/lwipopts.h \
+ C:/GitHub/CppSDK/SDK/lib/api/gpio_def.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio_def.h \
+ C:/GitHub/CppSDK/SDK/lib/api/spi_def.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/spi_def.h \
+ C:/GitHub/CppSDK/SDK/lib/api/i2c_def.h \
+ C:/GitHub/CppSDK/SDK/lib/api/uart_def.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/uart_def.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/include/stm32f769xx.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/core_cm7.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/core_cmInstr.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/cmsis_gcc.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/core_cmFunc.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/core_cmSimd.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/include/system_stm32f7xx.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/Legacy/stm32_hal_legacy.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_core.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/usbh_conf.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_def.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_ioreq.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_core.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_pipes.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_ctlreq.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/core/inc/usbh_core.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc_bot.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc_scsi.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_gpio.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_gpio_ex.h \
+ C:/GitHub/CppSDK/SDK/lib/include/global.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h \
+ c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/usbh_msc.h:
+
+C:/GitHub/CppSDK/ExampleSTM32F7/main.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_hcd.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_ll_usb.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_def.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/include/stm32f7xx.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/ffconf.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/lwipopts.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/gpio_def.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio_def.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/spi_def.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/spi_def.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/i2c_def.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/uart_def.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/uart_def.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/include/stm32f769xx.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/core_cm7.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/core_cmInstr.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/cmsis_gcc.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/core_cmFunc.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/Include/core_cmSimd.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/include/system_stm32f7xx.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/Legacy/stm32_hal_legacy.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_core.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/usbh_conf.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_def.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_ioreq.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_core.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_pipes.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Core/Inc/usbh_ctlreq.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/core/inc/usbh_core.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc_bot.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc_scsi.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_gpio.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_gpio_ex.h:
+
+C:/GitHub/CppSDK/SDK/lib/include/global.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h:
+
+c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h:
