@@ -1,4 +1,4 @@
-"lib/api/dew_request.o"
+"lib/api/dev_request.o"
 "lib/api/init.o"
 "lib/api/lcd_def.o"
 "lib/api/std.o"
@@ -213,6 +213,7 @@
 "stm32f4/interface/screen.o"
 "stm32f4/interface/spi.o"
 "stm32f4/interface/uart.o"
+"stm32f4/interface/usbd_cdc.o"
 "stm32f4/sys/cache.o"
 "stm32f4/sys/core_init.o"
 "stm32f4/sys/startup_stm32f469xx.o"

@@ -22,9 +22,10 @@
 #ifndef GPIO_DEF_H_
 #define GPIO_DEF_H_
 /*#####################################################*/
-#include <interface/gpio_def.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <interface/gpio.h>
+#include <include/global.h>
 /*#####################################################*/
 //#define GPIO_DIR_OUTPUT						0
 //#define GPIO_DIR_INPUT						1
@@ -96,5 +97,44 @@ typedef struct
 	}mode;
 	bool multiPin;
 } CfgGpio;
+/*#####################################################*/
+namespace GI
+{
+namespace Dev
+{
+class Gpio
+{
+public:
+	Gpio(unsigned int pin, CfgGpio::gpioMode mode, bool multiPin);
+	Gpio(CfgGpio *gpioPin);
+	~Gpio();
+	bool setOut(unsigned int value);
+	signed int in();
+	bool setMode(unsigned char mode);
+	bool getState();
+	void idle();
+	SysErr err;
+
+	CfgGpio cfg;
+
+	bool lastState;
+	struct
+	{
+		struct
+		{
+			void (*onStateChanged)(void *param, bool state);
+			void *onStateChangedHandler;
+			void (*onUp)(void *param);
+			void *onUpHandler;
+			void (*onDown)(void *param);
+			void *onDownHandler;
+		} callback;
+		bool stateUp;
+		bool stateDown;
+		bool stateChanged;
+	}events;
+};
+}
+}
 /*#####################################################*/
 #endif /* GPIO_DEF_H_ */

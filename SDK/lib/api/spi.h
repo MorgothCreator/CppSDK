@@ -23,8 +23,8 @@
 #define MCSPI_DEF_H_
 /*#####################################################*/
 #include <stdbool.h>
-#include <api/gpio_def.h>
-#include <interface/spi_def.h>
+#include <api/gpio.h>
+#include <interface/spi.h>
 /*#####################################################*/
 typedef struct
 {
@@ -43,6 +43,46 @@ typedef struct
 	bool msbFirst;
 } CfgSpi;
 /*#####################################################*/
+namespace GI
+{
+namespace Dev
+{
+class Spi
+{
+public:
+	Spi(const char *path);
+	~Spi();
+	int ioctl(charDev *fp, int command, void *param);
+	int assert();
+	int deassert();
+	int writeRead(unsigned char *buffWrite, unsigned char *buffRead,
+			unsigned int len);
+	int readBytes(unsigned char *buff, unsigned int len);
+	int writeBytes(unsigned char *buff, unsigned int len);
+	int _mcspi_set_baud(unsigned long baud);
+	int writeReadByte(unsigned char *byte);
+	SysErr err;
+	CfgSpi cfg;
+private:
+	unsigned char oldCsSelect;
+	unsigned char unitNr;
+	unsigned char channel;
+	unsigned int speed;
+	volatile bool useInterrupt;
+	volatile unsigned char flag;
+	volatile unsigned char Priority;
+	volatile unsigned char Mode;
+	volatile unsigned int BytesCnt;
+	bool DisableCsHandle;
+	bool cPol;bool cPha;
+	bool lsbFirst;
+	unsigned char wordSize;
+	bool slave;
+	void *userData;
+
+};
+}
+}
 /*#####################################################*/
 #endif /* MCSPI_DEF_H_ */
 /*#####################################################*/

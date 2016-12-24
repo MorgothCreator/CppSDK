@@ -5,6 +5,12 @@
  *  Iulian Gheorghiu <morgoth.creator@gmail.com>
  */
 /*#####################################################*/
+#include "include/stm32f4xx.h"
+#include "driver/stm32f4xx_hal.h"
+#include "driver/stm32f4xx_hal_i2c.h"
+#include "driver/stm32f4xx_hal_i2c_ex.h"
+#include "driver/stm32f4xx_hal_rcc.h"
+
 #include <interface/i2c.h>
 #include "api/init.h"
 
@@ -32,6 +38,10 @@
 #if (USE_DRIVER_SEMAPHORE == true)
 volatile bool twi_semaphore[TWI_INTERFACE_COUNT];
 #endif
+
+extern GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[];
+
+extern CfgI2c i2cCfg[];
 
 I2C_TypeDef *sEE_I2C[4] =
 {
@@ -93,31 +103,6 @@ void sEE_ExitCriticalSection_UserCallback(void)
  *          This parameter can be: ENABLE or DISABLE.
  * @retval None
  */
-void GI::Dev::I2c::SoftwareReset(I2C_HandleTypeDef *hi2c)
-{
-	I2C_TypeDef* I2Cx = hi2c->Instance;
-	/* Check the parameters */
-	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
-	assert_param(IS_FUNCTIONAL_STATE(NewState));
-
-	I2C_TypeDef I2CxBack;
-	I2CxBack.CR1 = I2Cx->CR1;
-	I2CxBack.CR2 = I2Cx->CR2;
-	I2CxBack.OAR1 = I2Cx->OAR1;
-	I2CxBack.OAR2 = I2Cx->OAR2;
-	I2CxBack.CCR = I2Cx->CCR;
-	I2CxBack.TRISE = I2Cx->TRISE;
-	/* Enable the selected I2C peripheral */
-	__HAL_I2C_DISABLE(hi2c);
-	/* Enable the selected I2C peripheral */
-	__HAL_I2C_ENABLE(hi2c);
-	I2Cx->TRISE = I2CxBack.TRISE;
-	I2Cx->CCR = I2CxBack.CCR;
-	I2Cx->OAR2 = I2CxBack.OAR2;
-	I2Cx->OAR1 = I2CxBack.OAR1;
-	I2Cx->CR2 = I2CxBack.CR2;
-	I2Cx->CR1 = I2CxBack.CR1;
-}
 void TWI_SendStop(I2C_HandleTypeDef *hi2c)
 {
 
@@ -335,10 +320,32 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 	I2C_HandleTypeDef *hi2c = ((I2C_HandleTypeDef *) udata);
 	/* If bus is freeze we will reset the unit and restore the settings. */
 	/* Wait until BUSY flag is reset */
-	if (I2C_WaitOnFlagUntilTimeout(hi2c, I2C_FLAG_BUSY, SET,
-			I2C_TIMEOUT_BUSY_FLAG) != HAL_OK)
+	if (I2C_WaitOnFlagUntilTimeout(hi2c, I2C_FLAG_BUSY, SET, I2C_TIMEOUT_BUSY_FLAG) != HAL_OK)
 	{
-		SoftwareReset(hi2c);
+		I2C_TypeDef* I2Cx = hi2c->Instance;
+		/* Check the parameters */
+		assert_param(IS_I2C_ALL_PERIPH(I2Cx));
+		assert_param(IS_FUNCTIONAL_STATE(NewState));
+
+		I2C_TypeDef I2CxBack;
+		I2CxBack.CR1 = I2Cx->CR1;
+		I2CxBack.CR2 = I2Cx->CR2;
+		I2CxBack.OAR1 = I2Cx->OAR1;
+		I2CxBack.OAR2 = I2Cx->OAR2;
+		I2CxBack.CCR = I2Cx->CCR;
+		I2CxBack.TRISE = I2Cx->TRISE;
+		/* Enable the selected I2C peripheral */
+		__HAL_I2C_DISABLE(hi2c);
+		/* Enable the selected I2C peripheral */
+		__HAL_I2C_ENABLE(hi2c);
+		I2Cx->TRISE = I2CxBack.TRISE;
+		I2Cx->CCR = I2CxBack.CCR;
+		I2Cx->OAR2 = I2CxBack.OAR2;
+		I2Cx->OAR1 = I2CxBack.OAR1;
+		I2Cx->CR2 = I2CxBack.CR2;
+		I2Cx->CR1 = I2CxBack.CR1;
+
+
 		return HAL_BUSY;
 	}
 	/*!< While the bus is busy */

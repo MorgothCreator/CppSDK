@@ -27,7 +27,6 @@
 #include "util.h"
 #include "scrollbar.h"
 #include "controls_definition.h"
-#include "sys/plat_properties.h"
 #include "gfx_gui_paint.h"
 
 bool GI::Screen::Gfx::ListBox::paint(listboxItem* settings, void *pDisplay, signed int x_start, signed int y_start, tControlCommandData* control_comand, bool Pushed, bool Paint)

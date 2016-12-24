@@ -9,10 +9,10 @@
 #define LIB_API_DEV_REQUEST_H_
 
 #include <include/global.h>
-#include <interface/gpio.h>
-#include <interface/i2c.h>
-#include <interface/spi.h>
-#include <interface/uart.h>
+#include <api/gpio.h>
+#include <api/i2c.h>
+#include <api/spi.h>
+#include <api/uart.h>
 
 namespace GI
 {

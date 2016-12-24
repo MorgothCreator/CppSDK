@@ -11,16 +11,11 @@
 #include <stdbool.h>
 #include "stdlib.h"
 #include "string.h"
-#include <api/i2c_def.h>
 #include <include/global.h>
-#include <interface/gpio.h>
-#include <interface/i2c_def.h>
+#include <api/gpio.h>
 //#include "stm32f7xx_conf.h"
-#include "include/stm32f4xx.h"
-#include "driver/stm32f4xx_hal.h"
-#include "driver/stm32f4xx_hal_i2c.h"
-#include "driver/stm32f4xx_hal_i2c_ex.h"
-#include "driver/stm32f4xx_hal_rcc.h"
+/*#####################################################*/
+#define TWI_INTERFACE_COUNT	6
 /*#####################################################*/
 /*! Transaction status defines. */
 #define TWIM_STATUS_READY              0
@@ -45,44 +40,6 @@ typedef enum TWIM_RESULT_enum
 	TWIM_RESULT_FAIL = (0x06 << 0),
 } TWIM_RESULT_t;
 /*#####################################################*/
-namespace GI
-{
-namespace Dev
-{
-class I2c
-{
-public:
-	I2c(const char *path);
-	~I2c();
-	int writeRead(unsigned char addr, unsigned char *buffSend,
-			unsigned int lenSend, unsigned char *buffReceive,
-			unsigned int lenReceive);
-	int readBytes(unsigned char addr, unsigned char *buff, unsigned int len);
-	int writeBytes(unsigned char addr, unsigned char *buff, unsigned int len);
-
-	unsigned char unitNr;
-	volatile unsigned char flag;
-	volatile unsigned char error_flag;
-	volatile unsigned char result;
-	volatile unsigned char status;
-	unsigned int tCount;
-	unsigned int rCount;
-	unsigned int numOfBytes;
-	unsigned int bytesToWrite;
-	unsigned int bytesToRead;
-	unsigned long BusyTimeOut;
-	bool noSendWriteOnRead;
-	CfgI2c cfg;
-	void *udata;
-	SysErr err;
-private:
-	unsigned long WR(unsigned char addr, unsigned char *buff_send,
-			unsigned int TransmitBytes, unsigned char *buff_receive,
-			unsigned int ReceiveBytes);
-	void SoftwareReset(I2C_HandleTypeDef *hi2c);
-};
-}
-}
 /*#####################################################*/
 #ifdef HEADER_INCLUDE_C_FILES
 #include "twi_interface.c"

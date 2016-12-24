@@ -1,6 +1,74 @@
 #ifndef _FONTS
 #define _FONTS
 
+//*****************************************************************************
+//
+//! Indicates that the font data is stored in an uncompressed format.
+//
+//*****************************************************************************
+#define FONT_FMT_UNCOMPRESSED   0x00
+
+//*****************************************************************************
+//
+//! Indicates that the font data is stored using a pixel-based RLE format.
+//
+//*****************************************************************************
+#define FONT_FMT_PIXEL_RLE      0x01
+
+//*****************************************************************************
+//
+//! Indicates that the image data is not compressed and represents each pixel
+//! with a single bit.
+//
+//*****************************************************************************
+#define IMAGE_FMT_1BPP_UNCOMP   0x01
+
+//*****************************************************************************
+//
+//! Indicates that the image data is not compressed and represents each pixel
+//! with four bits.
+//
+//*****************************************************************************
+#define IMAGE_FMT_4BPP_UNCOMP   0x04
+
+//*****************************************************************************
+//
+//! Indicates that the image data is not compressed and represents each pixel
+//! with eight bits.
+//
+//*****************************************************************************
+#define IMAGE_FMT_8BPP_UNCOMP   0x08
+
+//*****************************************************************************
+//
+//! Indicates that the image data is compressed and represents each pixel with
+//! a single bit.
+//
+//*****************************************************************************
+#define IMAGE_FMT_1BPP_COMP     0x81
+
+//*****************************************************************************
+//
+//! Indicates that the image data is compressed and represents each pixel with
+//! four bits.
+//
+//*****************************************************************************
+#define IMAGE_FMT_4BPP_COMP     0x84
+
+//*****************************************************************************
+//
+//! Indicates that the image data is compressed and represents each pixel with
+//! eight bits.
+//
+//*****************************************************************************
+#define IMAGE_FMT_8BPP_COMP     0x88
+
+#define IMAGE_FMT_16BPP_UNCOMP   0x10
+#define IMAGE_FMT_16BPP_COMP     0x90
+
+#define IMAGE_FMT_24BPP_UNCOMP   0x20
+#define IMAGE_FMT_24BPP_COMP     0xA0
+
 typedef struct
 {
 	//

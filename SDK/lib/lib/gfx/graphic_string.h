@@ -22,7 +22,7 @@
 #ifndef GRAPHIC_STRING_H_
 #define GRAPHIC_STRING_H_
 /*#####################################################*/
-#include "api/lcd_def.h"
+//#include "api/lcd_def.h"
 #include "controls_definition.h"
 #include "string.h"
 /*#####################################################*/

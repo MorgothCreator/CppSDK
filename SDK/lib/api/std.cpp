@@ -7,8 +7,10 @@
 
 #include "std.h"
 #include <api/init.h>
+#include <lib/string.h>
 #include <lib/gfx/window.h>
 #include <api/dev_request.h>
+#include <api/uart.h>
 
 GI::Std::Std(char *devPath) :
 IoDevices(STDIO_UART),
@@ -112,7 +114,7 @@ void GI::Std::print(char* string)
 	switch((unsigned char)IoDevices)
 	{
 	case STDIO_UART:
-		((GI::Dev::Uart *)devHandle)->print(string);
+		//((GI::Dev::Uart *)devHandle)->print(string);
 		break;
 	case STDIO_SCREEN:
 		//GI::Screen::Gfx::TextBox *terminalScreen = (GI::Screen::Gfx::TextBox *)userData;
@@ -123,12 +125,12 @@ void GI::Std::print(char* string)
 	}
 }
 
-void GI::Std::print(GI::Screen::String *string)
+/*void GI::Std::print(GI::Screen::String *string)
 {
 	switch((unsigned char)IoDevices)
 	{
 	case STDIO_UART:
-		((GI::Dev::Uart *)devHandle)->print(string);
+		//((GI::Dev::Uart *)devHandle)->print(string);
 		break;
 	case STDIO_SCREEN:
 		//GI::Screen::Gfx::TextBox *terminalScreen = (GI::Screen::Gfx::TextBox *)userData;
@@ -137,7 +139,7 @@ void GI::Std::print(GI::Screen::String *string)
 	case STDIO_FS:
 		break;
 	}
-}
+}*/
 
 void GI::Std::print(GI::String *string)
 {
@@ -986,7 +988,7 @@ void GI::Std::printF(GI::String *string, ...)
 	VA_END;
 }
 
-void GI::Std::printF(GI::Screen::String *string, ...)
+/*void GI::Std::printF(GI::Screen::String *string, ...)
 //int snprintf (Uart_t* char *str,size_t count,const char *fmt,...)
 {
 	const char *pcString = string->buff;
@@ -998,5 +1000,5 @@ void GI::Std::printF(GI::Screen::String *string, ...)
 	char buff[1];
 	vsnprintf(buff, 65535, (const char *)string->buff, ap);
 	VA_END;
-}
+}*/
 #endif /* !HAVE_SNPRINTF */

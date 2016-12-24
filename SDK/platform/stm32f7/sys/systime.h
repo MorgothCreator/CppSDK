@@ -12,7 +12,6 @@ extern volatile unsigned long long STimerCnt;
 
 void SysDelayTimerSetup(void);
 void sysDelay(unsigned long milliSec);
-void TimerCnt_Isr_Increment(void);
 //#####################################################
 #ifdef HEADER_INCLUDE_C_FILES
 #include "sysdelay.c"

@@ -13,14 +13,11 @@
 #include <api/cursor_ctl_def.h>
 #include "sys/core_init.h"
 
-#include "interface/i2c.h"
-#include "interface/i2c_def.h"
+#include "api/i2c.h"
 
-#include "interface/spi.h"
-#include "interface/spi_def.h"
+#include "api/spi.h"
 
-#include "interface/uart.h"
-#include "interface/uart_def.h"
+#include "api/uart.h"
 
 #include "interface/mmcsd.h"
 #include "interface/mmcsd_def.h"
@@ -33,7 +30,7 @@
 
 #if (USE_LWIP == 1)
 #include <interface/eth.h>
-#include <api/eth_def.h>
+#include <api/eth.h>
 #endif
 
 #if (USE_LWIP_HTTPD_SERVER == 1)

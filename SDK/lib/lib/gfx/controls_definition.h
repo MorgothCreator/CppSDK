@@ -28,7 +28,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include "sys/cache.h"
-#include "interface/screen.h"
 #include "api/lcd_def.h"
 #include <api/timer_api.h>
 /*#####################################################*/

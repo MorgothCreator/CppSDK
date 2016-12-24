@@ -23,10 +23,9 @@
 #define BUTON_H_
 //#######################################################################################
 #include <stdbool.h>
+#include <lib/gfx/string.h>
 #include "controls_definition.h"
-#include "string.h"
 #include <api/timer_api.h>
-//#include "window_def.h"
 //#######################################################################################
 namespace GI
 {

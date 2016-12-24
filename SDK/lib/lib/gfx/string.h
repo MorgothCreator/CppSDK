@@ -12,7 +12,6 @@
 #include <string.h>
 #include <stdarg.h>
 #include <api/lcd_def.h>
-#include <interface/screen.h>
 #include "resource/fonts.h"
 #include <lib/string.h>
 

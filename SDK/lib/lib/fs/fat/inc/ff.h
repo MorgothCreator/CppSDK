@@ -24,6 +24,11 @@
 #include "integer.h"	/* Basic integer types */
 #include "../inc/diskio.h"		/* Declarations of low level disk I/O functions */
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #if _FATFS != _FFCONF
 #error Wrong configuration file (ffconf.h).
 #endif
@@ -335,5 +340,8 @@ int ff_del_syncobj (_SYNC_t sobj); /* Delete a sync object */
 #define	AM_SYS	0x04	/* System */
 #define AM_DIR	0x10	/* Directory */
 #define AM_ARC	0x20	/* Archive */
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _FATFS */

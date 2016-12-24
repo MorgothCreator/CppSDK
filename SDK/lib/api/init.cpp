@@ -7,9 +7,19 @@
 
 #include <stdio.h>
 #include "init.h"
-#include <interface/screen.h>
-#include <interface/i2c.h>
+#include <api/i2c.h>
+#include <api/uart.h>
+#include <api/lcd_def.h>
 #include <device/ft5x06.h>
+#include <api/uart.h>
+#include <api/spi.h>
+#include <api/i2c.h>
+#include <api/gpio.h>
+
+extern CfgGpio gpioCfg[];
+extern CfgSpi spiCfg[];
+extern CfgI2c i2cCfg[];
+extern CfgUart uartCfg[];
 
 GI::Sys::Clock coreClk;
 #if (SCREEN_ENABLE == 1)

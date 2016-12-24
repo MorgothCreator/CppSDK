@@ -7,12 +7,24 @@
 
 //#include "driver/spi.h"
 //extern unsigned long CoreFreq;
+#include "include/stm32f4xx.h"
+#include "driver/stm32f4xx_hal_conf.h"
+#include "driver/stm32f4xx_hal_rcc_ex.h"
+#include "driver/stm32f4xx_hal_rcc.h"
+#include "driver/stm32f4xx_hal_spi.h"
+#include "driver/stm32f4xx_hal_gpio.h"
+#include "driver/stm32f4xx_hal_gpio_ex.h"
+
 #include <interface/spi.h>
 #include "api/init.h"
 
 #if (USE_DRIVER_SEMAPHORE == true)
 volatile bool spi_semaphore[SPI_INTERFACE_COUNT];
 #endif
+
+extern CfgSpi spiCfg[];
+
+extern GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[];
 
 SPI_TypeDef* _SPI_[] =
 {

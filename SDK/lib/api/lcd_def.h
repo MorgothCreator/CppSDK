@@ -22,16 +22,12 @@
 #ifndef LCD_DEF_H_
 #define LCD_DEF_H_
 /**********************************************/
-#include <api/gpio_def.h>
-#include <api/i2c_def.h>
-#include <interface/i2c.h>
-#include <interface/gpio.h>
 #include <stdbool.h>
-#include "timer_def.h"
+#include <api/gpio.h>
+#include <api/i2c.h>
+//#include "timer_api.h"
 #include "sys/plat_properties.h"
 #include <lib/gfx/resource/fonts.h>
-//#include "lib/string_lib.h"
-//#include "lib/gfx/controls_definition.h"
 /**********************************************/
 #ifdef FLASH_DEVICE
 #define read_data_byte(addr) pgm_read_byte(&addr)
@@ -50,34 +46,6 @@
 #define MI0283_ 5
 #define HD 6
 #define FHD 7
-//*****************************************************************************
-/** @defgroup LCD_Driver_structure  LCD Driver structure
- * @{
- */
-typedef struct
-{
-	void (*Init)(void);
-	unsigned short (*ReadID)(void);
-	void (*DisplayOn)(void);
-	void (*DisplayOff)(void);
-	void (*SetCursor)(unsigned short, unsigned short);
-	void (*WritePixel)(unsigned short, unsigned short, unsigned short);
-	unsigned short (*ReadPixel)(unsigned short, unsigned short);
-
-	/* Optimized operation */
-	void (*SetDisplayWindow)(unsigned short, unsigned short, unsigned short,
-			unsigned short);
-	void (*DrawHLine)(unsigned short, unsigned short, unsigned short,
-			unsigned short);
-	void (*DrawVLine)(unsigned short, unsigned short, unsigned short,
-			unsigned short);
-
-	unsigned short (*GetLcdPixelWidth)(void);
-	unsigned short (*GetLcdPixelHeight)(void);
-	void (*DrawBitmap)(unsigned short, unsigned short, unsigned char*);
-	void (*DrawRGBImage)(unsigned short, unsigned short, unsigned short,
-			unsigned short, unsigned char*);
-} LCD_DrvTypeDef;
 //*****************************************************************************
 typedef enum
 {
@@ -211,6 +179,57 @@ typedef struct
 	void (*drawTriangle)(signed int Ax, signed int Ay, signed int Bx, signed int By, signed int Cx, signed int Cy, unsigned char Fill, unsigned int color);
 	//signed int (*drawString)(print_string_properties *properties);
 } LCD_FUNC;
+/*#####################################################*/
+namespace GI
+{
+namespace Dev {
+class Screen {
+public:
+	Screen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight);
+	~Screen();
+
+	//GScreen::Window property;
+	LCD_TIMINGS *LcdTimings;
+	volatile unsigned int* DisplayData;
+	void *UserData;
+	tRectangle sClipRegion;
+	int err;
+	void setOn();
+	void setOff();
+	int setBacklight(unsigned char value);
+	bool copyScreen(void *pDisplayFrom, bool put_cursor,
+			signed int X, signed int Y, unsigned int color);
+	void cacheClean(signed int x_start, signed int y_start,
+			signed int x_len, signed int y_len);
+	void drawRectangle(signed int x_start, signed int y_start,
+			signed int x_len, signed int y_len, bool fill, unsigned int color);
+	void drawPixel(signed int X, signed int Y, unsigned int color);
+	void copyRectangle16Bit(unsigned short *rgb_buffer,
+			unsigned int x1, unsigned int y1, unsigned int width,
+			unsigned int height);
+	void copyRectangle24Bit(unsigned char *rgb_buffer,
+			unsigned long x1, unsigned long y1, unsigned long width,
+			unsigned long height);
+	void copyRectangle32Bit(unsigned char *rgb_buffer,
+			unsigned int x1, unsigned int y1, unsigned int width,
+			unsigned int height);
+	void drawHLine(signed int X1, signed int X2,
+			signed int Y, unsigned char width, unsigned int color);
+	void drawVLine(signed int Y1, signed int Y2,
+			signed int X, unsigned char width, unsigned int color);
+	void clear(unsigned int color);
+
+	void drawTouchPoint(signed int X, signed int Y, unsigned int color);
+	void drawCircle(signed int x, signed int y, signed int _radius, unsigned char fill, unsigned int color);
+	void drawLine(signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color);
+	void drawElipse(signed int xc,signed int yc,signed int _rx,signed int _ry, unsigned char Fill, unsigned int color);
+	void drawTriangle(signed int  Ax,signed int  Ay,signed int  Bx,signed int  By,signed int  Cx,signed int  Cy, unsigned char Fill, unsigned int color);
+	GI::Dev::Gpio* backlight;
+
+private:
+};
+}
+}
 /**********************************************/
 typedef enum
 {
@@ -599,73 +618,6 @@ typedef struct
 #define ClrYellowGreen          0x009ACD32
 #endif
 
-//*****************************************************************************
-//
-//! Indicates that the font data is stored in an uncompressed format.
-//
-//*****************************************************************************
-#define FONT_FMT_UNCOMPRESSED   0x00
-
-//*****************************************************************************
-//
-//! Indicates that the font data is stored using a pixel-based RLE format.
-//
-//*****************************************************************************
-#define FONT_FMT_PIXEL_RLE      0x01
-
-//*****************************************************************************
-//
-//! Indicates that the image data is not compressed and represents each pixel
-//! with a single bit.
-//
-//*****************************************************************************
-#define IMAGE_FMT_1BPP_UNCOMP   0x01
-
-//*****************************************************************************
-//
-//! Indicates that the image data is not compressed and represents each pixel
-//! with four bits.
-//
-//*****************************************************************************
-#define IMAGE_FMT_4BPP_UNCOMP   0x04
-
-//*****************************************************************************
-//
-//! Indicates that the image data is not compressed and represents each pixel
-//! with eight bits.
-//
-//*****************************************************************************
-#define IMAGE_FMT_8BPP_UNCOMP   0x08
-
-//*****************************************************************************
-//
-//! Indicates that the image data is compressed and represents each pixel with
-//! a single bit.
-//
-//*****************************************************************************
-#define IMAGE_FMT_1BPP_COMP     0x81
-
-//*****************************************************************************
-//
-//! Indicates that the image data is compressed and represents each pixel with
-//! four bits.
-//
-//*****************************************************************************
-#define IMAGE_FMT_4BPP_COMP     0x84
-
-//*****************************************************************************
-//
-//! Indicates that the image data is compressed and represents each pixel with
-//! eight bits.
-//
-//*****************************************************************************
-#define IMAGE_FMT_8BPP_COMP     0x88
-
-#define IMAGE_FMT_16BPP_UNCOMP   0x10
-#define IMAGE_FMT_16BPP_COMP     0x90
-
-#define IMAGE_FMT_24BPP_UNCOMP   0x20
-#define IMAGE_FMT_24BPP_COMP     0xA0
 /**********************************************/
 #ifdef HEADER_INCLUDE_C_FILES
 #include "lib/gfx/resource/fonts.c"

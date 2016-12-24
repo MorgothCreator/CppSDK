@@ -59,18 +59,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "include/stm32f4xx.h"
-#include "driver/stm32f4xx_hal_conf.h"
 #include "driver/stm32f4xx_hal_sd.h"
-#include "driver/stm32f4xx_hal_dma.h"
-#include "driver/stm32f4xx_hal_gpio.h"
-#include "driver/stm32f4xx_hal_rcc.h"
-#include "driver/stm32f4xx_hal_cortex.h"
-#include "driver/stm32f4xx_hal.h"
-
 #include "lib/fs/fat/inc/ff.h"
 #include "sys/systime.h"
-#include "api/gpio_def.h"
+#include "api/gpio.h"
 #include "api/mmcsd_def.h"
 #include "gpio.h"
 #include <include/global.h>
@@ -96,7 +88,6 @@
 /**
   * @brief SD Card information structure
   */
-#define HAL_SD_CardInfoTypedef HAL_SD_CardInfoTypedef
 /**
   * @}
   */

@@ -4,7 +4,7 @@
  *  Created on: Mar 21, 2013
  *      Author: Iulian Gheorghiu
  */
-#include <api/gpio_def.h>
+#include <api/gpio.h>
 #include <interface/gpio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,12 +13,11 @@
 #include "driver/stm32f7xx_hal_gpio.h"
 #include "driver/stm32f7xx_hal_rcc.h"
 #include "sys/system_stm32f7xx.h"
-#include "driver/stm32f7xx_hal_gpio.h"
 #include "api/init.h"
 
 GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[] =
 {
-GPIOA
+		GPIOA
 #ifdef GPIOB
 		, GPIOB
 #endif

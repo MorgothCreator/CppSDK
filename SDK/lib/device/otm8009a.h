@@ -49,7 +49,6 @@
 #include <stdint.h>
 #include <api/timer_api.h>
 #include "api/lcd_def.h"
-#include <interface/screen.h>
 /** @addtogroup BSP
   * @{
   */

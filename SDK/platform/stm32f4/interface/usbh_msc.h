@@ -14,7 +14,7 @@
 #include "driver/USBH/Core/Inc/usbh_core.h"
 #include "driver/USBH/Class/MSC/inc/usbh_msc.h"
 #include "interface/gpio.h"
-#include "api/gpio_def.h"
+#include "api/gpio.h"
 #include "lib/fs/fat/inc/diskio.h"
 #include "lib/fs/fat/inc/ff.h"
 #include "board/board.h"

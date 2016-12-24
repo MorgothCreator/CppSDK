@@ -42,13 +42,7 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif 
-
-/* Includes ------------------------------------------------------------------*/
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
+#endif
 
 void NMI_Handler(void);
 void HardFault_Handler(void);
@@ -65,6 +59,13 @@ void DMA2_Stream3_IRQHandler(void);
 void DMA2_Stream4_IRQHandler(void);
 void JPEG_IRQHandler(void);
 void AUDIO_IN_SAIx_DMAx_IRQHandler(void);
+#ifndef USE_USB_DEV
+void OTG_FS_IRQHandler(void);
+void OTG_HS_IRQHandler(void);
+#else
+void OTG_FS_IRQHandler(void);
+void OTG_HS_IRQHandler(void);
+#endif
 
 #ifdef __cplusplus
 }

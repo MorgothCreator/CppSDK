@@ -31,6 +31,7 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -42,8 +43,14 @@ void UsageFault_Handler(void);
 void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
-#ifdef __cplusplus
 void SysTick_Handler(void);
+#ifndef USE_USB_DEV
+void OTG_FS_IRQHandler(void);
+void OTG_HS_IRQHandler(void);
+#else
+void OTG_FS_IRQHandler(void);
+void OTG_HS_IRQHandler(void);
+#endif
 #ifdef __cplusplus
 }
 #endif

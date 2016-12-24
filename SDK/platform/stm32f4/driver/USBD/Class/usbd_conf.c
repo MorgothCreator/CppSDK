@@ -348,7 +348,7 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
  */
 USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
 {
-#ifdef USE_USB_FS
+#ifndef USE_USB_HS
 	/* Set LL Driver parameters */
 	_hpcd[pdev->id].Instance = USB_OTG_FS;
 	_hpcd[pdev->id].Init.dev_endpoints = 4;
@@ -372,9 +372,7 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
 	HAL_PCDEx_SetRxFiFo(&_hpcd[pdev->id], 0x80);
 	HAL_PCDEx_SetTxFiFo(&_hpcd[pdev->id], 0, 0x40);
 	HAL_PCDEx_SetTxFiFo(&_hpcd[pdev->id], 1, 0x80);
-#endif
-
-#ifdef USE_USB_HS
+#else
 	/* Set LL Driver parameters */
 	_hpcd[pdev->id].Instance = USB_OTG_HS;
 	_hpcd[pdev->id].Init.dev_endpoints = 6;

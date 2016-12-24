@@ -5,12 +5,28 @@
  *  Author: XxXx
  */
 /*#####################################################*/
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdarg.h>
+#include "driver/stm32f7xx_hal_gpio.h"
+#include "driver/stm32f7xx_hal_uart.h"
+#include "driver/stm32f7xx_hal_rcc.h"
 #include <interface/uart.h>
-#include "api/init.h"
+#include <api/init.h>
+#include <api/gpio.h>
+#include <lib/string.h>
+#include <lib/gfx/string.h>
+#include "usbd_cdc.h"
+#include "usb_def.h"
+
+extern CfgUart uartCfg[];
 
 #if (USE_DRIVER_SEMAPHORE == true)
 volatile bool uart_semaphore[UART_INTERFACE_COUNT];
 #endif
+
+extern GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[];
 
 USART_TypeDef* COM_USART[] =
 {
@@ -56,30 +72,40 @@ GI::Dev::Uart::Uart(const char *path)
 		item_nr++;
 	}
 
-	if(strncmp(path, (char *)"uart-", sizeof("uart-") - 1))
+	if(strncmp(path, (char *)"uart-", sizeof("uart-") - 1) && strncmp(path, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
-	unsigned char dev_nr = path[sizeof("uart-") - 1] - '0';
-	if(dev_nr >= TWI_INTERFACE_COUNT)
+	if(!strncmp(path, (char *)"uart-", sizeof("uart-") - 1))
 	{
-		err = SYS_ERR_INVALID_PATH;
+		unsigned char dev_nr = path[sizeof("uart-") - 1] - '0';
+		if(dev_nr >= UART_INTERFACE_COUNT)
+		{
+			err = SYS_ERR_INVALID_PATH;
+			return;
+		}
+		memset(this, 0, sizeof(*this));
+		memcpy(&cfg, &uartCfg[item_nr], sizeof(CfgUart));
+		unitNr = dev_nr;
+	}
+	else 	if(!strncmp(path, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
+	{
+		unsigned char dev_nr = path[sizeof("usbcdc-") - 1] - '0';
+		if(dev_nr >= USB_INTERFACE_COUNT)
+		{
+			err = SYS_ERR_INVALID_PATH;
+			return;
+		}
+		memset(this, 0, sizeof(*this));
+		unitNr = dev_nr;
+		udata = (void *) new GI::Dev::UsbDCdc(unitNr);
+		isVirtual = true;
 		return;
 	}
-	memset(this, 0, sizeof(*this));
-	memcpy(&cfg, &uartCfg[item_nr], sizeof(CfgUart));
 	GPIO_InitTypeDef GPIO_InitStruct;
-	unitNr = dev_nr;
 
-	/*##-1- Enable peripherals and GPIO Clocks #################################*/
-	/* Enable GPIO TX/RX clock */
-	//_gpio_init(UartSettings->TxPort);
-	//_gpio_init(UartSettings->RxPort);
-	//USARTx_TX_GPIO_CLK_ENABLE();
-	//USARTx_RX_GPIO_CLK_ENABLE();
-	/* Enable USART1 clock */
-	switch (dev_nr)
+	switch (unitNr)
 	{
 #ifdef __HAL_RCC_USART1_CLK_ENABLE
 	case 0:
@@ -138,7 +164,7 @@ GI::Dev::Uart::Uart(const char *path)
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
-	switch (dev_nr)
+	switch (unitNr)
 	{
 	case 0:
 	case 1:
@@ -167,7 +193,7 @@ GI::Dev::Uart::Uart(const char *path)
 	if (!udata)
 		return;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
-	UartHandle->Instance = COM_USART[dev_nr];
+	UartHandle->Instance = COM_USART[unitNr];
 	UartHandle->Init.BaudRate = cfg.speed;
 	UartHandle->Init.WordLength = UART_WORDLENGTH_8B;
 	switch((unsigned char)cfg.wordLen)
@@ -201,9 +227,17 @@ GI::Dev::Uart::Uart(const char *path)
 /*#####################################################*/
 GI::Dev::Uart::~Uart()
 {
-	HAL_UART_DeInit((UART_HandleTypeDef*) udata);
-	if (udata)
-		free(udata);
+	if(isVirtual)
+	{
+		if(udata)
+			delete ((GI::Dev::UsbDCdc *)udata);
+	}
+	else
+	{
+		HAL_UART_DeInit((UART_HandleTypeDef*) udata);
+		if (udata)
+			free(udata);
+	}
 	return;
 }
 /*#####################################################*/
@@ -215,11 +249,13 @@ void GI::Dev::Uart::setSpeed(unsigned long BaudRate)
 void GI::Dev::Uart::putChar(unsigned char byteTx)
 {
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (uart_semaphore[unitNr])
-		;
+	while (uart_semaphore[unitNr]);
 	uart_semaphore[unitNr] = true;
 #endif
-	HAL_UART_Transmit((UART_HandleTypeDef*) udata, &byteTx, 1, 10);
+	if(isVirtual)
+		while(((GI::Dev::UsbDCdc *)udata)->tx(&byteTx, 1) != 1);
+	else
+		HAL_UART_Transmit((UART_HandleTypeDef*) udata, &byteTx, 1, 10);
 #if (USE_DRIVER_SEMAPHORE == true)
 	uart_semaphore[unitNr] = false;
 #endif
@@ -229,11 +265,13 @@ unsigned char GI::Dev::Uart::getChar()
 {
 	unsigned char data = 0;
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (uart_semaphore[unitNr])
-		;
+	while (uart_semaphore[unitNr]);
 	uart_semaphore[unitNr] = true;
 #endif
-	HAL_UART_Receive((UART_HandleTypeDef*) udata, &data, 1, 10);
+	if(isVirtual)
+		while(((GI::Dev::UsbDCdc *)udata)->rx(&data) == 0);
+	else
+		HAL_UART_Receive((UART_HandleTypeDef*) udata, &data, 1, 10);
 #if (USE_DRIVER_SEMAPHORE == true)
 	uart_semaphore[unitNr] = false;
 #endif
@@ -247,14 +285,24 @@ bool GI::Dev::Uart::putCharNb(unsigned char byteTx)
 		;
 	uart_semaphore[unitNr] = true;
 #endif
-	HAL_StatusTypeDef status = HAL_UART_Transmit(
-			(UART_HandleTypeDef*) udata, &byteTx, 1, 2);
-	if (status == HAL_TIMEOUT || status == HAL_BUSY || status == HAL_ERROR)
-	{
+	if(isVirtual)
+		if(((GI::Dev::UsbDCdc *)udata)->tx(&byteTx, 1) == 1)
+		{
 #if (USE_DRIVER_SEMAPHORE == true)
-		uart_semaphore[unitNr] = false;
+			uart_semaphore[unitNr] = false;
 #endif
-		return false;
+			return false;
+		}
+	else
+	{
+		HAL_StatusTypeDef status = HAL_UART_Transmit((UART_HandleTypeDef*) udata, &byteTx, 1, 2);
+		if (status == HAL_TIMEOUT || status == HAL_BUSY || status == HAL_ERROR)
+		{
+#if (USE_DRIVER_SEMAPHORE == true)
+			uart_semaphore[unitNr] = false;
+#endif
+			return false;
+		}
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	uart_semaphore[unitNr] = false;
@@ -270,15 +318,32 @@ signed short GI::Dev::Uart::getCharNb()
 		;
 	uart_semaphore[unitNr] = true;
 #endif
-	HAL_StatusTypeDef status = HAL_UART_Receive(
-			(UART_HandleTypeDef *) udata, (unsigned char *) &data, 1,
-			2);
-	if (status == HAL_TIMEOUT || status == HAL_BUSY || status == HAL_ERROR)
+	if(isVirtual)
 	{
+		unsigned char tmp = 0;
+		if(((GI::Dev::UsbDCdc *)udata)->rx(&tmp) == 0)
+		{
 #if (USE_DRIVER_SEMAPHORE == true)
-		uart_semaphore[unitNr] = false;
+			uart_semaphore[unitNr] = false;
 #endif
-		return -1;	 //UARTCharPutNonBlocking((USART_TypeDef*)BaseAddr, byteTx);
+			return -1;	 //UARTCharPutNonBlocking((USART_TypeDef*)BaseAddr, byteTx);
+		}
+		else
+		{
+			data = tmp;
+			return data;
+		}
+	}
+	else
+	{
+		HAL_StatusTypeDef status = HAL_UART_Receive((UART_HandleTypeDef *) udata, (unsigned char *) &data, 1, 2);
+		if (status == HAL_TIMEOUT || status == HAL_BUSY || status == HAL_ERROR)
+		{
+#if (USE_DRIVER_SEMAPHORE == true)
+			uart_semaphore[unitNr] = false;
+#endif
+			return -1;	 //UARTCharPutNonBlocking((USART_TypeDef*)BaseAddr, byteTx);
+		}
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	uart_semaphore[unitNr] = false;
@@ -1101,7 +1166,7 @@ void GI::Dev::Uart::printF(GI::String *string, ...)
 	VA_END;
 }
 
-void GI::Dev::Uart::printF(GI::Screen::String *string, ...)
+/*void GI::Dev::Uart::printF(GI::Screen::String *string, ...)
 //int snprintf (Uart_t* char *str,size_t count,const char *fmt,...)
 {
 	const char *pcString = string->buff;
@@ -1113,7 +1178,7 @@ void GI::Dev::Uart::printF(GI::Screen::String *string, ...)
 	char buff[1];
 	vsnprintf(buff, 65535, (const char *)string->buff, ap);
 	VA_END;
-}
+}*/
 #endif /* !HAVE_SNPRINTF */
 
 int GI::Dev::Uart::print(const char *pcString)
@@ -1148,7 +1213,7 @@ int GI::Dev::Uart::print(GI::String *string)
 	return count;
 }
 
-int GI::Dev::Uart::print(GI::Screen::String *string)
+/*int GI::Dev::Uart::print(GI::Screen::String *string)
 {
 	if(!this)
 		return 0;
@@ -1162,5 +1227,5 @@ int GI::Dev::Uart::print(GI::Screen::String *string)
 
 	}
 	return count;
-}
+}*/
 

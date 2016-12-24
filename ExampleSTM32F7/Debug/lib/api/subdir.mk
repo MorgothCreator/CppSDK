@@ -4,21 +4,21 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-C:/GitHub/CppSDK/SDK/lib/api/dew_request.cpp \
+C:/GitHub/CppSDK/SDK/lib/api/dev_request.cpp \
 C:/GitHub/CppSDK/SDK/lib/api/init.cpp \
 C:/GitHub/CppSDK/SDK/lib/api/lcd_def.cpp \
 C:/GitHub/CppSDK/SDK/lib/api/std.cpp \
 C:/GitHub/CppSDK/SDK/lib/api/timer_api.cpp 
 
 OBJS += \
-./lib/api/dew_request.o \
+./lib/api/dev_request.o \
 ./lib/api/init.o \
 ./lib/api/lcd_def.o \
 ./lib/api/std.o \
 ./lib/api/timer_api.o 
 
 CPP_DEPS += \
-./lib/api/dew_request.d \
+./lib/api/dev_request.d \
 ./lib/api/init.d \
 ./lib/api/lcd_def.d \
 ./lib/api/std.d \
@@ -26,7 +26,7 @@ CPP_DEPS += \
 
 
 # Each subdirectory must supply rules for building sources it contributes
-lib/api/dew_request.o: C:/GitHub/CppSDK/SDK/lib/api/dew_request.cpp
+lib/api/dev_request.o: C:/GitHub/CppSDK/SDK/lib/api/dev_request.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU G++ Compiler'
 	@echo %cd%

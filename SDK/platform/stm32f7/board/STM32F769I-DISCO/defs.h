@@ -5,10 +5,10 @@
 
 #include "ffconf.h"
 #include "lwipopts.h"
-#include <api/gpio_def.h>
-#include <api/spi_def.h>
-#include <api/i2c_def.h>
-#include <api/uart_def.h>
+#include <api/uart.h>
+#include <api/spi.h>
+#include <api/i2c.h>
+#include <api/gpio.h>
 
 
 #define LED1_PORT			IOJ
@@ -153,13 +153,13 @@
  * USB settings
  */
 
+#define USE_USB_DEV
 #define USE_USB_HS
 /* #define USE_USB_HS_IN_FS */
 
 /*
  * GPIO settings
  */
-extern CfgGpio gpioCfg[];
 /*
  * !GPIO settings
  */
@@ -167,7 +167,6 @@ extern CfgGpio gpioCfg[];
 /*
  * SPI settings
  */
-extern CfgSpi spiCfg[];
 /*
  * !SPI settings
  */
@@ -175,7 +174,6 @@ extern CfgSpi spiCfg[];
 /*
  * I2C settings
  */
-extern CfgI2c i2cCfg[];
 /*
  * !I2C settings
  */
@@ -183,7 +181,6 @@ extern CfgI2c i2cCfg[];
 /*
  * !UART settings
  */
-extern CfgUart uartCfg[];
 
 #define USED_DEBUG_UART_PORT_NR		0
 /*

@@ -143,6 +143,10 @@ int main(void)
 		{
 			memset(&control_comand, 0, sizeof(tControlCommandData));
 			dev.CAPTOUCH[0]->idle();
+			if(dev.CAPTOUCH[0]->TouchResponse.touch_event1)
+			{
+				dev.UART[1]->printF("XY%u %u\n", dev.CAPTOUCH[0]->TouchResponse.x1, dev.CAPTOUCH[0]->TouchResponse.y1);
+			}
 			control_comand.Cursor = (CursorState)dev.CAPTOUCH[0]->TouchResponse.touch_event1;
 			control_comand.X = dev.CAPTOUCH[0]->TouchResponse.x1;
 			control_comand.Y = dev.CAPTOUCH[0]->TouchResponse.y1;

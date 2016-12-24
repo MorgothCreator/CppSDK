@@ -23,13 +23,11 @@
 #define TOUCHSCREEN_DEF_H_
 /*#####################################################*/
 #include <stdbool.h>
-#include "lcd_def.h"
-#include "i2c_def.h"
-#include "gpio_def.h"
+#include "i2c.h"
+#include "gpio.h"
 #include <api/lcd_def.h>
-#include <interface/screen.h>
-#include <interface/i2c.h>
-#include <interface/gpio.h>
+#include <api/i2c.h>
+#include <api/gpio.h>
 /*#####################################################*/
 #define TouchScreen_Type_Int	0
 #define TouchScreen_Type_FT5x06	1

@@ -25,7 +25,6 @@
 //#include <math.h>
 #include <stdlib.h>
 #include <api/lcd_def.h>
-#include <interface/screen.h>
 //#define focalLength  300
 #define _depth 1
 

@@ -10,29 +10,20 @@
 #include "driver/USBD/Class/CDC/usbd_cdc_interface.h"
 #include "driver/USBD/Class/CDC/usbd_cdc_desc.h"
 #include "driver/USBD/Core/Inc/usbd_core.h"
-#include "driver/stm32f7xx_hal_tim.h"
+#include "driver/stm32f4xx_hal_tim.h"
 #include "lib/buffers/ring_buff.h"
+#include "usbd_cdc.h"
 
 fifo_settings_t *usb_cdc_dev_rx_fifo;
 fifo_settings_t *usb_cdc_dev_tx_fifo;
 
-//extern uint8_t UserRxBuffer[];/* Received Data over USB are stored in this buffer */
-//extern uint8_t UserTxBuffer[];/* Received Data over UART (CDC interface) are stored in this buffer */
-
-//extern uint32_t UserTxBufPtrIn;/* Increment this pointer or roll it back to
-                               //start address when data are received over USART */
-//extern uint32_t UserTxBufPtrOut; /* Increment this pointer or roll it back to
-                                 //start address when data are sent over USB */
-
-//static int extract_receive_char_ptr = 0;
 int put_receive_char_ptr = 0;
-
-//extern unsigned int UserRxBuffCnt;
 
 USBD_HandleTypeDef  usb_cdc_dev_param;
 
-bool _usb_com_dev_init(unsigned int instance)
+GI::Dev::UsbDCdc::UsbDCdc(unsigned int instance)
 {
+	memset(&usb_cdc_dev_param, 0, sizeof(USBD_HandleTypeDef));
 	usb_cdc_dev_rx_fifo = fifo_open(APP_RX_DATA_SIZE);
 	usb_cdc_dev_tx_fifo = fifo_open(APP_RX_DATA_SIZE);
 	/* Init Device Library */
@@ -46,11 +37,14 @@ bool _usb_com_dev_init(unsigned int instance)
 
 	/* Start Device Process */
 	USBD_Start(&usb_cdc_dev_param);
-
-
-	return true;
 }
-unsigned int _usb_com_dev_receive(unsigned char* buff)
+
+GI::Dev::UsbDCdc::~UsbDCdc()
+{
+
+}
+
+unsigned int GI::Dev::UsbDCdc::rx(unsigned char* buff)
 {
 	fifo_pop_return_t data_return = fifo_pop(usb_cdc_dev_rx_fifo);
 	buff[0] = data_return.character;
@@ -59,7 +53,8 @@ unsigned int _usb_com_dev_receive(unsigned char* buff)
 	else
 		return 0;
 }
-unsigned int _usb_com_dev_send(unsigned char* buff, unsigned int nbytes)
+
+unsigned int GI::Dev::UsbDCdc::tx(unsigned char* buff, unsigned int nbytes)
 {
 	unsigned int cnt = 0;
     USBD_CDC_HandleTypeDef   *hcdc = (USBD_CDC_HandleTypeDef*) usb_cdc_dev_param.pClassData;

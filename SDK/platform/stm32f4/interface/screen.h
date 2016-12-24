@@ -9,7 +9,7 @@
 #define LCD_INTERFACE_H_
 /*#####################################################*/
 #include <stdbool.h>
-#include <interface/gpio.h>
+#include <api/gpio.h>
 #include <include/global.h>
 #include <api/lcd_def.h>
 #include <interface/gpio.h>
@@ -19,15 +19,6 @@
 #include "device/otm8009a.h"
 #include <board/board.h>
 #include <sys/cache.h>
-#include "include/stm32f4xx.h"
-#include "driver/stm32f4xx_hal_dsi.h"
-#include "driver/stm32f4xx_hal_dma2d.h"
-#include "driver/stm32f4xx_hal_ltdc_ex.h"
-#include "driver/stm32f4xx_hal_ltdc.h"
-#include "driver/stm32f4xx_hal_gpio.h"
-#include "driver/stm32f4xx_hal_rcc.h"
-#include "driver/stm32f4xx_hal_cortex.h"
-#include "driver/stm32f4xx_hal.h"
 #include <sys/systime.h>
 /*#####################################################*/
 
@@ -256,56 +247,6 @@ typedef enum
 unsigned char BSP_LCD_Init(void *_pDisplay);
 
 /*#####################################################*/
-namespace GI
-{
-namespace Dev {
-class Screen {
-public:
-	Screen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight);
-	~Screen();
-
-	//GScreen::Window property;
-	LCD_TIMINGS *LcdTimings;
-	volatile unsigned int* DisplayData;
-	void *UserData;
-	tRectangle sClipRegion;
-	int err;
-	void setOn();
-	void setOff();
-	int setBacklight(unsigned char value);
-	bool copyScreen(void *pDisplayFrom, bool put_cursor,
-			signed int X, signed int Y, unsigned int color);
-	void cacheClean(signed int x_start, signed int y_start,
-			signed int x_len, signed int y_len);
-	void drawRectangle(signed int x_start, signed int y_start,
-			signed int x_len, signed int y_len, bool fill, unsigned int color);
-	void drawPixel(signed int X, signed int Y, unsigned int color);
-	void copyRectangle16Bit(unsigned short *rgb_buffer,
-			unsigned int x1, unsigned int y1, unsigned int width,
-			unsigned int height);
-	void copyRectangle24Bit(unsigned char *rgb_buffer,
-			unsigned long x1, unsigned long y1, unsigned long width,
-			unsigned long height);
-	void copyRectangle32Bit(unsigned char *rgb_buffer,
-			unsigned int x1, unsigned int y1, unsigned int width,
-			unsigned int height);
-	void drawHLine(signed int X1, signed int X2,
-			signed int Y, unsigned char width, unsigned int color);
-	void drawVLine(signed int Y1, signed int Y2,
-			signed int X, unsigned char width, unsigned int color);
-	void clear(unsigned int color);
-
-	void drawTouchPoint(signed int X, signed int Y, unsigned int color);
-	void drawCircle(signed int x, signed int y, signed int _radius, unsigned char fill, unsigned int color);
-	void drawLine(signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color);
-	void drawElipse(signed int xc,signed int yc,signed int _rx,signed int _ry, unsigned char Fill, unsigned int color);
-	void drawTriangle(signed int  Ax,signed int  Ay,signed int  Bx,signed int  By,signed int  Cx,signed int  Cy, unsigned char Fill, unsigned int color);
-	GI::Dev::Gpio* backlight;
-
-private:
-};
-}
-}
 /*#####################################################*/
 #ifdef HEADER_INCLUDE_C_FILES
 #include <interface/lcd_interface.cpp>

@@ -23,11 +23,13 @@
 #define UART_DEF_H_
 
 #include <stdbool.h>
-#include <api/gpio_def.h>
-#include <interface/uart_def.h>
-/*#####################################################*/
-//-----------------------------------------------------
-
+#include <api/gpio.h>
+#include <api/lcd_def.h>
+#include <interface/uart.h>
+#include <include/global.h>
+#include <lib/gfx/string.h>
+#include <lib/string.h>
+#include <api/std.h>
 /*#####################################################*/
 typedef struct
 {
@@ -76,6 +78,46 @@ typedef struct
 #endif
 	}mode;
 } CfgUart;
+/*#####################################################*/
+namespace GI
+{
+namespace Dev
+{
+class Uart
+{
+public:
+	Uart(const char *path);
+	~Uart();
+	void setSpeed(unsigned long BaudRate);
+	void putChar(unsigned char byteTx);
+	unsigned char getChar();
+	bool putCharNb(unsigned char byteTx);
+	signed short getCharNb();
+	void printF(const char *pcString, ...);
+	void printF(GI::String *string, ...);
+	//void printF(GI::Screen::String *string, ...);
+	int print(const char *pcString);
+	int print(GI::String *string);
+	//int print(GI::Screen::String *string);
+
+	SysErr err;
+	CfgUart cfg;
+private:
+	int vsnprintf (char *str, size_t count, const char *fmt, va_list args);
+	void dopr (char *buffer, size_t maxlen, const char *format, va_list args);
+	void fmtstr (char *buffer, size_t *currlen, size_t maxlen, char *value, int flags, int min, int max);
+	void fmtint (char *buffer, size_t *currlen, size_t maxlen, long value, int base, int min, int max, int flags);
+	void fmtfp (char *buffer, size_t *currlen, size_t maxlen, LDOUBLE fvalue, int min, int max, int flags);
+	void dopr_outch (char *buffer, size_t *currlen, size_t maxlen, char c );
+
+	bool isVirtual;
+	unsigned char unitNr;
+	unsigned int BaseAddr;
+	void *udata;
+
+};
+}
+}
 /*#####################################################*/
 
 /*#####################################################*/

@@ -28,7 +28,6 @@
 #include "api/lcd_def.h"
 #include "controls_definition.h"
 #include "string.h"
-#include <interface/screen.h>
 /*#####################################################*/
 typedef enum {
 	PAINT_MODE_STRETCH,

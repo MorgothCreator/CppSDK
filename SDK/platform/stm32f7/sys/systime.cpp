@@ -27,8 +27,3 @@ void sysDelay(unsigned long milliSec)
 		if(TimerTimeoutValue < STimerCnt) break;
 	}
 }
-//#####################################################
-void TimerCnt_Isr_Increment(void)
-{
-	STimerCnt++;
-}

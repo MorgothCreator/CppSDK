@@ -7,6 +7,15 @@
 
 #include <interface/eth.h>
 
+#include "driver/stm32f4xx_hal_eth.h"
+#include "driver/stm32f4xx_hal.h"
+#include "interface/LwIp/src/include/lwip/netif.h"
+#include "interface/LwIp/src/include/lwip/init.h"
+#include "interface/LwIp/ethernetif.h"
+#include "interface/LwIp/src/include/netif/etharp.h"
+#include "interface/LwIp/src/include/lwip/lwip_timers.h"
+#include "interface/LwIp/src/include/lwip/opt.h"
+#include "interface/LwIp/src/include/lwip/dhcp.h"
 
 struct netif gnetif;
 

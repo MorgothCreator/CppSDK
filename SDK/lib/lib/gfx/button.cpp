@@ -21,12 +21,11 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
-#include "window.h"
 #include "button.h"
+#include "window.h"
 #include "api/lcd_def.h"
 #include "util.h"
 #include "api/timer_api.h"
-#include "graphic_string.h"
 #include "controls_definition.h"
 #include "gfx_gui_paint.h"
 

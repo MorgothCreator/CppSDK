@@ -69,7 +69,7 @@ static int8_t CDC_Itf_Init(void);
 static int8_t CDC_Itf_DeInit(void);
 static int8_t CDC_Itf_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length);
 static int8_t CDC_Itf_Receive(uint8_t* pbuf, uint32_t *Len);
-static void Error_Handler(void);
+//static void Error_Handler(void);
 static void ComPort_Config(void);
 
 USBD_CDC_ItfTypeDef USBD_CDC_fops = 
@@ -370,28 +370,11 @@ static void ComPort_Config(void)
 }
 
 
-/**
-  * @brief  UART error callbacks
-  * @param  UartHandle: UART handle
-  * @retval None
-  */
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
-{
-  /* Transfer error occured in reception and/or transmission process */
-  Error_Handler();
-}
-
-/**
-  * @brief  This function is executed in case of error occurrence.
-  * @param  None
-  * @retval None
-  */
-static void Error_Handler(void)
-{
-  /* Add your own code here */
-}
-
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 /**
   * @brief  This function handles TIM interrupt request.
   * @param  None
@@ -401,3 +384,6 @@ void USBCDCTIMx_IRQHandler(void)
 {
 	HAL_TIM_IRQHandler(&USBCDCTimHandle);
 }
+#ifdef __cplusplus
+}
+#endif

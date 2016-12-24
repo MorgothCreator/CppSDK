@@ -107,7 +107,7 @@ static int8_t CDC_Itf_Init(void)
   if(HAL_TIM_Base_Start_IT(&USBCDCTimHandle) != HAL_OK)
   {
     /* Starting Error */
-    Error_Handler();
+    //Error_Handler();
   }
   
   /*##-5- Set Application Buffers ############################################*/
@@ -366,7 +366,7 @@ static void TIM_Config(void)
   if(HAL_TIM_Base_Init(&USBCDCTimHandle) != HAL_OK)
   {
     /* Initialization Error */
-    Error_Handler();
+    //Error_Handler();
   }
 }
 
@@ -378,17 +378,25 @@ static void TIM_Config(void)
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
 {
   /* Transfer error occured in reception and/or transmission process */
-  Error_Handler();
+  //Error_Handler();
 }
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 /**
-  * @brief  This function is executed in case of error occurrence.
+  * @brief  This function handles TIM interrupt request.
   * @param  None
   * @retval None
   */
-static void Error_Handler(void)
+void USBCDCTIMx_IRQHandler(void)
 {
-  /* Add your own code here */
+	HAL_TIM_IRQHandler(&USBCDCTimHandle);
 }
+#ifdef __cplusplus
+}
+#endif
+
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

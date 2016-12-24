@@ -24,7 +24,6 @@
 
 #include <stdbool.h>
 #include "controls_definition.h"
-//#include "window_def.h"
 #include "button.h"
 #include "string.h"
 

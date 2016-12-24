@@ -4,8 +4,7 @@
  *  Created on: Mar 21, 2013
  *      Author: Iulian Gheorghiu
  */
-#include <api/gpio_def.h>
-#include <interface/gpio.h>
+#include <api/gpio.h>
 #include <stdlib.h>
 #include <string.h>
 //#include "stm32f7xx_conf.h"
@@ -15,6 +14,8 @@
 #include "sys/system_stm32f4xx.h"
 #include "driver/stm32f4xx_hal_gpio.h"
 #include "api/init.h"
+
+extern CfgGpio gpioCfg[];
 
 GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[] =
 {

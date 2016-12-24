@@ -8,7 +8,6 @@
 #ifndef AM33_INTERFACE_LAN_INTERFACE_H_
 #define AM33_INTERFACE_LAN_INTERFACE_H_
 
-#include <api/eth_def.h>
 #include "driver/stm32f7xx_hal_eth.h"
 #include "driver/stm32f7xx_hal.h"
 #include "interface/LwIp/src/include/lwip/netif.h"
@@ -21,6 +20,15 @@
 #include <interface/uart.h>
 #include <lib/string.h>
 #include <board/board.h>
+
+typedef enum {
+	DHCP_START = 1,
+	DHCP_WAIT_ADDRESS,
+	DHCP_ADDRESS_ASSIGNED,
+	DHCP_TIMEOUT,
+	DHCP_LINK_DOWN,
+}DHCP_STATE;
+
 
 #define LEN_IP_ADDR                        (4u)
 extern struct netif gnetif;

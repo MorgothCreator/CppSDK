@@ -178,7 +178,7 @@ void DebugMon_Handler(void)
 void PendSV_Handler(void)
 {
 }
-
+extern volatile unsigned long long STimerCnt;
 /**
  * @brief  This function handles SysTick Handler.
  * @param  None
@@ -186,7 +186,7 @@ void PendSV_Handler(void)
  */
 void SysTick_Handler(void)
 {
-	TimerCnt_Isr_Increment();
+	STimerCnt++;
 	HAL_IncTick();
 	/*if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)
 	 {

@@ -9,18 +9,11 @@
 #define LWIP_DEF_H_
 /*#####################################################*/
 #include <stdbool.h>
+#include <interface/eth.h>
 /*#####################################################*/
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* DHCP process states */
-
-typedef enum {
-	DHCP_START = 1,
-	DHCP_WAIT_ADDRESS,
-	DHCP_ADDRESS_ASSIGNED,
-	DHCP_TIMEOUT,
-	DHCP_LINK_DOWN,
-}DHCP_STATE;
 
 typedef struct lan_s
 {

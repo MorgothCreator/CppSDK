@@ -239,9 +239,21 @@
  */
 /* Includes ------------------------------------------------------------------*/
 
+#include "include/stm32f7xx.h"
+#include "driver/stm32f7xx_hal_conf.h"
+#include "driver/stm32f7xx_hal_sd.h"
+#include "driver/stm32f7xx_hal_dma.h"
+#include "driver/stm32f7xx_hal_gpio.h"
+#include "driver/stm32f7xx_hal_rcc.h"
+#include "driver/stm32f7xx_hal_cortex.h"
+#include "driver/stm32f7xx_hal.h"
+
 #include <interface/mmcsd.h>
 #include "include/global.h"
 #include <api/dev_request.h>
+
+#include "lib/fs/fat/inc/ff.h"
+
 /** @addtogroup Utilities
  * @{
  */

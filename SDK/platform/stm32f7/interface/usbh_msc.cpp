@@ -5,7 +5,12 @@
  *  Author: XxXx
  */
 
-#include <interface/usbh_msc.h>
+#include "usbh_msc.h"
+#include "driver/stm32f7xx_hal_hcd.h"
+#include "driver/USBH/Core/Inc/usbh_core.h"
+#include "driver/USBH/Class/MSC/inc/usbh_msc.h"
+#include "lib/fs/fat/inc/diskio.h"
+#include "lib/fs/fat/inc/ff.h"
 
 HCD_HandleTypeDef hhcd;
 USBH_HandleTypeDef usb_msc_host_param[2]; /* USB Host handle */

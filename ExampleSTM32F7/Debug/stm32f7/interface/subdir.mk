@@ -15,6 +15,7 @@ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/mmcsd.cpp \
 C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/screen.cpp \
 C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/spi.cpp \
 C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/uart.cpp \
+C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/usbd_cdc.cpp \
 C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/usbh_msc.cpp 
 
 OBJS += \
@@ -27,6 +28,7 @@ OBJS += \
 ./stm32f7/interface/screen.o \
 ./stm32f7/interface/spi.o \
 ./stm32f7/interface/uart.o \
+./stm32f7/interface/usbd_cdc.o \
 ./stm32f7/interface/usbh_msc.o 
 
 C_DEPS += \
@@ -41,6 +43,7 @@ CPP_DEPS += \
 ./stm32f7/interface/screen.d \
 ./stm32f7/interface/spi.d \
 ./stm32f7/interface/uart.d \
+./stm32f7/interface/usbd_cdc.d \
 ./stm32f7/interface/usbh_msc.d 
 
 
@@ -110,6 +113,14 @@ stm32f7/interface/spi.o: C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/spi.cpp
 	@echo ' '
 
 stm32f7/interface/uart.o: C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/uart.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU G++ Compiler'
+	@echo %cd%
+	arm-none-eabi-g++ -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -DSTM32F769NIHx -DSTM32F769I_DISCO -DSTM32F7 -DSTM32 -DDEBUG -I"C:/GitHub/CppSDK/ExampleSTM32F7" -I"C:/GitHub/CppSDK/SDK/platform/stm32f7" -I"C:/GitHub/CppSDK/SDK/lib" -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fno-exceptions -fno-rtti -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+stm32f7/interface/usbd_cdc.o: C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/usbd_cdc.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU G++ Compiler'
 	@echo %cd%

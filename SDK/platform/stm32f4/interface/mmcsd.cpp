@@ -239,6 +239,15 @@
  */
 /* Includes ------------------------------------------------------------------*/
 
+#include "include/stm32f4xx.h"
+#include "driver/stm32f4xx_hal_conf.h"
+#include "driver/stm32f4xx_hal_sd.h"
+#include "driver/stm32f4xx_hal_dma.h"
+#include "driver/stm32f4xx_hal_gpio.h"
+#include "driver/stm32f4xx_hal_rcc.h"
+#include "driver/stm32f4xx_hal_cortex.h"
+#include "driver/stm32f4xx_hal.h"
+
 #include <string.h>
 #include <interface/mmcsd.h>
 #include "api/init.h"

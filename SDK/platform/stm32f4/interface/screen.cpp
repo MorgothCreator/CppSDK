@@ -5,8 +5,16 @@
  *  Author: XxXx
  */
 
+#include "include/stm32f4xx.h"
+#include "driver/stm32f4xx_hal_dsi.h"
+#include "driver/stm32f4xx_hal_dma2d.h"
+#include "driver/stm32f4xx_hal_ltdc_ex.h"
+#include "driver/stm32f4xx_hal_ltdc.h"
+#include "driver/stm32f4xx_hal_gpio.h"
+#include "driver/stm32f4xx_hal_rcc.h"
+#include "driver/stm32f4xx_hal_cortex.h"
+#include "driver/stm32f4xx_hal.h"
 #include <interface/screen.h>
-//#include "driver/stm32469i_eval_sdram.h"
 
 #if defined(STM32F429xx) || defined(STM32F439xx)|| defined(STM32F469xx) || defined(STM32F479xx)
 /**

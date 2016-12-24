@@ -218,7 +218,7 @@ void SDIO_IRQHandler(void)
 /*  available peripheral interrupt handler's name please refer to the startup */
 /*  file (startup_stm32f4xx.s).                                               */
 /******************************************************************************/
-#if 0
+
 /**
   * @brief  This function handles USB-On-The-Go FS global interrupt requests.
   * @param  None
@@ -250,7 +250,7 @@ void OTG_HS_IRQHandler(void)
   HAL_PCD_IRQHandler(&_hpcd[0]);
 }
 #endif
-#endif
+
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None
@@ -300,16 +300,6 @@ void ADC_IRQHandler(void)
   * @param  None
   * @retval None
   */
-/**
-  * @brief  This function handles TIM interrupt request.
-  * @param  None
-  * @retval None
-  */
-void USBCDCTIMx_IRQHandler(void)
-{
-	HAL_TIM_IRQHandler(&USBCDCTimHandle);
-}
-
 #ifdef LCD_TYPE_DSI
 /**
   * @brief  This function handles DMA2D Handler.

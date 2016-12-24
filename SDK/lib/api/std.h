@@ -9,9 +9,10 @@
 #define LIB_API_STD_H_
 
 #include <stdio.h>
-#include <interface/uart.h>
+#include <lib/string.h>
+#include <api/uart.h>
 #include <lib/gfx/window.h>
-#include <interface/screen.h>
+#include <api/lcd_def.h>
 #include <lib/fs/fat/inc/ff.h>
 
 #ifdef HAVE_LONG_DOUBLE
@@ -29,10 +30,10 @@ public:
 
 	void print(char Char);
 	void print(char* string);
-	void print(GI::Screen::String *string);
+	//void print(GI::Screen::String *string);
 	void print(GI::String *string);
 	void printF(const char* string, ...);
-	void printF(GI::Screen::String *string, ...);
+	//void printF(GI::Screen::String *string, ...);
 	void printF(GI::String *string, ...);
 	void clear();
 

@@ -6,7 +6,15 @@
  */
 /*#####################################################*/
 #include <interface/i2c.h>
+#include "driver/stm32f7xx_hal_gpio.h"
 #include "api/init.h"
+#include "driver/stm32f7xx_hal.h"
+#include "driver/stm32f7xx_hal_i2c.h"
+#include "driver/stm32f7xx_hal_i2c_ex.h"
+#include "driver/stm32f7xx_hal_rcc.h"
+#include <include/global.h>
+
+extern CfgI2c i2cCfg[];
 
 #define TIMING_CLEAR_MASK   ((uint32_t)0xF0FFFFFFU)  /*!<  I2C TIMING clear register Mask */
 #define I2C_TIMEOUT_ADDR    ((uint32_t)10000U)       /*!< 10 s  */
@@ -32,6 +40,8 @@
 #if (USE_DRIVER_SEMAPHORE == true)
 volatile bool twi_semaphore[TWI_INTERFACE_COUNT];
 #endif
+
+extern GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[];
 
 I2C_TypeDef *sEE_I2C[4] =
 {
@@ -83,45 +93,6 @@ void sEE_EnterCriticalSection_UserCallback(void)
 void sEE_ExitCriticalSection_UserCallback(void)
 {
 	__enable_irq();
-}
-/**
- * @brief  Enables or disables the specified I2C software reset.
- * @note   When software reset is enabled, the I2C IOs are released (this can
- *         be useful to recover from bus errors).
- * @param  I2Cx: where x can be 1, 2 or 3 to select the I2C peripheral.
- * @param  NewState: new state of the I2C software reset.
- *          This parameter can be: ENABLE or DISABLE.
- * @retval None
- */
-void GI::Dev::I2c::SoftwareReset(I2C_HandleTypeDef *hi2c)
-{
-	I2C_TypeDef* I2Cx = hi2c->Instance;
-	/* Check the parameters */
-	assert_param(IS_I2C_ALL_PERIPH(I2Cx));assert_param(IS_FUNCTIONAL_STATE(NewState));
-	I2C_TypeDef _I2Cx;
-	_I2Cx.TIMINGR = I2Cx->TIMINGR;
-	_I2Cx.OAR2 = I2Cx->OAR2;
-	_I2Cx.OAR1 = I2Cx->OAR1;
-	_I2Cx.ICR = I2Cx->ICR;
-	_I2Cx.CR2 = I2Cx->CR2;
-	_I2Cx.CR1 = I2Cx->CR1;
-
-	/* Enable the selected I2C peripheral */
-	__HAL_I2C_DISABLE(hi2c);
-	/* Enable the selected I2C peripheral */
-	__HAL_I2C_ENABLE(hi2c);
-
-	I2Cx->CR1 = _I2Cx.CR1;
-	I2Cx->CR2 = _I2Cx.CR2;
-	I2Cx->ICR = _I2Cx.ICR;
-	I2Cx->OAR1 = _I2Cx.OAR1;
-	I2Cx->OAR2 = _I2Cx.OAR2;
-	I2Cx->TIMINGR = _I2Cx.TIMINGR;
-
-}
-void TWI_SendStop(I2C_HandleTypeDef *hi2c)
-{
-
 }
 //#####################################################
 //#include "int/int_twi.h"
@@ -568,7 +539,29 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 	if (I2C_WaitOnFlagUntilTimeout(hi2c, I2C_FLAG_BUSY, SET, I2C_TIMEOUT_BUSY,
 			tickstart) != HAL_OK)
 	{
-		SoftwareReset(hi2c);
+		I2C_TypeDef* I2Cx = hi2c->Instance;
+		/* Check the parameters */
+		assert_param(IS_I2C_ALL_PERIPH(I2Cx));assert_param(IS_FUNCTIONAL_STATE(NewState));
+		I2C_TypeDef _I2Cx;
+		_I2Cx.TIMINGR = I2Cx->TIMINGR;
+		_I2Cx.OAR2 = I2Cx->OAR2;
+		_I2Cx.OAR1 = I2Cx->OAR1;
+		_I2Cx.ICR = I2Cx->ICR;
+		_I2Cx.CR2 = I2Cx->CR2;
+		_I2Cx.CR1 = I2Cx->CR1;
+
+		/* Enable the selected I2C peripheral */
+		__HAL_I2C_DISABLE(hi2c);
+		/* Enable the selected I2C peripheral */
+		__HAL_I2C_ENABLE(hi2c);
+
+		I2Cx->CR1 = _I2Cx.CR1;
+		I2Cx->CR2 = _I2Cx.CR2;
+		I2Cx->ICR = _I2Cx.ICR;
+		I2Cx->OAR1 = _I2Cx.OAR1;
+		I2Cx->OAR2 = _I2Cx.OAR2;
+		I2Cx->TIMINGR = _I2Cx.TIMINGR;
+
 		return HAL_TIMEOUT;
 	}
 

@@ -82,6 +82,7 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="fr.ac6.managedbuild.config.gnu.cross.exe.debug.1982455480.811148564" name="usb_dev_com_interface.h" rcbsApplicability="disable" resourcePath="stm32f7/interface/usbd_cdc.h" toolsToInvoke=""/>
 					<fileInfo id="fr.ac6.managedbuild.config.gnu.cross.exe.debug.1982455480.749053101" name="lan_interface.h" rcbsApplicability="disable" resourcePath="stm32f7/interface/eth.h" toolsToInvoke=""/>
 					<fileInfo id="fr.ac6.managedbuild.config.gnu.cross.exe.debug.1982455480.1928527857" name="gpio_interface.hpp" rcbsApplicability="disable" resourcePath="stm32f7/interface/gpio.h" toolsToInvoke="">
 						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.1854158023" name="Resource Custom Build Step">
@@ -109,7 +110,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="stm32f7/interface/LwIp/src/apps|stm32f7/interface/LwIp/src/apps/httpd|stm32f7/interface/LwIp/src/apps/sntp|stm32f7/interface/LwIp/src/apps/snmp|stm32f7/interface/LwIp/src/apps/netbiosns|stm32f7/interface/LwIp/src/apps/lwiperf|stm32f7/interface/LwIp/src/core/ipv6|stm32f7/driver/stm32f7xx_hal_timebase_tim_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_wakeup_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_alarm_template.c|stm32f7/interface/adc_interface.h|stm32f7/interface/adc_interface.c|stm32f7/interface/usb_host_mouse_interface.h|stm32f7/interface/usb_host_mouse_interface.c|stm32f7/interface/usb_dev_msc_interface.h|stm32f7/interface/usb_dev_msc_interface.c|stm32f7/interface/usb_dev_com_interface.h|stm32f7/interface/usb_dev_com_interface.c|stm32f7/interface/i2s_interface.h|stm32f7/interface/i2s_interface.c|stm32f7/sys/startup_stm32f779xx.s|stm32f7/sys/startup_stm32f777xx.s|stm32f7/sys/startup_stm32f767xx.s|stm32f7/sys/startup_stm32f765xx.s|stm32f7/sys/startup_stm32f756xx.s|stm32f7/sys/startup_stm32f746xx.s|stm32f7/sys/startup_stm32f745xx.s" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="stm32f7/interface/LwIp/src/apps|stm32f7/interface/LwIp/src/apps/httpd|stm32f7/interface/LwIp/src/apps/sntp|stm32f7/interface/LwIp/src/apps/snmp|stm32f7/interface/LwIp/src/apps/netbiosns|stm32f7/interface/LwIp/src/apps/lwiperf|stm32f7/interface/LwIp/src/core/ipv6|stm32f7/driver/stm32f7xx_hal_timebase_tim_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_wakeup_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_alarm_template.c|stm32f7/interface/adc_interface.h|stm32f7/interface/adc_interface.c|stm32f7/interface/usb_host_mouse_interface.h|stm32f7/interface/usb_host_mouse_interface.c|stm32f7/interface/usb_dev_msc_interface.h|stm32f7/interface/usb_dev_msc_interface.c|stm32f7/interface/i2s_interface.h|stm32f7/interface/i2s_interface.c|stm32f7/sys/startup_stm32f779xx.s|stm32f7/sys/startup_stm32f777xx.s|stm32f7/sys/startup_stm32f767xx.s|stm32f7/sys/startup_stm32f765xx.s|stm32f7/sys/startup_stm32f756xx.s|stm32f7/sys/startup_stm32f746xx.s|stm32f7/sys/startup_stm32f745xx.s" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
