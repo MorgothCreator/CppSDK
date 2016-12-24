@@ -69,7 +69,7 @@ typedef struct
 	char name[9];
 	unsigned int pin;
 	bool reverse;
-	enum gpioMode{
+	enum gpioMode_e{
 #ifdef HAVE_GPIO_OUT_PUSH_PULL
 	GPIO_OUT_PUSH_PULL =0,
 #endif
@@ -94,7 +94,7 @@ typedef struct
 #ifdef HAVE_GPIO_ALTERNATIVE_PUSH_PULL
 	GPIO_ALTERNATIVE_PUSH_PULL,
 #endif
-	}mode;
+	}gpioMode;
 	bool multiPin;
 } CfgGpio;
 /*#####################################################*/
@@ -105,12 +105,13 @@ namespace Dev
 class Gpio
 {
 public:
-	Gpio(unsigned int pin, CfgGpio::gpioMode mode, bool multiPin);
+	Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin);
 	Gpio(CfgGpio *gpioPin);
 	~Gpio();
-	bool setOut(unsigned int value);
+	SysErr setOut(unsigned int value);
 	signed int in();
-	bool setMode(unsigned char mode);
+	SysErr getIn(unsigned long *value);
+	SysErr setMode(CfgGpio::gpioMode_e mode);
 	bool getState();
 	void idle();
 	SysErr err;

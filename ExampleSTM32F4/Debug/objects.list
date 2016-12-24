@@ -1,5 +1,6 @@
 "lib/api/dev_request.o"
 "lib/api/init.o"
+"lib/api/io_handle.o"
 "lib/api/lcd_def.o"
 "lib/api/std.o"
 "lib/api/timer_api.o"

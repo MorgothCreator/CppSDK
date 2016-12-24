@@ -241,9 +241,125 @@ GI::Dev::Uart::~Uart()
 	return;
 }
 /*#####################################################*/
-void GI::Dev::Uart::setSpeed(unsigned long BaudRate)
+SysErr GI::Dev::Uart::setSpeed(unsigned long baudRate)
 {
-	//uart_set_baud_rate(BaseAddr, BaudRate);
+	if(!this || !udata)
+		return SYS_ERR_INVALID_HANDLER;
+	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
+	UartHandle->Init.BaudRate = baudRate;
+	UART_SetConfig(UartHandle);
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
+{
+	if(!this || !udata)
+		return SYS_ERR_INVALID_HANDLER;
+	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
+	UartHandle->Init.WordLength = UART_WORDLENGTH_8B;
+	switch((unsigned char)cfg.wordLen)
+	{
+	case CfgUart::WORD_LEN_7:
+		UartHandle->Init.WordLength = UART_WORDLENGTH_7B;
+		break;
+	case CfgUart::WORD_LEN_9:
+		UartHandle->Init.WordLength = UART_WORDLENGTH_9B;
+		break;
+	}
+	UART_SetConfig(UartHandle);
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
+{
+	if(!this || !udata)
+		return SYS_ERR_INVALID_HANDLER;
+	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
+	UartHandle->Init.StopBits = UART_STOPBITS_1;
+	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+		UartHandle->Init.StopBits = UART_STOPBITS_2;
+	UART_SetConfig(UartHandle);
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Uart::setParBits(CfgUart::parity_e pBits)
+{
+	if(!this || !udata)
+		return SYS_ERR_INVALID_HANDLER;
+	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
+	UartHandle->Init.Parity = UART_PARITY_NONE;
+	switch((unsigned char)cfg.parity)
+	{
+	case CfgUart::PAR_ODD:
+		UartHandle->Init.Parity = UART_PARITY_ODD;
+		break;
+	case CfgUart::PAR_EVEN:
+		UartHandle->Init.Parity = UART_PARITY_EVEN;
+		break;
+	}
+	UART_SetConfig(UartHandle);
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Uart::getSpeed(unsigned long *baudRate)
+{
+	if(!this || !udata)
+		return SYS_ERR_INVALID_HANDLER;
+	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
+	*baudRate = UartHandle->Init.BaudRate;
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Uart::getWordLen(CfgUart::wordLen_e *wLen)
+{
+	if(!this || !udata)
+		return SYS_ERR_INVALID_HANDLER;
+	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
+	switch((int)UartHandle->Init.WordLength)
+	{
+	case UART_WORDLENGTH_7B:
+		*wLen = CfgUart::WORD_LEN_7;
+		break;
+	case UART_WORDLENGTH_8B:
+		*wLen = CfgUart::WORD_LEN_8;
+		break;
+	case UART_WORDLENGTH_9B:
+		*wLen = CfgUart::WORD_LEN_9;
+		break;
+	}
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Uart::getStopBits(CfgUart::stopBits_e *sBits)
+{
+	if(!this || !udata)
+		return SYS_ERR_INVALID_HANDLER;
+	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
+	if(UartHandle->Init.StopBits == UART_STOPBITS_1)
+		*sBits = CfgUart::STOP_BITS_ONE;
+	else
+		*sBits = CfgUart::STOP_BITS_TWO;
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Uart::getParBits(CfgUart::parity_e *pBits)
+{
+	if(!this || !udata)
+		return SYS_ERR_INVALID_HANDLER;
+	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
+	switch((int)UartHandle->Init.Parity)
+	{
+	case UART_PARITY_NONE:
+		*pBits = CfgUart::PAR_NONE;
+		break;
+	case UART_PARITY_ODD:
+		*pBits = CfgUart::PAR_ODD;
+		break;
+	case UART_PARITY_EVEN:
+		*pBits = CfgUart::PAR_EVEN;
+		break;
+	}
+	return SYS_ERR_OK;
 }
 /*#####################################################*/
 void GI::Dev::Uart::putChar(unsigned char byteTx)
@@ -1229,3 +1345,12 @@ int GI::Dev::Uart::print(GI::String *string)
 	return count;
 }*/
 
+int GI::Dev::Uart::write(char *data, unsigned int len)
+{
+	unsigned int len_cnt = len;
+	while(!len_cnt--)
+	{
+		putChar(*data++);
+	}
+	return len - len_cnt;
+}

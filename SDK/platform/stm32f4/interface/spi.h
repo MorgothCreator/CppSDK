@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include <api/gpio.h>
 #include <include/global.h>
-#include <include/spidev.h>
 #include "board/board.h"
 
 #define SPI_INTERFACE_COUNT					6

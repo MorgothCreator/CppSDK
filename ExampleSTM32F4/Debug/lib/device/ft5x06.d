@@ -13,7 +13,6 @@ lib/device/ft5x06.o: C:/GitHub/CppSDK/SDK/lib/device/ft5x06.cpp \
  C:/GitHub/CppSDK/SDK/lib/api/dev_request.h \
  C:/GitHub/CppSDK/SDK/lib/api/spi.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/spi.h \
- C:/GitHub/CppSDK/SDK/lib/include/spidev.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/board/STM32F469I-DISCO/defs.h \
  c:\github\cppsdk\sdk\platform\stm32f4\board\stm32f469i-disco\ffconf.h \
@@ -76,8 +75,6 @@ C:/GitHub/CppSDK/SDK/lib/api/dev_request.h:
 C:/GitHub/CppSDK/SDK/lib/api/spi.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/spi.h:
-
-C:/GitHub/CppSDK/SDK/lib/include/spidev.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h:
 

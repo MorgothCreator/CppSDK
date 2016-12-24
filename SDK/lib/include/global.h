@@ -17,11 +17,15 @@ typedef enum {
 	SYS_ERR_INVALID_COMMAND			=  -5,
 	SYS_ERR_INVALID_PARAM			=  -6,
 	SYS_ERR_INIT					=  -7,
-	SYS_ERR_FUNC_NOT_IMPLEMENTED	=  -8,
+	SYS_ERR_NOT_IMPLEMENTED			=  -8,
 	SYS_ERR_NOT_INITIALIZED			=  -9,
 	SYS_ERR_NO_PATH					= -10,
 	SYS_ERR_INVALID_PATH			= -11,
 	SYS_ERR_NOT_ACTIVE				= -12,
+	SYS_ERR_NAK						= -13,
+	SYS_ERR_BUSY					= -14,
+	SYS_ERR_WRITE					= -15,
+	SYS_ERR_READ					= -16,
 }SysErr;
 
 typedef struct charDev_s

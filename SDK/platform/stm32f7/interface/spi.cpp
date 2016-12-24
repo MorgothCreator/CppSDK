@@ -16,7 +16,6 @@
 #include "driver/stm32f7xx_hal_gpio.h"
 #include "driver/stm32f7xx_hal_gpio_ex.h"
 #include <interface/gpio.h>
-#include <include/spidev.h>
 #include <api/init.h>
 #include "board/board.h"
 
@@ -329,7 +328,7 @@ int GI::Dev::Spi::assert()
 	while (spi_semaphore[unitNr])
 		;
 #endif
-	_mcspi_set_baud(speed);
+	setSpeed(speed);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = true;
 #endif
@@ -363,7 +362,7 @@ int GI::Dev::Spi::deassert()
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
-int GI::Dev::Spi::writeRead(unsigned char *buffWrite,
+SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite,
 		unsigned char *buffRead, unsigned int len)
 {
 	if (!this)
@@ -373,12 +372,16 @@ int GI::Dev::Spi::writeRead(unsigned char *buffWrite,
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	if (!spi_semaphore[unitNr])
-		return false;
+		return SYS_ERR_BUSY;
 #endif
-	bool status = SYS_ERR_OK;
+	if (!DisableCsHandle)
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
+	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	if (HAL_SPI_TransmitReceive(hspi, buffWrite, buffRead, len, 10) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
+	if (!DisableCsHandle)
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
@@ -394,15 +397,21 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	if (!spi_semaphore[unitNr])
-		return false;
+		return SYS_ERR_BUSY;
 #endif
-	bool status = SYS_ERR_OK;
+	if (!DisableCsHandle)
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
+	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	if (HAL_SPI_Receive(hspi, buff, len, 10) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
+	if (!DisableCsHandle)
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
+	if(status == SYS_ERR_OK)
+		return len;
 	return status;
 }
 /*#####################################################*/
@@ -415,24 +424,39 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	if (!spi_semaphore[unitNr])
-		return false;
+		return SYS_ERR_BUSY;
 #endif
-	bool status = SYS_ERR_OK;
+	if (!DisableCsHandle)
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
+	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	if (HAL_SPI_Transmit(hspi, buff, len, 10) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
 
 	if (!DisableCsHandle)
-		HAL_GPIO_WritePin(
-				(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
-				(unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
+	if(status == SYS_ERR_OK)
+		return len;
 	return status;
 }
 /*#####################################################*/
-int GI::Dev::Spi::_mcspi_set_baud(unsigned long baud)
+SysErr GI::Dev::Spi::writeReadByte(unsigned char *byte)
+{
+	if (!this)
+	{
+		err = SYS_ERR_INVALID_HANDLER;
+		return SYS_ERR_INVALID_HANDLER;
+	}
+	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
+	HAL_SPI_TransmitReceive(hspi, byte, byte, 1, 10);
+	err = SYS_ERR_OK;
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Spi::setSpeed(unsigned long baud)
 {
 	if (!this)
 	{
@@ -450,19 +474,6 @@ int GI::Dev::Spi::_mcspi_set_baud(unsigned long baud)
 		hspi->Instance->CR1 &= ~SPI_BAUDRATEPRESCALER_256;
 		hspi->Instance->CR1 |= SPI_BAUDRATEPRESCALER_256 & (baud << 3);
 	}
-	err = SYS_ERR_OK;
-	return SYS_ERR_OK;
-}
-/*#####################################################*/
-int GI::Dev::Spi::writeReadByte(unsigned char *byte)
-{
-	if (!this)
-	{
-		err = SYS_ERR_INVALID_HANDLER;
-		return SYS_ERR_INVALID_HANDLER;
-	}
-	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
-	HAL_SPI_TransmitReceive(hspi, byte, byte, 1, 10);
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }

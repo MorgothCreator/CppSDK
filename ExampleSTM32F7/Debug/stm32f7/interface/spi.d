@@ -117,7 +117,6 @@ stm32f7/interface/spi.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_spi.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_gpio.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_gpio_ex.h \
- C:/GitHub/CppSDK/SDK/lib/include/spidev.h \
  C:/GitHub/CppSDK/SDK/lib/api/init.h \
  C:/GitHub/CppSDK/SDK/lib/api/cursor_ctl_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
@@ -409,8 +408,6 @@ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_spi.h:
 C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_gpio.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_gpio_ex.h:
-
-C:/GitHub/CppSDK/SDK/lib/include/spidev.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/init.h:
 

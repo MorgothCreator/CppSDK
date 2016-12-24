@@ -127,11 +127,11 @@ void _gpio_init(/*gpio_port_enum GpioModuleNr*/)
 #endif
 /*#####################################################*/
 /*#####################################################*/
-GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode mode, bool multiPin)
+GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin)
 {
 	memset(this, 0, sizeof(*this));
 	cfg.pin = pin;
-	cfg.mode = mode;
+	cfg.gpioMode = mode;
 	cfg.multiPin = multiPin;
 	setMode(mode);
 }
@@ -140,7 +140,7 @@ GI::Dev::Gpio::Gpio(CfgGpio *gpioPin)
 {
 	memset(this, 0, sizeof(*this));
 	memcpy(&this->cfg, gpioPin, sizeof(CfgGpio));
-	setMode(cfg.mode);
+	setMode(cfg.gpioMode);
 }
 
 /*#####################################################*/
@@ -151,10 +151,10 @@ GI::Dev::Gpio::~Gpio()
 }
 /*#####################################################*/
 /*#####################################################*/
-bool GI::Dev::Gpio::setOut(unsigned int value)
+SysErr GI::Dev::Gpio::setOut(unsigned int value)
 {
 	if (!this)
-		return false;
+		return SYS_ERR_INVALID_HANDLER;
 	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[cfg.pin >> 5];
 	if (cfg.multiPin)
 	{
@@ -171,7 +171,7 @@ bool GI::Dev::Gpio::setOut(unsigned int value)
 		else
 			BaseAddr->BSRR |= 1 << ((cfg.pin % 32) + 16);
 	}
-	return true;
+	return SYS_ERR_OK;
 }
 /*#####################################################*/
 signed int GI::Dev::Gpio::in()
@@ -192,10 +192,18 @@ signed int GI::Dev::Gpio::in()
 	}
 }
 /*#####################################################*/
-bool GI::Dev::Gpio::setMode(unsigned char mode)
+SysErr GI::Dev::Gpio::getIn(unsigned long *value)
 {
 	if (!this)
-		return false;
+		return SYS_ERR_INVALID_HANDLER;
+	*value = (unsigned int)in();
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
+{
+	if (!this)
+		return SYS_ERR_INVALID_HANDLER;
 	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[cfg.pin >> 5];
 
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -230,12 +238,12 @@ bool GI::Dev::Gpio::setMode(unsigned char mode)
 		//GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 		break;
 	default:
-		return false;
+		return SYS_ERR_INVALID_COMMAND;
 
 	}
 	GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 	HAL_GPIO_Init((GPIO_TypeDef *) BaseAddr, &GPIO_InitStructure);
-	return true;
+	return SYS_ERR_OK;
 }
 /*#####################################################*/
 bool GI::Dev::Gpio::getState()

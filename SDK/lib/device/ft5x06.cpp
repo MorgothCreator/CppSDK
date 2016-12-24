@@ -50,21 +50,21 @@ GI::Screen::Cursor::Cursor(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPi
     {
 		unsigned char reg = 0xF9;
 		unsigned char result[38];
-		if(twiStruct->writeRead(FT5X0X_TWI_ADDR2, &reg, 1, result, 38))
+		if(twiStruct->writeRead(FT5X0X_TWI_ADDR2, &reg, 1, result, 38) == SYS_ERR_OK)
 		{
 			twi_addr = FT5X0X_TWI_ADDR2;
 			touch_max_x = 1024;
 			touch_max_y = 600;
 			return;
 		}
-		if(twiStruct->writeRead(FT5X0X_TWI_ADDR1, &reg, 1, result, 38))
+		if(twiStruct->writeRead(FT5X0X_TWI_ADDR1, &reg, 1, result, 38) == SYS_ERR_OK)
 		{
 			twi_addr = FT5X0X_TWI_ADDR1;
 			touch_max_x = 480;
 			touch_max_y = 800;
 			return;
 		}
-		if(twiStruct->writeRead(0x54, &reg, 1, result, 38))
+		if(twiStruct->writeRead(0x54, &reg, 1, result, 38) == SYS_ERR_OK)
 		{
 			twi_addr = 0x54;
 			touch_max_x = 480;
@@ -86,7 +86,7 @@ bool GI::Screen::Cursor::idle()
 		return false;
 	unsigned char reg = 0xF9;
 	unsigned char result[38];
-	if(!twiStruct->writeRead(twi_addr, &reg, 1, result, 38))
+	if(twiStruct->writeRead(twi_addr, &reg, 1, result, 38) != SYS_ERR_OK)
 		return false;
 	//if(Response[0] != 0xAA || Response[1] != 0xAA) return 0;
 	//TouchScreen_Data_t* TouchResponse = &TouchResponse;

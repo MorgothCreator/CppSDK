@@ -53,7 +53,7 @@ class I2c
 public:
 	I2c(const char *path);
 	~I2c();
-	int writeRead(unsigned char addr, unsigned char *buffSend,
+	SysErr writeRead(unsigned char addr, unsigned char *buffSend,
 			unsigned int lenSend, unsigned char *buffReceive,
 			unsigned int lenReceive);
 	int readBytes(unsigned char addr, unsigned char *buff, unsigned int len);

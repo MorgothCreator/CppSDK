@@ -33,7 +33,7 @@ typedef struct
 	unsigned int moSi;
 	unsigned int miSo;
 	unsigned int cs;
-	unsigned int speed;
+	unsigned long speed;
 	enum spiMode{
 		spiMode0,
 		spiMode1,
@@ -55,12 +55,11 @@ public:
 	int ioctl(charDev *fp, int command, void *param);
 	int assert();
 	int deassert();
-	int writeRead(unsigned char *buffWrite, unsigned char *buffRead,
-			unsigned int len);
+	SysErr writeRead(unsigned char *buffWrite, unsigned char *buffRead, unsigned int len);
 	int readBytes(unsigned char *buff, unsigned int len);
 	int writeBytes(unsigned char *buff, unsigned int len);
-	int _mcspi_set_baud(unsigned long baud);
-	int writeReadByte(unsigned char *byte);
+	SysErr writeReadByte(unsigned char *byte);
+	SysErr setSpeed(unsigned long baud);
 	SysErr err;
 	CfgSpi cfg;
 private:

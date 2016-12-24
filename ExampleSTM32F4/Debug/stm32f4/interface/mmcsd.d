@@ -100,7 +100,6 @@ stm32f4/interface/mmcsd.o: \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
  C:/GitHub/CppSDK/SDK/lib/api/spi.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/spi.h \
- C:/GitHub/CppSDK/SDK/lib/include/spidev.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/mmcsd_def.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/usbh_msc.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f4xx_hal_hcd.h \
@@ -325,8 +324,6 @@ C:/GitHub/CppSDK/SDK/lib/api/gpio.h:
 C:/GitHub/CppSDK/SDK/lib/api/spi.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/spi.h:
-
-C:/GitHub/CppSDK/SDK/lib/include/spidev.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/mmcsd_def.h:
 

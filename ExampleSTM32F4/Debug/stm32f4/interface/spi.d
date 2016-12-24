@@ -62,7 +62,6 @@ stm32f4/interface/spi.o: \
  C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h \
  C:/GitHub/CppSDK/SDK/lib/include/global.h \
- C:/GitHub/CppSDK/SDK/lib/include/spidev.h \
  C:/GitHub/CppSDK/SDK/lib/api/init.h C:/GitHub/CppSDK/SDK/lib/api/std.h \
  C:/GitHub/CppSDK/SDK/lib/lib/string.h \
  C:/GitHub/CppSDK/SDK/lib/api/uart.h \
@@ -244,8 +243,6 @@ C:/GitHub/CppSDK/SDK/lib/api/gpio.h:
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h:
 
 C:/GitHub/CppSDK/SDK/lib/include/global.h:
-
-C:/GitHub/CppSDK/SDK/lib/include/spidev.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/init.h:
 

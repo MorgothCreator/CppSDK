@@ -2042,7 +2042,7 @@ void GI::Screen::String::fmtstr (char *buffer, size_t *currlen, size_t maxlen,
 
   if (value == 0)
   {
-    value = "<NULL>";
+    value = (char *)"<NULL>";
   }
 
   for (strln = 0; value[strln]; ++strln); /* strlen */

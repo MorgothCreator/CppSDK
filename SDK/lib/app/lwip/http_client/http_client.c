@@ -338,8 +338,7 @@ void tcp_setup(char *ip_addr, char *mesage)
 {
     ip_addr_t ip;
     //IP4_ADDR(&ip, 110,777,888,999);    //IP of my PHP server
-    err_t err;
-    err = dns_gethostbyname(ip_addr, &ip, tcp_dns_found, NULL);
+    err_t err = dns_gethostbyname(ip_addr, &ip, tcp_dns_found, NULL);
     //if(err)
     	//uart.printf(DebugCom,  "tcp_dns_found: Error getting IP for this DNS\n");
     //else

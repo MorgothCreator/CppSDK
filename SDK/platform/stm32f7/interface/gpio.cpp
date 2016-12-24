@@ -52,83 +52,12 @@ GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[] =
 		,GPIOL
 #endif
 };
-
-#if 0
-void _gpio_init(/*gpio_port_enum GpioModuleNr*/)
-{
-	switch (GpioModuleNr)
-	{
-#ifdef __HAL_RCC_GPIOA_CLK_ENABLE
-		case 0:
-		__HAL_RCC_GPIOA_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOB_CLK_ENABLE
-		case 1:
-		__HAL_RCC_GPIOB_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOC_CLK_ENABLE
-		case 2:
-		__HAL_RCC_GPIOC_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOD_CLK_ENABLE
-		case 3:
-		__HAL_RCC_GPIOD_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOE_CLK_ENABLE
-		case 4:
-		__HAL_RCC_GPIOE_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOF_CLK_ENABLE
-		case 5:
-		__HAL_RCC_GPIOF_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOG_CLK_ENABLE
-		case 6:
-		__HAL_RCC_GPIOG_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOH_CLK_ENABLE
-		case 7:
-		__HAL_RCC_GPIOH_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOI_CLK_ENABLE
-		case 8:
-		__HAL_RCC_GPIOI_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOJ_CLK_ENABLE
-		case 9:
-		__HAL_RCC_GPIOJ_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOK_CLK_ENABLE
-		case 10:
-		__HAL_RCC_GPIOK_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOL_CLK_ENABLE
-		case 11:
-		__HAL_RCC_GPIOK_CLL_ENABLE();
-		break;
-#endif
-		default:
-		return;
-	}
-}
-#endif
 /*#####################################################*/
-GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode mode, bool multiPin)
+GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin)
 {
 	memset(this, 0, sizeof(*this));
 	cfg.pin = pin;
-	cfg.mode = mode;
+	cfg.gpioMode = mode;
 	cfg.multiPin = multiPin;
 	setMode(mode);
 }
@@ -137,7 +66,7 @@ GI::Dev::Gpio::Gpio(CfgGpio *gpioPin)
 {
 	memset(this, 0, sizeof(*this));
 	memcpy(&this->cfg, gpioPin, sizeof(CfgGpio));
-	setMode(cfg.mode);
+	setMode(cfg.gpioMode);
 }
 
 /*#####################################################*/
@@ -148,10 +77,10 @@ GI::Dev::Gpio::~Gpio()
 }
 /*#####################################################*/
 /*#####################################################*/
-bool GI::Dev::Gpio::setOut(unsigned int value)
+SysErr GI::Dev::Gpio::setOut(unsigned int value)
 {
 	if (!this)
-		return false;
+		return SYS_ERR_INVALID_HANDLER;
 	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[cfg.pin >> 5];
 	if (cfg.multiPin)
 	{
@@ -168,7 +97,7 @@ bool GI::Dev::Gpio::setOut(unsigned int value)
 		else
 			BaseAddr->BSRR |= 1 << ((cfg.pin % 32) + 16);
 	}
-	return true;
+	return SYS_ERR_OK;
 }
 /*#####################################################*/
 signed int GI::Dev::Gpio::in()
@@ -189,10 +118,18 @@ signed int GI::Dev::Gpio::in()
 	}
 }
 /*#####################################################*/
-bool GI::Dev::Gpio::setMode(unsigned char mode)
+SysErr GI::Dev::Gpio::getIn(unsigned long *value)
 {
 	if (!this)
-		return false;
+		return SYS_ERR_INVALID_HANDLER;
+	*value = (unsigned int)in();
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
+{
+	if (!this)
+		return SYS_ERR_INVALID_HANDLER;
 	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[cfg.pin >> 5];
 
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -220,19 +157,17 @@ bool GI::Dev::Gpio::setMode(unsigned char mode)
 		break;
 	case CfgGpio::GPIO_OUT_OPEN_DRAIN:
 		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_OD;
-		//GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
 		break;
 	case CfgGpio::GPIO_OUT_PUSH_PULL:
 		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-		//GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 		break;
 	default:
-		return false;
+		return SYS_ERR_INVALID_COMMAND;
 
 	}
 	GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 	HAL_GPIO_Init((GPIO_TypeDef *) BaseAddr, &GPIO_InitStructure);
-	return true;
+	return SYS_ERR_OK;
 }
 /*#####################################################*/
 bool GI::Dev::Gpio::getState()

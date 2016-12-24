@@ -37,7 +37,7 @@ typedef struct
 	unsigned int tx;
 	unsigned int rx;
 	unsigned long speed;
-	enum wordLen{
+	enum wordLen_e{
 #if (UART_HAVE_WORD_LEN_5BITS == 1)
 		WORD_LEN_7,
 #endif
@@ -52,19 +52,19 @@ typedef struct
 		WORD_LEN_9,
 #endif
 	}wordLen;
-	enum stopBits{
+	enum stopBits_e{
 		STOP_BITS_ONE,
 #if (UART_HAVE_STOP_BITS_ONE_AND_HALF == 1)
 		STOP_BITS_ONE_AND_HALF,
 #endif
 		STOP_BITS_TWO,
 	}stopBits;
-	enum parity{
+	enum parity_e{
 		PAR_NONE,
 		PAR_ODD,
 		PAR_EVEN
 	}parity;
-	enum mode
+	enum uartMode_e
 	{
 		MODE_ASYNC = 0,
 #if (UART_HAVE_MODE_SYNCHRONOUS == 1)
@@ -76,7 +76,7 @@ typedef struct
 #if (UART_HAVE_MODE_SPI == 1)
 		MODE_SPI,
 #endif
-	}mode;
+	}uartMode;
 } CfgUart;
 /*#####################################################*/
 namespace GI
@@ -88,7 +88,6 @@ class Uart
 public:
 	Uart(const char *path);
 	~Uart();
-	void setSpeed(unsigned long BaudRate);
 	void putChar(unsigned char byteTx);
 	unsigned char getChar();
 	bool putCharNb(unsigned char byteTx);
@@ -99,7 +98,16 @@ public:
 	int print(const char *pcString);
 	int print(GI::String *string);
 	//int print(GI::Screen::String *string);
+	int write(char *data, unsigned int len);
 
+	SysErr setSpeed(unsigned long baudRate);
+	SysErr setWordLen(CfgUart::wordLen_e wLen);
+	SysErr setStopBits(CfgUart::stopBits_e sBits);
+	SysErr setParBits(CfgUart::parity_e pBits);
+	SysErr getSpeed(unsigned long *baudRate);
+	SysErr getWordLen(CfgUart::wordLen_e *wLen);
+	SysErr getStopBits(CfgUart::stopBits_e *sBits);
+	SysErr getParBits(CfgUart::parity_e *pBits);
 	SysErr err;
 	CfgUart cfg;
 private:

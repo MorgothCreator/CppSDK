@@ -8,7 +8,6 @@ stm32f4/board/STM32F469I-DISCO/defs.o: \
  C:/GitHub/CppSDK/SDK/lib/include/global.h \
  C:/GitHub/CppSDK/SDK/lib/api/spi.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/spi.h \
- C:/GitHub/CppSDK/SDK/lib/include/spidev.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/board/STM32F469I-DISCO/defs.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h C:/GitHub/CppSDK/SDK/lib/api/uart.h \
@@ -57,8 +56,6 @@ C:/GitHub/CppSDK/SDK/lib/include/global.h:
 C:/GitHub/CppSDK/SDK/lib/api/spi.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/spi.h:
-
-C:/GitHub/CppSDK/SDK/lib/include/spidev.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h:
 

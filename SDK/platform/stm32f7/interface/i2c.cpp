@@ -774,15 +774,14 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 	return HAL_OK;
 }
 /*#####################################################*/
-int GI::Dev::I2c::writeRead(unsigned char addr, unsigned char *buffSend,
+SysErr GI::Dev::I2c::writeRead(unsigned char addr, unsigned char *buffSend,
 		unsigned int lenSend, unsigned char *buffReceive,
 		unsigned int lenReceive)
 {
 	if (!this)
-		return false;
+		return SYS_ERR_INVALID_HANDLER;
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (twi_semaphore[unitNr])
-		;
+	while (twi_semaphore[unitNr]);
 	twi_semaphore[unitNr] = true;
 #endif
 	bool result = WR(addr << 1, buffSend, lenSend, buffReceive, lenReceive);
@@ -791,16 +790,15 @@ int GI::Dev::I2c::writeRead(unsigned char addr, unsigned char *buffSend,
 	twi_semaphore[unitNr] = false;
 #endif
 	if (result == HAL_OK)
-		return true;
+		return SYS_ERR_OK;
 	else
-		return false;
+		return SYS_ERR_NAK;
 }
 /*#####################################################*/
-int GI::Dev::I2c::readBytes(unsigned char addr, unsigned char *buff,
-		unsigned int len)
+int GI::Dev::I2c::readBytes(unsigned char addr, unsigned char *buff, unsigned int len)
 {
 	if (!this)
-		return false;
+		return SYS_ERR_INVALID_HANDLER;
 #if (USE_DRIVER_SEMAPHORE == true)
 	while (twi_semaphore[unitNr])
 		;
@@ -811,17 +809,16 @@ int GI::Dev::I2c::readBytes(unsigned char addr, unsigned char *buff,
 	twi_semaphore[unitNr] = false;
 #endif
 	if (result == HAL_OK)
-		return true;
+		return len;
 	else
-		return false;
+		return SYS_ERR_NAK;
 }
 
 /*#####################################################*/
-int GI::Dev::I2c::writeBytes(unsigned char addr, unsigned char *buff,
-		unsigned int len)
+int GI::Dev::I2c::writeBytes(unsigned char addr, unsigned char *buff, unsigned int len)
 {
 	if (!this)
-		return false;
+		return SYS_ERR_INVALID_HANDLER;
 #if (USE_DRIVER_SEMAPHORE == true)
 	while (twi_semaphore[unitNr])
 		;
@@ -832,9 +829,9 @@ int GI::Dev::I2c::writeBytes(unsigned char addr, unsigned char *buff,
 	twi_semaphore[unitNr] = false;
 #endif
 	if (result == HAL_OK)
-		return true;
+		return len;
 	else
-		return false;
+		return SYS_ERR_NAK;
 }
 
 /*#####################################################*/

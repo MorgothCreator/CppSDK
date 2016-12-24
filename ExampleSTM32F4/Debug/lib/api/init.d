@@ -41,7 +41,6 @@ lib/api/init.o: C:/GitHub/CppSDK/SDK/lib/api/init.cpp \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/core_init.h \
  C:/GitHub/CppSDK/SDK/lib/api/spi.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/spi.h \
- C:/GitHub/CppSDK/SDK/lib/include/spidev.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/mmcsd.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f4xx_hal_sd.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f4xx_ll_sdmmc.h \
@@ -171,8 +170,6 @@ C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/core_init.h:
 C:/GitHub/CppSDK/SDK/lib/api/spi.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/spi.h:
-
-C:/GitHub/CppSDK/SDK/lib/include/spidev.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/mmcsd.h:
 

@@ -67,7 +67,7 @@ unsigned long fs_read(fs_file *file, char *buffer, int count)
 		return FS_READ_EOF;
 	}
 	read = f_size(file) - f_tell(file);
-	if (read > count)
+	if (read > (unsigned int)count)
 	{
 		read = count;
 	}

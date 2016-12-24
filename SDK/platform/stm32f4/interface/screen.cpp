@@ -817,7 +817,7 @@ GI::Dev::Screen::~Screen()
 /**********************************************/
 void GI::Dev::Screen::setOn()
 {
-	err = SYS_ERR_FUNC_NOT_IMPLEMENTED;
+	err = SYS_ERR_NOT_IMPLEMENTED;
 	/* Send Display on DCS command to display */
 	/*HAL_DSI_ShortWrite(&(hdsi_eval),
 	 hdsivideo_handle.VirtualChannelID,
@@ -828,7 +828,7 @@ void GI::Dev::Screen::setOn()
 /**********************************************/
 void GI::Dev::Screen::setOff()
 {
-	err = SYS_ERR_FUNC_NOT_IMPLEMENTED;
+	err = SYS_ERR_NOT_IMPLEMENTED;
 	/* Send Display off DCS Command to display */
 	/*HAL_DSI_ShortWrite(&(hdsi_eval),
 	 hdsivideo_handle.VirtualChannelID,
