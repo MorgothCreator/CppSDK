@@ -55,6 +55,7 @@ At this moment include next features:
 * For platforms that are provided the USB MSC host driver will mount the FS automaticaly when a USB pen drive is inserted (the FS supported are FAT12, FAT16, FAT32 and exFAT).
 * For platforms that are provided the USB MSC device you need to link a MMCSD interface or a custom disk driver.
 
+All namespace and classes are under "GI" namespace.
 
 Please watch for available interfaces in "[platform directory]/board/[Board directory]/def.cpp" file.
 To request controll of one of initialized interface use next examples:
@@ -70,10 +71,9 @@ int main(void)
 	GI::IO led_pin = GI::IO((char *)"led-0");
 	while(1)
 	{
-		unsigned long dummy;
-		led_pin->ctl(GI::IO::IO_CTL_ASSERT_BIT, &dummy);
+		led_pin.write(true)
 		GI::Sys::Timer::delay(500);
-		led_pin->ctl(GI::IO::IO_CTL_DEASERT_BIT, &dummy);
+		led_pin.write(false);
 		GI::Sys::Timer::delay(500);
 	}
 }
@@ -93,12 +93,12 @@ int main(void)
 	{
 		if(blink_timer.tick())
 		{
-			unsigned long state;
-			led_pin.ctl(GI::IO::IO_CTL_GET_BIT, &state);
+			bool state;
+			led_pin.read(&state);
 			if(state)
-				led_pin.ctl(GI::IO::IO_CTL_DEASERT_BIT, &state);
+				led_pin.write(false);
 			else
-				led_pin.ctl(GI::IO::IO_CTL_ASSERT_BIT, &state);
+				led_pin.write(false);
 		}
 	}
 }
