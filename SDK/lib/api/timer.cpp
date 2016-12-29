@@ -41,6 +41,7 @@ GI::Sys::Timer::Timer(u64 interval)
 {
 	memset(this, 0, sizeof(*this));
 	sTimmerInterval = interval & (u64)INT64_MAX;
+	enable(true);
 }
 //#####################################################
 GI::Sys::Timer::~Timer()
