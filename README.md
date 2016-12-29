@@ -32,6 +32,7 @@ At this moment include next features:
 		Devices:
 			FT5x06 capacitive touch screen using I2C interface
  			OTM8009a TFT display controller.
+ 			Lepton FLIR sensor using SPI interface.
       
       
  	STM32F7 (System Workbench for STM32 IDE):
@@ -48,6 +49,7 @@ At this moment include next features:
 		Devices:
 			FT5x06 capacitive touch screen using I2C interface
  			OTM8009a TFT display controller.
+ 			Lepton FLIR sensor using SPI interface.
       
 * For platforms that are provided the ETH interface driver will come with the LwIp library and some applications like HTTP server, TFTP server and other applications.
 * For platforms that are provided the USB MSC host driver will mount the FS automaticaly when a USB pen drive is inserted (the FS supported are FAT12, FAT16, FAT32 and exFAT).
