@@ -54,4 +54,52 @@ At this moment include next features:
 * For platforms that are provided the ETH interface driver will come with the LwIp library and some applications like HTTP server, TFTP server and other applications.
 * For platforms that are provided the USB MSC host driver will mount the FS automaticaly when a USB pen drive is inserted (the FS supported are FAT12, FAT16, FAT32 and exFAT).
 * For platforms that are provided the USB MSC device you need to link a MMCSD interface or a custom disk driver.
-* For platforms that are provided the USB CDC device you can open the serial instance by oppening a UART instance setting the virtual bit true before to open the interface.
+
+
+Please watch for available interafecs in "[platform directory]/board/[Board directory]/def.cpp" file.
+To request controll of one of initialized interface use next examples:
+
+> Example of blinking led 1 on the board:
+
+```CPP
+#include<api/io_handle.h>
+#include<api/timer.h>
+
+int main(void)
+{
+	GI::IO led_pin = GI::IO((char *)"led-0");
+	while(1)
+	{
+		unsigned long dummy;
+		led_pin->ctl(GI::IO::IO_CTL_ASSERT_BIT, &dummy);
+		GI::Sys::Timer::delay(500);
+		led_pin->ctl(GI::IO::IO_CTL_DEASERT_BIT, &dummy);
+		GI::Sys::Timer::delay(500);
+	}
+}
+```
+
+> Blinking led 1 using non blocking timer:
+
+```CPP
+#include<api/io_handle.h>
+#include<api/timer.h>
+
+int main(void)
+{
+	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
+	GI::IO *led_pin = GI::IO((char *)"led-0");
+	while(1)
+	{
+		if(blink_timer.tick())
+		{
+			unsigned long state;
+			led_pin.ctl(GI::IO::IO_CTL_GET_BIT, &state);
+			if(state)
+				led_pin.ctl(GI::IO::IO_CTL_DEASERT_BIT, &state);
+			else
+				led_pin.ctl(GI::IO::IO_CTL_ASSERT_BIT, &state);
+		}
+	}
+}
+```
