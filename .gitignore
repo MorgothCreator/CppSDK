@@ -27,6 +27,13 @@
 *.out
 *.app
 
+*.d
+*.o
+*.bin
+*.elf
+*.list
+*.mk
+*.map
 # =========================
 # Operating System Files
 # =========================
