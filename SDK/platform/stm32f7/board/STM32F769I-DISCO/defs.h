@@ -111,7 +111,7 @@
  * Debug interface setup.
  */
 //#define STD_OUT_PATH			"UART:0"
-#define STD_OUT_PATH			"SCREEN<Terminal>"
+//#define STD_OUT_PATH			"SCREEN<Terminal>"
 //#define STD_IN_PATH				"UART:0"
 //#define STD_ERR_PATH			"UART:0"
 /*

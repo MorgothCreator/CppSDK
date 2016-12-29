@@ -40,6 +40,8 @@ GI::Screen::Gfx::TextBox *SensorResultTextboxGlobal;
 GI::Screen::Gfx::Picturebox *FlirPictureBox_Global;
 unsigned short flir_buff[LEPTON_FLIR_LINE_SIZE * LEPTON_FLIR_LINES_NR] __attribute__ ((aligned (2)));
 Color::ARGB flir_buff_translated[LEPTON_FLIR_LINE_SIZE * LEPTON_FLIR_LINES_NR] __attribute__ ((aligned (4)));
+
+/* This will be call when a refresh of picture box will occur*/
 void *FlirPictureBox_Rfsh_Callback(GI::Screen::Gfx::Picturebox *structure, tControlCommandData *cursor_ctrl)
 {
 	tRectangle _dest_rectangle;
@@ -60,10 +62,11 @@ void *FlirPictureBox_Rfsh_Callback(GI::Screen::Gfx::Picturebox *structure, tCont
 
 int main(void)
 {
-	GI::Sys::Timer timer_touch = GI::Sys::Timer();
-	timer_touch.interval(20);
-	GI::Sys::Timer read_flir = GI::Sys::Timer();
-	read_flir.interval(1);
+	GI::Sys::Timer timer_touch = GI::Sys::Timer(20);
+	GI::Sys::Timer read_flir = GI::Sys::Timer(1);
+	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
+	/* Get control of "led-0" pin.*/
+	GI::IO led_pin = GI::IO((char *)"led-0");
 
 	/*
 	 * Create one parent window.
@@ -102,6 +105,7 @@ int main(void)
 	SensorResultTextbox->Position.Y = FlirPictureBox->Position.Y + FlirPictureBox->Size.Y + 10;
 	SensorResultTextbox->Size.X = 460;
 	SensorResultTextbox->Size.Y = 200;
+	SensorResultTextbox->text->setText((char *)"This is a sensor result textbox");
 
 	/*
 	 * Create a button.
@@ -120,6 +124,9 @@ int main(void)
 	ProgressBar1->Position.Y = Buton1->Position.Y + Buton1->Size.Y + 10;
 	ProgressBar1->Size.X = 460;
 	ProgressBar1->Size.Y = 30;
+	ProgressBar1->MinimValue  = 0;
+	ProgressBar1->MaximValue = 100;
+	ProgressBar1->Value = 50;
 
 	/*
 	 * Create a check box.
@@ -142,12 +149,12 @@ int main(void)
     ListBox->Size.ItemSizeY = 30;
     ListBox->Size.MinScrollBtnSize = 30;
     ListBox->Caption->textAlign = alignCenter;
-    u32 cnt = 0;
-    char listbox_buff[32];
-	char buff_tmp[10];
 	/*
 	 * Populate list box with 256 items.
 	 */
+    u32 cnt = 0;
+    char listbox_buff[32];
+	char buff_tmp[10];
     for(; cnt < 256; cnt++)
     {
 		strcpy((char *)listbox_buff, "Device ID ");
@@ -160,8 +167,8 @@ int main(void)
 
     newWindowPasswordNumeric(MainWindow, pass, 2, 2);
 
-	dtx_target_raster((unsigned char *)MainWindow->Internals.pDisplay->DisplayData, MainWindow->Internals.pDisplay->LcdTimings->X, MainWindow->Internals.pDisplay->LcdTimings->Y);
-	dtx_open_font("serif.ttf", 32);
+	/*dtx_target_raster((unsigned char *)MainWindow->Internals.pDisplay->DisplayData, MainWindow->Internals.pDisplay->LcdTimings->X, MainWindow->Internals.pDisplay->LcdTimings->Y);
+	dtx_open_font("serif.ttf", 32);*/
 	//dtx_use_font(font, 32);
 
     /*
@@ -197,14 +204,21 @@ int main(void)
 			dev.CAPTOUCH[0]->idle();
 			if(dev.CAPTOUCH[0]->TouchResponse.touch_event1)
 			{
-				dev.UART[1]->printF("XY%u %u\n", dev.CAPTOUCH[0]->TouchResponse.x1, dev.CAPTOUCH[0]->TouchResponse.y1);
+				dev.UART[1]->printF("X :%u Y:%u\n", dev.CAPTOUCH[0]->TouchResponse.x1, dev.CAPTOUCH[0]->TouchResponse.y1);
 			}
 			control_comand.Cursor = (CursorState)dev.CAPTOUCH[0]->TouchResponse.touch_event1;
 			control_comand.X = dev.CAPTOUCH[0]->TouchResponse.x1;
 			control_comand.Y = dev.CAPTOUCH[0]->TouchResponse.y1;
 			MainWindow->idle(&control_comand);
 			if(pass->idle())
-				pass->internals.windowHandler->Visible = false;
+			{
+				if(pass->password->equal((char *)"1234"))
+					pass->internals.windowHandler->Visible = false;
+				else
+				{
+					pass->clearText->set((char *)"Wrong password!");
+				}
+			}
 		}
 
 #if _USE_LEPTON_FLIR == 1
@@ -228,9 +242,18 @@ int main(void)
 			}
 		}
 #endif
-		dtx_color(0, 0, 0, 255);
+		if(blink_timer.tick())
+		{
+			bool state;
+			led_pin.read(&state);
+			if(state)
+				led_pin.write(false);
+			else
+				led_pin.write(true);
+		}
+		/*dtx_color(0, 0, 0, 255);
 		dtx_position(0, 0);
-		dtx_printf("hello world!");
+		dtx_printf("hello world!");*/
 	}
 }
 
