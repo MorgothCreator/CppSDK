@@ -26,9 +26,12 @@ bool GI::Screen::Gfx::PasswordWindowNumeric::idle()
 {
 	if(internals.windowHandler->Visible == false)
 		return false;
-	//if(PassWindow->after_wrong_password == true && PassWindow->Text->modifyed)
-	if(strcmp(internals.textBox->Caption->buff, text->buff) && internals.afterWrongPassword == true)
-		internals.textBox->Caption->setText(text->buff);
+	if(clearText->length && clearText->modifyed)
+	{
+		clearText->modifyed = false;
+		internals.textBox->Caption->setText(clearText);
+		password->clear();
+	}
 	char character = 0;
 	if(internals.Btn1->Events.CursorUp)
 	{
@@ -75,54 +78,52 @@ bool GI::Screen::Gfx::PasswordWindowNumeric::idle()
 		internals.Btn9->Events.CursorUp = false;
 		character = '9';
 	}
-	else if(internals.BtnBack->Events.CursorUp || internals.BtnBack->Events.CursorMove)
-	{
-		internals.BtnBack->Events.CursorUp = false;
-		internals.BtnBack->Events.CursorMove = false;
-		if(internals.textBox->Caption->length > 0)
-		{
-			char *tmp = text->subString(0, text->length - 1);
-			text->setText(tmp);
-			if(tmp)
-				free(tmp);
-			if(internals.afterWrongPassword == false)
-			{
-				int cnt = 0;
-				internals.textBox->Caption->clear();
-				for(; cnt < text->length; cnt++)
-				{
-					internals.textBox->Caption->append('*');
-				}
-			}
-			else
-			{
-				internals.textBox->Caption->setText(text->buff);
-			}
-			return false;
-		}
-	}
 	else if(internals.Btn0->Events.CursorUp)
 	{
 		internals.Btn0->Events.CursorUp = false;
 		character = '0';
 	}
+	else if(internals.BtnBack->Events.CursorUp || internals.BtnBack->Events.CursorMove)
+	{
+		internals.BtnBack->Events.CursorUp = false;
+		internals.BtnBack->Events.CursorMove = false;
+		clearText->clear();
+		if(internals.textBox->Caption->length > 0)
+		{
+			char *tmp = password->subString(0, password->length - 1);
+			password->set(tmp);
+			if(tmp)
+				free(tmp);
+			int cnt = 0;
+			internals.textBox->Caption->clear();
+			for(; cnt < password->length; cnt++)
+			{
+				internals.textBox->Caption->append('*');
+			}
+			return false;
+		}
+	}
 	else if(internals.BtnOk->Events.CursorUp)
 	{
 		internals.BtnOk->Events.CursorUp = false;
+		internals.textBox->Caption->setText((char *)"");
+		internals.hideText = false;
+		clearText->clear();
 		return true;
 	}
 
 	if(character != 0)
 	{
-		if(internals.afterWrongPassword == true)
+		clearText->clear();
+		if(internals.hideText == true)
 		{
-			text->clear();
+			password->clear();
 		}
-		internals.afterWrongPassword = false;
-		text->append(character);
+		//internals.hideText = true;
+		password->append(character);
 		int cnt = 0;
 		internals.textBox->Caption->clear();
-		for(; cnt < text->length; cnt++)
+		for(; cnt < password->length; cnt++)
 		{
 			internals.textBox->Caption->append('*');
 		}

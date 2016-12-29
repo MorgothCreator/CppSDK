@@ -42,13 +42,14 @@ public:
 		GI::Screen::Gfx::Button *BtnOk;
 		GI::Screen::Gfx::Window *parentWindowHandler;
 		GI::Screen::Gfx::Window *windowHandler;
-		bool afterWrongPassword;
+		bool hideText;
 		bool textRefrashed;
 	}internals;
 	//GI::Screen::Gfx::Window *Window;
 	int minChars;
 	int maxChars;
-	GI::Screen::String* text;
+	GI::String *password;
+	GI::String *clearText;
 };
 }
 }
@@ -179,8 +180,8 @@ public:
 		windowHandlerName->internals.windowHandler = windowHandlerName##_window;\
 		windowHandlerName->minChars = 4;\
 		windowHandlerName->maxChars = 16;\
-		windowHandlerName->text = new GI::Screen::String(_parentWindowHandler->Internals.pDisplay);\
-		windowHandlerName->text->setText((char *)"");
+		windowHandlerName->password = new GI::String();\
+		windowHandlerName->clearText = new GI::String();
 
 
 #endif /* PASSWORDWINDOWNUMERIC_H_ */
