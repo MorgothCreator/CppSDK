@@ -88,7 +88,7 @@ int main(void)
 int main(void)
 {
 	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
-	GI::IO *led_pin = GI::IO((char *)"led-0");
+	GI::IO led_pin = GI::IO((char *)"led-0");
 	while(1)
 	{
 		if(blink_timer.tick())
