@@ -167,6 +167,7 @@ namespace Screen
 		String(GI::Dev::Screen *pDisplay, char *String);
 		~String();
 		bool equal(GI::Screen::String *string);
+		bool equal(char *string);
 		void toUper();
 		void toLower();
 		void removeNewLine(GI::Screen::String *string);

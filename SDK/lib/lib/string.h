@@ -23,6 +23,7 @@ namespace GI
 		String();
 		String(char *String);
 		~String();
+		bool equal(char *string);
 		bool equal(GI::String *string);
 		void toUper();
 		void toLower();

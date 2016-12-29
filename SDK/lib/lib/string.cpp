@@ -14,7 +14,7 @@ GI::String::String() :
 				modifyed(0),
 				error(SYS_ERR_OK)
 {
-	buff = (char *) malloc(1);
+	buff = (char *) calloc(1, 1);
 	if (buff)
 	{
 		error = SYS_ERR_OK;
@@ -47,11 +47,22 @@ GI::String::~String()
 
 bool GI::String::equal(GI::String *string)
 {
-	  if((modifyed != string->modifyed) ||
-		//(strcmp(buff, string.buff) == 0)   ? false :
+	if(!this && !string)
+		return false;
+	if((modifyed != string->modifyed) ||
+	//(strcmp(buff, string.buff) == 0)   ? false :
 		(length != string->length))
-		  return false;
-	  return true;
+		return false;
+	return true;
+}
+
+bool GI::String::equal(char *string)
+{
+	if(!this && !string)
+		return false;
+	if(strcmp(buff, string))
+		return false;
+	return true;
 }
 
 void GI::String::toUper()
@@ -80,6 +91,8 @@ void GI::String::toLower()
 
 void GI::String::removeNewLine(GI::String *string)
 {
+	if(!this && !string)
+		return;
 	char *_item = buff;
 	char *tmp_str1 = buff;
 	char *tmp_str2 = buff;
@@ -133,7 +146,7 @@ void GI::String::set(GI::String *string)
 
 void GI::String::append(char* string)
 {
-	if(!buff)
+	if(!buff || !string)
 		return;
 	unsigned int LenSrc = strlen(string);
 	unsigned int LenDest = length;
@@ -251,7 +264,7 @@ void GI::String::clear()
 }
 char *GI::String::subString(unsigned int position, unsigned int len)
 {
-	if (buff)
+	if (!buff)
 		return NULL;
 	if (position + len >= (unsigned int) length)
 		return NULL;

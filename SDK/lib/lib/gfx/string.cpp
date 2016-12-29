@@ -72,6 +72,15 @@ bool GI::Screen::String::equal(GI::Screen::String *string)
 	  return true;
 }
 
+bool GI::Screen::String::equal(char *string)
+{
+	if(!this && !string)
+		return false;
+	if(strcmp(buff, string))
+		return false;
+	return true;
+}
+
 void GI::Screen::String::toUper()
 {
 	if(!this)
