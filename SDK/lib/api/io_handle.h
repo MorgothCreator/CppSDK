@@ -48,8 +48,12 @@ class IO
 public:
 	IO(char *path);
 	~IO();
-	int write(unsigned char *buff, unsigned int len);
-	int read(unsigned char *buff, unsigned int len);
+	int write(unsigned char *buff, unsigned int len);/*Char device*/
+	SysErr write(bool state);/* Bit device */
+	SysErr write(u32 data);
+	int read(unsigned char *buff, unsigned int len);/*Char device*/
+	SysErr read(bool *state);/* Bit device */
+	SysErr read(u32 *data);
 
 	enum ioCtl_e {
 		IO_CTL_NONE,/* This is used for refresh calls*/
@@ -70,10 +74,6 @@ public:
 		IO_CTL_GET_PBITS,/* Get parity bits. */
 		IO_CTL_SET,/* Set word. */
 		IO_CTL_GET,/* Get word. */
-		IO_CTL_SET_BIT,/* Set bit. */
-		IO_CTL_GET_BIT,/* Get bit. */
-		IO_CTL_ASSERT_BIT,/* Set bit to 1. */
-		IO_CTL_DEASERT_BIT,/* Set bit to 0. */
 	}ioCtl;
 
 	enum ioDevTypeMsg_e {

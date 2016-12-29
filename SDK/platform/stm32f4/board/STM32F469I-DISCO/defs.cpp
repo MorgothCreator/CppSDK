@@ -94,7 +94,7 @@ CfgI2c i2cCfg[] =
 {
 { "i2c-0", pin_mux_convert_to_pin(IOB, 8), pin_mux_convert_to_pin(IOB, 9), 100000, },
 //{ "i2c-1", 0, 0, },
-{ "i2c-2", pin_mux_convert_to_pin(IOH, 4), pin_mux_convert_to_pin(IOH, 5), },
+{ "i2c-2", pin_mux_convert_to_pin(IOH, 4), pin_mux_convert_to_pin(IOH, 5), 100000, },
 //{ "i2c-3", pin_mux_convert_to_pin(IOD, 12), pin_mux_convert_to_pin(IOB, 7), },
 //{ "i2c-4", 0, 0, },
 //{ "i2c-5", 0, 0, },

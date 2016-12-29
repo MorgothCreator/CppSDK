@@ -31,6 +31,7 @@
 
 #include <api/dev_request.h>
 
+/**********************************************************************************/
 GI::IO::IO(char *path)
 {
 	memset(this, 0, sizeof(*this));
@@ -70,7 +71,7 @@ GI::IO::~IO()
 	ioDevType = IO_DEV_NULL;
 	devHandler = NULL;
 }
-
+/**********************************************************************************/
 int GI::IO::write(unsigned char *buff, unsigned int len)
 {
 	if(!devHandler || !ioDevType)
@@ -87,6 +88,30 @@ int GI::IO::write(unsigned char *buff, unsigned int len)
 	return SYS_ERR_NOT_IMPLEMENTED;
 }
 
+SysErr GI::IO::write(bool state)
+{
+	if(!devHandler || !ioDevType)
+		return SYS_ERR_NO_REGISTERED_DEVICE;
+	switch((int)ioDevType)
+	{
+	case IO_DEV_GPIO:
+		return ((GI::Dev::Gpio *)devHandler)->setOut(state);
+	}
+	return SYS_ERR_NOT_IMPLEMENTED;
+}
+
+SysErr GI::IO::write(u32 data)
+{
+	if(!devHandler || !ioDevType)
+		return SYS_ERR_NO_REGISTERED_DEVICE;
+	switch((int)ioDevType)
+	{
+	case IO_DEV_GPIO:
+		return ((GI::Dev::Gpio *)devHandler)->setOut(data);
+	}
+	return SYS_ERR_NOT_IMPLEMENTED;
+}
+/**********************************************************************************/
 int GI::IO::read(unsigned char *buff, unsigned int len)
 {
 	if(!devHandler || !ioDevType)
@@ -103,6 +128,36 @@ int GI::IO::read(unsigned char *buff, unsigned int len)
 	return SYS_ERR_NOT_IMPLEMENTED;
 }
 
+SysErr GI::IO::read(bool *state)
+{
+	if(!devHandler || !ioDevType)
+		return SYS_ERR_NO_REGISTERED_DEVICE;
+	switch((int)ioDevType)
+	{
+	case IO_DEV_GPIO:
+		u32 data;
+		SysErr res = ((GI::Dev::Gpio *)devHandler)->getIn(&data);
+		if(data)
+			*state = true;
+		else
+			*state = false;
+		return res;
+	}
+	return SYS_ERR_NOT_IMPLEMENTED;
+}
+
+SysErr GI::IO::read(u32 *data)
+{
+	if(!devHandler || !ioDevType)
+		return SYS_ERR_NO_REGISTERED_DEVICE;
+	switch((int)ioDevType)
+	{
+	case IO_DEV_GPIO:
+		return ((GI::Dev::Gpio *)devHandler)->getIn(data);
+	}
+	return SYS_ERR_NOT_IMPLEMENTED;
+}
+/**********************************************************************************/
 SysErr GI::IO::ctl(GI::IO::ioCtl_e cmd, unsigned long *data)
 {
 	if(!devHandler || !ioDevType)
@@ -282,30 +337,7 @@ SysErr GI::IO::ctl(GI::IO::ioCtl_e cmd, unsigned long *data)
 		}
 		return SYS_ERR_NOT_IMPLEMENTED;
 		break;
-	case IO_CTL_GET_BIT:
-		switch((int)ioDevType)
-		{
-		case IO_DEV_GPIO:
-			return ((GI::Dev::Gpio *)devHandler)->getIn(data);
-		}
-		return SYS_ERR_NOT_IMPLEMENTED;
-		break;
-	case IO_CTL_ASSERT_BIT:
-		switch((int)ioDevType)
-		{
-		case IO_DEV_GPIO:
-			return ((GI::Dev::Gpio *)devHandler)->setOut(1);
-		}
-		return SYS_ERR_NOT_IMPLEMENTED;
-		break;
-	case IO_CTL_DEASERT_BIT:
-		switch((int)ioDevType)
-		{
-		case IO_DEV_GPIO:
-			return ((GI::Dev::Gpio *)devHandler)->setOut(0);
-		}
-		return SYS_ERR_NOT_IMPLEMENTED;
-		break;
 	}
 	return SYS_ERR_OK;
 }
+/**********************************************************************************/

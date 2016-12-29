@@ -165,12 +165,12 @@ int main(void)
 		}
 		if(blink_timer.tick())
 		{
-			unsigned long state;
-			led_pin.ctl(GI::IO::IO_CTL_GET_BIT, &state);
+			bool state;
+			led_pin.read(&state);
 			if(state)
-				led_pin.ctl(GI::IO::IO_CTL_DEASERT_BIT, &state);
+				led_pin.write(false);
 			else
-				led_pin.ctl(GI::IO::IO_CTL_ASSERT_BIT, &state);
+				led_pin.write(true);
 		}
 	}
 
