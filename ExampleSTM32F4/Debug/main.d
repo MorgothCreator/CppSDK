@@ -77,6 +77,7 @@ main.o: ../main.cpp C:/GitHub/CppSDK/SDK/lib/api/init.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/screen.h \
  C:/GitHub/CppSDK/SDK/lib/device/otm8009a.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/screen_def.h \
+ C:/GitHub/CppSDK/SDK/lib/api/io_handle.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/PasswordWindowNumeric.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/window.h
 
@@ -243,6 +244,8 @@ C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/screen.h:
 C:/GitHub/CppSDK/SDK/lib/device/otm8009a.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/screen_def.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/io_handle.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/PasswordWindowNumeric.h:
 

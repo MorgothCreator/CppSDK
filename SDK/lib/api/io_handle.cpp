@@ -282,6 +282,30 @@ SysErr GI::IO::ctl(GI::IO::ioCtl_e cmd, unsigned long *data)
 		}
 		return SYS_ERR_NOT_IMPLEMENTED;
 		break;
+	case IO_CTL_GET_BIT:
+		switch((int)ioDevType)
+		{
+		case IO_DEV_GPIO:
+			return ((GI::Dev::Gpio *)devHandler)->getIn(data);
+		}
+		return SYS_ERR_NOT_IMPLEMENTED;
+		break;
+	case IO_CTL_ASSERT_BIT:
+		switch((int)ioDevType)
+		{
+		case IO_DEV_GPIO:
+			return ((GI::Dev::Gpio *)devHandler)->setOut(1);
+		}
+		return SYS_ERR_NOT_IMPLEMENTED;
+		break;
+	case IO_CTL_DEASERT_BIT:
+		switch((int)ioDevType)
+		{
+		case IO_DEV_GPIO:
+			return ((GI::Dev::Gpio *)devHandler)->setOut(0);
+		}
+		return SYS_ERR_NOT_IMPLEMENTED;
+		break;
 	}
 	return SYS_ERR_OK;
 }

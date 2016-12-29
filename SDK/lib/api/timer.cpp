@@ -21,6 +21,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 #include "sys/systime.h"
 #include "timer.h"
 /*#####################################################*/
@@ -31,38 +32,54 @@ extern volatile unsigned long long STimerCnt;
 	SysDelayTimerSetup();
 }*/
 //#####################################################
-void GI::Sys::Timer::interval(unsigned long long _Value)
+GI::Sys::Timer::Timer()
 {
-#ifdef USE_RTC_100_MS
-	sTimmerInterval = (_Value & (unsigned long long)INT64_MAX) / 10;
-#else
-	sTimmerInterval = _Value & (unsigned long long)INT64_MAX;
-#endif
-	enable(1);
+	memset(this, 0, sizeof(*this));
 }
 //#####################################################
-void GI::Sys::Timer::enable(unsigned char Action)
+GI::Sys::Timer::Timer(u64 interval)
 {
-	if (Action == 1)
+	memset(this, 0, sizeof(*this));
+	sTimmerInterval = interval & (u64)INT64_MAX;
+}
+//#####################################################
+GI::Sys::Timer::~Timer()
+{
+
+}
+//#####################################################
+void GI::Sys::Timer::interval(u64 interval)
+{
+#ifdef USE_RTC_100_MS
+	sTimmerInterval = (interval & (u64)INT64_MAX) / 10;
+#else
+	sTimmerInterval = interval & (u64)INT64_MAX;
+#endif
+	enable(true);
+}
+//#####################################################
+void GI::Sys::Timer::enable(bool action)
+{
+	if (action)
 	{
-		sTimmerTickValue = (sTimmerInterval + STimerCnt)&(unsigned long long)INT64_MAX;
+		sTimmerTickValue = (sTimmerInterval + STimerCnt)&(u64)INT64_MAX;
 	}
 	else
 	{
-		sTimmerTickValue = sTimmerTickValue | (unsigned long long)INT64_MIN;
+		sTimmerTickValue = sTimmerTickValue | (u64)INT64_MIN;
 	}
 }
 //#####################################################
 bool GI::Sys::Timer::tick()
 {
-	if(!(sTimmerTickValue & (unsigned long long)INT64_MIN))
+	if(!(sTimmerTickValue & (u64)INT64_MIN))
 	{
-		unsigned long long Temp1 = sTimmerTickValue & (unsigned long long)INT64_MAX;
-		unsigned long long Temp2 = STimerCnt & (unsigned long long)INT64_MAX;
-		unsigned long long Temp = (Temp1 - Temp2 - 1)& (unsigned long long)INT64_MIN;
+		u64 Temp1 = sTimmerTickValue & (u64)INT64_MAX;
+		u64 Temp2 = STimerCnt & (u64)INT64_MAX;
+		u64 Temp = (Temp1 - Temp2 - 1)& (u64)INT64_MIN;
 		if(Temp)
 		{
-			enable(1);
+			enable(true);
 			return true;
 		}
 	}
@@ -71,11 +88,13 @@ bool GI::Sys::Timer::tick()
 //#####################################################
 bool GI::Sys::Timer::enabled()
 {
-	if(sTimmerTickValue & (unsigned long long)INT64_MIN) return false;
-	else return true;
+	if(sTimmerTickValue & (u64)INT64_MIN)
+		return false;
+	else
+		return true;
 }
 //#####################################################
-void GI::Sys::Timer::delay(unsigned int milliSec) {
+void GI::Sys::Timer::delay(u32 milliSec) {
 	sysDelay(milliSec);
 }
 //#####################################################

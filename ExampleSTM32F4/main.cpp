@@ -9,6 +9,7 @@
 #include <stdio.h>
 
 #include "lib/gfx/window.h"
+#include <api/io_handle.h>
 
 #include "lib/gfx/PasswordWindowNumeric.h"
 
@@ -123,6 +124,10 @@ int main(void)
 	dev._stdout->printF("IP:%s\n\r", ip_str_buff.buff);
 #endif
 	tControlCommandData control_comand;
+
+	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
+	GI::IO led_pin = GI::IO((char *)"led-0");
+
 	while(1)
 	{
 		dev.idle();
@@ -157,6 +162,15 @@ int main(void)
 			MainWindow->idle(&control_comand);
 			if(pass->idle())
 				pass->internals.windowHandler->Visible = false;
+		}
+		if(blink_timer.tick())
+		{
+			unsigned long state;
+			led_pin.ctl(GI::IO::IO_CTL_GET_BIT, &state);
+			if(state)
+				led_pin.ctl(GI::IO::IO_CTL_DEASERT_BIT, &state);
+			else
+				led_pin.ctl(GI::IO::IO_CTL_ASSERT_BIT, &state);
 		}
 	}
 

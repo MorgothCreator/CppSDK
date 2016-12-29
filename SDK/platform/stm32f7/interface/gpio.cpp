@@ -112,7 +112,12 @@ signed int GI::Dev::Gpio::in()
 	else
 	{
 		if (cfg.reverse)
-			return ~(HAL_GPIO_ReadPin(BaseAddr, (unsigned short)(1 << (cfg.pin % 32))));
+		{
+			if(HAL_GPIO_ReadPin(BaseAddr, (unsigned short)(1 << (cfg.pin % 32))))
+				return false;
+			else
+				return true;
+		}
 		else
 			return HAL_GPIO_ReadPin(BaseAddr, (unsigned short)(1 << (cfg.pin % 32)));
 	}

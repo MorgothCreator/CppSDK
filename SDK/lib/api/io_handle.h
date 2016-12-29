@@ -72,6 +72,8 @@ public:
 		IO_CTL_GET,/* Get word. */
 		IO_CTL_SET_BIT,/* Set bit. */
 		IO_CTL_GET_BIT,/* Get bit. */
+		IO_CTL_ASSERT_BIT,/* Set bit to 1. */
+		IO_CTL_DEASERT_BIT,/* Set bit to 0. */
 	}ioCtl;
 
 	enum ioDevTypeMsg_e {

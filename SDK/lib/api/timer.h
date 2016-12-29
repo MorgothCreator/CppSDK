@@ -24,17 +24,21 @@
 /*#####################################################*/
 #include <stdbool.h>
 #include "sys/systime.h"
+#include <include/global.h>
 /*#####################################################*/
 namespace GI
 {
 namespace Sys {
 	class Timer {
 	public:
-		void interval(unsigned long long _Value);
-		void enable(unsigned char Action);
+		Timer();
+		Timer(u64 interval);
+		~Timer();
+		void interval(u64 interval);
+		void enable(bool action);
 		bool tick();
 		bool enabled();
-		static void delay(unsigned int milliSec);
+		static void delay(u32 milliSec);
 	private:
 		unsigned long long sTimmerInterval;				//Here, user will store the address of buffer used to receive data
 		unsigned long long sTimmerTickValue;				//Here, user will store the address of buffer used to receive data
