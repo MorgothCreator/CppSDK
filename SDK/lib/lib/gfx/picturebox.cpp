@@ -23,7 +23,7 @@
 #include "window.h"
 #include "api/lcd_def.h"
 #include "util.h"
-#include "api/timer_api.h"
+#include "api/timer.h"
 #include "3d.h"
 #include "controls_definition.h"
 #include <interface/screen.h>
@@ -32,9 +32,9 @@
 #endif
 
 
-void GI::Screen::Gfx::Picturebox::paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand)
+void GI::Screen::Gfx::Picturebox::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand)
 {
-	unsigned int color = 0;
+	gfx_u32 color = 0;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	GI::Screen::Gfx::Window *ParentWindow = (GI::Screen::Gfx::Window*)Internals.parentWindowHandler;
 	tRectangle back_up_clip = LcdStruct->sClipRegion;
@@ -89,8 +89,8 @@ void GI::Screen::Gfx::Picturebox::paint(void *pDisplay, signed int x_start, sign
 		clip.sYMax = y_start + y_len - 2;
 		GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &clip);
 		Internals.PictureWindowLimits = LcdStruct->sClipRegion;
-		signed int X = control_comand->X;
-		signed int Y = control_comand->Y;
+		gfx_s32 X = control_comand->X;
+		gfx_s32 Y = control_comand->Y;
 		control_comand->X -= Internals.Position.X + 2;
 		control_comand->Y -= Internals.Position.Y + 2;
 		Events.Refresh.CallbackReturnData = Events.Refresh.CallBack(this, control_comand);
@@ -116,7 +116,7 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 	{
 		/* Parse commands */
 #ifdef NO_ENUM_ON_SWITCH
-		switch((unsigned char)control_comand->Comand)
+		switch((gfx_u8)control_comand->Comand)
 #else
 		switch((int)control_comand->Comand)
 #endif
@@ -168,10 +168,10 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 											Internals.NeedEntireRefresh = true;
 	}
 
-	signed int X_StartBox = Internals.Position.X;
-	signed int Y_StartBox = Internals.Position.Y;
-	signed int X_LenBox = Internals.Size.X;
-	signed int Y_LenBox = Internals.Size.Y;
+	gfx_s32 X_StartBox = Internals.Position.X;
+	gfx_s32 Y_StartBox = Internals.Position.Y;
+	gfx_s32 X_LenBox = Internals.Size.X;
+	gfx_s32 Y_LenBox = Internals.Size.Y;
 	void *pDisplay = Internals.pDisplay;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 
@@ -189,8 +189,8 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 			clip.sYMax = (Y_StartBox + Y_LenBox) - 2;
 			GScreen::Util::clipLimit(&pDisplay->sClipRegion, &clip);
 			settings->Internals.PictureWindowLimits = pDisplay->sClipRegion;
-			signed int X = control_comand->X;
-			signed int Y = control_comand->Y;
+			gfx_s32 X = control_comand->X;
+			gfx_s32 Y = control_comand->Y;
 			control_comand->X -= settings->Position.X + 2;
 			control_comand->Y -= settings->Position.Y + 2;
 			settings->Events.Refresh.CallbackReturnData = settings->Events.Refresh.CallBack(settings, control_comand);
@@ -283,8 +283,8 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 				clip.sYMax = (Y_StartBox + Y_LenBox) - 2;
 				GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &clip);
 				Internals.PictureWindowLimits = LcdStruct->sClipRegion;
-				signed int X = control_comand->X;
-				signed int Y = control_comand->Y;
+				gfx_s32 X = control_comand->X;
+				gfx_s32 Y = control_comand->Y;
 				control_comand->X -= Internals.Position.X + 2;
 				control_comand->Y -= Internals.Position.Y + 2;
 				Events.OnDown.CallbackReturnData = Events.OnDown.CallBack(this, control_comand);
@@ -308,8 +308,8 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 				clip.sYMax = (Y_StartBox + Y_LenBox) - 2;
 				GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &clip);
 				Internals.PictureWindowLimits = LcdStruct->sClipRegion;
-				signed int X = control_comand->X;
-				signed int Y = control_comand->Y;
+				gfx_s32 X = control_comand->X;
+				gfx_s32 Y = control_comand->Y;
 				control_comand->X -= Internals.Position.X + 2;
 				control_comand->Y -= Internals.Position.Y + 2;
 				Events.OnUp.CallbackReturnData = Events.OnUp.CallBack(this, control_comand);
@@ -334,8 +334,8 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 				clip.sYMax = (Y_StartBox + Y_LenBox) - 2;
 				GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &clip);
 				Internals.PictureWindowLimits = LcdStruct->sClipRegion;
-				signed int X = control_comand->X;
-				signed int Y = control_comand->Y;
+				gfx_s32 X = control_comand->X;
+				gfx_s32 Y = control_comand->Y;
 				control_comand->X -= Internals.Position.X + 2;
 				control_comand->Y -= Internals.Position.Y + 2;
 				Events.OnMove.CallbackReturnData = Events.OnMove.CallBack(this, control_comand);
@@ -409,16 +409,16 @@ void GI::Screen::Gfx::Picturebox::clear()
 	GI::Screen::Gfx::Window *parentWindowHandler = (GI::Screen::Gfx::Window*)Internals.parentWindowHandler;
 	GI::Dev::Screen* LcdStruct = Internals.pDisplay;
 	tRectangle back_up_clip = LcdStruct->sClipRegion;
-	signed int X_StartBox = Internals.Position.X;
-	signed int Y_StartBox = Internals.Position.Y;
-	signed int X_LenBox = Internals.Size.X;
-	signed int Y_LenBox = Internals.Size.Y;
+	gfx_s32 X_StartBox = Internals.Position.X;
+	gfx_s32 Y_StartBox = Internals.Position.Y;
+	gfx_s32 X_LenBox = Internals.Size.X;
+	gfx_s32 Y_LenBox = Internals.Size.Y;
 	LcdStruct->sClipRegion.sXMin = X_StartBox;
 	LcdStruct->sClipRegion.sYMin = Y_StartBox;
 	LcdStruct->sClipRegion.sXMax = X_StartBox + X_LenBox;
 	LcdStruct->sClipRegion.sYMax = Y_StartBox + Y_LenBox;
 	GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
-	unsigned int color = BackgroundColor;
+	gfx_u32 color = BackgroundColor;
 	if(!Enabled || !parentWindowHandler->Internals.OldStateEnabled)
 		color = Color.Disabled.Buton;
 	LcdStruct->drawRectangle(X_StartBox + 2, Y_StartBox + 2, X_LenBox - 4, Y_LenBox - 4, true, color);
@@ -426,7 +426,7 @@ void GI::Screen::Gfx::Picturebox::clear()
 	LcdStruct->sClipRegion = back_up_clip;
 }
 /*//#######################################################################################
-void picturebox_copy_rectangle(tPictureBox* settings, unsigned int *src_buff, signed int src_x_buff_size, signed int src_y_buff_size, signed int src_x_offset, signed int src_y_offset)
+void picturebox_copy_rectangle(tPictureBox* settings, gfx_u32 *src_buff, gfx_s32 src_x_buff_size, gfx_s32 src_y_buff_size, gfx_s32 src_x_offset, gfx_s32 src_y_offset)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	tDisplay *pDisplay = settings->Internals.pDisplay;
@@ -434,19 +434,19 @@ void picturebox_copy_rectangle(tPictureBox* settings, unsigned int *src_buff, si
 	pDisplay->sClipRegion = settings->Internals.PictureWindowLimits;
 	//put_pixel(pDisplay, X + settings->Position.X + 2, Y + settings->Position.Y + 2, color);
 
-	signed int Y_cnt = 0;
-	signed int X_len = (pDisplay->sClipRegion.sXMax - pDisplay->sClipRegion.sXMin);
+	gfx_s32 Y_cnt = 0;
+	gfx_s32 X_len = (pDisplay->sClipRegion.sXMax - pDisplay->sClipRegion.sXMin);
 	if(X_len <= 0) return;
 	for(; Y_cnt < src_y_offset + (pDisplay->sClipRegion.sYMax - pDisplay->sClipRegion.sYMin); Y_cnt++)
 	{
 		if(Y_cnt + pDisplay->sClipRegion.sYMin >= pDisplay->sClipRegion.sYMax) break;
 		memcpy((void *)(pDisplay->DisplayData + 8 + ((Y_cnt + settings->Position.Y + 2) * pDisplay->Width) + settings->Position.X + 2), (void *)((char *)(src_buff + ((Y_cnt + src_y_offset) * src_x_buff_size)) - 1), X_len * sizeof(pDisplay->DisplayData[0]));
-		CacheDataCleanInvalidateBuff((unsigned int)(void *)(pDisplay->DisplayData + 8 + ((Y_cnt + settings->Position.Y + 2) * pDisplay->Width) + settings->Position.X + 2), X_len * sizeof(pDisplay->DisplayData[0]) + 64);
+		CacheDataCleanInvalidateBuff((gfx_u32)(void *)(pDisplay->DisplayData + 8 + ((Y_cnt + settings->Position.Y + 2) * pDisplay->Width) + settings->Position.X + 2), X_len * sizeof(pDisplay->DisplayData[0]) + 64);
 	}
 	pDisplay->sClipRegion = back_up_clip;
 }*/
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::copyRectangle(unsigned int *src_buff, unsigned int src_buff_data_offset, tRectangle *_dest_rectangle, tRectangle *_src_rectangle, signed int src_width, signed int src_height)
+void GI::Screen::Gfx::Picturebox::copyRectangle(gfx_u32 *src_buff, gfx_u32 src_buff_data_offset, tRectangle *_dest_rectangle, tRectangle *_src_rectangle, gfx_s32 src_width, gfx_s32 src_height)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	GI::Dev::Screen* pDisplay = Internals.pDisplay;
@@ -457,10 +457,10 @@ void GI::Screen::Gfx::Picturebox::copyRectangle(unsigned int *src_buff, unsigned
 	tRectangle *dest_rectangle = _dest_rectangle;
 	//tRectangle *src_rectangle = _src_rectangle;
 
-	signed int dest_X_StartBox = Internals.Position.X;
-	signed int dest_Y_StartBox = Internals.Position.Y;
-	//signed int dest_X_EndBox = settings->Internals.Position.X + settings->Internals.Size.X;
-	//signed int dest_Y_EndBox = settings->Internals.Position.Y + settings->Internals.Size.Y;
+	gfx_s32 dest_X_StartBox = Internals.Position.X;
+	gfx_s32 dest_Y_StartBox = Internals.Position.Y;
+	//gfx_s32 dest_X_EndBox = settings->Internals.Position.X + settings->Internals.Size.X;
+	//gfx_s32 dest_Y_EndBox = settings->Internals.Position.Y + settings->Internals.Size.Y;
 
 	//Calculate the destination locations on the screen.
 	dest_rectangle->sXMin += dest_X_StartBox + 2;
@@ -472,26 +472,26 @@ void GI::Screen::Gfx::Picturebox::copyRectangle(unsigned int *src_buff, unsigned
 				dest_rectangle->sXMin >= Internals.Position.X + (Internals.Size.X - 4) ||
 					dest_rectangle->sYMin >= Internals.Position.Y + (Internals.Size.Y - 4))
 		return;
-	pDisplay->copyRectangle32Bit((unsigned char *)src_buff, dest_rectangle->sXMin, dest_rectangle->sYMin, dest_rectangle->sXMax - dest_rectangle->sXMin, dest_rectangle->sYMax - dest_rectangle->sYMin);
+	pDisplay->copyRectangle32Bit((gfx_u8 *)src_buff, dest_rectangle->sXMin, dest_rectangle->sYMin, dest_rectangle->sXMax - dest_rectangle->sXMin, dest_rectangle->sYMax - dest_rectangle->sYMin);
 	//Limit the destination area to the picture box size.
 	/*GScreen::Util::clipLimit(dest_rectangle, &settings->Internals.PictureWindowLimits);
 
-	signed int x_line_len = dest_rectangle->sXMax - dest_rectangle->sXMin;
+	gfx_s32 x_line_len = dest_rectangle->sXMax - dest_rectangle->sXMin;
 
 	if(x_line_len <= 0) return;
 	if(dest_X_StartBox <= dest_rectangle->sXMin)
 		dest_X_StartBox = dest_rectangle->sXMin;
 
-	signed int Y_cnt = dest_Y_StartBox;
+	gfx_s32 Y_cnt = dest_Y_StartBox;
 	if(Y_cnt <= dest_rectangle->sYMin)
 		Y_cnt = dest_rectangle->sYMin;
 
-	signed int X_Start_Src_Buff = (settings->Internals.Position.X + 2) - settings->Internals.PictureWindowLimits.sXMin;
+	gfx_s32 X_Start_Src_Buff = (settings->Internals.Position.X + 2) - settings->Internals.PictureWindowLimits.sXMin;
 	if(X_Start_Src_Buff > 0)
 		X_Start_Src_Buff = 0;
 	else
 		X_Start_Src_Buff = (~X_Start_Src_Buff) + 1;
-	signed int Y_Start_Src_Buff = (settings->Internals.Position.Y + 2) - settings->Internals.PictureWindowLimits.sYMin;
+	gfx_s32 Y_Start_Src_Buff = (settings->Internals.Position.Y + 2) - settings->Internals.PictureWindowLimits.sYMin;
 	if(Y_Start_Src_Buff > 0)
 		Y_Start_Src_Buff = 0;
 	else
@@ -501,12 +501,12 @@ void GI::Screen::Gfx::Picturebox::copyRectangle(unsigned int *src_buff, unsigned
 	{
 		//if(Y_cnt >= pDisplay->sClipRegion.sYMax) break;
 		memcpy((void *)(pDisplay->DisplayData + pDisplay->LcdTimings->palete_len + (Y_cnt * pDisplay->LcdTimings->X) + dest_X_StartBox), (void *)((char *)(src_buff + src_buff_data_offset + (((Y_cnt - settings->Internals.PictureWindowLimits.sYMin + Y_Start_Src_Buff) + src_rectangle->sYMin) * src_width) + src_rectangle->sXMin + X_Start_Src_Buff) - 1), x_line_len * sizeof(pDisplay->DisplayData[0]));
-		//CacheDataCleanInvalidateBuff((unsigned int)(void *)(pDisplay->DisplayData + 8 + ((Y_cnt + settings->Position.Y + 2) * pDisplay->Width) + settings->Position.X + 2), X_len * sizeof(pDisplay->DisplayData[0]) + 64);
+		//CacheDataCleanInvalidateBuff((gfx_u32)(void *)(pDisplay->DisplayData + 8 + ((Y_cnt + settings->Position.Y + 2) * pDisplay->Width) + settings->Position.X + 2), X_len * sizeof(pDisplay->DisplayData[0]) + 64);
 	}*/
 	//pDisplay->sClipRegion = back_up_clip;
 }
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::drawPixel(signed int X, signed int Y, unsigned int color)
+void GI::Screen::Gfx::Picturebox::drawPixel(gfx_s32 X, gfx_s32 Y, gfx_u32 color)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	GI::Dev::Screen* LcdStruct = Internals.pDisplay;
@@ -516,7 +516,7 @@ void GI::Screen::Gfx::Picturebox::drawPixel(signed int X, signed int Y, unsigned
 	LcdStruct->sClipRegion = back_up_clip;
 }
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::drawHLine(signed int X1, signed int X2, signed int Y, unsigned char width, unsigned int color)
+void GI::Screen::Gfx::Picturebox::drawHLine(gfx_s32 X1, gfx_s32 X2, gfx_s32 Y, gfx_u8 width, gfx_u32 color)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	GI::Dev::Screen* LcdStruct = Internals.pDisplay;
@@ -526,7 +526,7 @@ void GI::Screen::Gfx::Picturebox::drawHLine(signed int X1, signed int X2, signed
 	LcdStruct->sClipRegion = back_up_clip;
 }
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::drawVLine(signed int Y1, signed int Y2, signed int X, unsigned char width, unsigned int color)
+void GI::Screen::Gfx::Picturebox::drawVLine(gfx_s32 Y1, gfx_s32 Y2, gfx_s32 X, gfx_u8 width, gfx_u32 color)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	GI::Dev::Screen* LcdStruct = Internals.pDisplay;
@@ -536,7 +536,7 @@ void GI::Screen::Gfx::Picturebox::drawVLine(signed int Y1, signed int Y2, signed
 	LcdStruct->sClipRegion = back_up_clip;
 }
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::drawCircle(signed int x, signed int y, signed int radius, unsigned char fill, unsigned int color)
+void GI::Screen::Gfx::Picturebox::drawCircle(gfx_s32 x, gfx_s32 y, gfx_s32 radius, gfx_u8 fill, gfx_u32 color)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	GI::Dev::Screen* LcdStruct = Internals.pDisplay;
@@ -546,7 +546,7 @@ void GI::Screen::Gfx::Picturebox::drawCircle(signed int x, signed int y, signed 
 	LcdStruct->sClipRegion = back_up_clip;
 }
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::drawLine(signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color)
+void GI::Screen::Gfx::Picturebox::drawLine(gfx_s32 X1, gfx_s32 Y1, gfx_s32 X2, gfx_s32 Y2, gfx_u8 width, gfx_u32 color)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	GI::Dev::Screen* LcdStruct = Internals.pDisplay;
@@ -556,7 +556,7 @@ void GI::Screen::Gfx::Picturebox::drawLine(signed int X1, signed int Y1, signed 
 	LcdStruct->sClipRegion = back_up_clip;
 }
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::drawElipse(signed int xc,signed int yc,signed int rx,signed int ry, unsigned char fill, unsigned int color)
+void GI::Screen::Gfx::Picturebox::drawElipse(gfx_s32 xc,gfx_s32 yc,gfx_s32 rx,gfx_s32 ry, gfx_u8 fill, gfx_u32 color)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	GI::Dev::Screen* LcdStruct = Internals.pDisplay;
@@ -566,7 +566,7 @@ void GI::Screen::Gfx::Picturebox::drawElipse(signed int xc,signed int yc,signed 
 	LcdStruct->sClipRegion = back_up_clip;
 }
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::drawTriangle(signed int  Ax,signed int  Ay,signed int  Bx,signed int  By,signed int  Cx,signed int  Cy, unsigned char fill, unsigned int color)
+void GI::Screen::Gfx::Picturebox::drawTriangle(gfx_s32  Ax,gfx_s32  Ay,gfx_s32  Bx,gfx_s32  By,gfx_s32  Cx,gfx_s32  Cy, gfx_u8 fill, gfx_u32 color)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	GI::Dev::Screen* LcdStruct = Internals.pDisplay;
@@ -584,8 +584,8 @@ void GI::Screen::Gfx::Picturebox::drawString(GI::Screen::String *string)
 	LcdStruct->sClipRegion = Internals.PictureWindowLimits;
 
 	string->pDisplay = Internals.pDisplay;
-	signed int lX = string->lX;
-	signed int lY = string->lY;
+	gfx_s32 lX = string->lX;
+	gfx_s32 lY = string->lY;
 	string->lX += Internals.Position.X + 2;
 	string->lY += Internals.Position.Y + 2;
 	string->drawString();
@@ -594,7 +594,7 @@ void GI::Screen::Gfx::Picturebox::drawString(GI::Screen::String *string)
 	LcdStruct->sClipRegion = back_up_clip;
 }
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::draw3dTriangle(_3d_points *Points, signed int X_offset, signed int Y_offset, double X_Angle, double Y_Angle, double Z_Angle, unsigned int Color)
+void GI::Screen::Gfx::Picturebox::draw3dTriangle(_3d_points *Points, gfx_s32 X_offset, gfx_s32 Y_offset, double X_Angle, double Y_Angle, double Z_Angle, gfx_u32 Color)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	_3d_points screenPoints;
@@ -606,28 +606,28 @@ void GI::Screen::Gfx::Picturebox::draw3dTriangle(_3d_points *Points, signed int 
 	Points->length = 4;
 	Transform3DPointsTo2DPoints(&screenPoints, Points, cubeAxisRotations);
 
-	unsigned int color = Color;//(controlls_change_color(Color, (-triangle_median))<<8) & 0xFFFFFF00;
+	gfx_u32 color = Color;//(controlls_change_color(Color, (-triangle_median))<<8) & 0xFFFFFF00;
 
-	signed int X_start = (signed int)screenPoints.x[1];
-	signed int Y_start = (signed int)screenPoints.y[1];
-	signed int X_end = (signed int)screenPoints.x[2];
-	signed int Y_end = (signed int)screenPoints.y[2];
+	gfx_s32 X_start = (gfx_s32)screenPoints.x[1];
+	gfx_s32 Y_start = (gfx_s32)screenPoints.y[1];
+	gfx_s32 X_end = (gfx_s32)screenPoints.x[2];
+	gfx_s32 Y_end = (gfx_s32)screenPoints.y[2];
 	drawLine(X_offset + X_start, Y_offset + Y_start, X_offset + X_end, Y_offset + Y_end, 1, color);
 
-	X_start = (signed int)screenPoints.x[2];
-	Y_start = (signed int)screenPoints.y[2];
-	X_end = (signed int)screenPoints.x[3];
-	Y_end = (signed int)screenPoints.y[3];
+	X_start = (gfx_s32)screenPoints.x[2];
+	Y_start = (gfx_s32)screenPoints.y[2];
+	X_end = (gfx_s32)screenPoints.x[3];
+	Y_end = (gfx_s32)screenPoints.y[3];
 	drawLine(X_offset + X_start, Y_offset + Y_start, X_offset + X_end, Y_offset + Y_end, 1, color);
 
-	X_start = (signed int)screenPoints.x[3];
-	Y_start = (signed int)screenPoints.y[3];
-	X_end = (signed int)screenPoints.x[1];
-	Y_end = (signed int)screenPoints.y[1];
+	X_start = (gfx_s32)screenPoints.x[3];
+	Y_start = (gfx_s32)screenPoints.y[3];
+	X_end = (gfx_s32)screenPoints.x[1];
+	Y_end = (gfx_s32)screenPoints.y[1];
 	drawLine(X_offset + X_start, Y_offset + Y_start, X_offset + X_end, Y_offset + Y_end, 1, color);
 }
 //#######################################################################################
-void GI::Screen::Gfx::Picturebox::draw3dCube(_3d_points *Points, signed int X_offset, signed int Y_offset, double X_Angle, double Y_Angle, double Z_Angle, unsigned int Color)
+void GI::Screen::Gfx::Picturebox::draw3dCube(_3d_points *Points, gfx_s32 X_offset, gfx_s32 Y_offset, double X_Angle, double Y_Angle, double Z_Angle, gfx_u32 Color)
 {
 	//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	_3d_points screenPoints;
@@ -638,31 +638,31 @@ void GI::Screen::Gfx::Picturebox::draw3dCube(_3d_points *Points, signed int X_of
 	cubeAxisRotations.z = Z_Angle;
 	Points->length = 8;
 	Transform3DPointsTo2DPoints(&screenPoints, Points, cubeAxisRotations);
-	drawLine((signed int)screenPoints.x[0] + X_offset, (signed int)screenPoints.y[0] + Y_offset, (signed int)screenPoints.x[1] + X_offset, (signed int)screenPoints.y[1] + Y_offset, 1, Color);
-	drawLine((signed int)screenPoints.x[0] + X_offset, (signed int)screenPoints.y[0] + Y_offset, (signed int)screenPoints.x[3] + X_offset, (signed int)screenPoints.y[3] + Y_offset, 1, Color);
-	drawLine((signed int)screenPoints.x[0] + X_offset, (signed int)screenPoints.y[0] + Y_offset, (signed int)screenPoints.x[4] + X_offset, (signed int)screenPoints.y[4] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[0] + X_offset, (gfx_s32)screenPoints.y[0] + Y_offset, (gfx_s32)screenPoints.x[1] + X_offset, (gfx_s32)screenPoints.y[1] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[0] + X_offset, (gfx_s32)screenPoints.y[0] + Y_offset, (gfx_s32)screenPoints.x[3] + X_offset, (gfx_s32)screenPoints.y[3] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[0] + X_offset, (gfx_s32)screenPoints.y[0] + Y_offset, (gfx_s32)screenPoints.x[4] + X_offset, (gfx_s32)screenPoints.y[4] + Y_offset, 1, Color);
 
-	drawLine((signed int)screenPoints.x[2] + X_offset, (signed int)screenPoints.y[2] + Y_offset, (signed int)screenPoints.x[1] + X_offset, (signed int)screenPoints.y[1] + Y_offset, 1, Color);
-	drawLine((signed int)screenPoints.x[2] + X_offset, (signed int)screenPoints.y[2] + Y_offset, (signed int)screenPoints.x[3] + X_offset, (signed int)screenPoints.y[3] + Y_offset, 1, Color);
-	drawLine((signed int)screenPoints.x[2] + X_offset, (signed int)screenPoints.y[2] + Y_offset, (signed int)screenPoints.x[6] + X_offset, (signed int)screenPoints.y[6] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[2] + X_offset, (gfx_s32)screenPoints.y[2] + Y_offset, (gfx_s32)screenPoints.x[1] + X_offset, (gfx_s32)screenPoints.y[1] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[2] + X_offset, (gfx_s32)screenPoints.y[2] + Y_offset, (gfx_s32)screenPoints.x[3] + X_offset, (gfx_s32)screenPoints.y[3] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[2] + X_offset, (gfx_s32)screenPoints.y[2] + Y_offset, (gfx_s32)screenPoints.x[6] + X_offset, (gfx_s32)screenPoints.y[6] + Y_offset, 1, Color);
 
-	drawLine((signed int)screenPoints.x[5] + X_offset, (signed int)screenPoints.y[5] + Y_offset, (signed int)screenPoints.x[1] + X_offset, (signed int)screenPoints.y[1] + Y_offset, 1, Color);
-	drawLine((signed int)screenPoints.x[5] + X_offset, (signed int)screenPoints.y[5] + Y_offset, (signed int)screenPoints.x[4] + X_offset, (signed int)screenPoints.y[4] + Y_offset, 1, Color);
-	drawLine((signed int)screenPoints.x[5] + X_offset, (signed int)screenPoints.y[5] + Y_offset, (signed int)screenPoints.x[6] + X_offset, (signed int)screenPoints.y[6] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[5] + X_offset, (gfx_s32)screenPoints.y[5] + Y_offset, (gfx_s32)screenPoints.x[1] + X_offset, (gfx_s32)screenPoints.y[1] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[5] + X_offset, (gfx_s32)screenPoints.y[5] + Y_offset, (gfx_s32)screenPoints.x[4] + X_offset, (gfx_s32)screenPoints.y[4] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[5] + X_offset, (gfx_s32)screenPoints.y[5] + Y_offset, (gfx_s32)screenPoints.x[6] + X_offset, (gfx_s32)screenPoints.y[6] + Y_offset, 1, Color);
 
-	drawLine((signed int)screenPoints.x[7] + X_offset, (signed int)screenPoints.y[7] + Y_offset, (signed int)screenPoints.x[3] + X_offset, (signed int)screenPoints.y[3] + Y_offset, 1, Color);
-	drawLine((signed int)screenPoints.x[7] + X_offset, (signed int)screenPoints.y[7] + Y_offset, (signed int)screenPoints.x[4] + X_offset, (signed int)screenPoints.y[4] + Y_offset, 1, Color);
-	drawLine((signed int)screenPoints.x[7] + X_offset, (signed int)screenPoints.y[7] + Y_offset, (signed int)screenPoints.x[6] + X_offset, (signed int)screenPoints.y[6] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[7] + X_offset, (gfx_s32)screenPoints.y[7] + Y_offset, (gfx_s32)screenPoints.x[3] + X_offset, (gfx_s32)screenPoints.y[3] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[7] + X_offset, (gfx_s32)screenPoints.y[7] + Y_offset, (gfx_s32)screenPoints.x[4] + X_offset, (gfx_s32)screenPoints.y[4] + Y_offset, 1, Color);
+	drawLine((gfx_s32)screenPoints.x[7] + X_offset, (gfx_s32)screenPoints.y[7] + Y_offset, (gfx_s32)screenPoints.x[6] + X_offset, (gfx_s32)screenPoints.y[6] + Y_offset, 1, Color);
 }
 //#######################################################################################
 #if _USE_BITMAP_LIBRARY == 1
-bool picturebox_put_bitmap(tPictureBox* settings, unsigned char *file, signed int X, signed int Y, bool use_transparency, bool scale)
+bool picturebox_put_bitmap(tPictureBox* settings, gfx_u8 *file, gfx_s32 X, gfx_s32 Y, bool use_transparency, bool scale)
 {
 	tDisplay *pDisplay = settings->Internals.pDisplay;
 	return put_bitmap(pDisplay, file, settings->Internals.Position.X + X + 2, settings->Internals.Position.Y + Y + 2, use_transparency);
 }
 //#######################################################################################
-bool picturebox_put_fbitmap(tPictureBox* settings, char *path, signed int X, signed int Y, bool use_transparency, bool scale)
+bool picturebox_put_fbitmap(tPictureBox* settings, char *path, gfx_s32 X, gfx_s32 Y, bool use_transparency, bool scale)
 {
 	tDisplay *pDisplay = settings->Internals.pDisplay;
 	return put_fbitmap(pDisplay, path, settings->Internals.Position.X + X + 2, settings->Internals.Position.Y + Y + 2, use_transparency);

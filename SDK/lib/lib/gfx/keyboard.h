@@ -26,7 +26,7 @@
 #include "controls_definition.h"
 #include "string.h"
 #include "button.h"
-#include "api/timer_api.h"
+#include "api/timer.h"
 //#include "window_def.h"
 //#######################################################################################
 typedef enum
@@ -60,13 +60,13 @@ public:
 
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Position;
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Size;
 	tFont *pFont;
 	controls_color_struct_t Color;
@@ -76,19 +76,19 @@ public:
 		{
 			void* CallbackData;
 			void* CallbackReturnData;
-			void*(*CallBack)(void*, unsigned int);
+			void*(*CallBack)(void*, gfx_u32);
 		}OnMove;
 		struct
 		{
 			void* CallbackData;
 			void* CallbackReturnData;
-			void*(*CallBack)(void*, unsigned int);
+			void*(*CallBack)(void*, gfx_u32);
 		}OnUp;
 		struct
 		{
 			void* CallbackData;
 			void* CallbackReturnData;
-			void*(*CallBack)(void*, unsigned int);
+			void*(*CallBack)(void*, gfx_u32);
 		}OnDown;
 		bool CursorUp;
 		bool CursorDown;
@@ -102,18 +102,18 @@ public:
 		}Control;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}Position;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}PositionOffset;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}Size;
 		bool OldStateVisible;
 		bool OldStateEnabled;
@@ -132,12 +132,12 @@ public:
 	}Internals;
 	bool Visible;
 	bool Enabled;
-	unsigned int Return;
-	unsigned int kbd_border_size;
-	unsigned int key_space_size;
+	gfx_u32 Return;
+	gfx_u32 kbd_border_size;
+	gfx_u32 key_space_size;
 
 private:
-	void paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand, bool refrash);
+	void paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand, bool refrash);
 
 };
 }

@@ -1,5 +1,5 @@
 stm32f4/driver/USBD/Class/CDC/usbd_cdc_interface.o: \
- C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/USBD/Class/CDC/usbd_cdc_interface.c \
+ C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/USBD/Class/CDC/usbd_cdc_interface.cpp \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/USBD/Class/CDC/usbd_cdc_interface.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/USBD/Class/CDC/Inc/usbd_cdc.h \
  c:\github\cppsdk\sdk\platform\stm32f4\driver\usbd\core\inc\usbd_ioreq.h \
@@ -63,7 +63,8 @@ stm32f4/driver/USBD/Class/CDC/usbd_cdc_interface.o: \
  c:\github\cppsdk\sdk\platform\stm32f4\driver\usbd\core\inc\usbd_ioreq.h \
  c:\github\cppsdk\sdk\platform\stm32f4\driver\usbd\core\inc\usbd_ctlreq.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f4xx_hal_tim.h \
- C:/GitHub/CppSDK/SDK/lib/lib/buffers/ring_buff.h
+ C:/GitHub/CppSDK/SDK/lib/lib/buffers/ring_buff.h \
+ C:/GitHub/CppSDK/SDK/lib/include/global.h
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/USBD/Class/CDC/usbd_cdc_interface.h:
 
@@ -192,3 +193,5 @@ c:\github\cppsdk\sdk\platform\stm32f4\driver\usbd\core\inc\usbd_ctlreq.h:
 C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f4xx_hal_tim.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/buffers/ring_buff.h:
+
+C:/GitHub/CppSDK/SDK/lib/include/global.h:

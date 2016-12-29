@@ -1,7 +1,7 @@
 /*
- *  lib/lib/gfx/paint.c
+ *  lib/lib/gfx/gfx_gui_paint.cpp
  *
- *  Copyright (C) 2015  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
  *  Created on: Jan 9, 2015
  *
@@ -29,29 +29,29 @@
 /*#####################################################*/
 Gfx_res_t sys_def_gui_res;
 /*#####################################################*/
-void _gui_put_simple_item(signed int x, signed int y, signed int x_size, signed int y_size, unsigned char fill, unsigned int color)
+void _gui_put_simple_item(gfx_s32 x, gfx_s32 y, gfx_s32 x_size, gfx_s32 y_size, gfx_u8 fill, gfx_u32 color)
 {
-	signed int radius = sys_def_gui_res.corner_radius;
+	gfx_s32 radius = sys_def_gui_res.corner_radius;
 	if(radius < 0) radius = ~radius;
-	signed int a, b, P;
+	gfx_s32 a, b, P;
 	GI::Dev::Screen *pDisplay = sys_def_gui_res.pDisplay;
-	signed int __x_size = x_size, __y_size = y_size;
+	gfx_s32 __x_size = x_size, __y_size = y_size;
 	if(__x_size < 0) __x_size = ~__x_size;
 	if(__y_size < 0) __y_size = ~__y_size;
-	unsigned int _color = color;// << 8;
+	gfx_u32 _color = color;// << 8;
 
    a = 0;
    b = radius;
    P = 1 - radius;
-   signed int Tmp1;
-   signed int Tmp2;
-   signed int Tmp3;
-   signed int Tmp4;
-   signed int Tmp5;
-   signed int Tmp6;
-   signed int Tmp7;
-   signed int Tmp8;
-   signed int _Tmp5 = 5, _Tmp7 = 0;
+   gfx_s32 Tmp1;
+   gfx_s32 Tmp2;
+   gfx_s32 Tmp3;
+   gfx_s32 Tmp4;
+   gfx_s32 Tmp5;
+   gfx_s32 Tmp6;
+   gfx_s32 Tmp7;
+   gfx_s32 Tmp8;
+   gfx_s32 _Tmp5 = 5, _Tmp7 = 0;
 
    do
    {
@@ -107,7 +107,7 @@ void _gui_put_simple_item(signed int x, signed int y, signed int x_size, signed 
    }
 }
 /*#####################################################*/
-void gui_put_item(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, unsigned int int_color, unsigned int border_color, CursorState cursor, GUI_PAINT_STYLE style, bool enabled)
+void gui_put_item(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, gfx_u32 int_color, gfx_u32 border_color, CursorState cursor, GUI_PAINT_STYLE style, bool enabled)
 {
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	sys_def_gui_res.pDisplay = LcdStruct;

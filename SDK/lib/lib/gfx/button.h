@@ -1,7 +1,7 @@
 /*
  *  lib/gfx/buton.h
  *
- *  Copyright (C) 2013  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
  *  This file is part of Multiplatform SDK.
  *
@@ -25,7 +25,8 @@
 #include <stdbool.h>
 #include <lib/gfx/string.h>
 #include "controls_definition.h"
-#include <api/timer_api.h>
+#include <api/timer.h>
+#include "gfxdef.h"
 //#######################################################################################
 namespace GI
 {
@@ -42,32 +43,32 @@ public:
 
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Position;
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Size;
 	GI::Screen::String *Caption;
 	controls_color_struct_t Color;
 	struct {
 		struct {
-			colors border;
-			colors back;
-			colors text;
+			Color::ARGB border;
+			Color::ARGB back;
+			Color::ARGB text;
 		}disabled;
 		struct {
 			struct {
-				colors border;
-				colors back;
-				colors text;
+				Color::ARGB border;
+				Color::ARGB back;
+				Color::ARGB text;
 			}push;
 			struct {
-				colors border;
-				colors back;
-				colors text;
+				Color::ARGB border;
+				Color::ARGB back;
+				Color::ARGB text;
 			}pull;
 		}enabled;
 	}color;
@@ -103,18 +104,18 @@ public:
 		}Control;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}Position;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}PositionOffset;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}Size;
 		bool OldStateVisible;
 		bool OldStateEnabled;
@@ -136,7 +137,7 @@ public:
 	CursorState StateChangedOn;
 
 private:
-	void paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand);
+	void paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand);
 
 };
 }

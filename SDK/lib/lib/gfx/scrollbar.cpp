@@ -32,7 +32,7 @@
 #include "gfx_gui_paint.h"
 
 
-void GI::Screen::Gfx::ScrollBar::paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand)
+void GI::Screen::Gfx::ScrollBar::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand)
 {
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	GI::Screen::Gfx::Window *parentWindowHandler = (GI::Screen::Gfx::Window*)Internals.parentWindowHandler;
@@ -51,7 +51,7 @@ void GI::Screen::Gfx::ScrollBar::paint(void *pDisplay, signed int x_start, signe
 		control_comand->WindowRefresh |= true;
 	}
 
-	signed int ValueBetweenMinAndMax = (Internals.OldMaximum - Internals.OldMinimum);
+	gfx_s32 ValueBetweenMinAndMax = (Internals.OldMaximum - Internals.OldMinimum);
 
 
 	GI::Screen::Gfx::Button* ButtonSettings = Internals.BtnSettings;
@@ -109,7 +109,7 @@ void GI::Screen::Gfx::ScrollBar::paint(void *pDisplay, signed int x_start, signe
 		control_comand->Cursor = back;
 	}
 
-	signed int BtnSize = 0;
+	gfx_s32 BtnSize = 0;
 
 	if(Size.X < Size.Y)
 		BtnSize = Size.Y - ((Size.X - 2)<<1) - 4 - ValueBetweenMinAndMax;
@@ -195,7 +195,7 @@ void GI::Screen::Gfx::ScrollBar::paint(void *pDisplay, signed int x_start, signe
 			if(Size.X < Size.Y)
 			{
 				ButtonSettings->Size.Y = BtnSize;
-				////signed int Steps = settings->Size.Y - 4 - BtnSize;
+				////gfx_s32 Steps = settings->Size.Y - 4 - BtnSize;
 				//ButtonSettings->Position.X = settings->Position.X + 2;
 				////ButtonSettings->Position.Y = settings->Position.Y + 2;
 				ButtonSettings->Size.X = Size.X - 4;
@@ -215,7 +215,7 @@ void GI::Screen::Gfx::ScrollBar::paint(void *pDisplay, signed int x_start, signe
 					else if((ButtonSettings->Position.Y + ButtonSettings->Size.Y) > (Position.Y + Size.Y) - 2  - (Size.X - 2))
 						ButtonSettings->Position.Y = ((Position.Y + Size.Y) - 2) - ButtonSettings->Size.Y   - (Size.X - 2);
 
-					Value = (signed int)GUtil::Converters::percentTo((signed int)Minimum, (signed int)Maximum, (signed int)(Size.Y - 4 - BtnSize - ((Size.X - 2)<<1)), (signed int)(ButtonSettings->Position.Y - (Position.Y + 2) - (Size.X - 2)));
+					Value = (gfx_s32)GUtil::Converters::percentTo((s32)Minimum, (s32)Maximum, (s32)(Size.Y - 4 - BtnSize - ((Size.X - 2)<<1)), (s32)(ButtonSettings->Position.Y - (Position.Y + 2) - (Size.X - 2)));
 
 					CursorBtnSelfModified = true;
 				}
@@ -223,7 +223,7 @@ void GI::Screen::Gfx::ScrollBar::paint(void *pDisplay, signed int x_start, signe
 			else
 			{
 				ButtonSettings->Size.X = BtnSize;
-				////signed int Steps = settings->Size.X - 4 - BtnSize;
+				////gfx_s32 Steps = settings->Size.X - 4 - BtnSize;
 				//ButtonSettings->Position.Y = settings->Position.Y + 2;
 				////ButtonSettings->Position.X = settings->Position.X + 2;
 				ButtonSettings->Size.Y = Size.Y - 4;
@@ -243,7 +243,7 @@ void GI::Screen::Gfx::ScrollBar::paint(void *pDisplay, signed int x_start, signe
 					else if((ButtonSettings->Position.X + ButtonSettings->Size.X) > (Position.X + Size.X) - 2  - (Size.Y - 2))
 						ButtonSettings->Position.X = ((Position.X + Size.X) - 2) - ButtonSettings->Size.X   - (Size.Y - 2);
 
-					Value = (signed int)GUtil::Converters::percentTo((signed int)Minimum, (signed int)Maximum, (signed int)(Size.X - 4 - BtnSize - ((Size.Y - 2)<<1)), (signed int)(ButtonSettings->Position.X - (Position.X + 2) - (Size.Y - 2)));
+					Value = (gfx_s32)GUtil::Converters::percentTo((s32)Minimum, (s32)Maximum, (s32)(Size.X - 4 - BtnSize - ((Size.Y - 2)<<1)), (s32)(ButtonSettings->Position.X - (Position.X + 2) - (Size.Y - 2)));
 
 					CursorBtnSelfModified = true;
 				}
@@ -277,9 +277,9 @@ void GI::Screen::Gfx::ScrollBar::paint(void *pDisplay, signed int x_start, signe
 	else
 	{
 		if(Size.X < Size.Y)
-			ButtonSettings->Position.Y = 2 + (Size.X - 2) + (signed int)GUtil::Converters::toPercent((signed int)Minimum, (signed int)Maximum, (signed int)(Size.Y - ((Size.X - 2)<<1) - 4 - Size.MinBtnSize), (signed int)Value);
+			ButtonSettings->Position.Y = 2 + (Size.X - 2) + (s32)GUtil::Converters::toPercent((s32)Minimum, (s32)Maximum, (s32)(Size.Y - ((Size.X - 2)<<1) - 4 - Size.MinBtnSize), (s32)Value);
 		else
-			ButtonSettings->Position.X = 2 + (Size.Y - 2) + (signed int)GUtil::Converters::toPercent((signed int)Minimum, (signed int)Maximum, (signed int)(Size.X - ((Size.Y - 2)<<1) - 4 - Size.MinBtnSize), (signed int)Value);
+			ButtonSettings->Position.X = 2 + (Size.Y - 2) + (s32)GUtil::Converters::toPercent((s32)Minimum, (s32)Maximum, (s32)(Size.X - ((Size.Y - 2)<<1) - 4 - Size.MinBtnSize), (s32)Value);
 	}
 
 	if(Internals.NeedEntireRefresh == true || Internals.NeedEntireRepaint == true)
@@ -337,7 +337,7 @@ void GI::Screen::Gfx::ScrollBar::idle(tControlCommandData* control_comand)
 	{
 		/* Parse commands */
 #ifdef NO_ENUM_ON_SWITCH
-		switch((unsigned char)control_comand->Comand)
+		switch((gfx_u8)control_comand->Comand)
 #else
 		switch((int)control_comand->Comand)
 #endif
@@ -479,10 +479,10 @@ void GI::Screen::Gfx::ScrollBar::idle(tControlCommandData* control_comand)
 												Internals.NeedEntireRefresh = true;
 	}
 
-	signed int X_StartBox = Internals.Position.X;
-	signed int Y_StartBox = Internals.Position.Y;
-	signed int X_LenBox = Internals.Size.X;
-	signed int Y_LenBox = Internals.Size.Y;
+	gfx_s32 X_StartBox = Internals.Position.X;
+	gfx_s32 Y_StartBox = Internals.Position.Y;
+	gfx_s32 X_LenBox = Internals.Size.X;
+	gfx_s32 Y_LenBox = Internals.Size.Y;
 	void *pDisplay = Internals.pDisplay;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 

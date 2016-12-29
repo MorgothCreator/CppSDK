@@ -33,6 +33,7 @@
 #include "keyboard.h"
 
 #include "string.h"
+#include "gfxdef.h"
 //#######################################################################################
 typedef enum {
 	WindowButtonChildren = 1,
@@ -56,14 +57,14 @@ typedef struct
 	bool Visible;
 	char *ChildrenName;
 	void *Children;
-	unsigned int Type;
-	unsigned int TabLocNr;
+	gfx_u32 Type;
+	gfx_u32 TabLocNr;
 }window_children_t;
 
 typedef struct
 {
-	signed int X;
-	signed int Y;
+	gfx_s32 X;
+	gfx_s32 Y;
 }ChildrenWindowSize_t;
 
 //#######################################################################################
@@ -440,8 +441,8 @@ public:
 	~Window();
 	void idle(tControlCommandData* control_comand);
 	void idle();
-	void* addChildren(unsigned int children_type, char *children_name);
-	void* addChildren(unsigned int children_type, char *children_name, unsigned int tab_nr);
+	void* addChildren(gfx_u32 children_type, char *children_name);
+	void* addChildren(gfx_u32 children_type, char *children_name, gfx_u32 tab_nr);
 
 	GI::Screen::Gfx::Button *addButton(char *name);
 	GI::Screen::Gfx::CheckBox *addCheckBox(char *name);
@@ -455,59 +456,59 @@ public:
 	GI::Screen::Gfx::Window *addTabGroup(char *name);
 
 
-	GI::Screen::Gfx::Button *addButton(char *name, unsigned int tabIndex);
-	GI::Screen::Gfx::CheckBox *addCheckBox(char *name, unsigned int tabIndex);
-	GI::Screen::Gfx::ListBox *addListBox(char *name, unsigned int tabIndex);
-	GI::Screen::Gfx::Picturebox *addPictureBox(char *name, unsigned int tabIndex);
-	GI::Screen::Gfx::TextBox *addTextBox(char *name, unsigned int tabIndex);
-	GI::Screen::Gfx::ProgressBar *addProgressBar(char *name, unsigned int tabIndex);
-	GI::Screen::Gfx::ScrollBar *addScrollBar(char *name, unsigned int tabIndex);
-	GI::Screen::Gfx::KbdQwerty *addKbdQwerty(char *name, unsigned int tabIndex);
-	GI::Screen::Gfx::Window *addWindow(char *name, unsigned int tabIndex);
-	GI::Screen::Gfx::Window *addTabGroup(char *name, unsigned int tabIndex);
+	GI::Screen::Gfx::Button *addButton(char *name, gfx_u32 tabIndex);
+	GI::Screen::Gfx::CheckBox *addCheckBox(char *name, gfx_u32 tabIndex);
+	GI::Screen::Gfx::ListBox *addListBox(char *name, gfx_u32 tabIndex);
+	GI::Screen::Gfx::Picturebox *addPictureBox(char *name, gfx_u32 tabIndex);
+	GI::Screen::Gfx::TextBox *addTextBox(char *name, gfx_u32 tabIndex);
+	GI::Screen::Gfx::ProgressBar *addProgressBar(char *name, gfx_u32 tabIndex);
+	GI::Screen::Gfx::ScrollBar *addScrollBar(char *name, gfx_u32 tabIndex);
+	GI::Screen::Gfx::KbdQwerty *addKbdQwerty(char *name, gfx_u32 tabIndex);
+	GI::Screen::Gfx::Window *addWindow(char *name, gfx_u32 tabIndex);
+	GI::Screen::Gfx::Window *addTabGroup(char *name, gfx_u32 tabIndex);
 
 
 
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Position;
 	struct
 	{
-		signed int X;
-		signed int Y;
-		signed int ScrollBarSize;
+		gfx_s32 X;
+		gfx_s32 Y;
+		gfx_s32 ScrollBarSize;
 	}Size;
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}SizeNormalScreen;
 	GI::Screen::String *Caption;
 	controls_color_struct_t Color;
 
 	struct {
 		struct {
-			colors back;
-			colors text;
+			Color::ARGB back;
+			Color::ARGB text;
 		}header;
 
 		struct {
-			colors border;
-			colors back;
-			colors text;
+			Color::ARGB border;
+			Color::ARGB back;
+			Color::ARGB text;
 		}disabled;
 		struct {
 			struct {
-				colors border;
-				colors back;
-				colors text;
+				Color::ARGB border;
+				Color::ARGB back;
+				Color::ARGB text;
 			}push;
 			struct {
-				colors border;
-				colors back;
-				colors text;
+				Color::ARGB border;
+				Color::ARGB back;
+				Color::ARGB text;
 			}pull;
 		}enabled;
 	}color;
@@ -516,13 +517,13 @@ public:
 	{
 		struct
 		{
-			unsigned int WindowBorder;
-			unsigned int WindowHeader;
+			gfx_u32 WindowBorder;
+			gfx_u32 WindowHeader;
 		}Enabled;
 		struct
 		{
-			unsigned int WindowBorder;
-			unsigned int WindowHeader;
+			gfx_u32 WindowBorder;
+			gfx_u32 WindowHeader;
 		}Disabled;
 	}WindowColor;
 	struct
@@ -564,25 +565,25 @@ public:
 		}Control;
 		struct
 		{
-			signed int X;
-			signed int Y;
-			signed int ChildrenPosition_X;
-			signed int ChildrenPosition_Y;
+			gfx_s32 X;
+			gfx_s32 Y;
+			gfx_s32 ChildrenPosition_X;
+			gfx_s32 ChildrenPosition_Y;
 		}Position;
 		struct
 		{
-			signed int X;
-			signed int Y;
-			signed int ScrollBarSize;
+			gfx_s32 X;
+			gfx_s32 Y;
+			gfx_s32 ScrollBarSize;
 		}Size;
 		struct
 		{
 			struct
 			{
-				signed int Y;
-				signed int TabGroupSelectorSize;
+				gfx_s32 Y;
+				gfx_s32 TabGroupSelectorSize;
 			}Size;
-			signed int TabGroupSelectorPosition;
+			gfx_s32 TabGroupSelectorPosition;
 			GI::Screen::Gfx::Button *Close;
 			GI::Screen::Gfx::CheckBox *MaxMin;
 			GI::Screen::Gfx::Button *Minimize;
@@ -590,28 +591,28 @@ public:
 			GI::Screen::Gfx::Button *TabGroupScrollLeft;
 			GI::Screen::Gfx::Button *TabGroupScrollRight;
 			GI::Screen::Gfx::CheckBox **TabGroupTabsList;
-			unsigned int TabGroupTabsListNr;
-			unsigned int OldTabGroupTabsListNr;
+			gfx_u32 TabGroupTabsListNr;
+			gfx_u32 OldTabGroupTabsListNr;
 		}Header;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}NormalScreenPosition;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}PositionOffset;
 		GI::Screen::String *Caption;
-		signed int HeaderTouchDownPointX;
-		signed int HeaderTouchDownPointY;
-		signed int WindowTouchDownPointX;
-		signed int WindowTouchDownPointY;
-		signed int WindowResizeTouchDownPointX;
-		signed int WindowResizeTouchDownPointY;
-		signed int WindowResizeTouchDownSizeX;
-		signed int WindowResizeTouchDownSizeY;
+		gfx_s32 HeaderTouchDownPointX;
+		gfx_s32 HeaderTouchDownPointY;
+		gfx_s32 WindowTouchDownPointX;
+		gfx_s32 WindowTouchDownPointY;
+		gfx_s32 WindowResizeTouchDownPointX;
+		gfx_s32 WindowResizeTouchDownPointY;
+		gfx_s32 WindowResizeTouchDownSizeX;
+		gfx_s32 WindowResizeTouchDownSizeY;
 		bool CursorDownOnHeader;
 		bool CursorDownOnResizeBtn;
 		bool OldStateVisible;
@@ -633,7 +634,7 @@ public:
 		bool OldTabGroupMode;
 		bool HideHeader;
 		//bool TabChanged;
-		volatile unsigned int ChildrensNr;
+		volatile gfx_u32 ChildrensNr;
 		window_children_t **Childrens;
 		CursorState OldStateCursor;
 		GI::Dev::Screen *pDisplay;
@@ -656,14 +657,14 @@ public:
 	bool HideVScroll;
 	bool HideHScroll;
 	bool HideHeader;
-	unsigned int SelectedTab;
+	gfx_u32 SelectedTab;
 	CursorState StateChangedOn;
 	tRectangle WindowMoveLimits;
 
 
 private:
 	void _newWindow(void *ParentWindow, GI::Dev::Screen *ScreenDisplay);
-	void *_addChildren(unsigned int children_type, char *children_name, unsigned int tab_nr);
+	void *_addChildren(gfx_u32 children_type, char *children_name, gfx_u32 tab_nr);
 	void setChildrens(bool call_childrens, bool transfer_settings, tControlCommandData* control_comand, bool refresh_childrens, ChildrenWindowSize_t *ChildrenWindowSize);
 };
 }

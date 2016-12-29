@@ -56,14 +56,14 @@ typedef struct ftpd_datastate_s {
 	vfs_dir_t *vfs_dir;
 	vfs_dirent_t *vfs_dirent;
 	vfs_file_t *vfs_file;
-	fifo_settings_t fifo;
+	GI::Buff::RingBuff fifo;
 	struct tcp_pcb *msgpcb;
 	void *msgfs;
 }ftpd_datastate;
 
 typedef struct  {
 	enum ftpd_state_e state;
-	fifo_settings_t fifo;
+	GI::Buff::RingBuff fifo;
 	vfs_t *vfs;
 	struct ip4_addr dataip;
 	unsigned short dataport;

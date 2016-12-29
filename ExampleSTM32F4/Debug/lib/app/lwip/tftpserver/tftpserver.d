@@ -1,5 +1,5 @@
 lib/app/lwip/tftpserver/tftpserver.o: \
- C:/GitHub/CppSDK/SDK/lib/app/lwip/tftpserver/tftpserver.c \
+ C:/GitHub/CppSDK/SDK/lib/app/lwip/tftpserver/tftpserver.cpp \
  C:/GitHub/CppSDK/SDK/lib/app/lwip/tftpserver/tftpserver.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/LwIp/src/include/lwip/mem.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/LwIp/src/include/lwip/opt.h \
@@ -29,8 +29,7 @@ lib/app/lwip/tftpserver/tftpserver.o: \
  C:/GitHub/CppSDK/SDK/lib/app/lwip/tftpserver/tftputils.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h \
- c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h \
- c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h
 
 C:/GitHub/CppSDK/SDK/lib/app/lwip/tftpserver/tftpserver.h:
 
@@ -90,6 +89,4 @@ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:
 
-c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h:
-
-c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h:
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h:

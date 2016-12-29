@@ -241,10 +241,25 @@ typedef enum
  * @}
  */
 
-/** @defgroup STM32F429I_DISCOVERY_LCD_Exported_Functions
- * @{
- */
-unsigned char BSP_LCD_Init(void *_pDisplay);
+namespace GI
+{
+namespace Dev {
+class IntScreen : public Screen{
+public:
+	void init(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight = NULL);
+	void deinit();
+	IntScreen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
+	{
+		init(timings, backlight);
+	}
+	~IntScreen()
+	{
+		deinit();
+	}
+};
+}
+}
+
 
 /*#####################################################*/
 /*#####################################################*/

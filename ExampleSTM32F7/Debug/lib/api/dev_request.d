@@ -12,11 +12,13 @@ lib/api/dev_request.o: C:/GitHub/CppSDK/SDK/lib/api/dev_request.cpp \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/uart.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/string.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
- C:/GitHub/CppSDK/SDK/lib/lib/string.h C:/GitHub/CppSDK/SDK/lib/api/std.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/string.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h \
+ C:/GitHub/CppSDK/SDK/lib/api/std.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/window.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/controls_definition.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/cache.h \
- C:/GitHub/CppSDK/SDK/lib/api/timer_api.h \
+ C:/GitHub/CppSDK/SDK/lib/api/timer.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/systime.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/button.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/checkbox.h \
@@ -30,13 +32,12 @@ lib/api/dev_request.o: C:/GitHub/CppSDK/SDK/lib/api/dev_request.cpp \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/3d.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/keyboard.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/ffconf.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/lwipopts.h \
- C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h \
- c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h \
- c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h \
  C:/GitHub/CppSDK/SDK/lib/api/init.h \
  C:/GitHub/CppSDK/SDK/lib/api/cursor_ctl_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
@@ -197,6 +198,8 @@ C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/string.h:
 
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h:
+
 C:/GitHub/CppSDK/SDK/lib/api/std.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/window.h:
@@ -205,7 +208,7 @@ C:/GitHub/CppSDK/SDK/lib/lib/gfx/controls_definition.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/cache.h:
 
-C:/GitHub/CppSDK/SDK/lib/api/timer_api.h:
+C:/GitHub/CppSDK/SDK/lib/api/timer.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/systime.h:
 
@@ -233,6 +236,8 @@ C:/GitHub/CppSDK/SDK/lib/lib/gfx/keyboard.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h:
 
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:
+
 C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h:
@@ -241,11 +246,7 @@ C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/ffconf.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/lwipopts.h:
 
-C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:
-
-c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h:
-
-c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h:
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/init.h:
 

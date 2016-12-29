@@ -28,9 +28,9 @@ void GI::Screen::Util::clipLimit(tRectangle *limited, tRectangle *limits)
 		limited->sYMax = limits->sYMax;
 }
 
-bool GI::Screen::Util::insideBox(signed int x_start, signed int y_start, signed int x_len, signed int y_len, signed int x_point, signed int y_point)
+bool GI::Screen::Util::insideBox(gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, gfx_s32 x_point, gfx_s32 y_point)
 {
-	signed int x_end = x_start + x_len ,y_end = y_start + y_len;
+	gfx_s32 x_end = x_start + x_len ,y_end = y_start + y_len;
 	if(x_point >= x_start && y_point >= y_start && x_point < x_end && y_point < y_end)
 		return true;
 	else

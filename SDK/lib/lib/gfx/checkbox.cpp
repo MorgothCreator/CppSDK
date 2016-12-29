@@ -1,7 +1,7 @@
 /*
- *  lib/gfx/listbox.c
+ *  lib/gfx/checkbox.c
  *
- *  Copyright (C) 2013  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
  *  This file is part of Multiplatform SDK.
  *
@@ -32,10 +32,10 @@
 #include "gfx_gui_paint.h"
 
 
-void GI::Screen::Gfx::CheckBox::paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand)
+void GI::Screen::Gfx::CheckBox::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand)
 {
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
-	unsigned int color = 0;
+	gfx_u32 color = 0;
 	GI::Screen::Gfx::Window *parentWindowHandler = (GI::Screen::Gfx::Window *)Internals.parentWindowHandler;
 	tRectangle back_up_clip = LcdStruct->sClipRegion;
 	CursorState cursor = control_comand->Cursor;
@@ -78,8 +78,8 @@ void GI::Screen::Gfx::CheckBox::paint(void *pDisplay, signed int x_start, signed
 	}
 	if(Caption || Caption->length)
 	{
-		signed int x_str_location;
-		signed int y_str_location;
+		gfx_s32 x_str_location;
+		gfx_s32 y_str_location;
 
 		if(Caption->wordWrap)
 		{
@@ -110,7 +110,7 @@ void GI::Screen::Gfx::CheckBox::paint(void *pDisplay, signed int x_start, signed
 				LcdStruct->sClipRegion.sYMax = ((y_start + y_len) - 4);
 				GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 				x_str_location = x_start + y_len + 4;
-				unsigned char CharHeight = Caption->getFontHeight();
+				gfx_u8 CharHeight = Caption->getFontHeight();
 				y_str_location = y_start + ((Internals.Size.Y>>1)-(CharHeight>>1));
 			}
 			else {
@@ -169,7 +169,7 @@ void GI::Screen::Gfx::CheckBox::idle(tControlCommandData* control_comand)
 	{
 		/* Parse commands */
 #ifdef NO_ENUM_ON_SWITCH
-		switch((unsigned char)control_comand->Comand)
+		switch((gfx_u8)control_comand->Comand)
 #else
 		switch((int)control_comand->Comand)
 #endif

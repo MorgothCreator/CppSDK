@@ -1,9 +1,24 @@
 /*
- * main.cpp
+ *  main.cpp
  *
- *  Created on: Dec 9, 2016
- *      Author: John Smith
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *
+ *  This file is part of CppSDK.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 #include <api/init.h>
 #include <stdio.h>
@@ -12,13 +27,43 @@
 
 #include "lib/gfx/PasswordWindowNumeric.h"
 
+#include "device/lepton_flir.h"
+
+#include <lib/gfx/libdrawtext/drawtext.h>
+
+GI::Sensor::LeptonFLIR *leptonFLIR = NULL;
+
 GI::Screen::Gfx::Window *MainWindow = NULL;
-GI::Screen::Gfx::TextBox *SensorResultTextboxGlobal;;
+GI::Screen::Gfx::TextBox *SensorResultTextboxGlobal;
+
+#if _USE_LEPTON_FLIR == 1
+GI::Screen::Gfx::Picturebox *FlirPictureBox_Global;
+unsigned short flir_buff[LEPTON_FLIR_LINE_SIZE * LEPTON_FLIR_LINES_NR] __attribute__ ((aligned (2)));
+Color::ARGB flir_buff_translated[LEPTON_FLIR_LINE_SIZE * LEPTON_FLIR_LINES_NR] __attribute__ ((aligned (4)));
+void *FlirPictureBox_Rfsh_Callback(GI::Screen::Gfx::Picturebox *structure, tControlCommandData *cursor_ctrl)
+{
+	tRectangle _dest_rectangle;
+	_dest_rectangle.sXMin = 0;
+	_dest_rectangle.sXMax = LEPTON_FLIR_LINE_SIZE;
+	_dest_rectangle.sYMin = 0;
+	_dest_rectangle.sYMax = LEPTON_FLIR_LINES_NR;
+	tRectangle _src_rectangle;
+	_src_rectangle.sXMin = 0;
+	_src_rectangle.sXMax = LEPTON_FLIR_LINE_SIZE;
+	_src_rectangle.sYMin = 0;
+	_src_rectangle.sYMax = LEPTON_FLIR_LINES_NR;
+	structure->copyRectangle((gfx_u32 *)flir_buff_translated, 0, &_dest_rectangle, &_src_rectangle, LEPTON_FLIR_LINE_SIZE, LEPTON_FLIR_LINES_NR);
+	return NULL;
+}
+#endif
+
 
 int main(void)
 {
 	GI::Sys::Timer timer_touch = GI::Sys::Timer();
 	timer_touch.interval(20);
+	GI::Sys::Timer read_flir = GI::Sys::Timer();
+	read_flir.interval(1);
 
 	/*
 	 * Create one parent window.
@@ -44,6 +89,9 @@ int main(void)
 	FlirPictureBox->Size.X = 460;
 	FlirPictureBox->Size.Y = 160;
 	FlirPictureBox->BackgroundColor = 0xFFFFFFFF;
+#if _USE_LEPTON_FLIR == 1
+	FlirPictureBox->Events.Refresh.CallBack = FlirPictureBox_Rfsh_Callback;
+#endif
 
 	/*
 	 * Create a text box.
@@ -94,7 +142,7 @@ int main(void)
     ListBox->Size.ItemSizeY = 30;
     ListBox->Size.MinScrollBtnSize = 30;
     ListBox->Caption->textAlign = alignCenter;
-    unsigned int cnt = 0;
+    u32 cnt = 0;
     char listbox_buff[32];
 	char buff_tmp[10];
 	/*
@@ -108,9 +156,13 @@ int main(void)
 		ListBox->add(listbox_buff);
     }
 
-
+    leptonFLIR = new GI::Sensor::LeptonFLIR((s8 *)"spi-1.0", (s8 *)"", GI::Sensor::LeptonFLIR::MIDLE_HEAT);
 
     newWindowPasswordNumeric(MainWindow, pass, 2, 2);
+
+	dtx_target_raster((unsigned char *)MainWindow->Internals.pDisplay->DisplayData, MainWindow->Internals.pDisplay->LcdTimings->X, MainWindow->Internals.pDisplay->LcdTimings->Y);
+	dtx_open_font("serif.ttf", 32);
+	//dtx_use_font(font, 32);
 
     /*
      * Put on parent window caption the IP of ETH interface.
@@ -154,7 +206,31 @@ int main(void)
 			if(pass->idle())
 				pass->internals.windowHandler->Visible = false;
 		}
-	}
 
+#if _USE_LEPTON_FLIR == 1
+		if(read_flir.tick())
+		{
+			memset(&flir_buff, 0, (LEPTON_FLIR_LINE_SIZE * LEPTON_FLIR_LINES_NR));
+			bool lepton_new_data = leptonFLIR->getImageARGB(flir_buff_translated, 0xFF);
+			if(lepton_new_data)
+			{
+				tRectangle _dest_rectangle;
+				_dest_rectangle.sXMin = 0;
+				_dest_rectangle.sXMax = LEPTON_FLIR_LINE_SIZE;
+				_dest_rectangle.sYMin = 0;
+				_dest_rectangle.sYMax = LEPTON_FLIR_LINES_NR;
+				tRectangle _src_rectangle;
+				_src_rectangle.sXMin = 0;
+				_src_rectangle.sXMax = LEPTON_FLIR_LINE_SIZE;
+				_src_rectangle.sYMin = 0;
+				_src_rectangle.sYMax = LEPTON_FLIR_LINES_NR;
+				FlirPictureBox->copyRectangle((gfx_u32 *)flir_buff_translated, 0, &_dest_rectangle, &_src_rectangle, LEPTON_FLIR_LINE_SIZE , LEPTON_FLIR_LINES_NR);
+			}
+		}
+#endif
+		dtx_color(0, 0, 0, 255);
+		dtx_position(0, 0);
+		dtx_printf("hello world!");
+	}
 }
 

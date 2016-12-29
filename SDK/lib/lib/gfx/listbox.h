@@ -27,28 +27,29 @@
 #include "scrollbar.h"
 #include "controls_definition.h"
 #include "string.h"
+#include "gfxdef.h"
 //#include "window_def.h"
 //#######################################################################################
 typedef struct
 {
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Size;
 	GI::Screen::String *Caption;
 	controls_color_struct_t Color;
 
 	struct {
 		struct {
-			colors border;
-			colors back;
-			colors text;
+			Color::ARGB border;
+			Color::ARGB back;
+			Color::ARGB text;
 		}disabled;
 		struct {
-			colors border;
-			colors back;
-			colors text;
+			Color::ARGB border;
+			Color::ARGB back;
+			Color::ARGB text;
 		}enabled;
 	}color;
 
@@ -68,23 +69,23 @@ public:
 	~ListBox();
 	void idle(tControlCommandData* control_comand);
 	void idle();
-	bool insert(char* text, unsigned int location);
+	bool insert(char* text, gfx_u32 location);
 	void add(char* text);
 	void clear();
-	bool remove(unsigned int location);
+	bool remove(gfx_u32 location);
 
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Position;
 	struct
 	{
-		signed int X;
-		signed int Y;
-		signed int ItemSizeY;
-		signed int ScrollSize;
-		signed int MinScrollBtnSize;
+		gfx_s32 X;
+		gfx_s32 Y;
+		gfx_s32 ItemSizeY;
+		gfx_s32 ScrollSize;
+		gfx_s32 MinScrollBtnSize;
 	}Size;
 	GI::Screen::String *Caption;
 	controls_color_struct_t Color;
@@ -92,26 +93,26 @@ public:
 	struct {
 		struct {
 			struct {
-				colors border;
-				colors back;
-				colors text;
+				Color::ARGB border;
+				Color::ARGB back;
+				Color::ARGB text;
 			}selected;
 			struct {
-				colors border;
-				colors back;
-				colors text;
+				Color::ARGB border;
+				Color::ARGB back;
+				Color::ARGB text;
 			}unSelected;
 		}disabled;
 		struct {
 			struct {
-				colors border;
-				colors back;
-				colors text;
+				Color::ARGB border;
+				Color::ARGB back;
+				Color::ARGB text;
 			}selected;
 			struct {
-				colors border;
-				colors back;
-				colors text;
+				Color::ARGB border;
+				Color::ARGB back;
+				Color::ARGB text;
 			}unSelected;
 		}enabled;
 	}color;
@@ -148,21 +149,21 @@ public:
 		}Control;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}Position;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}PositionOffset;
 		struct
 		{
-			signed int X;
-			signed int Y;
-			signed int ItemSizeY;
-			signed int ScrollSize;
-			signed int MinScrollBtnSize;
+			gfx_s32 X;
+			gfx_s32 Y;
+			gfx_s32 ItemSizeY;
+			gfx_s32 ScrollSize;
+			gfx_s32 MinScrollBtnSize;
 		}Size;
 		bool OldStateVisible;
 		bool OldStateEnabled;
@@ -171,8 +172,8 @@ public:
 		bool CursorDownInsideBox;
 		bool IsChildren;
 		bool NoPaintBackGround;
-		unsigned int ItemStartOnBox;
-		unsigned int OldItemStartOnBox;
+		gfx_u32 ItemStartOnBox;
+		gfx_u32 OldItemStartOnBox;
 		CursorState OldStateCursor;
 		GI::Dev::Screen *pDisplay;
 		GI::Screen::Gfx::ScrollBar* ScrollBar;
@@ -183,12 +184,12 @@ public:
 	bool Enabled;
 	bool AlwaisShowScrollbar;
 	CursorState StateChangedOn;
-	unsigned int ItemsCount;
-	unsigned int SelectedItem;
+	gfx_u32 ItemsCount;
+	gfx_u32 SelectedItem;
 	listboxItem **Items;
 
 private:
-	bool paint(listboxItem* settings, void *pDisplay, signed int x_start, signed int y_start, tControlCommandData* control_comand, bool Pushed, bool Paint);
+	bool paint(listboxItem* settings, void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, tControlCommandData* control_comand, bool Pushed, bool Paint);
 
 };
 }

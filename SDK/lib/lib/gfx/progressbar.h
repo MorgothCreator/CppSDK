@@ -27,6 +27,7 @@
 //#include "window_def.h"
 #include <lib/util/converters.h>
 #include "string.h"
+#include "gfxdef.h"
 //#######################################################################################
 namespace GI
 {
@@ -44,29 +45,29 @@ public:
 
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Position;
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Size;
 	GI::Screen::String *Caption;
 	controls_color_struct_t Color;
 
 	struct {
 		struct {
-			colors border;
-			colors back;
-			colors progress;
-			colors text;
+			Color::ARGB border;
+			Color::ARGB back;
+			Color::ARGB progress;
+			Color::ARGB text;
 		}disabled;
 		struct {
-			colors border;
-			colors back;
-			colors progress;
-			colors text;
+			Color::ARGB border;
+			Color::ARGB back;
+			Color::ARGB progress;
+			Color::ARGB text;
 		}enabled;
 	}color;
 
@@ -109,22 +110,22 @@ public:
 		}Control;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}Position;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}PositionOffset;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}Size;
-		unsigned int OldValue;
-		unsigned int OldMinimValue;
-		unsigned int OldMaximValue;
+		gfx_u32 OldValue;
+		gfx_u32 OldMinimValue;
+		gfx_u32 OldMaximValue;
 		bool OldStateVisible;
 		bool OldStateEnabled;
 		bool OldStateCheched;
@@ -140,13 +141,13 @@ public:
 	}Internals;
 	bool Visible;
 	bool Enabled;
-	unsigned int Value;
-	unsigned int MinimValue;
-	unsigned int MaximValue;
+	gfx_u32 Value;
+	gfx_u32 MinimValue;
+	gfx_u32 MaximValue;
 	CursorState StateChangedOn;
 
 private:
-	void paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand);
+	void paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand);
 
 };
 }

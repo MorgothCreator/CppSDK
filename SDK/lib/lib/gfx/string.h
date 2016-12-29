@@ -14,6 +14,7 @@
 #include <api/lcd_def.h>
 #include "resource/fonts.h"
 #include <lib/string.h>
+#include "gfxdef.h"
 
 #define FONT_FMT_UNCOMPRESSED   0x00
 #define ABSENT_CHAR_REPLACEMENT '.'
@@ -29,9 +30,9 @@
 #endif
 /*#####################################################*/
 #ifdef FLASH_DEVICE
-const unsigned char CharTable6x8[] PROGMEM =
+const gfx_u8 CharTable6x8[] PROGMEM =
 #else
-static const unsigned char CharTable6x8[] =
+static const gfx_u8 CharTable6x8[] =
 #endif
 {
 	6                          ,0          ,6          ,8          ,32            ,128,
@@ -136,7 +137,7 @@ static const unsigned char CharTable6x8[] =
 
 
 #ifndef INT_SIZE_IS_2_BYTES
-//#if 4 == sizeof(unsigned int)
+//#if 4 == sizeof(gfx_u32)
 #define ReturnCommand_gp  (unsigned)(29)
 #define ReturnCommand_gm  (unsigned)(0x07 << ReturnCommand_gp)
 #define ReturnCommand_NoCommand  (unsigned)(0x00<<ReturnCommand_gp)
@@ -182,25 +183,25 @@ namespace Screen
 		void appendF(const char *pcString, ...);
 		void appendF(GI::String *string, ...);
 		void appendF(GI::Screen::String *string, ...);
-		void insert(GI::String* string, unsigned int location);
-		void insert(GI::Screen::String* string, unsigned int location);
-		void insert(char *string, unsigned int location);
+		void insert(GI::String* string, gfx_u32 location);
+		void insert(GI::Screen::String* string, gfx_u32 location);
+		void insert(char *string, gfx_u32 location);
 		void clone(GI::Screen::String* string);
 		void clear();
-		char *subString(unsigned int position, unsigned int len);
+		char *subString(gfx_u32 position, gfx_u32 len);
 
 		//#######################################################################################
-		unsigned char getFontHeight()
+		gfx_u8 getFontHeight()
 		{
 			return read_data_byte(pFont->ucHeight);
 		}
-		void getStrSelect(signed int *Start, signed int *SelStartReturn, signed int *SelLenReturn, signed int _XPush, signed int _YPush, signed int _XPull, signed int _YPull, signed int lX, signed int lY, unsigned int *return_command);
-		signed int getStrWidth();
-		signed int getStrRowsNr();
+		void getStrSelect(gfx_s32 *Start, gfx_s32 *SelStartReturn, gfx_s32 *SelLenReturn, gfx_s32 _XPush, gfx_s32 _YPush, gfx_s32 _XPull, gfx_s32 _YPull, gfx_s32 lX, gfx_s32 lY, gfx_u32 *return_command);
+		gfx_s32 getStrWidth();
+		gfx_s32 getStrRowsNr();
 		StringProperties_t getStrProp();
-		signed int drawString();
-		signed int drawStringTiny();
-		signed int getStrPropTiny();
+		gfx_s32 drawString();
+		gfx_s32 drawStringTiny();
+		gfx_s32 getStrPropTiny();
 
 
 
@@ -209,21 +210,21 @@ namespace Screen
 		tRectangle Capsule;
 		GI::Dev::Screen *pDisplay;
 		tFont *pFont;
-		signed int length;
-		unsigned int foreground_color;
-		unsigned int background_color;
+		gfx_s32 length;
+		gfx_u32 foreground_color;
+		gfx_u32 background_color;
 		bool ulOpaque;
 		bool ulVisible;
 		bool wordWrap;
-		signed int lX;
-		signed int lY;
-		signed int _SelStart;
-		signed int _SelLen;
+		gfx_s32 lX;
+		gfx_s32 lY;
+		gfx_s32 _SelStart;
+		gfx_s32 _SelLen;
 		allign textAlign;
 		/*
 		 * Private variables.
 		 */
-		unsigned int modifyed;
+		gfx_u32 modifyed;
 		int error;
 		//bool initialized;
 	private:

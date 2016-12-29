@@ -43,7 +43,7 @@ CfgSpi spiCfg[] =
 //{ "spi-0.1", 0, 0, 0, 0, },
 //{ "spi-0.2", 0, 0, 0, 0, },
 //{ "spi-0.3", 0, 0, 0, 0, },
-{ "spi-1.0", pin_mux_convert_to_pin(IOA, 12), pin_mux_convert_to_pin(IOB, 15), pin_mux_convert_to_pin(IOB, 14), pin_mux_convert_to_pin(IOA, 11), 25000000, CfgSpi::spiMode0, false},
+{ "spi-1.0", pin_mux_convert_to_pin(IOA, 12), pin_mux_convert_to_pin(IOB, 15), pin_mux_convert_to_pin(IOB, 14), pin_mux_convert_to_pin(IOA, 11), 16000000, CfgSpi::spiMode3, false},
 //{ "spi-1.1"	, pin_mux_convert_to_pin(IOA, 12), pin_mux_convert_to_pin(IOB, 15), pin_mux_convert_to_pin(IOB, 14), 0, 25000000, CfgSpi::spiMode0, false},
 //{ "spi-1.2"	, pin_mux_convert_to_pin(IOA, 12), pin_mux_convert_to_pin(IOB, 15), pin_mux_convert_to_pin(IOB, 14), 0, 25000000, CfgSpi::spiMode0, false},
 //{ "spi-1.3"	, pin_mux_convert_to_pin(IOA, 12), pin_mux_convert_to_pin(IOB, 15), pin_mux_convert_to_pin(IOB, 14), 0, 25000000, CfgSpi::spiMode0, false},

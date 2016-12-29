@@ -26,6 +26,7 @@
 #include "controls_definition.h"
 #include "button.h"
 #include "string.h"
+#include "gfxdef.h"
 
 //#######################################################################################
 namespace GI
@@ -44,25 +45,25 @@ public:
 
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Position;
 	struct
 	{
-		signed int X;
-		signed int Y;
-		signed int MinBtnSize;
+		gfx_s32 X;
+		gfx_s32 Y;
+		gfx_s32 MinBtnSize;
 	}Size;
 	controls_color_struct_t Color;
 
 	struct {
 		struct {
-			colors border;
-			colors back;
+			Color::ARGB border;
+			Color::ARGB back;
 		}disabled;
 		struct {
-			colors border;
-			colors back;
+			Color::ARGB border;
+			Color::ARGB back;
 		}enabled;
 	}color;
 
@@ -105,19 +106,19 @@ public:
 		}Control;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}Position;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}PositionOffset;
 		struct
 		{
-			signed int X;
-			signed int Y;
-			signed int MinBtnSize;
+			gfx_s32 X;
+			gfx_s32 Y;
+			gfx_s32 MinBtnSize;
 		}Size;
 		bool CursorDownInsideBox;
 		bool OldStateVisible;
@@ -126,12 +127,12 @@ public:
 		bool NeedEntireRepaint;
 		bool NoPaintBackGround;
 		bool IsChildren;
-		signed int OldMinimum;
-		signed int OldMaximum;
-		signed int OldValue;
-		signed int CoordonateOfTouchDown;
-		signed int CoordonateOfButtonDown;
-		//signed int OffsetButtonCoord;
+		gfx_s32 OldMinimum;
+		gfx_s32 OldMaximum;
+		gfx_s32 OldValue;
+		gfx_s32 CoordonateOfTouchDown;
+		gfx_s32 CoordonateOfButtonDown;
+		//gfx_s32 OffsetButtonCoord;
 		CursorState OldStateCursor;
 		GI::Screen::Gfx::Button *BtnSettings;
 		GI::Screen::Gfx::Button *BtnUpSettings;
@@ -142,13 +143,13 @@ public:
 	}Internals;
 	bool Visible;
 	bool Enabled;
-	signed int Minimum;
-	signed int Maximum;
-	signed int Value;
+	gfx_s32 Minimum;
+	gfx_s32 Maximum;
+	gfx_s32 Value;
 	CursorState StateChangedOn;
 
 private:
-	void paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand);
+	void paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand);
 
 };
 }

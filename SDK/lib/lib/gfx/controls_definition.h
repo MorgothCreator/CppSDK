@@ -1,7 +1,7 @@
 /*
  *  lib/gfx/controls_definition.h
  *
- *  Copyright (C) 2013  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
  *  This file is part of Multiplatform SDK.
  *
@@ -29,13 +29,14 @@
 #include <string.h>
 #include "sys/cache.h"
 #include "api/lcd_def.h"
-#include <api/timer_api.h>
+#include <api/timer.h>
+#include "gfxdef.h"
 /*#####################################################*/
 #define FONT_FMT_UNCOMPRESSED   0x00
 #define ABSENT_CHAR_REPLACEMENT '.'
 /*#####################################################*/
 #ifndef INT_SIZE_IS_2_BYTES
-//#if 4 == sizeof(unsigned int)
+//#if 4 == sizeof(gfx_u32)
 #define ReturnCommand_gp  (unsigned)(29)
 #define ReturnCommand_gm  (unsigned)(0x07 << ReturnCommand_gp)
 #define ReturnCommand_NoCommand  (unsigned)(0x00<<ReturnCommand_gp)
@@ -60,31 +61,31 @@
 #define BORDER_LINE_ONE_DARK		3
 #define BORDER_LINE_TWO_DARK		2
 /*#####################################################*/
-typedef unsigned int colors;
+typedef gfx_u32 colors;
 
 typedef struct
 {
-	unsigned int Control_Color_Enabled_Ink_Pull;
-	unsigned int Control_Color_Enabled_Ink_Push;
-	unsigned int Control_Color_Enabled_Buton_Pull;
-	unsigned int Control_Color_Enabled_Buton_Push;
-	unsigned int Control_Color_Enabled_Border_Pull;
-	unsigned int Control_Color_Enabled_Border_Push;
-	unsigned int Control_Color_Enabled_BackGround;
-	unsigned int Control_Color_Enabled_TextBackGround;
-	unsigned int Control_Color_Enabled_WindowBorder;
-	unsigned int Control_Color_Enabled_WindowHeader;
+	gfx_u32 Control_Color_Enabled_Ink_Pull;
+	gfx_u32 Control_Color_Enabled_Ink_Push;
+	gfx_u32 Control_Color_Enabled_Buton_Pull;
+	gfx_u32 Control_Color_Enabled_Buton_Push;
+	gfx_u32 Control_Color_Enabled_Border_Pull;
+	gfx_u32 Control_Color_Enabled_Border_Push;
+	gfx_u32 Control_Color_Enabled_BackGround;
+	gfx_u32 Control_Color_Enabled_TextBackGround;
+	gfx_u32 Control_Color_Enabled_WindowBorder;
+	gfx_u32 Control_Color_Enabled_WindowHeader;
 
-	unsigned int Control_Color_Disabled_Ink_Pull;
-	//unsigned int Control_Color_Disabled_Ink_Push;
-	unsigned int Control_Color_Disabled_Buton_Pull;
-	//unsigned int Control_Color_Disabled_Buton_Push;
-	unsigned int Control_Color_Disabled_Border_Pull;
-	//unsigned int Control_Color_Disabled_Border_Push;
-	unsigned int Control_Color_Disabled_BackGround;
-	unsigned int Control_Color_Disabled_WindowBorder;
-	unsigned int Control_Color_Disabled_WindowHeader;
-	unsigned int Scren;
+	gfx_u32 Control_Color_Disabled_Ink_Pull;
+	//gfx_u32 Control_Color_Disabled_Ink_Push;
+	gfx_u32 Control_Color_Disabled_Buton_Pull;
+	//gfx_u32 Control_Color_Disabled_Buton_Push;
+	gfx_u32 Control_Color_Disabled_Border_Pull;
+	//gfx_u32 Control_Color_Disabled_Border_Push;
+	gfx_u32 Control_Color_Disabled_BackGround;
+	gfx_u32 Control_Color_Disabled_WindowBorder;
+	gfx_u32 Control_Color_Disabled_WindowHeader;
+	gfx_u32 Scren;
 	tFont* DefaultFont;
 }controlscolor;
 /*#####################################################*/
@@ -153,9 +154,9 @@ typedef enum
 /*#####################################################*/
 typedef struct
 {
-	signed int X;
-	signed int Y;
-	unsigned int Data;
+	gfx_s32 X;
+	gfx_s32 Y;
+	gfx_u32 Data;
 	void* Settings;
 	bool CursorCoordonateUsed;
 	bool WindowRefresh;
@@ -167,34 +168,34 @@ typedef struct
 {
 	struct
 	{
-		unsigned int Ink;
-		unsigned int Buton;
-		unsigned int Border;
-		unsigned int BackGround;
+		gfx_u32 Ink;
+		gfx_u32 Buton;
+		gfx_u32 Border;
+		gfx_u32 BackGround;
 		double ScalerOnDisabled;
 	}Disabled;
 	struct
 	{
 		struct
 		{
-			unsigned int Push;
-			unsigned int Pull;
+			gfx_u32 Push;
+			gfx_u32 Pull;
 		}Ink;
 		struct
 		{
-			unsigned int Push;
-			unsigned int Pull;
+			gfx_u32 Push;
+			gfx_u32 Pull;
 		}Buton;
 		struct
 		{
-			unsigned int Push;
-			unsigned int Pull;
+			gfx_u32 Push;
+			gfx_u32 Pull;
 		}Border;
-		unsigned int TextBackGround;
-		unsigned int BackGround;
+		gfx_u32 TextBackGround;
+		gfx_u32 BackGround;
 		double ScalerOnDisabled;
 	}Enabled;
-	unsigned int Scren;
+	gfx_u32 Scren;
 }controls_color_struct_t;
 /*#####################################################*/
 /*typedef struct
@@ -214,24 +215,24 @@ typedef struct
 {
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Position;
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Size;
 	struct
 	{
-		unsigned int Background;
-		unsigned int Scren;
+		gfx_u32 Background;
+		gfx_u32 Scren;
 	}Color;
 	bool Visible;
 	bool Enabled;
 	struct
 	{
-		unsigned int ItemsNumber;
+		gfx_u32 ItemsNumber;
 		void** List;
 	}Children;
 	struct
@@ -243,13 +244,13 @@ typedef struct
 	}Internals;
 }tPanel;
 /*#####################################################*/
-unsigned int controlls_change_color(unsigned int color, double value);
-bool screen_copy(void *pDisplayTo, void *pDisplayFrom, bool put_cursor, signed int X, signed int Y, unsigned int color);
-void TouchPaintPoint(void *pDisplay, signed int X, signed int Y, unsigned int color);
-void put_circle(void *pDisplay, signed int x, signed int y, signed int _radius, unsigned char fill, unsigned int color);
-void put_line(void *pDisplay, signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color);
-void put_elipse(void *pDisplay, signed int xc,signed int yc,signed int _rx,signed int _ry, unsigned char Fill, unsigned int color);
-void put_triangle(void *pDisplay, signed int  Ax,signed int  Ay,signed int  Bx,signed int  By,signed int  Cx,signed int  Cy, unsigned char Fill, unsigned int color);
+gfx_u32 controlls_change_color(gfx_u32 color, double value);
+bool screen_copy(void *pDisplayTo, void *pDisplayFrom, bool put_cursor, gfx_s32 X, gfx_s32 Y, gfx_u32 color);
+void TouchPaintPoint(void *pDisplay, gfx_s32 X, gfx_s32 Y, gfx_u32 color);
+void put_circle(void *pDisplay, gfx_s32 x, gfx_s32 y, gfx_s32 _radius, gfx_u8 fill, gfx_u32 color);
+void put_line(void *pDisplay, gfx_s32 X1, gfx_s32 Y1, gfx_s32 X2, gfx_s32 Y2, gfx_u8 width, gfx_u32 color);
+void put_elipse(void *pDisplay, gfx_s32 xc,gfx_s32 yc,gfx_s32 _rx,gfx_s32 _ry, gfx_u8 Fill, gfx_u32 color);
+void put_triangle(void *pDisplay, gfx_s32  Ax,gfx_s32  Ay,gfx_s32  Bx,gfx_s32  By,gfx_s32  Cx,gfx_s32  Cy, gfx_u8 Fill, gfx_u32 color);
 
 
 /*#####################################################*/

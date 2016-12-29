@@ -25,7 +25,7 @@
 #include "graphic_string.h"
 #include "../../api/lcd_def.h"
 #include "util.h"
-#include "../../api/timer_api.h"
+#include "../../api/timer.h"
 #include "controls_definition.h"
 //#######################################################################################
 #if 0

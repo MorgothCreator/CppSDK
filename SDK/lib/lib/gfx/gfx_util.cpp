@@ -21,12 +21,12 @@
 
 #include "gfx_util.h"
 //#######################################################################################
-/*unsigned int gfx_modify_color(unsigned int color, signed char modify)
+/*gfx_u32 gfx_modify_color(gfx_u32 color, s8 modify)
 {
 	if(modify == 0) return color;
-	unsigned char R = color;
-	unsigned char G = color>>8;
-	unsigned char B = color>>16;
+	gfx_u8 R = color;
+	gfx_u8 G = color>>8;
+	gfx_u8 B = color>>16;
 	if (modify > 0)
 	{
 		R = (R<<modify);
@@ -35,7 +35,7 @@
 	} 
 	else
 	{
-		unsigned char _modify = 255-modify;
+		gfx_u8 _modify = 255-modify;
 		R = R>>_modify;
 		G = G>>_modify;
 		B = B>>_modify;

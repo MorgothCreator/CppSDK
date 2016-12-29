@@ -1,8 +1,22 @@
 /*
- * lcd_interface.c
+ *  screen.cpp
  *
- * Created: 2/8/2013 10:26:43 PM
- *  Author: XxXx
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *
+ *  This file is part of CppSDK.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "include/stm32f7xx.h"
@@ -878,7 +892,7 @@ static void LL_FillBuffer(uint32_t LayerIndex, void *pDst, uint32_t xSize,
 
 #if defined(STM32F769xx) || defined(STM32F779xx)
 
-GI::Dev::Screen::Screen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight = NULL)
+void GI::Dev::IntScreen::init(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
 {
 	this->backlight = backlight;
 	LcdTimings = timings;
@@ -897,7 +911,7 @@ GI::Dev::Screen::Screen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight = NULL)
 #endif
 }
 
-GI::Dev::Screen::~Screen()
+void GI::Dev::IntScreen::deinit()
 {
 
 }
@@ -1106,15 +1120,13 @@ void GI::Dev::Screen::copyRectangle32Bit(unsigned char *rgb_buffer,
 	 else
 	 Y_Start_Src_Buff = (~Y_Start_Src_Buff) + 1;*/
 
-	uint32_t destination =
-			(uint32_t) ((volatile unsigned int *) LCD_FB_START_ADDRESS)
-					+ ((y1 * LcdTimings->X + x1) * 4);
+	uint32_t destination = (uint32_t) ((volatile unsigned int *) LCD_FB_START_ADDRESS) + (((y1 * LcdTimings->X) + x1) * 4);
 	uint32_t source = (uint32_t) rgb_buffer;
 
 	/*##-1- Configure the DMA2D Mode, Color Mode and output offset #############*/
-	Dma2dHandle.Init.Mode = DMA2D_M2M_PFC;
+	Dma2dHandle.Init.Mode = DMA2D_M2M;
 	Dma2dHandle.Init.ColorMode = DMA2D_ARGB8888;
-	Dma2dHandle.Init.OutputOffset = LcdTimings->X - width;
+	Dma2dHandle.Init.OutputOffset = (LcdTimings->X - width) * 2;
 
 	/*##-2- DMA2D Callbacks Configuration ######################################*/
 	Dma2dHandle.XferCpltCallback = NULL;
@@ -1132,8 +1144,7 @@ void GI::Dev::Screen::copyRectangle32Bit(unsigned char *rgb_buffer,
 	{
 		if (HAL_DMA2D_ConfigLayer(&Dma2dHandle, 0) == HAL_OK)
 		{
-			if (HAL_DMA2D_Start(&Dma2dHandle, source, destination, width,
-					height) == HAL_OK)
+			if (HAL_DMA2D_Start(&Dma2dHandle, source, destination, width * 2, height) == HAL_OK)
 			{
 				/* Polling For DMA transfer */
 				HAL_DMA2D_PollForTransfer(&Dma2dHandle, 100);

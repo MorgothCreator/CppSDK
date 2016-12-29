@@ -1,8 +1,22 @@
 /*
- * io_handle.cpp
+ *  api/io_handler.cpp
  *
- *  Created on: Dec 24, 2016
- *      Author: John Smith
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *
+ *  This file is part of CppSDK.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "io_handle.h"
@@ -59,6 +73,8 @@ GI::IO::~IO()
 
 int GI::IO::write(unsigned char *buff, unsigned int len)
 {
+	if(!devHandler || !ioDevType)
+		return SYS_ERR_NO_REGISTERED_DEVICE;
 	switch((int)ioDevType)
 	{
 	case IO_DEV_I2C:
@@ -73,6 +89,8 @@ int GI::IO::write(unsigned char *buff, unsigned int len)
 
 int GI::IO::read(unsigned char *buff, unsigned int len)
 {
+	if(!devHandler || !ioDevType)
+		return SYS_ERR_NO_REGISTERED_DEVICE;
 	switch((int)ioDevType)
 	{
 	case IO_DEV_I2C:
@@ -87,6 +105,8 @@ int GI::IO::read(unsigned char *buff, unsigned int len)
 
 SysErr GI::IO::ctl(GI::IO::ioCtl_e cmd, unsigned long *data)
 {
+	if(!devHandler || !ioDevType)
+		return SYS_ERR_NO_REGISTERED_DEVICE;
 	ioCtlRwMsgs_t *msgs = (ioCtlRwMsgs_t *)data;
 	ioCtlMsg_t *msg = msgs->msgs;
 	switch((int)cmd)

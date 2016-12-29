@@ -31,9 +31,9 @@
 #include "sys/plat_properties.h"
 
 
-void GI::Screen::Gfx::ProgressBar::paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand)
+void GI::Screen::Gfx::ProgressBar::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand)
 {
-	unsigned int color = 0;
+	gfx_u32 color = 0;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	GI::Screen::Gfx::Window *parentWindowHandler = (GI::Screen::Gfx::Window*)Internals.parentWindowHandler;
 	tRectangle back_up_clip = LcdStruct->sClipRegion;
@@ -78,7 +78,7 @@ void GI::Screen::Gfx::ProgressBar::paint(void *pDisplay, signed int x_start, sig
 	if(!Enabled || !parentWindowHandler->Internals.OldStateEnabled)
 		color = Color.Disabled.Buton;
 	LcdStruct->drawRectangle(x_start + 2, y_start + 2, x_len - 4, y_len - 4, true, color);
-	signed int Position = (signed int)GUtil::Converters::toPercent((signed int)MinimValue, (signed int)MaximValue, (signed int)(Size.X - 8), (signed int)Value);
+	gfx_s32 Position = (gfx_s32)GUtil::Converters::toPercent((s32)MinimValue, (s32)MaximValue, (s32)(Size.X - 8), (s32)Value);
 	LcdStruct->drawRectangle(x_start + 4, y_start + 4, Position, y_len - 8, true, controlls_change_color(color, -2));
 	if(Caption || Caption->length)
 	{
@@ -87,8 +87,8 @@ void GI::Screen::Gfx::ProgressBar::paint(void *pDisplay, signed int x_start, sig
 		LcdStruct->sClipRegion.sXMax = ((x_start + x_len) - 4);
 		LcdStruct->sClipRegion.sYMax = ((y_start + y_len) - 4);
 		GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
-		signed int x_str_location;
-		signed int y_str_location;
+		gfx_s32 x_str_location;
+		gfx_s32 y_str_location;
 		if(Caption->wordWrap)
 		{
 			StringProperties_t str_properties = Caption->getStrProp();
@@ -97,7 +97,7 @@ void GI::Screen::Gfx::ProgressBar::paint(void *pDisplay, signed int x_start, sig
 		}else
 		{
 			x_str_location = x_start + 4;
-			unsigned char CharHeight = Caption->getFontHeight();
+			gfx_u8 CharHeight = Caption->getFontHeight();
 			y_str_location = y_start + ((Internals.Size.Y>>1)-(CharHeight>>1));
 		}
 		Caption->ulOpaque = false;
@@ -136,9 +136,9 @@ void GI::Screen::Gfx::ProgressBar::idle(tControlCommandData* control_comand)
 	{
 		/* Parse commands */
 #ifdef NO_ENUM_ON_SWITCH
-		switch((unsigned char)control_comand->Comand)
+		switch((gfx_u8)control_comand->Comand)
 #else
-		switch((int)control_comand->Comand)
+		switch((gfx_s32)control_comand->Comand)
 #endif
 		{
 		case Control_Entire_Repaint:
@@ -172,8 +172,8 @@ void GI::Screen::Gfx::ProgressBar::idle(tControlCommandData* control_comand)
 		Internals.OldValue = Value;
 	}
 
-	//signed int Position = to_percentage(settings->MinimValue, settings->MaximValue, settings->Size.X - 4, settings->Value);
-	//signed int OldPosition = to_percentage(settings->MinimValue, settings->MaximValue, settings->Size.X - 4, settings->Internals.OldValue);
+	//gfx_s32 Position = to_percentage(settings->MinimValue, settings->MaximValue, settings->Size.X - 4, settings->Value);
+	//gfx_s32 OldPosition = to_percentage(settings->MinimValue, settings->MaximValue, settings->Size.X - 4, settings->Internals.OldValue);
 	//if(Position != OldPosition)
 	if(Value != Internals.OldValue)
 	{
@@ -224,10 +224,10 @@ void GI::Screen::Gfx::ProgressBar::idle(tControlCommandData* control_comand)
 		}
 	}
 
-	int X_StartBox = Internals.Position.X;
-	int Y_StartBox = Internals.Position.Y;
-	int X_LenBox = Internals.Size.X;
-	int Y_LenBox = Internals.Size.Y;
+	gfx_s32 X_StartBox = Internals.Position.X;
+	gfx_s32 Y_StartBox = Internals.Position.Y;
+	gfx_s32 X_LenBox = Internals.Size.X;
+	gfx_s32 Y_LenBox = Internals.Size.Y;
 	void *pDisplay = Internals.pDisplay;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 
@@ -347,7 +347,7 @@ void GI::Screen::Gfx::ProgressBar::idle(tControlCommandData* control_comand)
 		{
 			if(Internals.CursorDownInsideBox)
 			{
-				Value = GUtil::Converters::percentTo(MinimValue, MaximValue, Size.X - 8, control_comand->X - (X_StartBox + 4));
+				Value = GUtil::Converters::percentTo((s32)MinimValue, MaximValue, Size.X - 8, control_comand->X - (X_StartBox + 4));
 				if(Value > MaximValue)
 					Value = MaximValue;
 				if(Value < MinimValue)

@@ -26,6 +26,7 @@
 #include "scrollbar.h"
 #include "controls_definition.h"
 #include "string.h"
+#include "gfxdef.h"
 //#include "window_def.h"
 //#######################################################################################
 namespace GI
@@ -42,7 +43,7 @@ public:
 	void idle();
 	bool setText(char* string);
 	bool append(char* string);
-	bool insert(char* string, unsigned int location);
+	bool insert(char* string, gfx_u32 location);
 	bool toUpper();
 	bool toLower();
 	bool setFont(tFont* font);
@@ -52,39 +53,39 @@ public:
 
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Position;
 	struct
 	{
-		signed int X;
-		signed int Y;
-		signed int ScrollSize;
+		gfx_s32 X;
+		gfx_s32 Y;
+		gfx_s32 ScrollSize;
 	}Size;
 	//controls_caption_t Caption;
 	controls_color_struct_t Color;
 
 	struct {
 		struct {
-			colors border;
-			colors back;
+			Color::ARGB border;
+			Color::ARGB back;
 			struct {
-				colors back;
-				colors text;
+				Color::ARGB back;
+				Color::ARGB text;
 			}selectedText;
 			struct {
-				colors text;
+				Color::ARGB text;
 			}unSelectedText;
 		}disabled;
 		struct {
-			colors border;
-			colors back;
+			Color::ARGB border;
+			Color::ARGB back;
 			struct {
-				colors back;
-				colors text;
+				Color::ARGB back;
+				Color::ARGB text;
 			}selectedText;
 			struct {
-				colors text;
+				Color::ARGB text;
 			}unSelectedText;
 		}enabled;
 	}color;
@@ -121,19 +122,19 @@ public:
 		}Control;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}Position;
 		struct
 		{
-			signed int X;
-			signed int Y;
+			gfx_s32 X;
+			gfx_s32 Y;
 		}PositionOffset;
 		struct
 		{
-			signed int X;
-			signed int Y;
-			signed int ScrollSize;
+			gfx_s32 X;
+			gfx_s32 Y;
+			gfx_s32 ScrollSize;
 		}Size;
 		//controls_caption_t Caption;
 		bool OldStateVisible;
@@ -144,11 +145,11 @@ public:
 		bool CursorDownInsideTextBox;
 		bool IsChildren;
 		bool NoPaintBackGround;
-		signed int OldSelStart;
-		signed int OldSelLen;
-		signed int PenPushX;
-		signed int PenPushY;
-		signed int Start;
+		gfx_s32 OldSelStart;
+		gfx_s32 OldSelLen;
+		gfx_s32 PenPushX;
+		gfx_s32 PenPushY;
+		gfx_s32 Start;
 		CursorState OldStateCursor;
 		GI::Screen::Gfx::ScrollBar *Hscrollbar;
 		GI::Screen::Gfx::ScrollBar *Vscrollbar;
@@ -159,15 +160,15 @@ public:
 	}Internals;
 	bool Visible;
 	bool Enabled;
-	unsigned int SelectionStart;
-	unsigned int SelectionLength;
-	signed int SelStart;
-	signed int SelLen;
+	gfx_u32 SelectionStart;
+	gfx_u32 SelectionLength;
+	gfx_s32 SelStart;
+	gfx_s32 SelLen;
 	GI::Screen::String *text;
 	CursorState StateChangedOn;
 
 private:
-	void paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand);
+	void paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand);
 
 };
 }

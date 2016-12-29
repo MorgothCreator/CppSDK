@@ -30,33 +30,35 @@
  *
  */
 
-#include "main.h"
+#include <string.h>
+//#include "lib/fs/fat/inc/ff.h"
 #include "interface/LwIp/src/include/lwip/apps/httpd_opts.h"
 #include "interface/LwIp/src/include/lwip/def.h"
 #include "interface/LwIp/src/include/lwip/apps/fs.h"
-#include "lib/fs/fat/inc/ff.h"
-#include <string.h>
 
 /*-----------------------------------------------------------------------------------*/
 err_t fs_open(fs_file *file, const char *name)
 {
-	if ((file == NULL ) || (name == NULL ))
+	if (name == NULL )
 	{
 		return ERR_ARG;
 	}
 	char tmp_str[256];
 	strncpy(tmp_str, LWIP_HTTPD_SERVER_DRIVE_PATH, 256);
 	strncat(tmp_str, name, 256);
-	if (f_open(file, tmp_str, FA_READ) == FR_OK)
+	if (file && f_open(file, tmp_str, FA_READ) == FR_OK)
+	{
 		return ERR_OK;
+	}
 	/* file not found */
+	LWIP_UNUSED_ARG(file);
 	return ERR_VAL;
 }
 /*-----------------------------------------------------------------------------------*/
 void fs_close(fs_file *file)
 {
 	f_close(file);
-	LWIP_UNUSED_ARG(file);
+	LWIP_UNUSED_ARG(*file);
 }
 /*-----------------------------------------------------------------------------------*/
 unsigned long fs_read(fs_file *file, char *buffer, int count)

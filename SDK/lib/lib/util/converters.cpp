@@ -24,9 +24,9 @@
 //#####################################################
 #include <lib/util/converters.h>
 //#####################################################
-signed int GUtil::Converters::toPercent(signed int MinValue, signed int MaxValue, signed int MaxPercentageValue, signed int Value)
+s32 GUtil::Converters::toPercent(s32 MinValue, s32 MaxValue, s32 MaxPercentageValue, s32 Value)
 {
-	signed int ReturnedValue = 0;
+	s32 ReturnedValue = 0;
 	if (MaxValue < 65536)
 		ReturnedValue = ((Value- MinValue) * 0x10000)/(((MaxValue - MinValue) * 0x10000)/MaxPercentageValue);
 	else
@@ -38,9 +38,9 @@ signed int GUtil::Converters::toPercent(signed int MinValue, signed int MaxValue
 	return ReturnedValue;
 }
 //#####################################################
-unsigned int GUtil::Converters::toPercent(unsigned int MinValue, unsigned int MaxValue, unsigned int MaxPercentageValue, unsigned int Value)
+u32 GUtil::Converters::toPercent(u32 MinValue, u32 MaxValue, u32 MaxPercentageValue, u32 Value)
 {
-	unsigned int ReturnedValue = 0;
+	u32 ReturnedValue = 0;
 	if (MaxValue < 65536)
 		ReturnedValue = ((Value- MinValue) * 0x10000)/(((MaxValue - MinValue) * 0x10000)/MaxPercentageValue);
 	else
@@ -63,7 +63,7 @@ double GUtil::Converters::toPercent(double MinValue, double MaxValue, double Max
 	return ReturnedValue;
 }
 //#####################################################
-ToPercentageWithDecimals_t GUtil::Converters::toPercentDecimal(signed int MinValue, signed int MaxValue, signed int MaxPercentageValue, signed int Value)
+ToPercentageWithDecimals_t GUtil::Converters::toPercentDecimal(s32 MinValue, s32 MaxValue, s32 MaxPercentageValue, s32 Value)
 {
 	ToPercentageWithDecimals_t Return;
 	if (MaxValue < 65536)
@@ -74,11 +74,11 @@ ToPercentageWithDecimals_t GUtil::Converters::toPercentDecimal(signed int MinVal
 	return Return;
 }
 //#####################################################
-signed int GUtil::Converters::percentTo(signed int MinValue, signed int MaxValue, signed int MaxPercentageValue, signed int Value)
+s32 GUtil::Converters::percentTo(s32 MinValue, s32 MaxValue, s32 MaxPercentageValue, s32 Value)
 {
 	if(MaxValue < 65536)
 	{
-		signed int result = ((Value*(MaxValue - MinValue))/MaxPercentageValue) + MinValue;
+		s32 result = ((Value*(MaxValue - MinValue))/MaxPercentageValue) + MinValue;
 		if(result > MaxValue)
 			result = MaxValue;
 		else if(result < MinValue)
@@ -87,12 +87,12 @@ signed int GUtil::Converters::percentTo(signed int MinValue, signed int MaxValue
 	}
 	else //return ((Value*(MaxValue / 0x10000))/MaxPercentageValue) * 0x10000;
 	{
-		signed int result = (signed long long)((Value*(MaxValue - MinValue))/MaxPercentageValue) + MinValue;
+		s32 result = (signed long long)((Value*(MaxValue - MinValue))/MaxPercentageValue) + MinValue;
 		if(result > MaxValue)
 			result = MaxValue;
 		else if(result < MinValue)
 			result = MinValue;
-		return (signed int)result;
+		return (s32)result;
 	}
 }
 //#####################################################

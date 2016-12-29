@@ -1,9 +1,24 @@
 /*
- * lcd_interface.h
+ *  screen.h
  *
- * Created: 2/8/2013 10:26:56 PM
- *  Author: XxXx
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *
+ *  This file is part of CppSDK.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 /*#####################################################*/
 #ifndef LCD_INTERFACE_H_
 #define LCD_INTERFACE_H_
@@ -242,10 +257,24 @@ typedef enum
  * @}
  */
 
-/** @defgroup STM32F429I_DISCOVERY_LCD_Exported_Functions
- * @{
- */
-unsigned char BSP_LCD_Init(void *_pDisplay);
+namespace GI
+{
+namespace Dev {
+class IntScreen : public Screen{
+public:
+	void init(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight = NULL);
+	void deinit();
+	IntScreen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
+	{
+		init(timings, backlight);
+	}
+	~IntScreen()
+	{
+		deinit();
+	}
+};
+}
+}
 
 /*#####################################################*/
 #ifdef HEADER_INCLUDE_C_FILES

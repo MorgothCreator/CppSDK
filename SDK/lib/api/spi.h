@@ -1,9 +1,9 @@
 /*
- *  lib/api/mcspi_def.h
+ *  api/spi.h
  *
- *  Copyright (C) 2013  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
- *  This file is part of Multiplatform SDK.
+ *  This file is part of CppSDK.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

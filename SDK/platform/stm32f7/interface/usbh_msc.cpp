@@ -348,8 +348,7 @@ void GI::Dev::UsbHMsc::idle(unsigned int instance)
 	switch (Appli_state)
 	{
 	case APPLICATION_START:
-		g_sFatFs1.drv_rw_func.DriveStruct =
-				(void*) &usb_msc_host_param[instance];
+		g_sFatFs1.drv_rw_func.DriveStruct = (void*) &usb_msc_host_param[instance];
 		g_sFatFs1.drv_rw_func.drv_ioctl_func = ioctl;
 		g_sFatFs1.drv_rw_func.drv_r_func = read;
 		g_sFatFs1.drv_rw_func.drv_w_func = write;
@@ -363,10 +362,10 @@ void GI::Dev::UsbHMsc::idle(unsigned int instance)
 		drv_name_buff[3] = '1' + instance;
 		drv_name_buff[4] = ':';
 		drv_name_buff[5] = '\0';
-		DIR g_sDirObject;
-		if (!f_mount(&g_sFatFs1, drv_name_buff, 1))
+		if (f_mount(&g_sFatFs1, drv_name_buff, 1) == FR_OK)
 #endif
 		{
+			DIR g_sDirObject = DIR();
 			if (f_opendir(&g_sDirObject, g_cCwdBuf1) == FR_OK)
 			{
 #ifdef USBH_MSC_DEBUG_EN

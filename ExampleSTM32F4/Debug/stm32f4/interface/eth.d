@@ -13,6 +13,7 @@ stm32f4/interface/eth.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/plat_properties.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/usbd_cdc.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/board/STM32F469I-DISCO/defs.h \
@@ -121,6 +122,8 @@ C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/plat_properties.h:
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/usbd_cdc.h:
 

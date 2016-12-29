@@ -1,7 +1,7 @@
 /*
  *  lib/gfx/buton.c
  *
- *  Copyright (C) 2013  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
  *  This file is part of Multiplatform SDK.
  *
@@ -25,12 +25,12 @@
 #include "window.h"
 #include "api/lcd_def.h"
 #include "util.h"
-#include "api/timer_api.h"
+#include "api/timer.h"
 #include "controls_definition.h"
 #include "gfx_gui_paint.h"
 
 
-void GI::Screen::Gfx::Button::paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand)
+void GI::Screen::Gfx::Button::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand)
 {
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	GI::Screen::Gfx::Window *parentWindowHandler = (GI::Screen::Gfx::Window*)Internals.parentWindowHandler;
@@ -58,8 +58,8 @@ void GI::Screen::Gfx::Button::paint(void *pDisplay, signed int x_start, signed i
 		LcdStruct->sClipRegion.sYMax = ((y_start + y_len) - 2);
 		GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 
-		signed int x_str_location = LcdStruct->sClipRegion.sXMin;
-		signed int y_str_location = LcdStruct->sClipRegion.sYMin;
+		gfx_s32 x_str_location = LcdStruct->sClipRegion.sXMin;
+		gfx_s32 y_str_location = LcdStruct->sClipRegion.sYMin;
 		if(Caption->textAlign == alignCenter){
 			StringProperties_t str_properties = Caption->getStrProp();
 			x_str_location = x_start + ((x_len>>1)-(str_properties.StringRowsMaxLength_Pixels>>1));
@@ -109,7 +109,7 @@ void GI::Screen::Gfx::Button::idle(tControlCommandData* control_comand)
 	{
 		/* Parse commands */
 #ifdef NO_ENUM_ON_SWITCH
-		switch((unsigned char)control_comand->Comand)
+		switch((gfx_u8)control_comand->Comand)
 #else
 		switch((int)control_comand->Comand)
 #endif
@@ -177,10 +177,10 @@ void GI::Screen::Gfx::Button::idle(tControlCommandData* control_comand)
 	//if(settings->Internals.Caption.Text != NULL && settings->Caption.Text != NULL && strcmp(settings->Internals.Caption.Text, settings->Caption.Text) == NULL)
 		//settings->Internals.NeedEntireRefresh = true;
 
-	signed int X_StartBox = Internals.Position.X;
-	signed int Y_StartBox = Internals.Position.Y;
-	signed int X_LenBox = Internals.Size.X;
-	signed int Y_LenBox = Internals.Size.Y;
+	gfx_s32 X_StartBox = Internals.Position.X;
+	gfx_s32 Y_StartBox = Internals.Position.Y;
+	gfx_s32 X_LenBox = Internals.Size.X;
+	gfx_s32 Y_LenBox = Internals.Size.Y;
 	void *pDisplay = parentWindowHandler->Internals.pDisplay;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 

@@ -6,6 +6,7 @@
 CPP_SRCS += \
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/3d.cpp \
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/PasswordWindowNumeric.cpp \
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/bitmap.cpp \
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/button.cpp \
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/checkbox.cpp \
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/controls_definition.cpp \
@@ -26,6 +27,7 @@ C:/GitHub/CppSDK/SDK/lib/lib/gfx/window.cpp
 OBJS += \
 ./lib/lib/gfx/3d.o \
 ./lib/lib/gfx/PasswordWindowNumeric.o \
+./lib/lib/gfx/bitmap.o \
 ./lib/lib/gfx/button.o \
 ./lib/lib/gfx/checkbox.o \
 ./lib/lib/gfx/controls_definition.o \
@@ -46,6 +48,7 @@ OBJS += \
 CPP_DEPS += \
 ./lib/lib/gfx/3d.d \
 ./lib/lib/gfx/PasswordWindowNumeric.d \
+./lib/lib/gfx/bitmap.d \
 ./lib/lib/gfx/button.d \
 ./lib/lib/gfx/checkbox.d \
 ./lib/lib/gfx/controls_definition.d \
@@ -74,6 +77,14 @@ lib/lib/gfx/3d.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/3d.cpp
 	@echo ' '
 
 lib/lib/gfx/PasswordWindowNumeric.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/PasswordWindowNumeric.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU G++ Compiler'
+	@echo %cd%
+	arm-none-eabi-g++ -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -DSTM32F769NIHx -DSTM32F769I_DISCO -DSTM32F7 -DSTM32 -DDEBUG -I"C:/GitHub/CppSDK/ExampleSTM32F7" -I"C:/GitHub/CppSDK/SDK/platform/stm32f7" -I"C:/GitHub/CppSDK/SDK/lib" -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fno-exceptions -fno-rtti -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+lib/lib/gfx/bitmap.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/bitmap.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU G++ Compiler'
 	@echo %cd%

@@ -10,7 +10,8 @@ lib/lib/gfx/util.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/util.cpp \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/string.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
- C:/GitHub/CppSDK/SDK/lib/lib/string.h
+ C:/GitHub/CppSDK/SDK/lib/lib/string.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/util.h:
 
@@ -39,3 +40,5 @@ C:/GitHub/CppSDK/SDK/lib/lib/gfx/string.h:
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/string.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h:

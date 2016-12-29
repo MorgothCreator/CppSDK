@@ -128,41 +128,32 @@ GI::Dev::Spi::Spi(const char *path)
 	{
 #ifdef __HAL_RCC_SPI1_CLK_ENABLE
 	case SPI1_BASE:
-		__HAL_RCC_SPI1_CLK_ENABLE()
-		;
-		GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
+		__HAL_RCC_SPI1_CLK_ENABLE();
 		break;
 #endif
 #ifdef __HAL_RCC_SPI2_CLK_ENABLE
 	case SPI2_BASE:
-		__HAL_RCC_SPI2_CLK_ENABLE()
-		;
-		GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
+		__HAL_RCC_SPI2_CLK_ENABLE();
 		break;
 #endif
 #ifdef __HAL_RCC_SPI3_CLK_ENABLE
 	case SPI3_BASE:
-		__HAL_RCC_SPI3_CLK_ENABLE()
-		;
-		GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
+		__HAL_RCC_SPI3_CLK_ENABLE();
 		break;
 #endif
 #ifdef __HAL_RCC_SPI4_CLK_ENABLE
 	case SPI4_BASE:
-		__HAL_RCC_SPI4_CLK_ENABLE()
-		;
+		__HAL_RCC_SPI4_CLK_ENABLE();
 		break;
 #endif
 #ifdef __HAL_RCC_SPI5_CLK_ENABLE
 	case SPI5_BASE:
-		__HAL_RCC_SPI5_CLK_ENABLE()
-		;
+		__HAL_RCC_SPI5_CLK_ENABLE();
 		break;
 #endif
 #ifdef __HAL_RCC_SPI6_CLK_ENABLE
 	case SPI6_BASE:
-		__HAL_RCC_SPI6_CLK_ENABLE()
-		;
+		__HAL_RCC_SPI6_CLK_ENABLE();
 		break;
 #endif
 #ifdef __HAL_RCC_SPI7_CLK_ENABLE
@@ -180,29 +171,44 @@ GI::Dev::Spi::Spi(const char *path)
 			free(userData);
 		return;
 	}
-
-	GPIO_InitStruct.Pin = 1 << (cfg.sck % 32);
-	HAL_GPIO_Init(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.sck >> 5],
-			&GPIO_InitStruct);
+	GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
 
 	/* SPI MISO GPIO pin configuration  */
 	GPIO_InitStruct.Pin = 1 << (cfg.miSo % 32);
-	HAL_GPIO_Init(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.miSo >> 5],
-			&GPIO_InitStruct);
+	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.miSo >> 5], &GPIO_InitStruct);
 
 	/* SPI MOSI GPIO pin configuration  */
 	GPIO_InitStruct.Pin = 1 << (cfg.moSi % 32);
-	HAL_GPIO_Init(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.moSi >> 5],
-			&GPIO_InitStruct);
+	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.moSi >> 5], &GPIO_InitStruct);
 
-	SpiHandle->Init.BaudRatePrescaler = (cfg.speed << 3)
-			& SPI_BAUDRATEPRESCALER_256;
+	//if(cfg.sck >> 5 == IOA && cfg.sck % 32 == 12)
+		//GPIO_InitStruct.Alternate = GPIO_AF7_SPI2;
+
+	GPIO_InitStruct.Pin = 1 << (cfg.sck % 32);
+	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.sck >> 5], &GPIO_InitStruct);
+
+	u32 new_speed = 0;
+	if(cfg.speed > 25000000)
+		new_speed = 0;
+	else if(cfg.speed > 12500000)
+		new_speed = 1;
+	else if(cfg.speed > 6250000)
+		new_speed = 2;
+	else if(cfg.speed > 3125000)
+		new_speed = 3;
+	else if(cfg.speed > 1562500)
+		new_speed = 4;
+	else if(cfg.speed > 781250)
+		new_speed = 5;
+	else if(cfg.speed > 390625)
+		new_speed = 6;
+	else
+		new_speed = 7;
+
+	SpiHandle->Init.BaudRatePrescaler = (new_speed << 3) & SPI_BAUDRATEPRESCALER_256;
 	SpiHandle->Init.Direction = SPI_DIRECTION_2LINES;
-	SpiHandle->Init.CLKPhase = cPha & 0x01;
-	SpiHandle->Init.CLKPolarity = (cPol & 0x01) << 1;
+	SpiHandle->Init.CLKPhase = cfg.spiMode & 0x01;
+	SpiHandle->Init.CLKPolarity = cfg.spiMode & 0x02;
 	SpiHandle->Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
 	SpiHandle->Init.CRCPolynomial = 7;
 	SpiHandle->Init.DataSize = SPI_DATASIZE_8BIT;
@@ -225,9 +231,7 @@ GI::Dev::Spi::Spi(const char *path)
 	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Pin = 1 << (cfg.cs % 32);
-	HAL_GPIO_Init(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
-			&GPIO_InitStruct);
+	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],&GPIO_InitStruct);
 	//OldCsSelect = -1;
 	err = SYS_ERR_OK;
 	return;
@@ -325,8 +329,7 @@ int GI::Dev::Spi::assert()
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (spi_semaphore[unitNr])
-		;
+	while (spi_semaphore[unitNr]);
 #endif
 	setSpeed(speed);
 #if (USE_DRIVER_SEMAPHORE == true)
@@ -371,8 +374,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite,
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
-		return SYS_ERR_BUSY;
+	while(spi_semaphore[unitNr]);
 #endif
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
@@ -396,14 +398,13 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
-		return SYS_ERR_BUSY;
+	while(spi_semaphore[unitNr]);
 #endif
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
 	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
-	if (HAL_SPI_Receive(hspi, buff, len, 10) != HAL_OK)
+	if (HAL_SPI_Receive(hspi, buff, len, 100) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);
@@ -423,8 +424,7 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
-		return SYS_ERR_BUSY;
+	while(spi_semaphore[unitNr]);;
 #endif
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
@@ -464,15 +464,32 @@ SysErr GI::Dev::Spi::setSpeed(unsigned long baud)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (spi_semaphore[unitNr])
-		;
+	while (spi_semaphore[unitNr]);
 #endif
+	unsigned int new_speed = 0;
+	if(baud > 25000000)
+		new_speed = 0;
+	else if(baud > 12500000)
+		new_speed = 1;
+	else if(baud > 6250000)
+		new_speed = 2;
+	else if(baud > 3125000)
+		new_speed = 3;
+	else if(baud > 1562500)
+		new_speed = 4;
+	else if(baud > 781250)
+		new_speed = 5;
+	else if(baud > 390625)
+		new_speed = 6;
+	else
+		new_speed = 7;
+
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	if ((hspi->Instance->CR1 & SPI_BAUDRATEPRESCALER_256)
-			!= (SPI_BAUDRATEPRESCALER_256 & (baud << 3)))
+			!= (SPI_BAUDRATEPRESCALER_256 & (new_speed << 3)))
 	{
 		hspi->Instance->CR1 &= ~SPI_BAUDRATEPRESCALER_256;
-		hspi->Instance->CR1 |= SPI_BAUDRATEPRESCALER_256 & (baud << 3);
+		hspi->Instance->CR1 |= SPI_BAUDRATEPRESCALER_256 & (new_speed << 3);
 	}
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;

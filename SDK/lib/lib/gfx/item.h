@@ -19,12 +19,12 @@ namespace Gfx
 {
 class Item {
 public:
-	Item(char* text, unsigned int location);
+	Item(s8* text, gfx_u32 location);
 
 	struct
 	{
-		signed int X;
-		signed int Y;
+		gfx_s32 X;
+		gfx_s32 Y;
 	}Size;
 	GI::Screen::String *Caption;
 	controls_color_struct_t Color;

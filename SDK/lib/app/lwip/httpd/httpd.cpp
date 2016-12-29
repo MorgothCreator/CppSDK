@@ -430,7 +430,6 @@ http_state_eof(struct http_state *hs)
       ms_needed, hs->handle->len, ((((u32_t)hs->handle->len) * 10) / needed)));
 #endif /* LWIP_HTTPD_TIMING */
     fs_close(hs->handle);
-    hs->handle = NULL;
   }
   if (hs->buf != NULL) {
     mem_free(hs->buf);
@@ -2017,6 +2016,11 @@ http_find_file(struct http_state *hs, const char *uri, int is_09)
 #endif /* LWIP_HTTPD_SSI */
         break;
       }
+      /*else
+      {
+    	  delete hs->file_handle;
+    	  hs->file_handle = NULL;
+      }*/
     }
     if (file == NULL) {
       /* None of the default filenames exist so send back a 404 page */
@@ -2054,7 +2058,6 @@ http_find_file(struct http_state *hs, const char *uri, int is_09)
 #endif /* LWIP_HTTPD_CGI */
 
     LWIP_LO_DEBUG(("Opening %s\n", uri));
-    memset(&hs->file_handle, 0, sizeof(fs_file));
     err = fs_open(&hs->file_handle, uri);
     if (err == ERR_OK) {
        file = &hs->file_handle;

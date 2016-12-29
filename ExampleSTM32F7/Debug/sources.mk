@@ -32,11 +32,13 @@ lib/app/lwip/httpd \
 lib/app/lwip/sntp \
 lib/app/lwip/tftpserver \
 lib/device \
+lib/include \
 lib/lib/buffers \
 lib/lib/fs/fat/src \
 lib/lib/fs/fat/src/option \
 lib/lib/gfx \
 lib/lib/gfx/files \
+lib/lib/gfx/libdrawtext \
 lib/lib/gfx/resource \
 lib/lib \
 lib/lib/util \

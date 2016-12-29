@@ -4,6 +4,10 @@
 
 #ifndef _DISKIO
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define _READONLY	0	/* 1: Read-only mode */
 #define _USE_IOCTL	1
 
@@ -76,6 +80,10 @@ DRESULT disk_ioctl(BYTE, BYTE, void*);
 #define ATA_GET_SN			22
 
 #define _DISKIO
+
+#ifdef __cplusplus
+}
+#endif
 //#######################################################################################
 #ifdef HEADER_INCLUDE_C_FILES
 #include "../src/diskio.c"

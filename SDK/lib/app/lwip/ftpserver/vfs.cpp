@@ -76,8 +76,6 @@ void vfs_close(vfs_t* vfs) {
 		/* Close a file */
 		f_close(vfs);
 	}
-	//if(vfs)
-		//free(vfs);
 }
 
 int vfs_write (void* buffer, int dummy, int len, vfs_file_t* file) {
@@ -110,7 +108,7 @@ vfs_file_t* vfs_open(vfs_t* vfs, const char* filename, const char* mode) {
 }
 
 char* vfs_getcwd(vfs_t* vfs, void* dummy1, int dummy2) {
-	char *cwd = (char *)malloc(255);
+	char* cwd = (char *)malloc(255);
 	FRESULT r = f_getcwd(cwd, 255);
 	if (r != FR_OK) {
 		free(cwd);
@@ -121,7 +119,7 @@ char* vfs_getcwd(vfs_t* vfs, void* dummy1, int dummy2) {
 }
 
 vfs_dir_t* vfs_opendir(vfs_t* vfs, const char* path) {
-	vfs_dir_t* dir = (vfs_dir_t*)malloc(sizeof(vfs_dir_t));
+	vfs_dir_t* dir = (vfs_dir_t *)malloc(sizeof(vfs_dir_t));
 	FRESULT r = f_opendir(dir, path);
 	if (FR_OK != r) {
 		free(dir);

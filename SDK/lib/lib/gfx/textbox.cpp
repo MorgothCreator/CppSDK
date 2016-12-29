@@ -32,7 +32,7 @@
 
 
 
-void GI::Screen::Gfx::TextBox::paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand)
+void GI::Screen::Gfx::TextBox::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand)
 {
 	//if(control_comand->CursorCoordonateUsed && !settings->Internals.NeedEntireRefresh && !settings->Internals.NeedEntireRepaint) return;
 
@@ -44,7 +44,7 @@ void GI::Screen::Gfx::TextBox::paint(void *pDisplay, signed int x_start, signed 
 	LcdStruct->sClipRegion.sXMax = x_start + x_len;
 	LcdStruct->sClipRegion.sYMax = y_start + y_len;
 	GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
-	unsigned int color = Color.Enabled.Buton.Pull;
+	gfx_u32 color = Color.Enabled.Buton.Pull;
 	if(!Enabled || !parentWindowHandler->Internals.OldStateEnabled)
 		color = Color.Disabled.Buton;
 	if(Internals.NeedEntireRefresh)
@@ -97,12 +97,12 @@ void GI::Screen::Gfx::TextBox::paint(void *pDisplay, signed int x_start, signed 
 		LcdStruct->sClipRegion.sYMax = ((y_start + y_len) - 4 - Internals.Size.ScrollSize);
 		GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 
-		signed int x_str_location = x_start + 4;
-		signed int y_str_location = y_start + 4;
+		gfx_s32 x_str_location = x_start + 4;
+		gfx_s32 y_str_location = y_start + 4;
 
-		signed int Start = SelStart;
-		signed int Len = SelLen;
-		unsigned int command_return = 0;
+		gfx_s32 Start = SelStart;
+		gfx_s32 Len = SelLen;
+		gfx_u32 command_return = 0;
 		bool CommandReceived = false;
 
 		if(Internals.CursorDownInsideTextBox || Internals.NeedEntireRefresh)
@@ -244,7 +244,7 @@ void GI::Screen::Gfx::TextBox::idle(tControlCommandData* control_comand)
 	{
 		/* Parse commands */
 #ifdef NO_ENUM_ON_SWITCH
-		switch((unsigned char)control_comand->Comand)
+		switch((gfx_u8)control_comand->Comand)
 #else
 		switch((int)control_comand->Comand)
 #endif
@@ -310,10 +310,10 @@ void GI::Screen::Gfx::TextBox::idle(tControlCommandData* control_comand)
 	//if(settings->Internals.Caption.Text != NULL && settings->Text != NULL && strcmp(settings->Internals.Caption.Text, settings->Text) == NULL)
 		//settings->Internals.NeedEntireRefresh = true;
 
-	signed int X_StartBox = Internals.Position.X;
-	signed int Y_StartBox = Internals.Position.Y;
-	signed int X_LenBox = Internals.Size.X;
-	signed int Y_LenBox = Internals.Size.Y;
+	gfx_s32 X_StartBox = Internals.Position.X;
+	gfx_s32 Y_StartBox = Internals.Position.Y;
+	gfx_s32 X_LenBox = Internals.Size.X;
+	gfx_s32 Y_LenBox = Internals.Size.Y;
 	void *pDisplay = Internals.pDisplay;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 
@@ -590,7 +590,7 @@ bool GI::Screen::Gfx::TextBox::append(char* string)
 	return true;
 }
 //#######################################################################################
-bool GI::Screen::Gfx::TextBox::insert(char* string, unsigned int location)
+bool GI::Screen::Gfx::TextBox::insert(char* string, gfx_u32 location)
 {
 	if(!this)
 		return false;

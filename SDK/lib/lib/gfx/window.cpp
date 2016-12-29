@@ -128,7 +128,7 @@ void GI::Screen::Gfx::Window::_newWindow(void *parentWindowHandler, GI::Dev::Scr
 	Internals.Header.Size.TabGroupSelectorSize = 70;
 }
 
-void* GI::Screen::Gfx::Window::_addChildren(unsigned int childrenType, char *childrenName, unsigned int tabIndex)
+void* GI::Screen::Gfx::Window::_addChildren(gfx_u32 childrenType, char *childrenName, gfx_u32 tabIndex)
 {
 	if(!this)
 		return NULL;
@@ -171,7 +171,7 @@ void* GI::Screen::Gfx::Window::_addChildren(unsigned int childrenType, char *chi
 		return NULL;
 	}
 	if(!children_addr) return NULL;
-	unsigned int added_children = (unsigned int)Internals.ChildrensNr;
+	gfx_u32 added_children = (gfx_u32)Internals.ChildrensNr;
 	if(!added_children)
 	{
 		Internals.Childrens = (window_children_t **)calloc(1, sizeof(window_children_t *));
@@ -359,12 +359,12 @@ window_can_not_add_children:
 }
 
 //#######################################################################################
-void* GI::Screen::Gfx::Window::addChildren(unsigned int children_type, char *children_name)
+void* GI::Screen::Gfx::Window::addChildren(gfx_u32 children_type, char *children_name)
 {
 	return _addChildren(children_type, children_name, 0);
 }
 //#######################################################################################
-void* GI::Screen::Gfx::Window::addChildren(unsigned int children_type, char *children_name, unsigned int tab_nr)
+void* GI::Screen::Gfx::Window::addChildren(gfx_u32 children_type, char *children_name, gfx_u32 tab_nr)
 {
 	return _addChildren(children_type, children_name, tab_nr);
 }
@@ -372,13 +372,13 @@ void* GI::Screen::Gfx::Window::addChildren(unsigned int children_type, char *chi
 
 void GI::Screen::Gfx::Window::setChildrens(bool call_childrens, bool transfer_settings, tControlCommandData* control_comand, bool refresh_childrens, ChildrenWindowSize_t *ChildrenWindowSize)
 {
-	unsigned int Tmp_Children_Cnt = 0;
+	gfx_u32 Tmp_Children_Cnt = 0;
 	tRectangle sClipRegion;
 	GI::Screen::Gfx::Window *parentWindowHandler = (GI::Screen::Gfx::Window *)Internals.parentWindowHandler;
-	signed int ParentHeaderSize = 0;
+	gfx_s32 ParentHeaderSize = 0;
 	if(parentWindowHandler->Internals.HideHeader)
 		ParentHeaderSize = parentWindowHandler->Internals.Header.Size.Y;
-	signed int HeaderSize = 0;
+	gfx_s32 HeaderSize = 0;
 	if(Internals.HideHeader == false)
 		HeaderSize = Internals.Header.Size.Y;
 	if(parentWindowHandler != NULL && this != parentWindowHandler)
@@ -418,7 +418,7 @@ void GI::Screen::Gfx::Window::setChildrens(bool call_childrens, bool transfer_se
 	{
 		if(Internals.Childrens[Tmp_Children_Cnt] && Internals.Childrens[Tmp_Children_Cnt]->TabLocNr == SelectedTab)
 		{
-			unsigned int children_type = Internals.Childrens[Tmp_Children_Cnt]->Type;
+			gfx_u32 children_type = Internals.Childrens[Tmp_Children_Cnt]->Type;
 			void *children = Internals.Childrens[Tmp_Children_Cnt]->Children;
 			GI::Screen::Gfx::Window *Window_settings = (GI::Screen::Gfx::Window *)children;
 			if((WindowWindowChildren == children_type || WindowTabGroupChildren == children_type) && Window_settings->Visible == true)
@@ -470,7 +470,7 @@ void GI::Screen::Gfx::Window::setChildrens(bool call_childrens, bool transfer_se
 	{
 		if(Internals.Childrens[Tmp_Children_Cnt] && Internals.Childrens[Tmp_Children_Cnt]->TabLocNr == SelectedTab)
 		{
-			unsigned int children_type = Internals.Childrens[Tmp_Children_Cnt]->Type;
+			gfx_u32 children_type = Internals.Childrens[Tmp_Children_Cnt]->Type;
 			void *children = Internals.Childrens[Tmp_Children_Cnt]->Children;
 			if(WindowButtonChildren == children_type)
 			{
@@ -698,7 +698,7 @@ void GI::Screen::Gfx::Window::setChildrens(bool call_childrens, bool transfer_se
 	{
 		if(Internals.Childrens[Tmp_Children_Cnt] && Internals.Childrens[Tmp_Children_Cnt]->TabLocNr == SelectedTab)
 		{
-			unsigned int children_type = Internals.Childrens[Tmp_Children_Cnt]->Type;
+			gfx_u32 children_type = Internals.Childrens[Tmp_Children_Cnt]->Type;
 			void *children = Internals.Childrens[Tmp_Children_Cnt]->Children;
 			if(WindowWindowChildren == children_type || WindowTabGroupChildren == children_type)
 			{
@@ -751,7 +751,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 	{
 		/* Parse commands */
 #ifdef NO_ENUM_ON_SWITCH
-		switch((unsigned char)control_comand->Comand)
+		switch((gfx_u8)control_comand->Comand)
 #else
 		switch((int)control_comand->Comand)
 #endif
@@ -866,10 +866,10 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 	}
 
 	bool text_caption_has_changed = false;
-	signed int X_StartBox = Internals.Position.X;
-	signed int Y_StartBox = Internals.Position.Y;
-	signed int X_LenBox = Internals.Size.X;
-	signed int Y_LenBox = Internals.Size.Y;
+	gfx_s32 X_StartBox = Internals.Position.X;
+	gfx_s32 Y_StartBox = Internals.Position.Y;
+	gfx_s32 X_LenBox = Internals.Size.X;
+	gfx_s32 Y_LenBox = Internals.Size.Y;
 	void *pDisplay = Internals.pDisplay;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 
@@ -901,13 +901,13 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		Caption->modifyed = 0;
 		Internals.Caption->textAlign = Caption->textAlign;
 		Internals.Caption->wordWrap = Caption->wordWrap;
-		signed int HeaderSize = 0;
+		gfx_s32 HeaderSize = 0;
 		if(Internals.HideHeader == false)
 			HeaderSize = Internals.Header.Size.Y;
-		unsigned int header_btn_size = HeaderSize - 6;
-		//unsigned int header_btn_space = HeaderSize - 5;
+		gfx_u32 header_btn_size = HeaderSize - 6;
+		//gfx_u32 header_btn_space = HeaderSize - 5;
 		tRectangle back_up_clip_header = LcdStruct->sClipRegion;
-		signed int _X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_;;
+		gfx_s32 _X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_;;
 		_X_StartBox_ = (Internals.Position.X + 2);
 		_X_LenBox_ = (Internals.Size.X + Internals.Position.X) - ((header_btn_size + 2) * 3);
 		_Y_StartBox_ = (2 + Internals.Position.Y);
@@ -918,8 +918,8 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		LcdStruct->sClipRegion.sYMax = _Y_LenBox_ - 1;
 		GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip_header);
 		GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &WindowMoveLimits);
-		signed int x_str_location = LcdStruct->sClipRegion.sXMin;
-		signed int y_str_location = LcdStruct->sClipRegion.sYMin;
+		gfx_s32 x_str_location = LcdStruct->sClipRegion.sXMin;
+		gfx_s32 y_str_location = LcdStruct->sClipRegion.sYMin;
 		LcdStruct->drawRectangle(_X_StartBox_ + 1, _Y_StartBox_ + 1, _X_LenBox_ - 2, _Y_LenBox_ - 1, true, WindowColor.Enabled.WindowHeader);
 		//LcdStruct->put_rectangle(pDisplay, X_StartBox + 1, (Y_StartBox + HeaderSize) - 1, X_LenBox - 2, Y_LenBox - HeaderSize - 0, true, controls_color.Scren);
 		LcdStruct->cacheClean(_X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_);
@@ -1089,11 +1089,11 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		//settings->Internals.Caption.Text = gfx_change_str(settings->Internals.Caption.Text, settings->Caption.Text);
 		//settings->Caption.Text = settings->Internals.Caption.Text;
 
-		signed int HeaderSize = 0;
+		gfx_s32 HeaderSize = 0;
 		if(Internals.HideHeader == false)
 			HeaderSize = Internals.Header.Size.Y;
-		unsigned int header_btn_size = HeaderSize - 6;
-		unsigned int header_btn_space = HeaderSize - 5;
+		gfx_u32 header_btn_size = HeaderSize - 6;
+		gfx_u32 header_btn_space = HeaderSize - 5;
 
 		Internals.Header.Close->Size.X = header_btn_size;
 		Internals.Header.Close->Size.Y = header_btn_size;
@@ -1292,7 +1292,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		if(Internals.OldTabGroupMode)
 		{
 			tRectangle back_up_clip_header = LcdStruct->sClipRegion;
-			signed int _X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_;;
+			gfx_s32 _X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_;;
 			_X_StartBox_ = (Internals.Position.X + header_btn_space + 2);
 			_X_LenBox_ = (Internals.Size.X + Internals.Position.X) - header_btn_space - 2;
 			_Y_StartBox_ = (2 + Internals.Position.Y);
@@ -1310,7 +1310,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 			LcdStruct->sClipRegion.sYMax = _Y_LenBox_ - 1;
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip_header);
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &WindowMoveLimits);
-			unsigned int TabGroupCnt = 0;
+			gfx_u32 TabGroupCnt = 0;
 			while(TabGroupCnt < Internals.Header.TabGroupTabsListNr && Internals.Header.TabGroupTabsList[TabGroupCnt])
 			{
 				Internals.Header.TabGroupTabsList[TabGroupCnt]->Position.X = ((_X_StartBox_ + 1 + (Internals.Header.Size.TabGroupSelectorSize * TabGroupCnt) - Internals.Header.TabGroupSelectorPosition) - parentWindowHandler->Internals.Position.X);
@@ -1327,7 +1327,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		else
 		{
 			tRectangle back_up_clip_header = LcdStruct->sClipRegion;
-			signed int _X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_;;
+			gfx_s32 _X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_;;
 			_X_StartBox_ = (Internals.Position.X + 2);
 			_X_LenBox_ = (Internals.Size.X + Internals.Position.X) - ((header_btn_size + 2) * 3);
 			_Y_StartBox_ = (2 + Internals.Position.Y);
@@ -1345,8 +1345,8 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 			LcdStruct->sClipRegion.sYMax = _Y_LenBox_ - 1;
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip_header);
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &WindowMoveLimits);
-			signed int x_str_location = LcdStruct->sClipRegion.sXMin;
-			signed int y_str_location = LcdStruct->sClipRegion.sYMin;
+			gfx_s32 x_str_location = LcdStruct->sClipRegion.sXMin;
+			gfx_s32 y_str_location = LcdStruct->sClipRegion.sYMin;
 			if(Caption->textAlign == alignCenter){
 				StringProperties_t str_properties = Caption->getStrProp();
 				x_str_location = _X_StartBox_ + ((_X_LenBox_>>1)-(str_properties.StringRowsMaxLength_Pixels>>1));
@@ -1394,17 +1394,17 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 	{
 		Internals.Header.TabGroupScrollLeft->idle(control_comand);
 		Internals.Header.TabGroupScrollRight->idle(control_comand);
-		signed int HeaderSize = 0;
+		gfx_s32 HeaderSize = 0;
 		if(Internals.HideHeader == false)
 			HeaderSize = Internals.Header.Size.Y;
-		unsigned int header_btn_size = HeaderSize - 6;
-		unsigned int header_btn_space = HeaderSize - 5;
+		gfx_u32 header_btn_size = HeaderSize - 6;
+		gfx_u32 header_btn_space = HeaderSize - 5;
 		bool TabGroupSelectorPositionHasChanged = false;
 		if(Internals.Header.TabGroupScrollRight->Events.CursorDown || Internals.Header.TabGroupScrollRight->Events.CursorMove)
 		{
 			Internals.Header.TabGroupScrollRight->Events.CursorDown = false;
 			Internals.Header.TabGroupScrollRight->Events.CursorMove = false;
-			unsigned int len_of_selection_tab = Internals.Header.Size.TabGroupSelectorSize * Internals.Header.TabGroupTabsListNr;
+			gfx_u32 len_of_selection_tab = Internals.Header.Size.TabGroupSelectorSize * Internals.Header.TabGroupTabsListNr;
 			if(len_of_selection_tab > Internals.Size.X - (header_btn_space * 2) - 2)
 			{
 				if(Internals.Header.TabGroupSelectorPosition < len_of_selection_tab - (Internals.Size.X - (header_btn_space * 2)) - 2)
@@ -1418,7 +1418,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		{
 			Internals.Header.TabGroupScrollLeft->Events.CursorDown = false;
 			Internals.Header.TabGroupScrollLeft->Events.CursorMove = false;
-			unsigned int len_of_selection_tab = Internals.Header.Size.TabGroupSelectorSize * Internals.Header.TabGroupTabsListNr;
+			gfx_u32 len_of_selection_tab = Internals.Header.Size.TabGroupSelectorSize * Internals.Header.TabGroupTabsListNr;
 			if(len_of_selection_tab > Internals.Size.X - header_btn_space - 2)
 			{
 				if(Internals.Header.TabGroupSelectorPosition > 0)
@@ -1428,7 +1428,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 				}
 			}
 		}
-		signed int _X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_;;
+		gfx_s32 _X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_;;
 		_X_StartBox_ = (Internals.Position.X + header_btn_space + 2);
 		_X_LenBox_ = (Internals.Size.X + Internals.Position.X) - header_btn_space - 2;
 		_Y_StartBox_ = (2 + Internals.Position.Y);
@@ -1449,7 +1449,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 			LcdStruct->sClipRegion.sYMax = _Y_LenBox_ - 1;
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip_header);
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &WindowMoveLimits);
-			unsigned int TabGroupCnt = 0;
+			gfx_u32 TabGroupCnt = 0;
 			CursorState cursor = control_comand->Cursor;
 			control_comand->Cursor = Cursor_Up;
 			while(TabGroupCnt < Internals.Header.TabGroupTabsListNr && Internals.Header.TabGroupTabsList[TabGroupCnt])
@@ -1474,7 +1474,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 			LcdStruct->sClipRegion.sYMax = _Y_LenBox_ - 1;
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip_header);
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &WindowMoveLimits);
-			unsigned int TabGroupCnt = 0;
+			gfx_u32 TabGroupCnt = 0;
 			while(TabGroupCnt < Internals.Header.TabGroupTabsListNr && Internals.Header.TabGroupTabsList[TabGroupCnt])
 			{
 				Internals.Header.TabGroupTabsList[TabGroupCnt]->idle(control_comand);
@@ -1484,7 +1484,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 					//settings->Internals.TabChanged = true;
 					Internals.NeedEntireRefresh = true;
 					SelectedTab = TabGroupCnt;
-					unsigned int TabGroupCntUncheck = 0;
+					gfx_u32 TabGroupCntUncheck = 0;
 					for(; TabGroupCntUncheck < Internals.Header.TabGroupTabsListNr; TabGroupCntUncheck++)
 					{
 						if(TabGroupCntUncheck != TabGroupCnt)
@@ -1556,7 +1556,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 	control_comand->CursorCoordonateUsed = _back_coordonate_used;
 	if(Internals.ChildrenWindowSize.X != ChildrenWindowSize.X || Internals.ChildrenWindowSize.Y != ChildrenWindowSize.Y)
 	{
-		signed int HeaderSize = 0;
+		gfx_s32 HeaderSize = 0;
 		if(Internals.HideHeader == false)
 			HeaderSize = Internals.Header.Size.Y;
 		Internals.ChildrenWindowSize.X = ChildrenWindowSize.X;
@@ -1612,7 +1612,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 	{
 		Internals.H_ScrollBar->Events.ValueChanged = false;
 		Internals.V_ScrollBar->Events.ValueChanged = false;
-		signed int HeaderSize = 0;
+		gfx_s32 HeaderSize = 0;
 		if(Internals.HideHeader == false)
 			HeaderSize = Internals.Header.Size.Y;
 		LcdStruct->drawRectangle(X_StartBox + 1, (Y_StartBox + HeaderSize) - 1, X_LenBox - 3 - Internals.V_ScrollBar->Size.X, Y_LenBox - Internals.H_ScrollBar->Size.Y - 1 - HeaderSize, true, /*controlls_change_color(*/controls_color.Scren/*, 1.2)*/);
@@ -1668,7 +1668,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 			}
 		}
 
-		signed int HeaderSize = 0;
+		gfx_s32 HeaderSize = 0;
 		if(Internals.HideHeader == false)
 			HeaderSize = Internals.Header.Size.Y;
 		if(GI::Screen::Util::insideBox(X_StartBox + 1, Y_StartBox + 1, X_LenBox - 2, HeaderSize - 2, control_comand->X, control_comand->Y) && control_comand->Cursor == Cursor_Down && control_comand->CursorCoordonateUsed == false)
@@ -1768,47 +1768,47 @@ GI::Screen::Gfx::Window *GI::Screen::Gfx::Window::addTabGroup(char *name)
 
 
 
-GI::Screen::Gfx::Button *GI::Screen::Gfx::Window::addButton(char *name, unsigned int tabIndex)
+GI::Screen::Gfx::Button *GI::Screen::Gfx::Window::addButton(char *name, gfx_u32 tabIndex)
 {
 	return (GI::Screen::Gfx::Button *)addChildren(WindowButtonChildren, name, tabIndex);
 }
 
-GI::Screen::Gfx::CheckBox *GI::Screen::Gfx::Window::addCheckBox(char *name, unsigned int tabIndex)
+GI::Screen::Gfx::CheckBox *GI::Screen::Gfx::Window::addCheckBox(char *name, gfx_u32 tabIndex)
 {
 	return (GI::Screen::Gfx::CheckBox *)addChildren(WindowCheckboxChildren, name, tabIndex);
 }
 
-GI::Screen::Gfx::ListBox *GI::Screen::Gfx::Window::addListBox(char *name, unsigned int tabIndex)
+GI::Screen::Gfx::ListBox *GI::Screen::Gfx::Window::addListBox(char *name, gfx_u32 tabIndex)
 {
 	return (GI::Screen::Gfx::ListBox *)addChildren(WindowListboxChildren, name, tabIndex);
 }
 
-GI::Screen::Gfx::Picturebox *GI::Screen::Gfx::Window::addPictureBox(char *name, unsigned int tabIndex)
+GI::Screen::Gfx::Picturebox *GI::Screen::Gfx::Window::addPictureBox(char *name, gfx_u32 tabIndex)
 {
 	return (GI::Screen::Gfx::Picturebox *)addChildren(WindowPictureboxChildren, name, tabIndex);
 }
 
-GI::Screen::Gfx::TextBox *GI::Screen::Gfx::Window::addTextBox(char *name, unsigned int tabIndex)
+GI::Screen::Gfx::TextBox *GI::Screen::Gfx::Window::addTextBox(char *name, gfx_u32 tabIndex)
 {
 	return (GI::Screen::Gfx::TextBox *)addChildren(WindowTextboxChildren, name, tabIndex);
 }
 
-GI::Screen::Gfx::ProgressBar *GI::Screen::Gfx::Window::addProgressBar(char *name, unsigned int tabIndex)
+GI::Screen::Gfx::ProgressBar *GI::Screen::Gfx::Window::addProgressBar(char *name, gfx_u32 tabIndex)
 {
 	return (GI::Screen::Gfx::ProgressBar *)addChildren(WindowProgressbarChildren, name, tabIndex);
 }
 
-GI::Screen::Gfx::KbdQwerty *GI::Screen::Gfx::Window::addKbdQwerty(char *name, unsigned int tabIndex)
+GI::Screen::Gfx::KbdQwerty *GI::Screen::Gfx::Window::addKbdQwerty(char *name, gfx_u32 tabIndex)
 {
 	return (GI::Screen::Gfx::KbdQwerty *)addChildren(WindowKbdQwertyChildren, name, tabIndex);
 }
 
-GI::Screen::Gfx::Window *GI::Screen::Gfx::Window::addWindow(char *name, unsigned int tabIndex)
+GI::Screen::Gfx::Window *GI::Screen::Gfx::Window::addWindow(char *name, gfx_u32 tabIndex)
 {
 	return (GI::Screen::Gfx::Window *)addChildren(WindowWindowChildren, name, tabIndex);
 }
 
-GI::Screen::Gfx::Window *GI::Screen::Gfx::Window::addTabGroup(char *name, unsigned int tabIndex)
+GI::Screen::Gfx::Window *GI::Screen::Gfx::Window::addTabGroup(char *name, gfx_u32 tabIndex)
 {
 	return (GI::Screen::Gfx::Window *)addChildren(WindowTabGroupChildren, name, tabIndex);
 }

@@ -790,9 +790,8 @@ static void LL_FillBuffer(uint32_t LayerIndex, void *pDst, uint32_t xSize,
 
 #if defined(STM32F469xx) || defined(STM32F479xx)
 
-GI::Dev::Screen::Screen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight = NULL)
+void GI::Dev::IntScreen::init(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
 {
-	memset(this, 0, sizeof(*this));
 	this->backlight = backlight;
 	LcdTimings = timings;
 	//screen_open(LcdStruct);
@@ -810,7 +809,7 @@ GI::Dev::Screen::Screen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight = NULL)
 #endif
 }
 
-GI::Dev::Screen::~Screen()
+void GI::Dev::IntScreen::deinit()
 {
 
 }

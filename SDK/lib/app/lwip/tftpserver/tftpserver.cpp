@@ -30,7 +30,7 @@ typedef struct
 
 }tftp_connection_args;
 
-FATFS filesystem;
+//FATFS *filesystem;
 FIL file_SD, file_CR;
 DIR dir_1, dir_2;
 
@@ -204,8 +204,9 @@ int tftp_send_ack_packet(struct udp_pcb *upcb, const ip_addr_t *to, int to_port,
 void tftp_cleanup_rd(struct udp_pcb *upcb, tftp_connection_args *args)
 {
   /* close the filesystem */
+ // f_close(&file_SD);
   f_close(&file_SD);
-  f_mount(NULL, (TCHAR const*)"",0);
+  //f_mount(NULL, (TCHAR const*)"",0);
   /* Free the tftp_connection_args structure reserverd for */
   mem_free(args);
 
@@ -227,8 +228,9 @@ void tftp_cleanup_rd(struct udp_pcb *upcb, tftp_connection_args *args)
 void tftp_cleanup_wr(struct udp_pcb *upcb, tftp_connection_args *args)
 {
   /* close the filesystem */
+  //f_close(&file_CR);
   f_close(&file_CR);
-  f_mount(NULL, (TCHAR const*)"",0);
+  //f_mount(NULL, (TCHAR const*)"",0);
   /* Free the tftp_connection_args structure reserverd for */
   mem_free(args);
 

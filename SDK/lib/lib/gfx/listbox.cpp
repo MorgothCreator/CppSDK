@@ -29,7 +29,7 @@
 #include "controls_definition.h"
 #include "gfx_gui_paint.h"
 
-bool GI::Screen::Gfx::ListBox::paint(listboxItem* settings, void *pDisplay, signed int x_start, signed int y_start, tControlCommandData* control_comand, bool Pushed, bool Paint)
+bool GI::Screen::Gfx::ListBox::paint(listboxItem* settings, void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, tControlCommandData* control_comand, bool Pushed, bool Paint)
 {
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	GI::Screen::Gfx::Window *parentWindowHandler = (GI::Screen::Gfx::Window*)Internals.parentWindowHandler;
@@ -62,8 +62,8 @@ bool GI::Screen::Gfx::ListBox::paint(listboxItem* settings, void *pDisplay, sign
 			LcdStruct->sClipRegion.sYMax = ((y_start + settings->Size.Y) - 4);
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 
-			signed int x_str_location = x_start + 4;
-			signed int y_str_location = y_start + 4;
+			gfx_s32 x_str_location = x_start + 4;
+			gfx_s32 y_str_location = y_start + 4;
 			if(settings->Caption->textAlign == alignCenter)
 			{
 				StringProperties_t str_properties = settings->Caption->getStrProp();
@@ -108,7 +108,7 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 	{
 		/* Parse commands */
 #ifdef NO_ENUM_ON_SWITCH
-		switch((unsigned char)control_comand->Comand)
+		switch((gfx_u8)control_comand->Comand)
 #else
 		switch((int)control_comand->Comand)
 #endif
@@ -192,10 +192,10 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 	//if(settings->Internals.Caption.Text != NULL && settings->Caption.Text != NULL && strcmp(settings->Internals.Caption.Text, settings->Caption.Text) == NULL)
 		//settings->Internals.NeedEntireRefresh = true;
 
-	signed int X_StartBox = Internals.Position.X;
-	signed int Y_StartBox = Internals.Position.Y;
-	signed int X_LenBox = Internals.Size.X;
-	signed int Y_LenBox = Internals.Size.Y;
+	gfx_s32 X_StartBox = Internals.Position.X;
+	gfx_s32 Y_StartBox = Internals.Position.Y;
+	gfx_s32 X_LenBox = Internals.Size.X;
+	gfx_s32 Y_LenBox = Internals.Size.Y;
 	void *pDisplay = Internals.pDisplay;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 
@@ -260,7 +260,7 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 		Y_StartBox = Internals.Position.Y;
 		X_LenBox = Internals.Size.X;
 		Y_LenBox = Internals.Size.Y;
-		unsigned int CntDisplayItems;
+		gfx_u32 CntDisplayItems;
 		for(CntDisplayItems = 0; CntDisplayItems < ItemsCount ; CntDisplayItems++)
 		{
 			Items[CntDisplayItems]->Size.X = AlwaisShowScrollbar? Size.X - 4 : Size.X - Internals.Size.ScrollSize - 5;
@@ -273,7 +273,7 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 		LcdStruct->sClipRegion.sXMax = X_StartBox + X_LenBox;
 		LcdStruct->sClipRegion.sYMax = Y_StartBox + Y_LenBox;
 		GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
-		unsigned int color = controls_color.Control_Color_Enabled_Border_Pull;
+		gfx_u32 color = controls_color.Control_Color_Enabled_Border_Pull;
 		if((!Enabled || !parentWindowHandler->Internals.OldStateEnabled) && Internals.Control.Initiated == true) {
 			color = Color.Disabled.Border;
 			LcdStruct->drawHLine(X_StartBox, X_LenBox, Y_StartBox, 1, controlls_change_color(color, -BORDER_LINE_ONE_DARK));
@@ -357,7 +357,7 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 	{
 		Internals.OldStateCursor = control_comand->Cursor;
 
-		unsigned int CntDisplayItems;
+		gfx_u32 CntDisplayItems;
 		bool items_position_has_changed = false;
 		if(Internals.ItemStartOnBox != Internals.OldItemStartOnBox)
 		{
@@ -370,7 +370,7 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 		LcdStruct->sClipRegion.sXMax = X_StartBox + X_LenBox;
 		LcdStruct->sClipRegion.sYMax = Y_StartBox + Y_LenBox;
 		GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
-		unsigned int EndDisplayedItems = ((Size.Y - 4) / Size.ItemSizeY) + Internals.ItemStartOnBox;
+		gfx_u32 EndDisplayedItems = ((Size.Y - 4) / Size.ItemSizeY) + Internals.ItemStartOnBox;
 		for(CntDisplayItems = Internals.ItemStartOnBox; CntDisplayItems < EndDisplayedItems; CntDisplayItems++)
 		{
 			if(CntDisplayItems >= ItemsCount) break;
@@ -387,7 +387,7 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 			{
 				if( control_comand->Cursor == StateChangedOn && paint(Items[CntDisplayItems], pDisplay, X_StartBox + 2, Y_StartBox + 2 + ((CntDisplayItems - Internals.ItemStartOnBox) * Size.ItemSizeY), control_comand, false, false))
 				{
-					unsigned int _CntDisplayItems = CntDisplayItems;
+					gfx_u32 _CntDisplayItems = CntDisplayItems;
 					if(SelectedItem < EndDisplayedItems && SelectedItem >= Internals.ItemStartOnBox)
 					{
 						paint(Items[SelectedItem], pDisplay, X_StartBox + 2, Y_StartBox + 2 + ((SelectedItem - Internals.ItemStartOnBox) * Size.ItemSizeY), control_comand, false, true);
@@ -428,7 +428,7 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 	return;
 }
 //#######################################################################################
-bool GI::Screen::Gfx::ListBox::insert(char* text, unsigned int location)
+bool GI::Screen::Gfx::ListBox::insert(char* text, gfx_u32 location)
 {
 	if(!this)
 		return false;
@@ -463,7 +463,7 @@ bool GI::Screen::Gfx::ListBox::insert(char* text, unsigned int location)
 		free(item_settings);
 		return false;
 	}
-	unsigned int TmpCntItemsToMove = ItemsCount;
+	gfx_u32 TmpCntItemsToMove = ItemsCount;
 	for(; TmpCntItemsToMove > location; TmpCntItemsToMove --)
 	{
 		Tmp[TmpCntItemsToMove] = Tmp[TmpCntItemsToMove - 1];
@@ -484,7 +484,7 @@ void GI::Screen::Gfx::ListBox::clear()
 {
 	if(!this)
 		return;
-	unsigned int TmpCntItemsToMove = ItemsCount;
+	gfx_u32 TmpCntItemsToMove = ItemsCount;
 	for(; TmpCntItemsToMove > 0; TmpCntItemsToMove--)
 	{
 		if(Items[TmpCntItemsToMove - 1]->Caption)
@@ -509,7 +509,7 @@ void GI::Screen::Gfx::ListBox::clear()
 	Internals.NeedEntireRefresh = true;
 }
 //#######################################################################################
-bool GI::Screen::Gfx::ListBox::remove(unsigned int location)
+bool GI::Screen::Gfx::ListBox::remove(gfx_u32 location)
 {
 	if(!this)
 		return false;
@@ -523,7 +523,7 @@ bool GI::Screen::Gfx::ListBox::remove(unsigned int location)
 		free(Items[location]);
 	if(ItemsCount - 1 != 0)
 	{
-		unsigned int TmpCntItemsToMove = location +1;
+		gfx_u32 TmpCntItemsToMove = location +1;
 		for(; TmpCntItemsToMove < ItemsCount; TmpCntItemsToMove++)
 		{
 			Items[TmpCntItemsToMove - 1] = Items[TmpCntItemsToMove];
@@ -607,7 +607,7 @@ GI::Screen::Gfx::ListBox::~ListBox()
 	Visible = false;
 	idle(&comand);
 
-	unsigned int TmpCntItemsToMove = 0;
+	gfx_u32 TmpCntItemsToMove = 0;
 	for(; TmpCntItemsToMove > ItemsCount; TmpCntItemsToMove++)
 	{
 		if(Items[TmpCntItemsToMove]->Caption)

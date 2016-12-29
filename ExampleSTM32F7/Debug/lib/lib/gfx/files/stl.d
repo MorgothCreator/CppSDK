@@ -7,7 +7,8 @@ lib/lib/gfx/files/stl.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/files/stl.c \
  C:/GitHub/CppSDK/SDK/lib/include/global.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h \
- C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
+ c:\github\cppsdk\sdk\lib\lib\gfx\gfxdef.h
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/files/stl.h:
 
@@ -26,3 +27,5 @@ C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
 C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
+
+c:\github\cppsdk\sdk\lib\lib\gfx\gfxdef.h:

@@ -25,6 +25,7 @@
 //#include <math.h>
 #include <stdlib.h>
 #include <api/lcd_def.h>
+#include "gfxdef.h"
 //#define focalLength  300
 #define _depth 1
 
@@ -35,8 +36,8 @@
 
 //typedef struct
 //{
-//	signed int _x;
-//	signed int _y;
+//	s32 _x;
+//	s32 _y;
 //}theScene;
 
 typedef struct
@@ -48,7 +49,7 @@ typedef struct
 	double *scaleFactor;
 	double focalLength;
 	double depthScale;
-	unsigned int length;
+	u32 length;
 }point;
 
 typedef struct
@@ -60,7 +61,7 @@ typedef struct
 	double scaleFactor[8];
 	double focalLength;
 	double depthScale;
-	unsigned int length;
+	u32 length;
 }_3d_points;
 
 typedef struct
@@ -76,8 +77,8 @@ typedef struct
 }Transformed_Points_Array;
 
 void Transform3DPointsTo2DPoints(_3d_points *screenPoints, _3d_points *Points, axisRotations AxisRotations);
-void put_3d_triangle(GI::Dev::Screen *pDisplay, _3d_points *Points, signed int X_offset, signed int Y_offset, double X_Angle, double Y_Angle, double Z_Angle, unsigned int Color);
-void put_3d_rectangle(GI::Dev::Screen *pDisplay, _3d_points *Points, signed int X_offset, signed int Y_offset, double X_Angle, double Y_Angle, double Z_Angle, unsigned int Color);
+void put_3d_triangle(GI::Dev::Screen *pDisplay, _3d_points *Points, gfx_s32 X_offset, gfx_s32 Y_offset, double X_Angle, double Y_Angle, double Z_Angle, gfx_u32 Color);
+void put_3d_rectangle(GI::Dev::Screen *pDisplay, _3d_points *Points, gfx_s32 X_offset, gfx_s32 Y_offset, double X_Angle, double Y_Angle, double Z_Angle, gfx_u32 Color);
 
 //#######################################################################################
 #ifdef HEADER_INCLUDE_C_FILES

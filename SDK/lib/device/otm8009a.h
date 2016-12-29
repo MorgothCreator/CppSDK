@@ -47,7 +47,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
-#include <api/timer_api.h>
+#include <api/timer.h>
 #include "api/lcd_def.h"
 /** @addtogroup BSP
   * @{

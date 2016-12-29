@@ -26,7 +26,7 @@
 #define BGR_TO_UINT(R,G,B) ((R)) | ((G)<<8) | ((B<<16))
 //#######################################################
 // Utility to divide or multiply the base color
-//unsigned int gfx_modify_color(unsigned int color, signed char modify);
+//gfx_u32 gfx_modify_color(gfx_u32 color, s8 modify);
 //#######################################################
 #ifdef HEADER_INCLUDE_C_FILES
 #include "gfx_util.c"

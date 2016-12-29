@@ -30,12 +30,14 @@ RM := rm -rf
 -include stm32f4/board/STM32F469I-DISCO/subdir.mk
 -include lib/lib/util/subdir.mk
 -include lib/lib/gfx/resource/subdir.mk
+-include lib/lib/gfx/libdrawtext/subdir.mk
 -include lib/lib/gfx/files/subdir.mk
 -include lib/lib/gfx/subdir.mk
 -include lib/lib/fs/fat/src/option/subdir.mk
 -include lib/lib/fs/fat/src/subdir.mk
 -include lib/lib/buffers/subdir.mk
 -include lib/lib/subdir.mk
+-include lib/include/subdir.mk
 -include lib/device/subdir.mk
 -include lib/app/lwip/tftpserver/subdir.mk
 -include lib/app/lwip/sntp/subdir.mk

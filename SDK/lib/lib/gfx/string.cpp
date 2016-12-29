@@ -29,7 +29,7 @@ GI::Screen::String::String(GI::Dev::Screen *pDisplay, char *String) :
 				SYS_ERR_OK)
 {
 	this->pDisplay = pDisplay;
-	unsigned int len = strlen(String);
+	gfx_u32 len = strlen(String);
 	buff = (char *) malloc(len + 1);
 	if (buff)
 	{
@@ -78,7 +78,7 @@ void GI::Screen::String::toUper()
 		return;
 	if(!buff)
 		return;
-	unsigned int TmpCnt = length;
+	gfx_u32 TmpCnt = length;
 	char* Str = buff;
 	do{
 		*Str = (char)toupper((int)*Str);
@@ -94,7 +94,7 @@ void GI::Screen::String::toLower()
 		return;
 	if(!buff)
 		return;
-	unsigned int TmpCnt = length;
+	gfx_u32 TmpCnt = length;
 	char* Str = buff;
 	do{
 		*Str = (char)tolower((int)*Str);
@@ -133,7 +133,7 @@ void GI::Screen::String::setText(char* string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = strlen(string);
+	gfx_u32 LenSrc = strlen(string);
 	char *Return;
 	Return = (char *) realloc(buff, LenSrc + 1);
 	*Return = 0;
@@ -152,7 +152,7 @@ void GI::Screen::String::setText(GI::Screen::String *string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = string->length;
+	gfx_u32 LenSrc = string->length;
 	char *Return;
 	Return = (char *) realloc(buff, LenSrc + 1);
 	*Return = 0;
@@ -171,7 +171,7 @@ void GI::Screen::String::setText(GI::String *string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = string->length;
+	gfx_u32 LenSrc = string->length;
 	char *Return;
 	Return = (char *) realloc(buff, LenSrc + 1);
 	*Return = 0;
@@ -190,8 +190,8 @@ void GI::Screen::String::append(char* string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = strlen(string);
-	unsigned int LenDest = length;
+	gfx_u32 LenSrc = strlen(string);
+	gfx_u32 LenDest = length;
 	char *Return = (char *)realloc(buff, LenDest + LenSrc + 1);
 	//char *Return = (char *)realloc(dest, LenDest + LenSrc + 1);
 	if(!Return)
@@ -209,8 +209,8 @@ void GI::Screen::String::append(GI::Screen::String *string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = string->length;
-	unsigned int LenDest = length;
+	gfx_u32 LenSrc = string->length;
+	gfx_u32 LenDest = length;
 	char *Return = (char *)realloc(buff, LenDest + LenSrc + 1);
 	//char *Return = (char *)realloc(dest, LenDest + LenSrc + 1);
 	if(!Return)
@@ -228,8 +228,8 @@ void GI::Screen::String::append(GI::String *string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = string->length;
-	unsigned int LenDest = length;
+	gfx_u32 LenSrc = string->length;
+	gfx_u32 LenDest = length;
 	char *Return = (char *)realloc(buff, LenDest + LenSrc + 1);
 	//char *Return = (char *)realloc(dest, LenDest + LenSrc + 1);
 	if(!Return)
@@ -247,8 +247,8 @@ void GI::Screen::String::append(char Char)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = 1;
-	unsigned int LenDest = length;
+	gfx_u32 LenSrc = 1;
+	gfx_u32 LenDest = length;
 	char *Return = (char *) realloc(buff, LenDest + LenSrc + 1);
 	//char *Return = (char *)realloc(dest, LenDest + LenSrc + 1);
 	if (!Return)
@@ -263,13 +263,13 @@ void GI::Screen::String::append(char Char)
 	error = SYS_ERR_OK;
 }
 
-void GI::Screen::String::insert(GI::Screen::String* string, unsigned int location)
+void GI::Screen::String::insert(GI::Screen::String* string, gfx_u32 location)
 {
 	if(!this && !string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = string->length;
+	gfx_u32 LenSrc = string->length;
 	if(location > LenSrc)
 		return;
 	if(!buff)
@@ -280,7 +280,7 @@ void GI::Screen::String::insert(GI::Screen::String* string, unsigned int locatio
 	char *Return = (char *)realloc(buff, length + LenSrc + 1);
 	if(!Return)
 		return;
-	unsigned int LenDest = length + location;
+	gfx_u32 LenDest = length + location;
 	char *Tmp = (char *)malloc((length - location) +1);
 	if(!Tmp)
 		return;
@@ -294,13 +294,13 @@ void GI::Screen::String::insert(GI::Screen::String* string, unsigned int locatio
 	modifyed++;
 }
 
-void GI::Screen::String::insert(GI::String* string, unsigned int location)
+void GI::Screen::String::insert(GI::String* string, gfx_u32 location)
 {
 	if(!this && !string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = string->length;
+	gfx_u32 LenSrc = string->length;
 	if(location > LenSrc)
 		return;
 	if(!buff)
@@ -311,7 +311,7 @@ void GI::Screen::String::insert(GI::String* string, unsigned int location)
 	char *Return = (char *)realloc(buff, length + LenSrc + 1);
 	if(!Return)
 		return;
-	unsigned int LenDest = length + location;
+	gfx_u32 LenDest = length + location;
 	char *Tmp = (char *)malloc((length - location) +1);
 	if(!Tmp)
 		return;
@@ -325,20 +325,20 @@ void GI::Screen::String::insert(GI::String* string, unsigned int location)
 	modifyed++;
 }
 
-void GI::Screen::String::insert(char *string, unsigned int location)
+void GI::Screen::String::insert(char *string, gfx_u32 location)
 {
 	if(!this && !string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = strlen(string);
+	gfx_u32 LenSrc = strlen(string);
 	if(location > LenSrc)
 		return;
 
 	char *Return = (char *)realloc(buff, length + LenSrc + 1);
 	if(!Return)
 		return;
-	unsigned int LenDest = length + location;
+	gfx_u32 LenDest = length + location;
 	char *Tmp = (char *)malloc((length - location) +1);
 	if(!Tmp)
 		return;
@@ -358,7 +358,7 @@ void GI::Screen::String::clone(GI::Screen::String* string)
 		return;
 	if(!buff)
 		return;
-	unsigned int LenSrc = string->length;
+	gfx_u32 LenSrc = string->length;
 	char *Return = (char *) realloc(string->buff, LenSrc + 1);
 	//char *Return = (char *)realloc(dest, LenDest + LenSrc + 1);
 	if (!Return)
@@ -392,11 +392,11 @@ void GI::Screen::String::clear()
 	error = SYS_ERR_OK;
 	modifyed++;
 }
-char *GI::Screen::String::subString(unsigned int position, unsigned int len)
+char *GI::Screen::String::subString(gfx_u32 position, gfx_u32 len)
 {
 	if(!this && !buff)
 		return NULL;
-	if (position + len >= (unsigned int) length)
+	if (position + len >= (gfx_u32) length)
 		return NULL;
 	char *Return = (char *) calloc(1, len + 1);
 	if (!Return)
@@ -407,18 +407,18 @@ char *GI::Screen::String::subString(unsigned int position, unsigned int len)
 }
 
 void GI::Screen::String::getStrSelect(
-		signed int *Start, signed int *SelStartReturn,
-		signed int *SelLenReturn, signed int _XPush, signed int _YPush,
-		signed int _XPull, signed int _YPull, signed int lX, signed int lY,
-		unsigned int *return_command)
+		gfx_s32 *Start, gfx_s32 *SelStartReturn,
+		gfx_s32 *SelLenReturn, gfx_s32 _XPush, gfx_s32 _YPush,
+		gfx_s32 _XPull, gfx_s32 _YPull, gfx_s32 lX, gfx_s32 lY,
+		gfx_u32 *return_command)
 {
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	char *pcString = buff;
-	signed int lLength = -1;
+	gfx_s32 lLength = -1;
 	if (LcdStruct->sClipRegion.sXMin > _XPull)
 	{
 		*return_command = ReturnCommand_GoLeft;
-		unsigned int tmp = LcdStruct->sClipRegion.sXMin - _XPull;
+		gfx_u32 tmp = LcdStruct->sClipRegion.sXMin - _XPull;
 		if (tmp > ReturnCommand_MaxValue)
 			tmp = ReturnCommand_MaxValue;
 		*return_command |= tmp;
@@ -426,7 +426,7 @@ void GI::Screen::String::getStrSelect(
 	if (LcdStruct->sClipRegion.sXMax < _XPull)
 	{
 		*return_command = ReturnCommand_GoRight;
-		unsigned int tmp = _XPull - LcdStruct->sClipRegion.sXMax;
+		gfx_u32 tmp = _XPull - LcdStruct->sClipRegion.sXMax;
 		if (tmp > ReturnCommand_MaxValue)
 			tmp = ReturnCommand_MaxValue;
 		*return_command |= tmp;
@@ -434,7 +434,7 @@ void GI::Screen::String::getStrSelect(
 	if (LcdStruct->sClipRegion.sYMin > _YPull)
 	{
 		*return_command = ReturnCommand_GoUp;
-		unsigned int tmp = LcdStruct->sClipRegion.sYMin - _YPull;
+		gfx_u32 tmp = LcdStruct->sClipRegion.sYMin - _YPull;
 		if (tmp > ReturnCommand_MaxValue)
 			tmp = ReturnCommand_MaxValue;
 		*return_command |= tmp;
@@ -442,7 +442,7 @@ void GI::Screen::String::getStrSelect(
 	if (LcdStruct->sClipRegion.sYMax < _YPull)
 	{
 		*return_command = ReturnCommand_GoDn;
-		unsigned int tmp = _YPull - LcdStruct->sClipRegion.sYMax;
+		gfx_u32 tmp = _YPull - LcdStruct->sClipRegion.sYMax;
 		if (tmp > ReturnCommand_MaxValue)
 			tmp = ReturnCommand_MaxValue;
 		*return_command |= tmp;
@@ -450,13 +450,13 @@ void GI::Screen::String::getStrSelect(
 	if (*return_command)
 		return;
 
-	signed int StringColsHeight_Pixels = lY;
-	//signed int CharHeight_Pixels = 0;
+	gfx_s32 StringColsHeight_Pixels = lY;
+	//gfx_s32 CharHeight_Pixels = 0;
 
-	const unsigned short *pusOffset;
-	const unsigned char *pucData;
-	//signed int lRows;
-	volatile signed int StringLengthOfEveryRow = lX;
+	const u16 *pusOffset;
+	const gfx_u8 *pucData;
+	//gfx_s32 lRows;
+	volatile gfx_s32 StringLengthOfEveryRow = lX;
 
 	//
 	// Get some pointers to relevant information in the font to make things
@@ -464,32 +464,32 @@ void GI::Screen::String::getStrSelect(
 	// avoid.
 	//
 #ifdef FLASH_DEVICE
-	pusOffset = (const unsigned short *)pFont + 2;
-	pucData = (const unsigned char *)&pFont->pucData + 2;
+	pusOffset = (const u16 *)pFont + 2;
+	pucData = (const gfx_u8 *)&pFont->pucData + 2;
 #else
 	pusOffset = pFont->pusOffset;
 	pucData = pFont->pucData;
 #endif
 
-	signed int XPush = _XPush;
-	signed int YPush = _YPush;
-	signed int XPull = _XPull;
-	signed int YPull = _YPull;
+	gfx_s32 XPush = _XPush;
+	gfx_s32 YPush = _YPush;
+	gfx_s32 XPull = _XPull;
+	gfx_s32 YPull = _YPull;
 
 	/*if(XPush > XPull)
 	 {
-	 signed int Tmp = XPull;
+	 gfx_s32 Tmp = XPull;
 	 XPull = XPush;
 	 XPush = Tmp;
 	 }
 	 if(YPush > YPull)
 	 {
-	 signed int Tmp = YPull;
+	 gfx_s32 Tmp = YPull;
 	 YPull = YPush;
 	 YPush = Tmp;
 	 }*/
 
-	signed int CharCount = 0;
+	gfx_s32 CharCount = 0;
 
 	bool StartSelected = false;
 	bool LenSelected = false;
@@ -581,13 +581,13 @@ void GI::Screen::String::getStrSelect(
 
 }
 
-signed int GI::Screen::String::getStrWidth()
+gfx_s32 GI::Screen::String::getStrWidth()
 {
 	//tDisplay* LcdStruct = (tDisplay *) pDisplay;
 	char *pcString = buff;
-	const unsigned short *pusOffset;
-	const unsigned char *pucData;
-	signed int lWidth;
+	const u16 *pusOffset;
+	const gfx_u8 *pucData;
+	gfx_s32 lWidth;
 	int lLength = -1;
 
 	//
@@ -604,8 +604,8 @@ signed int GI::Screen::String::getStrWidth()
 	// avoid.
 	//
 #ifdef FLASH_DEVICE
-	pusOffset = (const unsigned short *)pFont + 2;
-	pucData = (const unsigned char *)&pFont->pucData + 2;
+	pusOffset = (const u16 *)pFont + 2;
+	pucData = (const gfx_u8 *)&pFont->pucData + 2;
 #else
 	pusOffset = pFont->pusOffset;
 	pucData = pFont->pucData;
@@ -656,13 +656,13 @@ signed int GI::Screen::String::getStrWidth()
 	return (lWidth);
 }
 
-signed int GI::Screen::String::getStrRowsNr()
+gfx_s32 GI::Screen::String::getStrRowsNr()
 {
 	char *pcString = buff;
 	int lLength = -1;
-	//const unsigned short *pusOffset;
-	//const unsigned char *pucData;
-	signed int lRows;
+	//const u16 *pusOffset;
+	//const gfx_u8 *pucData;
+	gfx_s32 lRows;
 
 	//
 	// Check the arguments.
@@ -699,27 +699,27 @@ signed int GI::Screen::String::getStrRowsNr()
 
 StringProperties_t GI::Screen::String::getStrProp()
 {
-	signed int lLength = -1;
+	gfx_s32 lLength = -1;
 	char *pcString = buff;
 	bool WordWrap = wordWrap;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	StringProperties_t StringReturnProperties;
 
-	volatile signed int FirstRowLength_Pixels = 0;
-	volatile signed int FirstRowLength_Chars = 0;
-	volatile signed int StringLengthWithSpecialChars_Chars = 0;
-	volatile signed int StringLengthWithOutSpecialChars_Chars = 0;
-	volatile signed int StringRowsMaxLength_Pixels = 0;
-	//signed int StringColsHeight_Pixels = 0;
-	volatile signed int StringColsHeight_Rows = 0;
-	//signed int CharHeight_Pixels = 0;
+	volatile gfx_s32 FirstRowLength_Pixels = 0;
+	volatile gfx_s32 FirstRowLength_Chars = 0;
+	volatile gfx_s32 StringLengthWithSpecialChars_Chars = 0;
+	volatile gfx_s32 StringLengthWithOutSpecialChars_Chars = 0;
+	volatile gfx_s32 StringRowsMaxLength_Pixels = 0;
+	//gfx_s32 StringColsHeight_Pixels = 0;
+	volatile gfx_s32 StringColsHeight_Rows = 0;
+	//gfx_s32 CharHeight_Pixels = 0;
 
-	volatile unsigned char EndOfFirstRow = false;
+	volatile gfx_u8 EndOfFirstRow = false;
 
-	//unsigned short *pusOffset;
-	//unsigned char *pucData;
-	//signed int lRows;
-	volatile signed int StringLengthOfEveryRow = 0;
+	//u16 *pusOffset;
+	//gfx_u8 *pucData;
+	//gfx_s32 lRows;
+	volatile gfx_s32 StringLengthOfEveryRow = 0;
 
 	//
 	// Check the arguments.
@@ -733,11 +733,11 @@ StringProperties_t GI::Screen::String::getStrProp()
 	// avoid.
 	//
 #ifdef FLASH_DEVICE
-	const unsigned short *pusOffset = (const unsigned short *)pFont + 2;
-	const unsigned char *pucData = (const unsigned char *)&pFont->pucData + 2;
+	const u16 *pusOffset = (const u16 *)pFont + 2;
+	const gfx_u8 *pucData = (const gfx_u8 *)&pFont->pucData + 2;
 #else
-	const unsigned short *pusOffset = pFont->pusOffset;
-	const unsigned char *pucData = pFont->pucData;
+	const u16 *pusOffset = pFont->pusOffset;
+	const gfx_u8 *pucData = pFont->pucData;
 #endif
 
 	StringReturnProperties.FirstRowLength_Pixels = 0;
@@ -805,7 +805,7 @@ StringProperties_t GI::Screen::String::getStrProp()
 		else if (*pcString == '\n')
 		{
 			//pucData = 0;
-			unsigned char CharLen =
+			gfx_u8 CharLen =
 					read_data_byte(
 							pucData[read_data_word(pusOffset[ABSENT_CHAR_REPLACEMENT - ' ']) + 1]);
 			FirstRowLength_Pixels += CharLen;
@@ -821,7 +821,7 @@ StringProperties_t GI::Screen::String::getStrProp()
 				//
 				// Add the width of this character as drawn with the given font.
 				//
-				unsigned char CharLen =
+				gfx_u8 CharLen =
 						read_data_byte(
 								pucData[read_data_word(pusOffset[*pcString - ' ']
 												) + 1]);
@@ -839,7 +839,7 @@ StringProperties_t GI::Screen::String::getStrProp()
 				// and ensures that the width returned here represents the
 				// rendered dimension of the string.
 				//
-				unsigned char CharLen =
+				gfx_u8 CharLen =
 						read_data_byte(
 								pucData[read_data_word(pusOffset[ABSENT_CHAR_REPLACEMENT - ' ']) + 1]);
 				FirstRowLength_Pixels += CharLen;
@@ -872,9 +872,9 @@ StringProperties_t GI::Screen::String::getStrProp()
 	return (StringReturnProperties);
 }
 
-static unsigned char _NumLeadingZeros(unsigned int x)
+static gfx_u8 _NumLeadingZeros(gfx_u32 x)
 {
-	register unsigned char count = 0;    //sizeof(x)*8;
+	register gfx_u8 count = 0;    //sizeof(x)*8;
 
 	while (x)
 	{
@@ -897,22 +897,22 @@ static unsigned char _NumLeadingZeros(unsigned int x)
 	return count;
 }
 
-signed int GI::Screen::String::drawString()
+gfx_s32 GI::Screen::String::drawString()
 {
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	char *pcString = buff;
 	bool WordWrap = wordWrap;
 	int lLength = -1;
 
-	signed int lIdx, lX0, lY0, lCount, lOff, lOn, lBit;
-	signed int lXBackup = lX;
-	const unsigned short *pusOffset;
-	const unsigned char *pucData;
+	gfx_s32 lIdx, lX0, lY0, lCount, lOff, lOn, lBit;
+	gfx_s32 lXBackup = lX;
+	const u16 *pusOffset;
+	const gfx_u8 *pucData;
 
 	bool _ulOpaque = ulOpaque;
 
-	signed int SelStart = _SelStart;
-	signed int SelLen = _SelLen;
+	gfx_s32 SelStart = _SelStart;
+	gfx_s32 SelLen = _SelLen;
 
 	if (SelLen < 0)
 	{
@@ -921,8 +921,8 @@ signed int GI::Screen::String::drawString()
 	}
 
 #ifdef FLASH_DEVICE
-	pusOffset = (const unsigned short *)pFont + 2;
-	pucData = (const unsigned char *)&pFont->pucData + 2;
+	pusOffset = (const u16 *)pFont + 2;
+	pucData = (const gfx_u8 *)&pFont->pucData + 2;
 #else
 	pusOffset = pFont->pusOffset;
 	pucData = pFont->pucData;
@@ -934,8 +934,8 @@ signed int GI::Screen::String::drawString()
 	if (!pDisplay || !pFont || !pcString)
 		return 0;
 
-	signed int CharCount = 0;
-	signed int ChCount = 0;
+	gfx_s32 CharCount = 0;
+	gfx_s32 ChCount = 0;
 
 	//
 	// Copy the drawing context into a local structure that can be modified.
@@ -986,7 +986,7 @@ signed int GI::Screen::String::drawString()
 			if ((*pcString >= ' ') && (*pcString <= '~'))
 			{
 #ifdef FLASH_DEVICE
-				pucData = ((const unsigned char *)&pFont->pucData + 2 + read_data_word(pusOffset[*pcString++ - ' ']));
+				pucData = ((const gfx_u8 *)&pFont->pucData + 2 + read_data_word(pusOffset[*pcString++ - ' ']));
 #else
 				pucData = (pFont->pucData
 						+ read_data_word(pusOffset[*pcString++ - ' ']));
@@ -995,7 +995,7 @@ signed int GI::Screen::String::drawString()
 			else
 			{
 #ifdef FLASH_DEVICE
-				pucData = ((const unsigned char *)&pFont->pucData + 2 + read_data_word(pusOffset[ABSENT_CHAR_REPLACEMENT - ' ']));
+				pucData = ((const gfx_u8 *)&pFont->pucData + 2 + read_data_word(pusOffset[ABSENT_CHAR_REPLACEMENT - ' ']));
 #else
 				pucData = (pFont->pucData
 						+ read_data_word(
@@ -1455,26 +1455,26 @@ signed int GI::Screen::String::drawString()
 	return ChCount;
 }
 
-signed int GI::Screen::String::drawStringTiny()
+gfx_s32 GI::Screen::String::drawStringTiny()
 {
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	//tFont *pFont = properties->pFont;
 	char *pcString = buff;
 	bool WordWrap = wordWrap;
 	int lLength = -1;
-	//signed int _SelStart = properties->_SelStart;
-	//signed int _SelLen = properties->_SelLen;
+	//gfx_s32 _SelStart = properties->_SelStart;
+	//gfx_s32 _SelLen = properties->_SelLen;
 
 	//struct Display_Struct* ScreenStruct = (struct Display_Struct*)ScreenFile->udata;
-	signed char chWidth = 0;
-	//signed char chWidth_Tmp = 0;
-	signed char chHeight = 0;
-	signed int CharPtr;
-	signed char Tmp = 0;
+	gfx_s8 chWidth = 0;
+	//gfx_s8 chWidth_Tmp = 0;
+	gfx_s8 chHeight = 0;
+	gfx_s32 CharPtr;
+	gfx_s8 Tmp = 0;
 	bool CompactWriting = true;
-	signed int Cursor_X = lX;
-	signed int Cursor_Y = lY;
-	signed int CharCnt = 0;
+	gfx_s32 Cursor_X = lX;
+	gfx_s32 Cursor_Y = lY;
+	gfx_s32 CharCnt = 0;
 #ifdef FLASH_DEVICE
 	chWidth = pgm_read_byte(&CharTable6x8[2]);
 	chHeight = pgm_read_byte(&CharTable6x8[3]);
@@ -1484,7 +1484,7 @@ signed int GI::Screen::String::drawStringTiny()
 #endif
 	do
 	{
-		unsigned char Char = *pcString;
+		gfx_u8 Char = *pcString;
 		if (lLength >= 0 && CharCnt > lLength)
 			return CharCnt - 1;
 		if (Char == 0)
@@ -1502,7 +1502,7 @@ signed int GI::Screen::String::drawStringTiny()
 		}
 		else
 		{
-			unsigned char Temp;
+			gfx_u8 Temp;
 			if (CompactWriting)
 			{
 				for (Tmp = 1; Tmp < chWidth; Tmp++)
@@ -1528,8 +1528,8 @@ signed int GI::Screen::String::drawStringTiny()
 			{
 				if (ulVisible)
 				{
-					signed int XX = 0;
-					signed int YY = 0;
+					gfx_s32 XX = 0;
+					gfx_s32 YY = 0;
 					for (XX = 0; XX < Tmp; XX++)
 					{
 #ifdef FLASH_DEVICE
@@ -1591,19 +1591,19 @@ signed int GI::Screen::String::drawStringTiny()
 	} while (1);
 }
 
-signed int GI::Screen::String::getStrPropTiny()
+gfx_s32 GI::Screen::String::getStrPropTiny()
 {
 	//GScreen::Window *pDisplay = pDisplay;
 	char *pcString = buff;
 	//bool WordWrap = wordWrap;
 	int lLength = -1;
 	//tDisplay* LcdStruct = (tDisplay *) pDisplay;
-	signed char chWidth = 0;
-	//signed char chWidth_Tmp = 0;
-	signed int CharPtr;
+	gfx_s8 chWidth = 0;
+	//gfx_s8 chWidth_Tmp = 0;
+	gfx_s32 CharPtr;
 	bool CompactWriting = true;
-	signed int Cursor_X = 0;
-	signed int CharCnt = 0;
+	gfx_s32 Cursor_X = 0;
+	gfx_s32 CharCnt = 0;
 #ifdef FLASH_DEVICE
 	chWidth = pgm_read_byte(&CharTable6x8[2]);
 #else
@@ -1611,8 +1611,8 @@ signed int GI::Screen::String::getStrPropTiny()
 #endif
 	do
 	{
-		signed char Tmp = 0;
-		unsigned char Char = *pcString;
+		gfx_s8 Tmp = 0;
+		gfx_u8 Char = *pcString;
 		if (lLength >= 0 && CharCnt > lLength)
 			return Cursor_X;
 		if (Char == 0)
@@ -1630,7 +1630,7 @@ signed int GI::Screen::String::getStrPropTiny()
 		}
 		else
 		{
-			unsigned char Temp;
+			gfx_u8 Temp;
 			if (CompactWriting)
 			{
 				for (Tmp = 1; Tmp < chWidth; Tmp++)
@@ -1919,21 +1919,21 @@ void GI::Screen::String::dopr (char *buffer, size_t maxlen, const char *format, 
       case 'o':
 	flags |= DP_F_UNSIGNED;
 	if (cflags == DP_C_SHORT)
-	  value = va_arg (args, unsigned short);
+	  value = va_arg (args, u16);
 	else if (cflags == DP_C_LONG)
 	  value = va_arg (args, unsigned long);
 	else
-	  value = va_arg (args, unsigned int);
+	  value = va_arg (args, gfx_u32);
 	fmtint (buffer, &currlen, maxlen, value, 8, min, max, flags);
 	break;
       case 'u':
 	flags |= DP_F_UNSIGNED;
 	if (cflags == DP_C_SHORT)
-	  value = va_arg (args, unsigned short);
+	  value = va_arg (args, u16);
 	else if (cflags == DP_C_LONG)
 	  value = va_arg (args, unsigned long);
 	else
-	  value = va_arg (args, unsigned int);
+	  value = va_arg (args, gfx_u32);
 	fmtint (buffer, &currlen, maxlen, value, 10, min, max, flags);
 	break;
       case 'X':
@@ -1941,11 +1941,11 @@ void GI::Screen::String::dopr (char *buffer, size_t maxlen, const char *format, 
       case 'x':
 	flags |= DP_F_UNSIGNED;
 	if (cflags == DP_C_SHORT)
-	  value = va_arg (args, unsigned short);
+	  value = va_arg (args, u16);
 	else if (cflags == DP_C_LONG)
 	  value = va_arg (args, unsigned long);
 	else
-	  value = va_arg (args, unsigned int);
+	  value = va_arg (args, gfx_u32);
 	fmtint (buffer, &currlen, maxlen, value, 16, min, max, flags);
 	break;
       case 'f':
@@ -2341,7 +2341,7 @@ void GI::Screen::String::dopr_outch (char *buffer, size_t *currlen, size_t maxle
 {
   /*if (*currlen < maxlen)
     buffer[(*currlen)++] = c;*/
-	append((unsigned char)c);
+	append((gfx_u8)c);
 }
 
 int GI::Screen::String::vsnprintf (char *str, size_t count, const char *fmt, va_list args)
@@ -2372,7 +2372,7 @@ int GI::Screen::String::vsnprintf (char *str, size_t count, const char *fmt, va_
  * s			String of characters																sample
  * p			Pointer address																		b8000000
  * n			Nothing printed.
- * 					The corresponding argument must be a pointer to a signed int.
+ * 					The corresponding argument must be a pointer to a gfx_s32.
  * 					The number of characters written so far is stored in the pointed location.
  * %			A % followed by another % character will write a single % to the stream.			%
  *
@@ -2407,9 +2407,9 @@ int GI::Screen::String::vsnprintf (char *str, size_t count, const char *fmt, va_
  * The length sub-specifier modifies the length of the data type. This is a chart showing the types used to interpret the corresponding arguments with and without length specifier (if a different type is used, the proper type promotion or conversion is performed, if allowed):
  * 											specifiers
  * length		d i				u o x X						f F e E g G a A				c			s			p			n
- * (none)		int				unsigned int				double						int			char*		void*		int*
- * hh			signed char		unsigned char																				signed char*
- * h			short int		unsigned short int																			short int*
+ * (none)		int				gfx_u32				double						int			char*		void*		int*
+ * hh			gfx_s8		gfx_u8																				gfx_s8*
+ * h			short int		u16 int																			short int*
  * l			long int		unsigned long int										wint_t		wchar_t*				long int*
  * ll			long long int	unsigned long long int																		long long int*
  * j			intmax_t		uintmax_t																					intmax_t*

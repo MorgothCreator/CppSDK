@@ -25,14 +25,14 @@
 #include "keyboard.h"
 #include "window.h"
 #include "util.h"
-#include "api/timer_api.h"
+#include "api/timer.h"
 #include "graphic_string.h"
 #include "controls_definition.h"
 //#######################################################################################
 #ifdef FLASH_DEVICE
-const unsigned int kbd_qwerty_keys_little_return[]  PROGMEM =
+const gfx_u32 kbd_qwerty_keys_little_return[]  PROGMEM =
 #else
-static const unsigned int kbd_qwerty_keys_little_return[] =
+static const gfx_u32 kbd_qwerty_keys_little_return[] =
 #endif
 {
 		kbd_qwerty_ctrl,'q','w','e','r','t','y','u','i' ,'o','p'            ,','          ,8               ,
@@ -41,9 +41,9 @@ static const unsigned int kbd_qwerty_keys_little_return[] =
 };
 //#######################################################################################
 #ifdef FLASH_DEVICE
-const unsigned int kbd_qwerty_keys_big_return[]  PROGMEM =
+const gfx_u32 kbd_qwerty_keys_big_return[]  PROGMEM =
 #else
-static const unsigned int kbd_qwerty_keys_big_return[] =
+static const gfx_u32 kbd_qwerty_keys_big_return[] =
 #endif
 {
 		kbd_qwerty_ctrl,'Q','W','E','R','T','Y','U','I','O','P'            ,';'          ,8               ,
@@ -52,9 +52,9 @@ static const unsigned int kbd_qwerty_keys_big_return[] =
 };
 //#######################################################################################
 #ifdef FLASH_DEVICE
-const unsigned int kbd_qwerty_keys_numeric_return[]  PROGMEM =
+const gfx_u32 kbd_qwerty_keys_numeric_return[]  PROGMEM =
 #else
-static const unsigned int kbd_qwerty_keys_numeric_return[] =
+static const gfx_u32 kbd_qwerty_keys_numeric_return[] =
 #endif
 {
 		kbd_qwerty_ctrl,'1','2','3','4','5','6','7','8','9','0'            ,'='          ,8               ,
@@ -63,9 +63,9 @@ static const unsigned int kbd_qwerty_keys_numeric_return[] =
 };
 //#######################################################################################
 #ifdef FLASH_DEVICE
-const unsigned char kbd_qwerty_keys_little[][6]  PROGMEM =
+const gfx_u8 kbd_qwerty_keys_little[][6]  PROGMEM =
 #else
-static const unsigned char kbd_qwerty_keys_little[][6] =
+static const gfx_u8 kbd_qwerty_keys_little[][6] =
 #endif
 {
 		"Ctrl","q","w","e","r","t","y","u","i" ,"o","p"  ,"," ,"BkS",
@@ -74,9 +74,9 @@ static const unsigned char kbd_qwerty_keys_little[][6] =
 };
 //#######################################################################################
 #ifdef FLASH_DEVICE
-const unsigned char kbd_qwerty_keys_big[][6]  PROGMEM =
+const gfx_u8 kbd_qwerty_keys_big[][6]  PROGMEM =
 #else
-static const unsigned char kbd_qwerty_keys_big[][6] =
+static const gfx_u8 kbd_qwerty_keys_big[][6] =
 #endif
 {
 		"Ctrl","Q","W","E","R","T","Y","U","I" ,"O","P"  ,";" ,"BkS",
@@ -85,9 +85,9 @@ static const unsigned char kbd_qwerty_keys_big[][6] =
 };
 //#######################################################################################
 #ifdef FLASH_DEVICE
-const unsigned char kbd_qwerty_keys_numeric[][6]  PROGMEM =
+const gfx_u8 kbd_qwerty_keys_numeric[][6]  PROGMEM =
 #else
-static const unsigned char kbd_qwerty_keys_numeric[][6] =
+static const gfx_u8 kbd_qwerty_keys_numeric[][6] =
 #endif
 {
 		"Ctrl","1","2","3","4","5","6","7","8" ,"9"     ,"0"  ,"=" ,"BkS",
@@ -95,9 +95,9 @@ static const unsigned char kbd_qwerty_keys_numeric[][6] =
 		"^"   ," ","&"," ","/","sl","quot","'" ,"space" ,"Lef","Dn","Rig"
 };
 //#######################################################################################
-void GI::Screen::Gfx::KbdQwerty::paint(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, tControlCommandData* control_comand, bool refrash)
+void GI::Screen::Gfx::KbdQwerty::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand, bool refrash)
 {
-	unsigned int color = 0;
+	gfx_u32 color = 0;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 	GI::Screen::Gfx::Window *parentWindowHandler = (GI::Screen::Gfx::Window*)Internals.parentWindowHandler;
 	tRectangle back_up_clip = LcdStruct->sClipRegion;
@@ -114,14 +114,14 @@ void GI::Screen::Gfx::KbdQwerty::paint(void *pDisplay, signed int x_start, signe
 		LcdStruct->drawRectangle(x_start + 1, y_start + 1, x_len - 2, y_len - 2, false, controlls_change_color(color, -2));
 		color = controls_color.Control_Color_Enabled_Buton_Pull;
 		LcdStruct->drawRectangle(x_start + 2, y_start + 2, x_len - 4, y_len - 4, true, color);
-		signed int key_size_x = ((Size.X - 4 - (kbd_border_size << 1))/13) - key_space_size;
-		signed int key_size_y = ((Size.Y - 4 - (kbd_border_size << 1))/3) - key_space_size;
+		gfx_s32 key_size_x = ((Size.X - 4 - (kbd_border_size << 1))/13) - key_space_size;
+		gfx_s32 key_size_y = ((Size.Y - 4 - (kbd_border_size << 1))/3) - key_space_size;
 
-		signed int KeyboardLocationX = ((/*settings->Internals.Position.X + */kbd_border_size) + ((Internals.Size.X>>1) - kbd_border_size)) - (((key_size_x + key_space_size) * 13)>>1);
-		signed int KeyLocationY =      ((/*settings->Internals.Position.Y + */kbd_border_size) + ((Internals.Size.Y>>1) - kbd_border_size)) - (((key_size_y + key_space_size) *  3)>>1);
-		signed int KeyLocationX = KeyboardLocationX + 2;
+		gfx_s32 KeyboardLocationX = ((/*settings->Internals.Position.X + */kbd_border_size) + ((Internals.Size.X>>1) - kbd_border_size)) - (((key_size_x + key_space_size) * 13)>>1);
+		gfx_s32 KeyLocationY =      ((/*settings->Internals.Position.Y + */kbd_border_size) + ((Internals.Size.Y>>1) - kbd_border_size)) - (((key_size_y + key_space_size) *  3)>>1);
+		gfx_s32 KeyLocationX = KeyboardLocationX + 2;
 
-		unsigned int CntInitKeys = 0;
+		gfx_u32 CntInitKeys = 0;
 		for(; CntInitKeys < sizeof(Internals.Keys)/sizeof(Internals.Keys[0]); CntInitKeys++)
 		{
 			GI::Screen::Gfx::Button* KeyTmpPtr =  Internals.Keys[CntInitKeys];
@@ -174,7 +174,7 @@ void GI::Screen::Gfx::KbdQwerty::paint(void *pDisplay, signed int x_start, signe
 	}
 	else
 	{
-		unsigned int CntInitKeys = 0;
+		gfx_u32 CntInitKeys = 0;
 		for(; CntInitKeys < sizeof(Internals.Keys)/sizeof(Internals.Keys[0]); CntInitKeys++)
 		{
 			GI::Screen::Gfx::Button* KeyTmpPtr =  Internals.Keys[CntInitKeys];
@@ -200,11 +200,11 @@ void GI::Screen::Gfx::KbdQwerty::paint(void *pDisplay, signed int x_start, signe
 
 				KeyTmpPtr->Events.CursorUp = false;
 				if(Internals.keboardType == Kbd_Qwerty_Numeric)
-					Return = (unsigned int)kbd_qwerty_keys_numeric_return[CntInitKeys];
+					Return = (gfx_u32)kbd_qwerty_keys_numeric_return[CntInitKeys];
 				else if(Internals.keboardType == Kbd_Qwerty_BigLetters)
-					Return = (unsigned int)kbd_qwerty_keys_big_return[CntInitKeys];
+					Return = (gfx_u32)kbd_qwerty_keys_big_return[CntInitKeys];
 				else if(Internals.keboardType == Kbd_Qwerty_LittleLetters)
-					Return = (unsigned int)kbd_qwerty_keys_little_return[CntInitKeys];
+					Return = (gfx_u32)kbd_qwerty_keys_little_return[CntInitKeys];
 				Events.CursorUp = true;
 				if(Events.OnUp.CallBack)
 					Events.OnUp.CallbackReturnData = Events.OnUp.CallBack(Events.OnUp.CallbackData, Return);
@@ -213,11 +213,11 @@ void GI::Screen::Gfx::KbdQwerty::paint(void *pDisplay, signed int x_start, signe
 			{
 				KeyTmpPtr->Events.CursorDown = false;
 				if(Internals.keboardType == Kbd_Qwerty_Numeric)
-					Return = (unsigned int)kbd_qwerty_keys_numeric[CntInitKeys];
+					Return = (gfx_u32)kbd_qwerty_keys_numeric[CntInitKeys];
 				else if(Internals.keboardType == Kbd_Qwerty_BigLetters)
-					Return = (unsigned int)kbd_qwerty_keys_big_return[CntInitKeys];
+					Return = (gfx_u32)kbd_qwerty_keys_big_return[CntInitKeys];
 				else if(Internals.keboardType == Kbd_Qwerty_LittleLetters)
-					Return = (unsigned int)kbd_qwerty_keys_little_return[CntInitKeys];
+					Return = (gfx_u32)kbd_qwerty_keys_little_return[CntInitKeys];
 				Events.CursorDown = true;
 				if(Events.OnDown.CallBack)
 					Events.OnDown.CallbackReturnData = Events.OnDown.CallBack(Events.OnDown.CallbackData, Return);
@@ -226,11 +226,11 @@ void GI::Screen::Gfx::KbdQwerty::paint(void *pDisplay, signed int x_start, signe
 			{
 				KeyTmpPtr->Events.CursorMove = false;
 				if(Internals.keboardType == Kbd_Qwerty_Numeric)
-					Return = (unsigned int)kbd_qwerty_keys_numeric_return[CntInitKeys];
+					Return = (gfx_u32)kbd_qwerty_keys_numeric_return[CntInitKeys];
 				else if(Internals.keboardType == Kbd_Qwerty_BigLetters)
-					Return = (unsigned int)kbd_qwerty_keys_big_return[CntInitKeys];
+					Return = (gfx_u32)kbd_qwerty_keys_big_return[CntInitKeys];
 				else if(Internals.keboardType == Kbd_Qwerty_LittleLetters)
-					Return = (unsigned int)kbd_qwerty_keys_little_return[CntInitKeys];
+					Return = (gfx_u32)kbd_qwerty_keys_little_return[CntInitKeys];
 				Events.CursorMove = true;
 				if(Events.OnMove.CallBack)
 					Events.OnMove.CallbackReturnData = Events.OnMove.CallBack(Events.OnMove.CallbackData, Return);
@@ -256,7 +256,7 @@ void GI::Screen::Gfx::KbdQwerty::idle(tControlCommandData* control_comand)
 	{
 		/* Parse commands */
 #ifdef NO_ENUM_ON_SWITCH
-		switch((unsigned char)control_comand->Comand)
+		switch((gfx_u8)control_comand->Comand)
 #else
 		switch((int)control_comand->Comand)
 #endif
@@ -297,10 +297,10 @@ void GI::Screen::Gfx::KbdQwerty::idle(tControlCommandData* control_comand)
 			Internals.NeedEntireRefresh = true;
 	}
 
-	signed int X_StartBox = Internals.Position.X;
-	signed int Y_StartBox = Internals.Position.Y;
-	signed int X_LenBox = Internals.Size.X;
-	signed int Y_LenBox = Internals.Size.Y;
+	gfx_s32 X_StartBox = Internals.Position.X;
+	gfx_s32 Y_StartBox = Internals.Position.Y;
+	gfx_s32 X_LenBox = Internals.Size.X;
+	gfx_s32 Y_LenBox = Internals.Size.Y;
 	void *pDisplay = Internals.pDisplay;
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
 
@@ -349,7 +349,7 @@ void GI::Screen::Gfx::KbdQwerty::idle(tControlCommandData* control_comand)
 		X_LenBox = Internals.Size.X;
 		Y_LenBox = Internals.Size.Y;
 
-		unsigned char CntInitKeys = 0;
+		gfx_u8 CntInitKeys = 0;
 		for(; CntInitKeys < sizeof(Internals.Keys)/sizeof(Internals.Keys[0]); CntInitKeys++)
 		{
 			if(Internals.keboardType == Kbd_Qwerty_LittleLetters)
@@ -414,7 +414,7 @@ GI::Screen::Gfx::KbdQwerty::KbdQwerty(void *parentWindowHandler)
 	Visible = true;
 	key_space_size = 0;
 
-	unsigned char CntInitKeys = 0;
+	gfx_u8 CntInitKeys = 0;
 	for(; CntInitKeys < sizeof(Internals.Keys) / sizeof(Internals.Keys[0]); CntInitKeys++)
 	{
 		Internals.Keys[CntInitKeys] = new GI::Screen::Gfx::Button(Internals.parentWindowHandler);

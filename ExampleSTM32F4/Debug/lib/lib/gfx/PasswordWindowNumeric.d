@@ -11,10 +11,11 @@ lib/lib/gfx/PasswordWindowNumeric.o: \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/lib/lib/string.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/window.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/controls_definition.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/cache.h \
- C:/GitHub/CppSDK/SDK/lib/api/timer_api.h \
+ C:/GitHub/CppSDK/SDK/lib/api/timer.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/systime.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/button.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/string.h \
@@ -50,13 +51,15 @@ C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/string.h:
 
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h:
+
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/window.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/controls_definition.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/cache.h:
 
-C:/GitHub/CppSDK/SDK/lib/api/timer_api.h:
+C:/GitHub/CppSDK/SDK/lib/api/timer.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/systime.h:
 

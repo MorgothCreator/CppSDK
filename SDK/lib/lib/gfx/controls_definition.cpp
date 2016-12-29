@@ -1,7 +1,7 @@
 /*
- *  lib/gfx/controls_definition.c
+ *  lib/gfx/controls_definition.cpp
  *
- *  Copyright (C) 2013  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
  *  This file is part of Multiplatform SDK.
  *
@@ -89,7 +89,7 @@ controlscolor controls_color =
 #endif
 //#######################################################################################
 #ifndef USE_16_BIT_COLOR_DEPTH
-unsigned int controlls_change_color(unsigned int color, double value)
+gfx_u32 controlls_change_color(gfx_u32 color, double value)
 {
 	if(value>(double)0)
 	{
@@ -102,7 +102,7 @@ unsigned int controlls_change_color(unsigned int color, double value)
 		if(Red>  (double)255)Red  =(double)255;
 		if(Green>(double)255)Green=(double)255;
 		if(Blue> (double)255)Blue =(double)255;
-		return (unsigned int)((unsigned int)Red|(((unsigned int)Green)<<8)|(((unsigned int)Blue)<<16));
+		return (gfx_u32)((gfx_u32)Red|(((gfx_u32)Green)<<8)|(((gfx_u32)Blue)<<16));
 	}
 	else if(value<(double)0)
 	{
@@ -112,12 +112,12 @@ unsigned int controlls_change_color(unsigned int color, double value)
 		Red         /= 0 - value;
 		Green       /= 0 - value;
 		Blue        /= 0 - value;
-		return (unsigned int)((unsigned int)Red|(((unsigned int)Green)<<8)|(((unsigned int)Blue)<<16));
+		return (gfx_u32)((gfx_u32)Red|(((gfx_u32)Green)<<8)|(((gfx_u32)Blue)<<16));
 	}
 	return color;
 }
 #else
-unsigned int controlls_change_color(unsigned int color, double value)
+gfx_u32 controlls_change_color(gfx_u32 color, double value)
 {
 	if(value>(double)0)
 	{
@@ -130,7 +130,7 @@ unsigned int controlls_change_color(unsigned int color, double value)
 		if(Red>  (double)31)Red  =(double)31;
 		if(Green>(double)63)Green=(double)63;
 		if(Blue> (double)31)Blue =(double)31;
-		return (unsigned int)((unsigned int)Red|(((unsigned int)Green)<<5)|(((unsigned int)Blue)<<11));
+		return (gfx_u32)((gfx_u32)Red|(((gfx_u32)Green)<<5)|(((gfx_u32)Blue)<<11));
 	}
 	else if(value<(double)0)
 	{
@@ -140,29 +140,29 @@ unsigned int controlls_change_color(unsigned int color, double value)
 		Red         /= 0 - value;
 		Green       /= 0 - value;
 		Blue        /= 0 - value;
-		return (unsigned int)((unsigned int)Red|(((unsigned int)Green)<<5)|(((unsigned int)Blue)<<11));
+		return (gfx_u32)((gfx_u32)Red|(((gfx_u32)Green)<<5)|(((gfx_u32)Blue)<<11));
 	}
 	return color;
 }
 #endif
 //#######################################################################################
-//bool screen_copy(tDisplay *pDisplayTo, tDisplay *pDisplayFrom, bool put_cursor, signed int X, signed int Y, unsigned int color)
+//bool screen_copy(tDisplay *pDisplayTo, tDisplay *pDisplayFrom, bool put_cursor, gfx_s32 X, gfx_s32 Y, gfx_u32 color)
 //{
 	/*if(pDisplayTo->raster_timings->X != pDisplayFrom->raster_timings->X || pDisplayTo->raster_timings->Y != pDisplayFrom->raster_timings->Y) return false;
-	//memcpy((void *)pDisplayTo->DisplayData, (void *)pDisplayFrom->DisplayData, (sizeof(unsigned int) * pDisplayFrom->Height * pDisplayFrom->Width) + 32);
+	//memcpy((void *)pDisplayTo->DisplayData, (void *)pDisplayFrom->DisplayData, (sizeof(gfx_u32) * pDisplayFrom->Height * pDisplayFrom->Width) + 32);
 	//box_cache_clean(pDisplayTo, 0, 0, pDisplayFrom->Width, pDisplayFrom->Height);
-	signed int LineCnt = 0;
-	volatile unsigned int* ScreenBuff = pDisplayTo->DisplayData + pDisplayTo->raster_timings->palete_len;
-	volatile unsigned int* _ScreenBuff = pDisplayFrom->DisplayData + pDisplayTo->raster_timings->palete_len;
+	gfx_s32 LineCnt = 0;
+	volatile gfx_u32* ScreenBuff = pDisplayTo->DisplayData + pDisplayTo->raster_timings->palete_len;
+	volatile gfx_u32* _ScreenBuff = pDisplayFrom->DisplayData + pDisplayTo->raster_timings->palete_len;
 	for(; LineCnt < pDisplayTo->raster_timings->Y; LineCnt ++)
 	{
 		memcpy((void *)(ScreenBuff + (pDisplayFrom->raster_timings->X * LineCnt)), (void *)(_ScreenBuff + (pDisplayFrom->raster_timings->X * LineCnt)), (sizeof(ScreenBuff[0]) * pDisplayTo->raster_timings->X));
 		if(put_cursor == true && LineCnt >= Y && LineCnt <= Y + 2)
 		{
-			unsigned int cnt_x = X;
+			gfx_u32 cnt_x = X;
 			for(;cnt_x < X + 2; cnt_x++) put_pixel(pDisplayTo, cnt_x, LineCnt, color);
 		}
-		CacheDataCleanInvalidateBuff((unsigned int)((unsigned int*)(ScreenBuff + (pDisplayFrom->raster_timings->X * LineCnt))), (sizeof(ScreenBuff[0]) * pDisplayTo->raster_timings->X) + 64);
+		CacheDataCleanInvalidateBuff((gfx_u32)((gfx_u32*)(ScreenBuff + (pDisplayFrom->raster_timings->X * LineCnt))), (sizeof(ScreenBuff[0]) * pDisplayTo->raster_timings->X) + 64);
 	}
 	return true;*/
 //	return _screen_copy(pDisplayTo, pDisplayFrom, put_cursor, X, Y, color);

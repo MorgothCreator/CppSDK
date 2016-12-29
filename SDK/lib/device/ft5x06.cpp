@@ -1,9 +1,9 @@
 /*
- *  lib/device/ft5x06.c
+ *  device/ft5x06.cpp
  *
- *  Copyright (C) 2013  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
- *  This file is part of Multiplatform SDK.
+ *  This file is part of CppSDK.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -106,8 +106,8 @@ bool GI::Screen::Cursor::idle()
 	switch(TouchResponse.touch_point)
 	{
 	case 5:
-		TouchResponse.x5 = (X - 1) - (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_x,(unsigned int)X,(unsigned int)((result[ft5x06_TouchIdle_offset + 26]<<8) | result[ft5x06_TouchIdle_offset + 27]) & (unsigned int)0x0FFF);
-		TouchResponse.y5 = (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_y,(unsigned int)Y,(unsigned int)((result[ft5x06_TouchIdle_offset + 28]<<8) | result[ft5x06_TouchIdle_offset + 29]) & (unsigned int)0x0FFF);
+		TouchResponse.x5 = (X - 1) - (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_x,(u32)X,(u32)((result[ft5x06_TouchIdle_offset + 26]<<8) | result[ft5x06_TouchIdle_offset + 27]) & (u32)0x0FFF);
+		TouchResponse.y5 = (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_y,(u32)Y,(u32)((result[ft5x06_TouchIdle_offset + 28]<<8) | result[ft5x06_TouchIdle_offset + 29]) & (u32)0x0FFF);
 		TouchResponse.touch_ID5=(unsigned short)(result[ft5x06_TouchIdle_offset + 29] & 0xF0)>>4;
 		//TouchResponse->touch_event5 = (unsigned short)((Response[ft5x06_TouchIdle_offset + 27] & 0xc0) >> 6);
 		if(pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE || pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE_FLIP)
@@ -127,8 +127,8 @@ bool GI::Screen::Cursor::idle()
 			TouchResponse.y5 = pDisplay->LcdTimings->Y - TouchResponse.y5;
 		State5 = Gfx_IntTouch_MouseMove;
 	case 4:
-		TouchResponse.x4 = (X - 1) - (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_x,(unsigned int)X,(unsigned int)((result[ft5x06_TouchIdle_offset + 20]<<8) + result[ft5x06_TouchIdle_offset + 21]) & (unsigned int)0x0FFF);
-		TouchResponse.y4 = (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_y,(unsigned int)Y,(unsigned int)((result[ft5x06_TouchIdle_offset + 22]<<8) + (unsigned int)result[ft5x06_TouchIdle_offset + 23]) & (unsigned int)0x0FFF);
+		TouchResponse.x4 = (X - 1) - (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_x,(u32)X,(u32)((result[ft5x06_TouchIdle_offset + 20]<<8) + result[ft5x06_TouchIdle_offset + 21]) & (u32)0x0FFF);
+		TouchResponse.y4 = (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_y,(u32)Y,(u32)((result[ft5x06_TouchIdle_offset + 22]<<8) + (u32)result[ft5x06_TouchIdle_offset + 23]) & (u32)0x0FFF);
 		TouchResponse.touch_ID4=(unsigned short)(result[ft5x06_TouchIdle_offset + 23] & 0xF0)>>4;
 		//TouchResponse->touch_event4 = (unsigned short)((Response[ft5x06_TouchIdle_offset + 21] & 0xc0) >> 6);
 		if(pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE || pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE_FLIP)
@@ -148,8 +148,8 @@ bool GI::Screen::Cursor::idle()
 			TouchResponse.y4 = pDisplay->LcdTimings->Y - TouchResponse.y4;
 		State4 = Gfx_IntTouch_MouseMove;
 	case 3:
-		TouchResponse.x3 = (X - 1) - (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_x,(unsigned int)X,(unsigned int)((result[ft5x06_TouchIdle_offset + 14]<<8) | result[ft5x06_TouchIdle_offset + 15]) & (unsigned int)0x0FFF);
-		TouchResponse.y3 = (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_y,(unsigned int)Y,(unsigned int)((result[ft5x06_TouchIdle_offset + 16]<<8) | result[ft5x06_TouchIdle_offset + 17]) & (unsigned int)0x0FFF);
+		TouchResponse.x3 = (X - 1) - (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_x,(u32)X,(u32)((result[ft5x06_TouchIdle_offset + 14]<<8) | result[ft5x06_TouchIdle_offset + 15]) & (u32)0x0FFF);
+		TouchResponse.y3 = (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_y,(u32)Y,(u32)((result[ft5x06_TouchIdle_offset + 16]<<8) | result[ft5x06_TouchIdle_offset + 17]) & (u32)0x0FFF);
 		TouchResponse.touch_ID3=(unsigned short)(result[ft5x06_TouchIdle_offset + 17] & 0xF0)>>4;
 		//TouchResponse->touch_event3 = (unsigned short)((Response[ft5x06_TouchIdle_offset + 15] & 0xc0) >> 6);
 		if(pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE || pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE_FLIP)
@@ -169,8 +169,8 @@ bool GI::Screen::Cursor::idle()
 			TouchResponse.y3 = pDisplay->LcdTimings->Y - TouchResponse.y3;
 		State3 = Gfx_IntTouch_MouseMove;
 	case 2:
-		TouchResponse.x2 = (X - 1) - (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_x,(unsigned int)X,(unsigned int)((result[ft5x06_TouchIdle_offset + 8]<<8) | result[ft5x06_TouchIdle_offset + 9]) & (unsigned int)0x0FFF);
-		TouchResponse.y2 = (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_y,(unsigned int)Y,(unsigned int)((result[ft5x06_TouchIdle_offset + 10]<<8) | result[ft5x06_TouchIdle_offset + 11]) & (unsigned int)0x0FFF);
+		TouchResponse.x2 = (X - 1) - (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_x,(u32)X,(u32)((result[ft5x06_TouchIdle_offset + 8]<<8) | result[ft5x06_TouchIdle_offset + 9]) & (u32)0x0FFF);
+		TouchResponse.y2 = (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_y,(u32)Y,(u32)((result[ft5x06_TouchIdle_offset + 10]<<8) | result[ft5x06_TouchIdle_offset + 11]) & (u32)0x0FFF);
 		TouchResponse.touch_ID2=(unsigned short)(result[ft5x06_TouchIdle_offset + 11] & 0xF0)>>4;
 		//TouchResponse->touch_event2 = (unsigned short)((Response[ft5x06_TouchIdle_offset + 9] & 0xc0) >> 6);
 		if(pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE || pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE_FLIP)
@@ -190,8 +190,8 @@ bool GI::Screen::Cursor::idle()
 			TouchResponse.y2 = pDisplay->LcdTimings->Y - TouchResponse.y2;
 		State2 = Gfx_IntTouch_MouseMove;
 	case 1:
-		TouchResponse.x1 = (X - 1) - (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_x,(unsigned int)X,(unsigned int)((result[ft5x06_TouchIdle_offset + 2]<<8) | result[ft5x06_TouchIdle_offset + 3]) & (unsigned int)0x0FFF);
-		TouchResponse.y1 = (unsigned int)GUtil::Converters::toPercent((unsigned int)0,(unsigned int)touch_max_y,(unsigned int)Y,(unsigned int)((result[ft5x06_TouchIdle_offset + 4]<<8) | result[ft5x06_TouchIdle_offset + 5]) & (unsigned int)0x0FFF);
+		TouchResponse.x1 = (X - 1) - (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_x,(u32)X,(u32)((result[ft5x06_TouchIdle_offset + 2]<<8) | result[ft5x06_TouchIdle_offset + 3]) & (u32)0x0FFF);
+		TouchResponse.y1 = (u32)GUtil::Converters::toPercent((u32)0,(u32)touch_max_y,(u32)Y,(u32)((result[ft5x06_TouchIdle_offset + 4]<<8) | result[ft5x06_TouchIdle_offset + 5]) & (u32)0x0FFF);
 		TouchResponse.touch_ID1=(unsigned short)(result[ft5x06_TouchIdle_offset + 5] & 0xF0)>>4;
 		//TouchResponse->touch_event1 = (unsigned short)((Response[ft5x06_TouchIdle_offset + 3] & 0xc0) >> 6);
 		if(pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE || pDisplay->LcdTimings->orientation == LCD_ORIENTATION_LANDSCAPE_FLIP)

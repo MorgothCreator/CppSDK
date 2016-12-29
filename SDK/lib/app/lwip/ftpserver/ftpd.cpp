@@ -240,36 +240,36 @@ typedef int sfifo_atomic_t;
 
 //#define SFIFO_SIZEMASK(x)	((x)->size - 1)
 
-#define sfifo_used(x)	((x)->bytes_to_buff)
-#define sfifo_space(x)	((x)->buff_size - sfifo_used(x))
+#define sfifo_used(x)	((x)->elemenmtsOnBuff)
+#define sfifo_space(x)	((x)->elements - sfifo_used(x))
 
 #define DBG(x)
 
 /*
  * Alloc buffer, init FIFO etc...
  */
-static int sfifo_init(fifo_settings_t *f, int size)
+static int sfifo_init(GI::Buff::RingBuff *f, int size)
 {
-	return fifo_reinit(f, size);
+	return f->reinit(size);
 }
 
 /*
  * Dealloc buffer etc...
  */
-static void sfifo_close(fifo_settings_t *f)
+static void sfifo_close(GI::Buff::RingBuff *f)
 {
-	fifo_deinit(f);
+	f->deinit();
 }
 
 /*
  * Write bytes to a FIFO
  * Return number of bytes written, or an error code
  */
-static unsigned int sfifo_write(fifo_settings_t *f, const void *_buf, int len)
+static unsigned int sfifo_write(GI::Buff::RingBuff *f, const void *_buf, int len)
 {
 	unsigned char *buf = (unsigned char *)_buf;
 	//LWIP_LO_DEBUG("sfifo_space() = %d\n",sfifo_space(f) - len);
-	return fifo_push_buff(f, buf, len);
+	return f->push(buf, len);
 }
 
 static void send_msg(struct tcp_pcb *pcb, ftpd_msgstate *fsm, char *msg, ...);
@@ -312,18 +312,10 @@ static void send_data(struct tcp_pcb *pcb, ftpd_datastate *fsd)
 		len = (u16_t) sfifo_used(&fsd->fifo);
 	}
 	unsigned char tmp_buff[FTP_FIFO_SIZE];
-	/*Snapshot fifo to recover if is a send error*/
-	fifo_settings_t snapshot_fifo;
-	snapshot_fifo.bytes_to_buff = fsd->fifo.bytes_to_buff;
-	snapshot_fifo.pop_ptr = fsd->fifo.pop_ptr;
-	snapshot_fifo.push_ptr = fsd->fifo.push_ptr;
-	unsigned int length = fifo_pop_buff(&fsd->fifo, tmp_buff, len);
+	unsigned int length = fsd->fifo.pop(tmp_buff, len);
 	err = tcp_write(pcb, tmp_buff, (u16_t)(length), 1);
 	if (err != ERR_OK) {
 		LWIP_LO_DEBUG(("send_data: error writing 1!\n"));
-		fsd->fifo.bytes_to_buff = snapshot_fifo.bytes_to_buff;
-		fsd->fifo.pop_ptr = snapshot_fifo.pop_ptr;
-		fsd->fifo.push_ptr = snapshot_fifo.push_ptr;
 		return;
 	}
 	if(sfifo_used(&fsd->fifo))
@@ -335,16 +327,10 @@ static void send_data(struct tcp_pcb *pcb, ftpd_datastate *fsd)
 		} else {
 			len = (u16_t) sfifo_used(&fsd->fifo);
 		}
-		snapshot_fifo.bytes_to_buff = fsd->fifo.bytes_to_buff;
-		snapshot_fifo.pop_ptr = fsd->fifo.pop_ptr;
-		snapshot_fifo.push_ptr = fsd->fifo.push_ptr;
-		length = fifo_pop_buff(&fsd->fifo, tmp_buff, len);
+		length = fsd->fifo.pop(tmp_buff, len);
 		err = tcp_write(pcb, tmp_buff, length, 1);
 		if (err != ERR_OK) {
 			LWIP_LO_DEBUG(("send_data: error writing 2!\n"));
-			fsd->fifo.bytes_to_buff = snapshot_fifo.bytes_to_buff;
-			fsd->fifo.pop_ptr = snapshot_fifo.pop_ptr;
-			fsd->fifo.push_ptr = snapshot_fifo.push_ptr;
 			return;
 		}
 	}
@@ -1084,7 +1070,7 @@ static void send_msgdata(struct tcp_pcb *pcb, ftpd_msgstate *fsm)
 		}
 
 		unsigned char tmp_buff[FTP_FIFO_SIZE];
-		unsigned int length = fifo_pop_buff(&fsm->fifo, tmp_buff, len);
+		unsigned int length = fsm->fifo.pop(tmp_buff, len);
 		err = tcp_write(pcb, tmp_buff, (u16_t)(length), 1);
 		if (err != ERR_OK) {
 			LWIP_LO_DEBUG(("send_data: error writing!\n"));
@@ -1099,7 +1085,7 @@ static void send_msgdata(struct tcp_pcb *pcb, ftpd_msgstate *fsm)
 			} else {
 				len = (u16_t) sfifo_used(&fsm->fifo);
 			}
-			length = fifo_pop_buff(&fsm->fifo, tmp_buff, len);
+			length = fsm->fifo.pop(tmp_buff, len);
 			err = tcp_write(pcb, tmp_buff, length, 1);
 			if (err != ERR_OK) {
 				LWIP_LO_DEBUG(("send_data: error writing!\n"));

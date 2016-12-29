@@ -7,7 +7,7 @@
 
 #include "hex_string.h"
 
-void GetHexChar(char *hex_str, unsigned char data)
+void GetHexChar(char *hex_str, u8 data)
 {
 	char char1 = (data >> 4) & 0x0F;
 	char char2 = data & 0x0F;
@@ -21,9 +21,9 @@ void GetHexChar(char *hex_str, unsigned char data)
 		hex_str[1] = ((char2 - 10) + 'A');
 }
 
-void GetHexBuff(char *hex_str, unsigned char *data, unsigned int data_len)
+void GetHexBuff(char *hex_str, u8 *data, u32 data_len)
 {
-	unsigned int cnt = 0;
+	u32 cnt = 0;
 	char tmp_str[2];
 	for (; cnt < data_len; cnt++)
 	{
@@ -34,7 +34,7 @@ void GetHexBuff(char *hex_str, unsigned char *data, unsigned int data_len)
 	hex_str[cnt * 2] = 0;
 }
 
-bool GetBinFromHexChar(unsigned char *dest, char src)
+bool GetBinFromHexChar(u8 *dest, char src)
 {
 	int tmp = tolower(src);
 	if ((tmp < '0' || tmp > '9') && (tmp < 'a' || tmp > 'f'))
@@ -48,14 +48,14 @@ bool GetBinFromHexChar(unsigned char *dest, char src)
 	return true;
 }
 
-unsigned int GetBinFromHexBuff(unsigned char *bin_buff, char *data,
-		unsigned int dest_buff_len)
+u32 GetBinFromHexBuff(u8 *bin_buff, char *data,
+		u32 dest_buff_len)
 {
-	unsigned int cnt = 0;
+	u32 cnt = 0;
 	while (*data != 0 && dest_buff_len != 0)
 	{
-		unsigned char tmp0 = 0;
-		unsigned char tmp1 = 0;
+		u8 tmp0 = 0;
+		u8 tmp1 = 0;
 		if (!GetBinFromHexChar(&tmp1, *data++))
 			return 0;
 		if (!GetBinFromHexChar(&tmp0, *data++))

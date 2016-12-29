@@ -23,14 +23,14 @@
 #include "3d.h"
 #include "controls_definition.h"
 //#######################################################################################
-void make3DPoint(_3d_points *_point, unsigned int Cell, double x, double y, double z)
+void make3DPoint(_3d_points *_point, gfx_u32 Cell, double x, double y, double z)
 {
 	_point->x[Cell] = x;
 	_point->y[Cell] = y;
 	_point->z[Cell] = z;
 }
  //#######################################################################################
-void make2DPoint(_3d_points *_point, unsigned int Cell, double x, double y, double depth, double scaleFactor)
+void make2DPoint(_3d_points *_point, gfx_u32 Cell, double x, double y, double depth, double scaleFactor)
 {
 	_point->x[Cell] = x;
 	_point->y[Cell] = y;
@@ -48,7 +48,7 @@ void Transform3DPointsTo2DPoints(_3d_points *screenPoints, _3d_points *Points, a
 	double cz = cos(AxisRotations.z);
 	volatile double x,y,z, xy,xz, yx,yz, zx,zy, scaleFactor;
 
-	unsigned int i = Points->length;
+	gfx_u32 i = Points->length;
 	while (i--){
 		x = Points->x[i];
 		y = Points->y[i];
@@ -76,7 +76,7 @@ void Transform3DPointsTo2DPoints(_3d_points *screenPoints, _3d_points *Points, a
 //#######################################################################################
 //#######################################################################################
 //#######################################################################################
-void put_3d_triangle(GI::Dev::Screen *pDisplay, _3d_points *Points, signed int X_offset, signed int Y_offset, double X_Angle, double Y_Angle, double Z_Angle, unsigned int Color)
+void put_3d_triangle(GI::Dev::Screen *pDisplay, _3d_points *Points, gfx_s32 X_offset, gfx_s32 Y_offset, double X_Angle, double Y_Angle, double Z_Angle, gfx_u32 Color)
 {
 	_3d_points screenPoints;
 
@@ -88,45 +88,45 @@ void put_3d_triangle(GI::Dev::Screen *pDisplay, _3d_points *Points, signed int X
 	Transform3DPointsTo2DPoints(&screenPoints, Points, cubeAxisRotations);
 
 	//double triangle_median = (screenPoints.z[1] + screenPoints.z[2] + screenPoints.z[3]) / 3;
-	unsigned int color = Color;//(controlls_change_color(Color, (-triangle_median))<<8) & 0xFFFFFF00;
-	//signed int X_start;// = (signed int)screenPoints.x[0];
-	//signed int Y_start;// = (signed int)screenPoints.y[0];
-	//signed int X_end;// = (signed int)screenPoints.x[1];
-	//signed int Y_end;// = (signed int)screenPoints.y[1];
+	gfx_u32 color = Color;//(controlls_change_color(Color, (-triangle_median))<<8) & 0xFFFFFF00;
+	//gfx_s32 X_start;// = (gfx_s32)screenPoints.x[0];
+	//gfx_s32 Y_start;// = (gfx_s32)screenPoints.y[0];
+	//gfx_s32 X_end;// = (gfx_s32)screenPoints.x[1];
+	//gfx_s32 Y_end;// = (gfx_s32)screenPoints.y[1];
 /*	put_line(pDisplay, X_offset + X_start, Y_offset + Y_start, X_offset + X_end, Y_offset + Y_end, 1, color);
 
-	X_start = (signed int)screenPoints.x[0];
-	Y_start = (signed int)screenPoints.y[0];
-	X_end = (signed int)screenPoints.x[2];
-	Y_end = (signed int)screenPoints.y[2];
+	X_start = (gfx_s32)screenPoints.x[0];
+	Y_start = (gfx_s32)screenPoints.y[0];
+	X_end = (gfx_s32)screenPoints.x[2];
+	Y_end = (gfx_s32)screenPoints.y[2];
 	put_line(pDisplay, X_offset + X_start, Y_offset + Y_start, X_offset + X_end, Y_offset + Y_end, 1, color);
 
-	X_start = (signed int)screenPoints.x[0];
-	Y_start = (signed int)screenPoints.y[0];
-	X_end = (signed int)screenPoints.x[3];
-	Y_end = (signed int)screenPoints.y[3];
+	X_start = (gfx_s32)screenPoints.x[0];
+	Y_start = (gfx_s32)screenPoints.y[0];
+	X_end = (gfx_s32)screenPoints.x[3];
+	Y_end = (gfx_s32)screenPoints.y[3];
 	put_line(pDisplay, X_offset + X_start, Y_offset + Y_start, X_offset + X_end, Y_offset + Y_end, 1, color);*/
 
-	signed int X_start = (signed int)screenPoints.x[1];
-	signed int Y_start = (signed int)screenPoints.y[1];
-	signed int X_end = (signed int)screenPoints.x[2];
-	signed int Y_end = (signed int)screenPoints.y[2];
+	gfx_s32 X_start = (gfx_s32)screenPoints.x[1];
+	gfx_s32 Y_start = (gfx_s32)screenPoints.y[1];
+	gfx_s32 X_end = (gfx_s32)screenPoints.x[2];
+	gfx_s32 Y_end = (gfx_s32)screenPoints.y[2];
 	put_line(pDisplay, X_offset + X_start, Y_offset + Y_start, X_offset + X_end, Y_offset + Y_end, 1, color);
 
-	X_start = (signed int)screenPoints.x[2];
-	Y_start = (signed int)screenPoints.y[2];
-	X_end = (signed int)screenPoints.x[3];
-	Y_end = (signed int)screenPoints.y[3];
+	X_start = (gfx_s32)screenPoints.x[2];
+	Y_start = (gfx_s32)screenPoints.y[2];
+	X_end = (gfx_s32)screenPoints.x[3];
+	Y_end = (gfx_s32)screenPoints.y[3];
 	put_line(pDisplay, X_offset + X_start, Y_offset + Y_start, X_offset + X_end, Y_offset + Y_end, 1, color);
 
-	X_start = (signed int)screenPoints.x[3];
-	Y_start = (signed int)screenPoints.y[3];
-	X_end = (signed int)screenPoints.x[1];
-	Y_end = (signed int)screenPoints.y[1];
+	X_start = (gfx_s32)screenPoints.x[3];
+	Y_start = (gfx_s32)screenPoints.y[3];
+	X_end = (gfx_s32)screenPoints.x[1];
+	Y_end = (gfx_s32)screenPoints.y[1];
 	put_line(pDisplay, X_offset + X_start, Y_offset + Y_start, X_offset + X_end, Y_offset + Y_end, 1, color);
 }
 //#######################################################################################
-void put_3d_rectangle(GI::Dev::Screen *pDisplay, _3d_points *Points, signed int X_offset, signed int Y_offset, double X_Angle, double Y_Angle, double Z_Angle, unsigned int Color)
+void put_3d_rectangle(GI::Dev::Screen *pDisplay, _3d_points *Points, gfx_s32 X_offset, gfx_s32 Y_offset, double X_Angle, double Y_Angle, double Z_Angle, gfx_u32 Color)
 {
 	_3d_points screenPoints;
 
@@ -136,21 +136,21 @@ void put_3d_rectangle(GI::Dev::Screen *pDisplay, _3d_points *Points, signed int 
 	cubeAxisRotations.z = Z_Angle;
 	Points->length = 8;
 	Transform3DPointsTo2DPoints(&screenPoints, Points, cubeAxisRotations);
-	put_line(pDisplay, (signed int)screenPoints.x[0] + X_offset, (signed int)screenPoints.y[0] + Y_offset, (signed int)screenPoints.x[1] + X_offset, (signed int)screenPoints.y[1] + Y_offset, 1, Color);
-	put_line(pDisplay, (signed int)screenPoints.x[0] + X_offset, (signed int)screenPoints.y[0] + Y_offset, (signed int)screenPoints.x[3] + X_offset, (signed int)screenPoints.y[3] + Y_offset, 1, Color);
-	put_line(pDisplay, (signed int)screenPoints.x[0] + X_offset, (signed int)screenPoints.y[0] + Y_offset, (signed int)screenPoints.x[4] + X_offset, (signed int)screenPoints.y[4] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[0] + X_offset, (gfx_s32)screenPoints.y[0] + Y_offset, (gfx_s32)screenPoints.x[1] + X_offset, (gfx_s32)screenPoints.y[1] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[0] + X_offset, (gfx_s32)screenPoints.y[0] + Y_offset, (gfx_s32)screenPoints.x[3] + X_offset, (gfx_s32)screenPoints.y[3] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[0] + X_offset, (gfx_s32)screenPoints.y[0] + Y_offset, (gfx_s32)screenPoints.x[4] + X_offset, (gfx_s32)screenPoints.y[4] + Y_offset, 1, Color);
 
-	put_line(pDisplay, (signed int)screenPoints.x[2] + X_offset, (signed int)screenPoints.y[2] + Y_offset, (signed int)screenPoints.x[1] + X_offset, (signed int)screenPoints.y[1] + Y_offset, 1, Color);
-	put_line(pDisplay, (signed int)screenPoints.x[2] + X_offset, (signed int)screenPoints.y[2] + Y_offset, (signed int)screenPoints.x[3] + X_offset, (signed int)screenPoints.y[3] + Y_offset, 1, Color);
-	put_line(pDisplay, (signed int)screenPoints.x[2] + X_offset, (signed int)screenPoints.y[2] + Y_offset, (signed int)screenPoints.x[6] + X_offset, (signed int)screenPoints.y[6] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[2] + X_offset, (gfx_s32)screenPoints.y[2] + Y_offset, (gfx_s32)screenPoints.x[1] + X_offset, (gfx_s32)screenPoints.y[1] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[2] + X_offset, (gfx_s32)screenPoints.y[2] + Y_offset, (gfx_s32)screenPoints.x[3] + X_offset, (gfx_s32)screenPoints.y[3] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[2] + X_offset, (gfx_s32)screenPoints.y[2] + Y_offset, (gfx_s32)screenPoints.x[6] + X_offset, (gfx_s32)screenPoints.y[6] + Y_offset, 1, Color);
 
-	put_line(pDisplay, (signed int)screenPoints.x[5] + X_offset, (signed int)screenPoints.y[5] + Y_offset, (signed int)screenPoints.x[1] + X_offset, (signed int)screenPoints.y[1] + Y_offset, 1, Color);
-	put_line(pDisplay, (signed int)screenPoints.x[5] + X_offset, (signed int)screenPoints.y[5] + Y_offset, (signed int)screenPoints.x[4] + X_offset, (signed int)screenPoints.y[4] + Y_offset, 1, Color);
-	put_line(pDisplay, (signed int)screenPoints.x[5] + X_offset, (signed int)screenPoints.y[5] + Y_offset, (signed int)screenPoints.x[6] + X_offset, (signed int)screenPoints.y[6] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[5] + X_offset, (gfx_s32)screenPoints.y[5] + Y_offset, (gfx_s32)screenPoints.x[1] + X_offset, (gfx_s32)screenPoints.y[1] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[5] + X_offset, (gfx_s32)screenPoints.y[5] + Y_offset, (gfx_s32)screenPoints.x[4] + X_offset, (gfx_s32)screenPoints.y[4] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[5] + X_offset, (gfx_s32)screenPoints.y[5] + Y_offset, (gfx_s32)screenPoints.x[6] + X_offset, (gfx_s32)screenPoints.y[6] + Y_offset, 1, Color);
 
-	put_line(pDisplay, (signed int)screenPoints.x[7] + X_offset, (signed int)screenPoints.y[7] + Y_offset, (signed int)screenPoints.x[3] + X_offset, (signed int)screenPoints.y[3] + Y_offset, 1, Color);
-	put_line(pDisplay, (signed int)screenPoints.x[7] + X_offset, (signed int)screenPoints.y[7] + Y_offset, (signed int)screenPoints.x[4] + X_offset, (signed int)screenPoints.y[4] + Y_offset, 1, Color);
-	put_line(pDisplay, (signed int)screenPoints.x[7] + X_offset, (signed int)screenPoints.y[7] + Y_offset, (signed int)screenPoints.x[6] + X_offset, (signed int)screenPoints.y[6] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[7] + X_offset, (gfx_s32)screenPoints.y[7] + Y_offset, (gfx_s32)screenPoints.x[3] + X_offset, (gfx_s32)screenPoints.y[3] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[7] + X_offset, (gfx_s32)screenPoints.y[7] + Y_offset, (gfx_s32)screenPoints.x[4] + X_offset, (gfx_s32)screenPoints.y[4] + Y_offset, 1, Color);
+	put_line(pDisplay, (gfx_s32)screenPoints.x[7] + X_offset, (gfx_s32)screenPoints.y[7] + Y_offset, (gfx_s32)screenPoints.x[6] + X_offset, (gfx_s32)screenPoints.y[6] + Y_offset, 1, Color);
 }
 //#######################################################################################
 

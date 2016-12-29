@@ -66,13 +66,14 @@ stm32f4/interface/uart.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/plat_properties.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/usbd_cdc.h \
  C:/GitHub/CppSDK/SDK/lib/api/init.h C:/GitHub/CppSDK/SDK/lib/api/std.h \
  C:/GitHub/CppSDK/SDK/lib/api/uart.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/window.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/controls_definition.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/cache.h \
- C:/GitHub/CppSDK/SDK/lib/api/timer_api.h \
+ C:/GitHub/CppSDK/SDK/lib/api/timer.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/systime.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/button.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/checkbox.h \
@@ -87,8 +88,7 @@ stm32f4/interface/uart.o: \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/keyboard.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h \
- c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h \
- c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h \
  C:/GitHub/CppSDK/SDK/lib/api/cursor_ctl_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
  C:/GitHub/CppSDK/SDK/lib/api/spi.h \
@@ -250,6 +250,8 @@ C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfxdef.h:
+
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/usbd_cdc.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/init.h:
@@ -264,7 +266,7 @@ C:/GitHub/CppSDK/SDK/lib/lib/gfx/controls_definition.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/cache.h:
 
-C:/GitHub/CppSDK/SDK/lib/api/timer_api.h:
+C:/GitHub/CppSDK/SDK/lib/api/timer.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/systime.h:
 
@@ -294,9 +296,7 @@ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:
 
-c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h:
-
-c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h:
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/cursor_ctl_def.h:
 

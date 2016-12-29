@@ -955,7 +955,7 @@ bool GI::Dev::MmcSd::idle(unsigned int unit_nr)
 #if (_FFCONF == 82786)
 		if(!f_mount(2, &MmcSdFatFs))
 #else
-		if (!f_mount(&MmcSdFatFs, "SD1:", 1))
+		if (f_mount(&MmcSdFatFs, "SD1:", 1) == FR_OK)
 #endif
 		{
 			DIR g_sDirObject;

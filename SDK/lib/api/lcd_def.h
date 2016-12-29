@@ -1,9 +1,9 @@
 /*
- *  lib/api/lcd_def.h
+ *  lcd_def.h
  *
- *  Copyright (C) 2013  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
- *  This file is part of Multiplatform SDK.
+ *  This file is part of CppSDK.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -145,7 +145,6 @@ typedef struct
 	signed int (*print_function)(print_string_properties *);
 } graphic_strings_t;*/
 /*#####################################################*/
-/**********************************************/
 typedef struct StringProperties_s
 {
 	signed int FirstRowLength_Pixels;
@@ -157,36 +156,14 @@ typedef struct StringProperties_s
 	signed int StringColsHeight_Rows;
 	signed int CharHeight_Pixels;
 } StringProperties_t;
-/**********************************************/
-typedef struct
-{
-	void (*setOn)();
-	void (*setOff)();
-	void (*setBacklight)(unsigned char value);
-	bool (*copyScreen)(void *pDisplayTo, void *pDisplayFrom, bool put_cursor, signed int X, signed int Y, unsigned int color);
-	void (*cacheClean)(signed int x_start, signed int y_start, signed int x_len, signed int y_len);
-	void (*drawRectangle)(signed int x_start, signed int y_start, signed int x_len, signed int y_len, bool fill, unsigned int color);
-	void (*drawPixel)(signed int X, signed int Y, unsigned int color);
-	void (*copyRectangle16Bit)(unsigned short *rgb_buffer, unsigned int x1, unsigned int y1, unsigned int width, unsigned int height);
-	void (*copyRectangle24Bit)(unsigned char *rgb_buffer, unsigned long x1, unsigned long y1, unsigned long width, unsigned long height);
-	void (*copyRectangle32Bit)(unsigned char *rgb_buffer, unsigned int x1, unsigned int y1, unsigned int width, unsigned int height);
-	void (*drawHLine)(signed int X1, signed int X2, signed int Y, unsigned char width, unsigned int color);
-	void (*drawVLine)(signed int Y1, signed int Y2, signed int X, unsigned char width, unsigned int color);
-	void (*clear)(unsigned int color);
-	void (*drawCircle)(signed int x, signed int y, signed int _radius, unsigned char fill, unsigned int color);
-	void (*drawLine)(signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color);
-	void (*drawElipse)(signed int xc, signed int yc, signed int _rx, signed int _ry, unsigned char Fill, unsigned int color);
-	void (*drawTriangle)(signed int Ax, signed int Ay, signed int Bx, signed int By, signed int Cx, signed int Cy, unsigned char Fill, unsigned int color);
-	//signed int (*drawString)(print_string_properties *properties);
-} LCD_FUNC;
 /*#####################################################*/
 namespace GI
 {
 namespace Dev {
 class Screen {
 public:
-	Screen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight);
-	~Screen();
+	//Screen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight);
+	//~Screen();
 
 	//GScreen::Window property;
 	LCD_TIMINGS *LcdTimings;

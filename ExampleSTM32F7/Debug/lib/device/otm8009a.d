@@ -1,6 +1,6 @@
 lib/device/otm8009a.o: C:/GitHub/CppSDK/SDK/lib/device/otm8009a.cpp \
  C:/GitHub/CppSDK/SDK/lib/device/otm8009a.h \
- C:/GitHub/CppSDK/SDK/lib/api/timer_api.h \
+ C:/GitHub/CppSDK/SDK/lib/api/timer.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/systime.h \
  C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
@@ -12,7 +12,7 @@ lib/device/otm8009a.o: C:/GitHub/CppSDK/SDK/lib/device/otm8009a.cpp \
 
 C:/GitHub/CppSDK/SDK/lib/device/otm8009a.h:
 
-C:/GitHub/CppSDK/SDK/lib/api/timer_api.h:
+C:/GitHub/CppSDK/SDK/lib/api/timer.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/systime.h:
 

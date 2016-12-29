@@ -1,7 +1,7 @@
 /*
- *  lib/lib/gfx/paint.h
+ *  lib/lib/gfx/gfx_gui_paint.h
  *
- *  Copyright (C) 2015  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *
  *  Created on: Jan 9, 2015
  *
@@ -45,8 +45,8 @@ typedef struct Gfx_paint_res_s{
 	bool rounded_corners;
 	GUI_PAINT_MODE position;
 	GUI_PAINT_STYLE style;
-	unsigned int color;
-	unsigned char *data;
+	gfx_u32 color;
+	gfx_u8 *data;
 }Gfx_paint_res_t;
 /*#####################################################*/
 typedef struct Gfx_res_s {
@@ -162,11 +162,11 @@ typedef struct Gfx_res_s {
 		Gfx_paint_res_t unfocus_header;
 	}window;
 	GI::Dev::Screen *pDisplay;
-	unsigned int corner_radius;
+	gfx_u32 corner_radius;
 }Gfx_res_t;
 /*#####################################################*/
 extern Gfx_res_t sysem_gui_res;
-void gui_put_item(void *pDisplay, signed int x_start, signed int y_start, signed int x_len, signed int y_len, unsigned int int_color, unsigned int border_color, CursorState cursor, GUI_PAINT_STYLE style, bool enabled);
+void gui_put_item(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, gfx_u32 int_color, gfx_u32 border_color, CursorState cursor, GUI_PAINT_STYLE style, bool enabled);
 /*#####################################################*/
 #ifdef HEADER_INCLUDE_C_FILES
 #include "gfx_gui_paint.c"

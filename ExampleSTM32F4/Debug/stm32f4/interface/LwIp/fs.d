@@ -16,8 +16,7 @@ stm32f4/interface/LwIp/fs.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/LwIp/src/include/lwip/err.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h \
- c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h \
- c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/LwIp/src/include/lwip/apps/httpd_opts.h:
 
@@ -51,6 +50,4 @@ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:
 
-c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\diskio.h:
-
-c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h:
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h:

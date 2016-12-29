@@ -9,7 +9,7 @@ C:/GitHub/CppSDK/SDK/lib/api/init.cpp \
 C:/GitHub/CppSDK/SDK/lib/api/io_handle.cpp \
 C:/GitHub/CppSDK/SDK/lib/api/lcd_def.cpp \
 C:/GitHub/CppSDK/SDK/lib/api/std.cpp \
-C:/GitHub/CppSDK/SDK/lib/api/timer_api.cpp 
+C:/GitHub/CppSDK/SDK/lib/api/timer.cpp 
 
 OBJS += \
 ./lib/api/dev_request.o \
@@ -17,7 +17,7 @@ OBJS += \
 ./lib/api/io_handle.o \
 ./lib/api/lcd_def.o \
 ./lib/api/std.o \
-./lib/api/timer_api.o 
+./lib/api/timer.o 
 
 CPP_DEPS += \
 ./lib/api/dev_request.d \
@@ -25,7 +25,7 @@ CPP_DEPS += \
 ./lib/api/io_handle.d \
 ./lib/api/lcd_def.d \
 ./lib/api/std.d \
-./lib/api/timer_api.d 
+./lib/api/timer.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -69,7 +69,7 @@ lib/api/std.o: C:/GitHub/CppSDK/SDK/lib/api/std.cpp
 	@echo 'Finished building: $<'
 	@echo ' '
 
-lib/api/timer_api.o: C:/GitHub/CppSDK/SDK/lib/api/timer_api.cpp
+lib/api/timer.o: C:/GitHub/CppSDK/SDK/lib/api/timer.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU G++ Compiler'
 	@echo %cd%
