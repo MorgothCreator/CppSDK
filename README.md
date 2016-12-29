@@ -56,7 +56,7 @@ At this moment include next features:
 * For platforms that are provided the USB MSC device you need to link a MMCSD interface or a custom disk driver.
 
 
-Please watch for available interafecs in "[platform directory]/board/[Board directory]/def.cpp" file.
+Please watch for available interfaces in "[platform directory]/board/[Board directory]/def.cpp" file.
 To request controll of one of initialized interface use next examples:
 
 > Example of blinking led 1 on the board:
