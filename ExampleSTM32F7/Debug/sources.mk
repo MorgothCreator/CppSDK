@@ -36,6 +36,7 @@ lib/include \
 lib/lib/buffers \
 lib/lib/fs/fat/src \
 lib/lib/fs/fat/src/option \
+lib/lib/fs \
 lib/lib/gfx \
 lib/lib/gfx/files \
 lib/lib/gfx/libdrawtext \

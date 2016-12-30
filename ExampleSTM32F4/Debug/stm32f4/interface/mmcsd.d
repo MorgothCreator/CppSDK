@@ -119,7 +119,9 @@ stm32f4/interface/mmcsd.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/screen.h \
  C:/GitHub/CppSDK/SDK/lib/device/otm8009a.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/screen_def.h \
- C:/GitHub/CppSDK/SDK/lib/api/dev_request.h
+ C:/GitHub/CppSDK/SDK/lib/api/dev_request.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/include/stm32f4xx.h:
 
@@ -364,3 +366,7 @@ C:/GitHub/CppSDK/SDK/lib/device/otm8009a.h:
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/screen_def.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/dev_request.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:

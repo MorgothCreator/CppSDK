@@ -131,7 +131,9 @@ stm32f7/interface/mmcsd.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/mmcsd.h \
  C:/GitHub/CppSDK/SDK/lib/api/mmcsd_def.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio.h \
- C:/GitHub/CppSDK/SDK/lib/api/dev_request.h
+ C:/GitHub/CppSDK/SDK/lib/api/dev_request.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/include/stm32f7xx.h:
 
@@ -398,3 +400,7 @@ C:/GitHub/CppSDK/SDK/lib/api/mmcsd_def.h:
 C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/dev_request.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:

@@ -401,6 +401,7 @@ void GI::Screen::String::clear()
 	error = SYS_ERR_OK;
 	modifyed++;
 }
+
 char *GI::Screen::String::subString(gfx_u32 position, gfx_u32 len)
 {
 	if(!this && !buff)

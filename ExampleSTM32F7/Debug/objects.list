@@ -30,6 +30,7 @@
 "lib/lib/fs/fat/src/option/cc950.o"
 "lib/lib/fs/fat/src/option/ccsbcs.o"
 "lib/lib/fs/fat/src/option/syncobj.o"
+"lib/lib/fs/fat.o"
 "lib/lib/gfx/3d.o"
 "lib/lib/gfx/PasswordWindowNumeric.o"
 "lib/lib/gfx/bitmap.o"

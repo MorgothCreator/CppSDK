@@ -12,6 +12,7 @@
 #define _USE_AK8975					1
 #define _USE_BMP180					1
 #define _USE_MPL3115A2				1
+#define _USE_MPR121					1
 
 #include <api/init.h>
 #include <stdio.h>
@@ -27,6 +28,7 @@
 #include <device/ak8975.h>
 #include <device/bmp180.h>
 #include <device/mpl3115a2.h>
+#include <device/mpr121.h>
 
 GI::Screen::Gfx::Window *MainWindow = NULL;
 GI::Screen::Gfx::TextBox *SensorResultTextboxGlobal;;
@@ -36,10 +38,11 @@ int main(void)
 	GI::Sys::Timer timer_touch = GI::Sys::Timer(20);
 	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
 
-	GI::Sys::Timer hih613timer = GI::Sys::Timer(500);
-	GI::Sys::Timer mpu60x0_9x50_timer = GI::Sys::Timer(500);
-	GI::Sys::Timer bmp180_timer = GI::Sys::Timer(500);
-	GI::Sys::Timer mpl3115_timer = GI::Sys::Timer(500);
+	GI::Sys::Timer hih613timer = GI::Sys::Timer(1000);
+	GI::Sys::Timer mpu60x0_9x50_timer = GI::Sys::Timer(200);
+	GI::Sys::Timer bmp180_timer = GI::Sys::Timer(1000);
+	GI::Sys::Timer mpl3115_timer = GI::Sys::Timer(1000);
+	GI::Sys::Timer mpr121_timer = GI::Sys::Timer(50);
 
 	/* Get control of "led-0" pin.*/
 	GI::IO led_pin = GI::IO((char *)"led-0");
@@ -77,6 +80,7 @@ int main(void)
 	SensorResultTextbox->Position.Y = FlirPictureBox->Position.Y + FlirPictureBox->Size.Y + 10;
 	SensorResultTextbox->Size.X = 460;
 	SensorResultTextbox->Size.Y = 200;
+	SensorResultTextbox->Size.ScrollSize = 50;
 	SensorResultTextbox->text->setText((char *)"This is a sensor result textbox");
 
 	/*
@@ -168,6 +172,9 @@ int main(void)
 #if (_USE_MPL3115A2 == 1)
 	GI::Sensor::Mpl3115a2 mpl3115a2 = GI::Sensor::Mpl3115a2((char *)"i2c-0");
 #endif
+#if (_USE_MPR121 == 1)
+	GI::Sensor::Mpr121 mpr121_0 = GI::Sensor::Mpr121((char *)"i2c-0", (char *)"", 0);
+#endif
 	tControlCommandData control_comand;
 
 	while(1)
@@ -222,6 +229,7 @@ int main(void)
 				led_pin.write(false);
 			else
 				led_pin.write(true);
+		}
 #if _USE_HIH613x == 1
 			if(hih613timer.tick())
 			{
@@ -298,7 +306,6 @@ int main(void)
 				float bmp180_temperature = 0.0;
 				float bmp180_pressure = 0.0;
 				float bmp180_altitude = 0.0;
-				bool bmp180_stat = false;
 				if(!bmp180_0.getTemp(&bmp180_temperature) &&
 						!bmp180_0.getPressure(&bmp180_pressure, GI::Sensor::Bmp180::BMP180_CTRL_MEAS_OSS_8) &&
 							!bmp180_0.getAltitude(&bmp180_altitude, GI::Sensor::Bmp180::BMP180_CTRL_MEAS_OSS_8))
@@ -317,8 +324,19 @@ int main(void)
 					ListBox->Items[6]->Caption->setText((char *)"MPL3115A1: error reading temp, press and altitude");
 			}
 #endif
-		}
+#if _USE_MPR121 == 1
+			if(mpr121_timer.tick())
+			{
+				mpr121_ret_t mpr121_return;
+				if(!mpr121_0.idle(&mpr121_return))
+				{
+					if(mpr121_return.pushed)
+						ListBox->Items[7]->Caption->setTextF("MPR121: Pushed   - K0=%u, K1=%u, K2=%u, K3=%u, K4=%u, K5=%u, K6=%u, K7=%u, K8=%u, K9=%u, K10=%u, K11=%u",     (unsigned long)mpr121_return.pushed & 0x01,   (unsigned long)(mpr121_return.pushed >> 1) & 0x01,   (unsigned long)(mpr121_return.pushed >> 2) & 0x01,   (unsigned long)(mpr121_return.pushed >> 3) & 0x01,   (unsigned long)(mpr121_return.pushed >> 4) & 0x01,   (unsigned long)(mpr121_return.pushed >> 5) & 0x01,   (unsigned long)(mpr121_return.pushed >> 6) & 0x01,   (unsigned long)(mpr121_return.pushed >> 7) & 0x01,   (unsigned long)(mpr121_return.pushed >> 8) & 0x01,   (unsigned long)(mpr121_return.pushed >> 9) & 0x01,   (unsigned long)(mpr121_return.pushed >> 10) & 0x01,   (unsigned long)(mpr121_return.pushed >> 11) & 0x01);
+					if(mpr121_return.released)
+						ListBox->Items[7]->Caption->setTextF("MPR121: Released - K0=%u, K1=%u, K2=%u, K3=%u, K4=%u, K5=%u, K6=%u, K7=%u, K8=%u, K9=%u, K10=%u, K11=%u", (unsigned long)mpr121_return.released & 0x01, (unsigned long)(mpr121_return.released >> 1) & 0x01, (unsigned long)(mpr121_return.released >> 2) & 0x01, (unsigned long)(mpr121_return.released >> 3) & 0x01, (unsigned long)(mpr121_return.released >> 4) & 0x01, (unsigned long)(mpr121_return.released >> 5) & 0x01, (unsigned long)(mpr121_return.released >> 6) & 0x01, (unsigned long)(mpr121_return.released >> 7) & 0x01, (unsigned long)(mpr121_return.released >> 8) & 0x01, (unsigned long)(mpr121_return.released >> 9) & 0x01, (unsigned long)(mpr121_return.released >> 10) & 0x01, (unsigned long)(mpr121_return.released >> 11) & 0x01);
+				}
+			}
+#endif
 	}
-
 }
 

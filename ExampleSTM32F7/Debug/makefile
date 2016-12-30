@@ -36,6 +36,7 @@ RM := rm -rf
 -include lib/lib/gfx/subdir.mk
 -include lib/lib/fs/fat/src/option/subdir.mk
 -include lib/lib/fs/fat/src/subdir.mk
+-include lib/lib/fs/subdir.mk
 -include lib/lib/buffers/subdir.mk
 -include lib/lib/subdir.mk
 -include lib/include/subdir.mk

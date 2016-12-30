@@ -62,7 +62,8 @@ stm32f7/interface/usbh_msc.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/core/inc/usbh_core.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc_bot.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc_scsi.h \
- C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/usbh_msc.h:
 
@@ -190,4 +191,6 @@ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc_bot.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/USBH/Class/MSC/inc/usbh_msc_scsi.h:
 
-C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h:
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:

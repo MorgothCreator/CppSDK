@@ -84,7 +84,8 @@ main.o: ../main.cpp C:/GitHub/CppSDK/SDK/lib/api/init.h \
  C:/GitHub/CppSDK/SDK/lib/device/mpu60x0_9x50.h \
  C:/GitHub/CppSDK/SDK/lib/device/ak8975.h \
  C:/GitHub/CppSDK/SDK/lib/device/bmp180.h \
- C:/GitHub/CppSDK/SDK/lib/device/mpl3115a2.h
+ C:/GitHub/CppSDK/SDK/lib/device/mpl3115a2.h \
+ C:/GitHub/CppSDK/SDK/lib/device/mpr121.h
 
 C:/GitHub/CppSDK/SDK/lib/api/init.h:
 
@@ -265,3 +266,5 @@ C:/GitHub/CppSDK/SDK/lib/device/ak8975.h:
 C:/GitHub/CppSDK/SDK/lib/device/bmp180.h:
 
 C:/GitHub/CppSDK/SDK/lib/device/mpl3115a2.h:
+
+C:/GitHub/CppSDK/SDK/lib/device/mpr121.h:

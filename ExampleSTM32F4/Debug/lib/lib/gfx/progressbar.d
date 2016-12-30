@@ -30,7 +30,8 @@ lib/lib/gfx/progressbar.o: \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/util.h \
  C:/GitHub/CppSDK/SDK/lib/api/cursor_ctl_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
- C:/GitHub/CppSDK/SDK/lib/lib/gfx/graphic_string.h
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/graphic_string.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfx_gui_paint.h
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/progressbar.h:
 
@@ -95,3 +96,5 @@ C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
 C:/GitHub/CppSDK/SDK/lib/api/gpio.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/graphic_string.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfx_gui_paint.h:
