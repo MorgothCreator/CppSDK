@@ -5,6 +5,14 @@
  *      Author: John Smith
  */
 
+#define _USE_PASSWORD_PROTECTION	0
+
+#define _USE_HIH613x				1
+#define _USE_MPU60x0_9150			1
+#define _USE_AK8975					1
+#define _USE_BMP180					1
+#define _USE_MPL3115A2				1
+
 #include <api/init.h>
 #include <stdio.h>
 
@@ -13,6 +21,13 @@
 
 #include "lib/gfx/PasswordWindowNumeric.h"
 
+
+#include <device/hih6130.h>
+#include <device/mpu60x0_9x50.h>
+#include <device/ak8975.h>
+#include <device/bmp180.h>
+#include <device/mpl3115a2.h>
+
 GI::Screen::Gfx::Window *MainWindow = NULL;
 GI::Screen::Gfx::TextBox *SensorResultTextboxGlobal;;
 
@@ -20,9 +35,14 @@ int main(void)
 {
 	GI::Sys::Timer timer_touch = GI::Sys::Timer(20);
 	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
+
+	GI::Sys::Timer hih613timer = GI::Sys::Timer(500);
+	GI::Sys::Timer mpu60x0_9x50_timer = GI::Sys::Timer(500);
+	GI::Sys::Timer bmp180_timer = GI::Sys::Timer(500);
+	GI::Sys::Timer mpl3115_timer = GI::Sys::Timer(500);
+
 	/* Get control of "led-0" pin.*/
 	GI::IO led_pin = GI::IO((char *)"led-0");
-
 	/*
 	 * Create one parent window.
 	 */
@@ -100,7 +120,7 @@ int main(void)
     ListBox->Size.ScrollSize = 50;
     ListBox->Size.ItemSizeY = 30;
     ListBox->Size.MinScrollBtnSize = 30;
-    ListBox->Caption->textAlign = alignCenter;
+    ListBox->Caption->textAlign = alignLeft;
 	/*
 	 * Populate list box with 256 items.
 	 */
@@ -116,9 +136,9 @@ int main(void)
     }
 
 
-
+#if(_USE_PASSWORD_PROTECTION == 1)
     newWindowPasswordNumeric(MainWindow, pass, 2, 2);
-
+#endif
     /*
      * Put on parent window caption the IP of ETH interface.
      */
@@ -128,6 +148,25 @@ int main(void)
 	MainWindow->Caption->setTextF("IP:%s\n\r", ip_str_buff.buff);
 	bool old_state_ip_assigned = false;
 	dev._stdout->printF("IP:%s\n\r", ip_str_buff.buff);
+#endif
+
+#if (_USE_HIH613x == 1)
+	GI::Sensor::Hih613x hih6130 = GI::Sensor::Hih613x((char *)"i2c-0");
+#endif
+#if (_USE_MPU60x0_9150 == 1)
+	GI::Sensor::Mpu60x0_9x50 mpu60x0_9x50 = GI::Sensor::Mpu60x0_9x50((char *)"i2c-0", 0);
+#endif
+#if (_USE_AK8975 == 1)
+	/*
+	 * If AK8975 is inside MPU9150 you need to put this after you initialize the MPU device.
+	 */
+	GI::Sensor::Ak8975 ak8975_0 = GI::Sensor::Ak8975((char *)"i2c-0", 0);
+#endif
+#if (_USE_BMP180 == 1)
+	GI::Sensor::Bmp180 bmp180_0 = GI::Sensor::Bmp180((char *)"i2c-0", 0);
+#endif
+#if (_USE_MPL3115A2 == 1)
+	GI::Sensor::Mpl3115a2 mpl3115a2 = GI::Sensor::Mpl3115a2((char *)"i2c-0");
 #endif
 	tControlCommandData control_comand;
 
@@ -163,6 +202,7 @@ int main(void)
 			control_comand.X = dev.CAPTOUCH[0]->TouchResponse.x1;
 			control_comand.Y = dev.CAPTOUCH[0]->TouchResponse.y1;
 			MainWindow->idle(&control_comand);
+#if (_USE_PASSWORD_PROTECTION == 1)
 			if(pass->idle())
 			{
 				if(pass->password->equal((char *)"1234"))
@@ -172,6 +212,7 @@ int main(void)
 					pass->clearText->set((char *)"Wrong password!");
 				}
 			}
+#endif
 		}
 		if(blink_timer.tick())
 		{
@@ -181,6 +222,101 @@ int main(void)
 				led_pin.write(false);
 			else
 				led_pin.write(true);
+#if _USE_HIH613x == 1
+			if(hih613timer.tick())
+			{
+				unsigned char hih613x_status = 0;;
+				float hih613x_hum = 0;
+				float hih613x_temp = 0;
+				if(!hih6130.get(&hih613x_status, &hih613x_hum, &hih613x_temp))
+				{
+					switch(hih613x_status)
+					{
+					case 0:
+						ListBox->Items[0]->Caption->setTextF("HIH613x: T = %2.2f, H = %2.1f", hih613x_temp, hih613x_hum);
+						//SensorResultTextbox->text->appendF("HIH613x: T = %2.2f, H = %2.1f\n\r", hih613x_temp, hih613x_hum);
+						break;
+					case 1:
+						ListBox->Items[0]->Caption->setText((char *)"HIH613x: stale data");
+						//SensorResultTextbox->text->appendF("HIH613x: stale data\n\r");
+						break;
+					case 2:
+						ListBox->Items[0]->Caption->setText((char *)"HIH613x: in command mode");
+						//SensorResultTextbox->text->appendF("HIH613x: in command mode\n\r");
+						break;
+					case 3:
+						ListBox->Items[0]->Caption->setText((char *)"HIH613x: diagnostic");
+						//SensorResultTextbox->text->appendF("HIH613x: diagnostic\n\r");
+						break;
+					}
+				}
+				else
+					SensorResultTextbox->text->append((char *)"HIH613x:  error reading temperature and humidity\n\r");
+			}
+#endif
+#if _USE_MPU60x0_9150 == 1
+			bool mpu60x0_9x50_timer_ticked = false;
+			if(mpu60x0_9x50_timer.tick())
+			{
+				mpu60x0_9x50_timer_ticked = true;
+				float mpu60x0_9150_temp = 0.0;
+				signed short mpu60x0_9150_gyro_Xg = 0;
+				signed short mpu60x0_9150_gyro_Yg = 0;
+				signed short mpu60x0_9150_gyro_Zg = 0;
+				signed short mpu60x0_9150_accel_Xa = 0;
+				signed short mpu60x0_9150_accel_Ya = 0;
+				signed short mpu60x0_9150_accel_Za = 0;
+				if(!mpu60x0_9x50.getTempData(&mpu60x0_9150_temp))
+					ListBox->Items[1]->Caption->setTextF("MPU60x0: Temp:  %2.2f Gr Celsius\n\r", mpu60x0_9150_temp);
+				else
+					ListBox->Items[1]->Caption->setText((char *)"MPU60x0: error reading temperature\n\r");
+
+				if(!mpu60x0_9x50.getGyroData(&mpu60x0_9150_gyro_Xg, &mpu60x0_9150_gyro_Yg, &mpu60x0_9150_gyro_Zg))
+					ListBox->Items[2]->Caption->setTextF("MPU60x0: Giro:  Xg = %6d, Yg = %6d, Zg = %6d", mpu60x0_9150_gyro_Xg, mpu60x0_9150_gyro_Yg, mpu60x0_9150_gyro_Zg);
+				else
+					ListBox->Items[2]->Caption->setText((char *)"MPU60x0: error reading giroscope");
+
+				if(!mpu60x0_9x50.getAccelData(&mpu60x0_9150_accel_Xa, &mpu60x0_9150_accel_Ya, &mpu60x0_9150_accel_Za))
+					ListBox->Items[3]->Caption->setTextF("MPU60x0: Accel: Xa = %6d, Ya = %6d, Za = %6d", mpu60x0_9150_accel_Xa, mpu60x0_9150_accel_Ya, mpu60x0_9150_accel_Za);
+				else
+					ListBox->Items[3]->Caption->setText((char *)"MPU60x0: error reading accelerometer");
+			}
+#endif
+#if (_USE_AK8975 == 1)
+			if(mpu60x0_9x50_timer_ticked)
+			{
+				signed short AK8975_X_Axis = 0, AK8975_Y_Axis = 0, AK8975_Z_Axis = 0;
+				if(!ak8975_0.getMag(&AK8975_X_Axis, &AK8975_Y_Axis, &AK8975_Z_Axis))
+					ListBox->Items[4]->Caption->setTextF("AK8975: Magne: Xm = %6d, Ym = %6d, Zm = %6d", AK8975_X_Axis, AK8975_Y_Axis, AK8975_Z_Axis);
+				else
+					ListBox->Items[4]->Caption->setText((char *)"AK8975: error reading magnetometer");
+			}
+#endif
+#if _USE_BMP180 == 1
+			if(bmp180_timer.tick())
+			{
+				float bmp180_temperature = 0.0;
+				float bmp180_pressure = 0.0;
+				float bmp180_altitude = 0.0;
+				bool bmp180_stat = false;
+				if(!bmp180_0.getTemp(&bmp180_temperature) &&
+						!bmp180_0.getPressure(&bmp180_pressure, GI::Sensor::Bmp180::BMP180_CTRL_MEAS_OSS_8) &&
+							!bmp180_0.getAltitude(&bmp180_altitude, GI::Sensor::Bmp180::BMP180_CTRL_MEAS_OSS_8))
+					ListBox->Items[5]->Caption->setTextF("BMP180: Temp = %2.1f, Press = %4.2f, Alt = %4.2f", bmp180_temperature, bmp180_pressure, bmp180_altitude);
+				else
+					ListBox->Items[5]->Caption->setText((char *)"BMP180: error reading temp, press and altitude");
+			}
+#endif
+#if _USE_MPL3115A2 == 1
+			if(mpl3115_timer.tick())
+			{
+				float mpl3115a2_pressure = 0.0, mpl3115a2_altitude = 0.0, mpl3115a2_temp = 0.0;
+				if(!mpl3115a2.getAltTemp(2, &mpl3115a2_pressure, &mpl3115a2_altitude, &mpl3115a2_temp))
+					ListBox->Items[6]->Caption->setTextF("MPL3115A1: T = %3.3f, P = %3.5f, Alt = %4.3f", mpl3115a2_temp, 0.0, mpl3115a2_altitude);
+				else
+					ListBox->Items[6]->Caption->setText((char *)"MPL3115A1: error reading temp, press and altitude");
+			}
+#endif
 		}
 	}
 

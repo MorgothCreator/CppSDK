@@ -57,7 +57,7 @@ static void BSP_LCD_LayerDefaultInit(void *screenHeandle, uint16_t LayerIndex,
 	Layercfg.WindowY0 = 0;
 	Layercfg.WindowY1 = pDisplay->LcdTimings->Y;
 	Layercfg.PixelFormat = LTDC_PIXEL_FORMAT_ARGB8888;
-	Layercfg.FBStartAdress = FB_Address;
+	Layercfg.FBStartAdress = LCD_FB_START_ADDRESS;//(unsigned int) malloc(Layercfg.WindowX1 * Layercfg.WindowY1 * 4);
 	Layercfg.Alpha = 255;
 	Layercfg.Alpha0 = 0;
 	Layercfg.Backcolor.Blue = 0;
@@ -67,7 +67,7 @@ static void BSP_LCD_LayerDefaultInit(void *screenHeandle, uint16_t LayerIndex,
 	Layercfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
 	Layercfg.ImageWidth = pDisplay->LcdTimings->X;
 	Layercfg.ImageHeight = pDisplay->LcdTimings->Y;
-	pDisplay->DisplayData = (volatile unsigned int*) FB_Address;
+	pDisplay->DisplayData = (volatile unsigned int*) Layercfg.FBStartAdress;
 
 	HAL_LTDC_ConfigLayer(&LtdcHandler, &Layercfg, LayerIndex);
 }
