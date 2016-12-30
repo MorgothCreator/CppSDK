@@ -110,6 +110,12 @@ void _gui_put_simple_item(gfx_s32 x, gfx_s32 y, gfx_s32 x_size, gfx_s32 y_size, 
 void gui_put_item(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, gfx_u32 int_color, gfx_u32 border_color, CursorState cursor, GUI_PAINT_STYLE style, bool enabled)
 {
 	GI::Dev::Screen* LcdStruct = (GI::Dev::Screen *) pDisplay;
+	tRectangle back_up_clip = LcdStruct->sClipRegion;
+	LcdStruct->sClipRegion.sXMin = x_start;
+	LcdStruct->sClipRegion.sYMin = y_start;
+	LcdStruct->sClipRegion.sXMax = x_start + x_len;
+	LcdStruct->sClipRegion.sYMax = y_start + y_len;
+	GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 	sys_def_gui_res.pDisplay = LcdStruct;
 	switch(style) {
 		case PAINT_STYLE_ROUNDED_CORNERS:
@@ -168,6 +174,7 @@ void gui_put_item(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_le
 				LcdStruct->drawVLine( y_start, y_len, (x_start + x_len) - 1, 1, controlls_change_color(border_color, -BORDER_LINE_ONE_LIGHT));
 		}
 	}
+	LcdStruct->sClipRegion = back_up_clip;
 }
 /*#####################################################*/
 bool gui_paint_def_init(void) {
