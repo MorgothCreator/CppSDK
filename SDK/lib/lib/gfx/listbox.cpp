@@ -303,13 +303,15 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 		//if(!settings->Internals.IsChildren) control_comand->Cursor = Cursor_Up;
 		for(CntDisplayItems = Internals.ItemStartOnBox; CntDisplayItems < ((Size.Y - 4) / Size.ItemSizeY) + Internals.ItemStartOnBox; CntDisplayItems++)
 		{
-			if(CntDisplayItems >= ItemsCount) break;
+			if(CntDisplayItems >= ItemsCount)
+				break;
 			bool Pushed = false;
 			if(SelectedItem == CntDisplayItems)
 				Pushed = true;
 			else if(Internals.IsChildren == false || SelectedItem != CntDisplayItems)
 				Pushed = false;
 			paint(Items[CntDisplayItems], pDisplay, X_StartBox + 2, Y_StartBox + 2 + ((CntDisplayItems - Internals.ItemStartOnBox) * Size.ItemSizeY), control_comand, Pushed, true);
+			Items[CntDisplayItems]->Caption->modifyed = 0;
 		}
 		control_comand->Cursor = cursor;
 		if(Enabled)
@@ -331,6 +333,28 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 		Internals.NeedEntireRepaint = false;
 		control_comand->WindowRefresh |= true;
 		return;
+	}
+	else
+	{
+		gfx_u32 CntDisplayItems;
+		CursorState cursor = control_comand->Cursor;
+		//if(!settings->Internals.IsChildren) control_comand->Cursor = Cursor_Up;
+		for(CntDisplayItems = Internals.ItemStartOnBox; CntDisplayItems < ((Size.Y - 4) / Size.ItemSizeY) + Internals.ItemStartOnBox; CntDisplayItems++)
+		{
+			if(CntDisplayItems >= ItemsCount)
+				break;
+			if(Items[CntDisplayItems]->Caption->modifyed != 0)
+			{
+				bool Pushed = false;
+				if(SelectedItem == CntDisplayItems)
+					Pushed = true;
+				else if(Internals.IsChildren == false || SelectedItem != CntDisplayItems)
+					Pushed = false;
+				paint(Items[CntDisplayItems], pDisplay, X_StartBox + 2, Y_StartBox + 2 + ((CntDisplayItems - Internals.ItemStartOnBox) * Size.ItemSizeY), control_comand, Pushed, true);
+				Items[CntDisplayItems]->Caption->modifyed = 0;
+			}
+		}
+		control_comand->Cursor = cursor;
 	}
 
 	Internals.ScrollBar->idle(control_comand);
