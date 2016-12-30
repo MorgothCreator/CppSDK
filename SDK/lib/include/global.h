@@ -49,6 +49,7 @@ typedef enum {
 	SYS_ERR_DEVICE_NOT_MATCH		= -21,
 	SYS_ERR_DEVICE_NOT_FOUND		= -22,
 	SYS_ERR_TIMEOUT					= -23,
+	SYS_ERR_NOTHING_CHANGED			= -24,
 }SysErr;
 
 /*
