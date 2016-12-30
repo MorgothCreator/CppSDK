@@ -9,8 +9,7 @@
 #include "driver/stm32f7xx_hal_hcd.h"
 #include "driver/USBH/Core/Inc/usbh_core.h"
 #include "driver/USBH/Class/MSC/inc/usbh_msc.h"
-#include "lib/fs/fat/inc/diskio.h"
-#include "lib/fs/fat/inc/ff.h"
+#include "lib/fs/fat.h"
 
 HCD_HandleTypeDef hhcd;
 USBH_HandleTypeDef usb_msc_host_param[2]; /* USB Host handle */
@@ -39,7 +38,7 @@ static DWORD scratch[_MAX_SS / 4];
 char g_cCwdBuf1[PATH_BUF_SIZE] = "USB1:/";
 //char g_cCwdBuf2[PATH_BUF_SIZE] = "4:/";
 
-FATFS g_sFatFs1;
+fatfs g_sFatFs1;
 //FATFS g_sFatFs2;
 
 GI::Dev::Gpio *LedStatusUsb[2] = {NULL, NULL};
@@ -348,10 +347,10 @@ void GI::Dev::UsbHMsc::idle(unsigned int instance)
 	switch (Appli_state)
 	{
 	case APPLICATION_START:
-		g_sFatFs1.drv_rw_func.DriveStruct = (void*) &usb_msc_host_param[instance];
-		g_sFatFs1.drv_rw_func.drv_ioctl_func = ioctl;
-		g_sFatFs1.drv_rw_func.drv_r_func = read;
-		g_sFatFs1.drv_rw_func.drv_w_func = write;
+		g_sFatFs1.fs.drv_rw_func.DriveStruct = (void*) &usb_msc_host_param[instance];
+		g_sFatFs1.fs.drv_rw_func.drv_ioctl_func = ioctl;
+		g_sFatFs1.fs.drv_rw_func.drv_r_func = read;
+		g_sFatFs1.fs.drv_rw_func.drv_w_func = write;
 #if (_FFCONF == 82786)
 		if(!f_mount(instance, &g_sFatFs1))
 #else
@@ -362,11 +361,11 @@ void GI::Dev::UsbHMsc::idle(unsigned int instance)
 		drv_name_buff[3] = '1' + instance;
 		drv_name_buff[4] = ':';
 		drv_name_buff[5] = '\0';
-		if (f_mount(&g_sFatFs1, drv_name_buff, 1) == FR_OK)
+		if (g_sFatFs1.mount(drv_name_buff, 1) == FR_OK)
 #endif
 		{
-			DIR g_sDirObject = DIR();
-			if (f_opendir(&g_sDirObject, g_cCwdBuf1) == FR_OK)
+			dir g_sDirObject = dir();
+			if (g_sDirObject.fopendir(g_cCwdBuf1) == FR_OK)
 			{
 #ifdef USBH_MSC_DEBUG_EN
 				if(DebugCom)

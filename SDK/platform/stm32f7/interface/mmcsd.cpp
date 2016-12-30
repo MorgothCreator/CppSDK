@@ -252,7 +252,7 @@
 #include "include/global.h"
 #include <api/dev_request.h>
 
-#include "lib/fs/fat/inc/ff.h"
+#include "lib/fs/fat.h"
 
 /** @addtogroup Utilities
  * @{
@@ -373,7 +373,7 @@ volatile unsigned long TransferEnd = 0, DMAEndOfTransfer = 0;
 /**
  * @}
  */
-FATFS MmcSdFatFs;
+fatfs MmcSdFatFs;
 
 #define PATH_BUF_SIZE   6
 static char g_cCwdBuf0[PATH_BUF_SIZE] = "SD1:/";
@@ -948,18 +948,18 @@ bool GI::Dev::MmcSd::idle(unsigned int unit_nr)
 		}
 		if (cardDetectGpio != NULL)
 			cardDetectGpio->events.stateDown = false;
-		MmcSdFatFs.drv_rw_func.DriveStruct = (void *) this;//SdStruct;
-		MmcSdFatFs.drv_rw_func.drv_ioctl_func = ioctl;
-		MmcSdFatFs.drv_rw_func.drv_r_func = read;
-		MmcSdFatFs.drv_rw_func.drv_w_func = write;
+		MmcSdFatFs.fs.drv_rw_func.DriveStruct = (void *) this;//SdStruct;
+		MmcSdFatFs.fs.drv_rw_func.drv_ioctl_func = ioctl;
+		MmcSdFatFs.fs.drv_rw_func.drv_r_func = read;
+		MmcSdFatFs.fs.drv_rw_func.drv_w_func = write;
 #if (_FFCONF == 82786)
 		if(!f_mount(2, &MmcSdFatFs))
 #else
-		if (f_mount(&MmcSdFatFs, "SD1:", 1) == FR_OK)
+		if (MmcSdFatFs.mount("SD1:", 1) == FR_OK)
 #endif
 		{
-			DIR g_sDirObject;
-			if (f_opendir(&g_sDirObject, g_cCwdBuf0) == FR_OK)
+			dir g_sDirObject = dir();
+			if (g_sDirObject.fopendir(g_cCwdBuf0) == FR_OK)
 			{
 #ifdef MMCSD_DEBUG_EN
 				if(DebugCom)
