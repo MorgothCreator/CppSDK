@@ -63,7 +63,7 @@ At this moment include next features:
 * For platforms that are provided the USB MSC host driver will mount the FS automaticaly when a USB pen drive is inserted (the FS supported are FAT12, FAT16, FAT32 and exFAT).
 * For platforms that are provided the USB MSC device you need to link a MMCSD interface or a custom disk driver.
 
-> All namespace and classes are under "GI" namespace.
+> All namespaces and classes are under "GI" namespace.
 
 Please watch for available interfaces in "[platform directory]/board/[Board directory]/def.cpp" file.
 To request controll of one of initialized interface use next examples:
@@ -71,6 +71,10 @@ To request controll of one of initialized interface use next examples:
 > Example of blinking led 1 on the board:
 
 ```CPP
+/*
+ * Put the '#include <api/init.h>' first on file because first  need to call the init function from this file.
+ */
+#include <api/init.h>
 #include<api/io_handle.h>
 #include<api/timer.h>
 
@@ -90,22 +94,44 @@ int main(void)
 > Blinking led 1 using non blocking timer:
 
 ```CPP
+/*
+ * Put the '#include <api/init.h>' first on file because first  need to call the init function from this file.
+ */
+#include <api/init.h>
 #include<api/io_handle.h>
 #include<api/timer.h>
 
 int main(void)
 {
+	/*
+	 * Create a 500ms nonblocking timer.
+	 */
 	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
+	/*
+	 * Take controll to "led-0" pin.
+	 */
 	GI::IO led_pin = GI::IO((char *)"led-0");
 	while(1)
 	{
+		/*
+		 * Ceck if is a tick.
+		 */
 		if(blink_timer.tick())
 		{
 			bool state;
+			/*
+			 * Get "led-0" state.
+			 */
 			led_pin.read(&state);
 			if(state)
+				/*
+				 * If "led-0" state is '1' put it to '0'.
+				 */
 				led_pin.write(false);
 			else
+				/*
+				 * If "led-0" state is '0' put it to '1'.
+				 */
 				led_pin.write(false);
 		}
 	}
@@ -114,6 +140,17 @@ int main(void)
 > To create a working window:
 
 ```CPP
+/*
+ * Put the '#include <api/init.h>' first on file because first  need to call the init function from this file.
+ */
+#include <api/init.h>
+#include "lib/gfx/window.h"
+/*
+ * Make 'MainWindow' globally visible.
+ */
+GI::Screen::Gfx::Window *MainWindow = NULL;
+int main(void)
+{
 	/*
 	 * Create one parent window.
 	 */
@@ -211,24 +248,42 @@ int main(void)
 
 	while(1)
 	{
+		/*
+		 * Ceck if is a tick.
+		 */
 		if(timer_touch.tick())
 		{
+			/*
+			 * Clear the 'controll_comand' structure.
+			 */
 			memset(&control_comand, 0, sizeof(tControlCommandData));
+			/*
+			 * Call the idle function of the touchscreen.
+			 */
 			dev.CAPTOUCH[0]->idle();
+			/*
+			 * Copy relevant data from touchscreen to 'controll_comand' 
+			 *	structure that will be passed to main window.
+			 */
 			control_comand.Cursor = (CursorState)dev.CAPTOUCH[0]->TouchResponse.touch_event1;
 			control_comand.X = dev.CAPTOUCH[0]->TouchResponse.x1;
 			control_comand.Y = dev.CAPTOUCH[0]->TouchResponse.y1;
 			MainWindow->idle(&control_comand);
 			/*
-			 * The idle function of pass window will be called by parent window, 
-			 *	but the idle function on pass controll need to be call by user 
+			 * The idle function of 'pass' window will be called by parent window, 
+			 *	but the idle function on 'pass' controll need to be call by user 
 			 *	returning true if the "OK" button has been hitted or false if no.
 			 */
 			if(pass->idle())
 			{
+				/*
+				 * The "OK" button has been pressed, check if password is correct.
+				 */
 				if(pass->password->equal((char *)"1234"))
 					/*
 					 * If password match, make pasword window invisible.
+					 * At this moment is not implemented the destroy window function, 
+					 *	for this reason I will use visible = false, to hide password window.
 					 */
 					pass->internals.windowHandler->Visible = false;
 				else
@@ -239,7 +294,7 @@ int main(void)
 					pass->clearText->set((char *)"Wrong password!");
 				}
 			}
-
 		}
 	}
+}
 ```
