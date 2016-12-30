@@ -140,6 +140,11 @@ void GI::Screen::Gfx::Button::idle(tControlCommandData* control_comand)
 		Internals.Size.X = Size.X;
 		Internals.Size.Y = Size.Y;
 	}
+	if(	Size.X < 14)
+		Size.X = 14;
+	if(	Size.Y < 14)
+		Size.Y = 14;
+
 	/* Verify if position on size has been modified */
 	if(parentWindowHandler)
 	{

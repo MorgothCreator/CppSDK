@@ -448,6 +448,9 @@ void GI::Screen::Gfx::ScrollBar::idle(tControlCommandData* control_comand)
 		Value = Maximum;
 	if(Value < Minimum)
 		Value = Minimum;
+	if(	Size.MinBtnSize < 14)
+		Size.MinBtnSize = 14;
+
 	/* Verify if position on size has been modified */
 	if(parentWindowHandler)
 	{
@@ -560,8 +563,17 @@ void GI::Screen::Gfx::ScrollBar::idle(tControlCommandData* control_comand)
 			Internals.BtnSettings->Internals.PositionOffset.X = Internals.Position.X - parentWindowHandler->Internals.Position.X;
 			Internals.BtnSettings->Internals.PositionOffset.Y = Internals.Position.Y - parentWindowHandler->Internals.Position.Y;
 		}
+		if(Size.Y < Size.X)
+		{
+			if(	Size.X >= 60 && Size.Y >= 20)
+				paint(pDisplay, X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, control_comand);
+		}
+		else
+		{
+			if(	Size.X >= 20 && Size.Y >= 60)
+				paint(pDisplay, X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, control_comand);
+		}
 
-		paint(pDisplay, X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, control_comand);
 		LcdStruct->sClipRegion = back_up_clip;
 		//control_comand->Cursor = _cursor;
 		Internals.parentWindowStateEnabled = parentWindowHandler->Internals.OldStateEnabled;
@@ -585,7 +597,18 @@ void GI::Screen::Gfx::ScrollBar::idle(tControlCommandData* control_comand)
 	LcdStruct->sClipRegion.sYMax = Y_StartBox + Y_LenBox;
 	GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 	if(control_comand->Cursor)
-		paint(pDisplay, X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, control_comand);
+	{
+		if(Size.Y < Size.X)
+		{
+			if(	Size.X >= 60 && Size.Y >= 20)
+				paint(pDisplay, X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, control_comand);
+		}
+		else
+		{
+			if(	Size.X >= 20 && Size.Y >= 60)
+				paint(pDisplay, X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, control_comand);
+		}
+	}
 	LcdStruct->sClipRegion = back_up_clip;
 	bool inside_window = GI::Screen::Util::insideBox(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, control_comand->X, control_comand->Y);
 	bool _inside_window = GI::Screen::Util::insideBox(LcdStruct->sClipRegion.sXMin, LcdStruct->sClipRegion.sYMin, LcdStruct->sClipRegion.sXMax - LcdStruct->sClipRegion.sXMin, LcdStruct->sClipRegion.sYMax - LcdStruct->sClipRegion.sYMin, control_comand->X, control_comand->Y);
@@ -625,7 +648,7 @@ GI::Screen::Gfx::ScrollBar::ScrollBar(void *parentWindowHandler)
 	Position.Y = 100;
 	Size.X = 20;
 	Size.Y = 60;
-	Size.MinBtnSize = 9;
+	Size.MinBtnSize = 14;
 	StateChangedOn = Cursor_Up;
 	Visible = true;
 }

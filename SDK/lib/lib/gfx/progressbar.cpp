@@ -29,6 +29,7 @@
 #include "graphic_string.h"
 #include <lib/util/converters.h>
 #include "sys/plat_properties.h"
+#include "gfx_gui_paint.h"
 
 
 void GI::Screen::Gfx::ProgressBar::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, tControlCommandData* control_comand)
@@ -43,6 +44,7 @@ void GI::Screen::Gfx::ProgressBar::paint(void *pDisplay, gfx_s32 x_start, gfx_s3
 	LcdStruct->sClipRegion.sYMax = y_start + y_len;
 	GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 	color = controls_color.Control_Color_Enabled_Border_Pull;
+	/*
 	if((!Enabled || !parentWindowHandler->Internals.OldStateEnabled) && Internals.Control.Initiated == true) {
 		color = Color.Disabled.Border;
 		LcdStruct->drawHLine(x_start, x_len, y_start, 1, controlls_change_color(color, -BORDER_LINE_ONE_DARK));
@@ -70,14 +72,22 @@ void GI::Screen::Gfx::ProgressBar::paint(void *pDisplay, gfx_s32 x_start, gfx_s3
 		LcdStruct->drawVLine(y_start + 1, y_len - 2, x_start + x_len - 2, 1, controlls_change_color(color, -BORDER_LINE_TWO_DARK));
 		LcdStruct->drawVLine(y_start, y_len, (x_start + x_len) - 1, 1, controlls_change_color(color, -BORDER_LINE_ONE_DARK));
 
-	}
+	}*/
 
 	//put_rectangle(pDisplay, x_start, y_start, x_len, y_len, false, controlls_change_color(color, -3));
 	//put_rectangle(pDisplay, x_start + 1, y_start + 1, x_len - 2, y_len - 2, false, controlls_change_color(color, -2));
 	color = controls_color.Control_Color_Enabled_Buton_Pull;
 	if(!Enabled || !parentWindowHandler->Internals.OldStateEnabled)
 		color = Color.Disabled.Buton;
-	LcdStruct->drawRectangle(x_start + 2, y_start + 2, x_len - 4, y_len - 4, true, color);
+	//LcdStruct->drawRectangle(x_start + 2, y_start + 2, x_len - 4, y_len - 4, true, color);
+
+	CursorState cursor = control_comand->Cursor;
+	if((!Enabled || !parentWindowHandler->Internals.OldStateEnabled) && Internals.Control.Initiated == true)
+		gui_put_item(pDisplay, x_start, y_start, x_len, y_len, color, controlls_change_color(color, -BORDER_LINE_TWO_DARK), cursor,PAINT_STYLE_ROUNDED_CORNERS , false);
+	else
+		gui_put_item(pDisplay, x_start, y_start, x_len, y_len, color, controlls_change_color(color, -BORDER_LINE_TWO_DARK), cursor,PAINT_STYLE_ROUNDED_CORNERS , false);
+
+
 	gfx_s32 Position = (gfx_s32)GUtil::Converters::toPercent((s32)MinimValue, (s32)MaximValue, (s32)(Size.X - 8), (s32)Value);
 	LcdStruct->drawRectangle(x_start + 4, y_start + 4, Position, y_len - 8, true, controlls_change_color(color, -2));
 	if(Caption || Caption->length)
@@ -171,6 +181,11 @@ void GI::Screen::Gfx::ProgressBar::idle(tControlCommandData* control_comand)
 		Internals.OldMaximValue = MaximValue;
 		Internals.OldValue = Value;
 	}
+
+	if(	Size.Y < 14)
+		Size.Y = 14;
+	if(	Size.X < 14)
+		Size.X = 14;
 
 	//gfx_s32 Position = to_percentage(settings->MinimValue, settings->MaximValue, settings->Size.X - 4, settings->Value);
 	//gfx_s32 OldPosition = to_percentage(settings->MinimValue, settings->MaximValue, settings->Size.X - 4, settings->Internals.OldValue);

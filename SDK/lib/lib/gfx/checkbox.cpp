@@ -200,6 +200,12 @@ void GI::Screen::Gfx::CheckBox::idle(tControlCommandData* control_comand)
 		Internals.Size.X = Size.X;
 		Internals.Size.Y = Size.Y;
 	}
+
+	if(	Size.Y < 14)
+		Size.Y = 14;
+	if(	Size.X < 14)
+		Size.X = 14;
+
 	if(parentWindowHandle)
 	{
 		if((Position.X + parentWindowHandle->Internals.Position.X + Internals.PositionOffset.X) != Internals.Position.X ||

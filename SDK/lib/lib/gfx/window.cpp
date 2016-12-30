@@ -864,7 +864,16 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		setChildrens(false, true, control_comand, false, &ChildrenWindowSize);
 		Internals.NeedEntireRefresh = true;
 	}
-
+	if(!HideHScroll && HideHScroll)
+	{
+		if(	Size.X < 80)
+			Size.X = 80;
+	}
+	if(!HideVScroll && HideVScroll)
+	{
+		if(	Size.Y < 80)
+			Size.Y = 80;
+	}
 	bool text_caption_has_changed = false;
 	gfx_s32 X_StartBox = Internals.Position.X;
 	gfx_s32 Y_StartBox = Internals.Position.Y;

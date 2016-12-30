@@ -155,6 +155,14 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 		ScrollBar->Internals.NoPaintBackGround = true;
 
 	}
+
+	if(	Size.ItemSizeY < 14)
+		Size.ItemSizeY = 14;
+	if(	Size.X < 60)
+		Size.X = 60;
+	if(	Size.Y < 60)
+		Size.Y = 60;
+
 	/* Verify if position on size has been modified */
 	if(parentWindowHandler)
 	{

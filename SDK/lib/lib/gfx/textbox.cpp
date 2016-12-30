@@ -278,6 +278,12 @@ void GI::Screen::Gfx::TextBox::idle(tControlCommandData* control_comand)
 		Internals.Vscrollbar = new GI::Screen::Gfx::ScrollBar(Internals.parentWindowHandler);
 		Internals.Hscrollbar = new GI::Screen::Gfx::ScrollBar(Internals.parentWindowHandler);
 	}
+
+	if(	Size.X < 60)
+		Size.X = 60;
+	if(	Size.Y < 60)
+		Size.Y = 60;
+
 	/* Verify if position on size has been modified */
 	if(parentWindowHandler)
 	{
@@ -577,7 +583,6 @@ bool GI::Screen::Gfx::TextBox::setText(char* string)
 	if(!this)
 		return false;
 	text->setText(string);//str_copy(string);
-	Internals.NeedEntireRefresh = true;
 	return true;
 }
 //#######################################################################################
@@ -586,7 +591,6 @@ bool GI::Screen::Gfx::TextBox::append(char* string)
 	if(!this)
 		return false;
 	text->append(string);
-	Internals.NeedEntireRefresh = true;
 	return true;
 }
 //#######################################################################################
@@ -595,7 +599,6 @@ bool GI::Screen::Gfx::TextBox::insert(char* string, gfx_u32 location)
 	if(!this)
 		return false;
 	text->insert(string, location);
-	Internals.NeedEntireRefresh = true;
 	return true;
 }
 //#######################################################################################
@@ -620,7 +623,7 @@ bool GI::Screen::Gfx::TextBox::setFont(tFont* font)
 	if(!this)
 		return false;
 	text->pFont = font;
-	Internals.NeedEntireRefresh = true;
+	text->modifyed++;
 	return true;
 }
 //#######################################################################################
@@ -629,7 +632,7 @@ bool GI::Screen::Gfx::TextBox::setWordWrap(bool word_wrap)
 	if(!this)
 		return false;
 	text->wordWrap = word_wrap;
-	Internals.NeedEntireRefresh = true;
+	text->modifyed++;
 	return true;
 }
 //#######################################################################################
@@ -638,6 +641,6 @@ bool GI::Screen::Gfx::TextBox::setAlign(allign Align)
 	if(!this)
 		return false;
 	text->textAlign = Align;
-	Internals.NeedEntireRefresh = true;
+	text->modifyed++;
 	return true;
 }
