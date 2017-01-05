@@ -94,7 +94,7 @@ int main(void)
 	GI::IO led_pin = GI::IO((char *)"led-0");
 	while(1)
 	{
-		led_pin.write(true)
+		led_pin.write(true);
 		GI::Sys::Timer::delay(500);
 		led_pin.write(false);
 		GI::Sys::Timer::delay(500);
@@ -143,7 +143,7 @@ int main(void)
 				/*
 				 * If "led-0" state is '0' put it to '1'.
 				 */
-				led_pin.write(false);
+				led_pin.write(true);
 		}
 	}
 }
