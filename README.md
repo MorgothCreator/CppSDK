@@ -17,7 +17,7 @@ For different platforms I use different IDE's to develop this SDK, see descripti
 
 For STM32 I use <a href="http://www.openstm32.org/HomePage">System Workbench for STM32 IDE</a>, I decide to begin with this platform because this manufacturer offer a huge low level driver support.
 
-For NXP Kinetis E I use <a href="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/kinetis-design-studio-integrated-development-environment-ide:KDS_IDE">Kinetis Design Studio IDE</a>, I extend the development on kinetis E series because is the only 32bit cortex platform that can work on 5V power voltage, this has the advantage of high noise immunity and is designed for high reliable industrial applications.
+For NXP Kinetis E I use <a href="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/kinetis-design-studio-integrated-development-environment-ide:KDS_IDE">Kinetis Design Studio IDE</a>, I extend the development on kinetis E series because is one of the 32bit cortex platform that can work on 5V power voltage, this has the advantage of high noise immunity and is designed for high reliable industrial applications.
 
 At this moment include next features:
 
