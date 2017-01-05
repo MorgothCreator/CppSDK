@@ -75,7 +75,7 @@ public:
 	void *udata;
 	SysErr err;
 private:
-	unsigned long WR(unsigned char addr, unsigned char *buff_send,
+	SysErr WR(unsigned char addr, unsigned char *buff_send,
 			unsigned int TransmitBytes, unsigned char *buff_receive,
 			unsigned int ReceiveBytes);
 };

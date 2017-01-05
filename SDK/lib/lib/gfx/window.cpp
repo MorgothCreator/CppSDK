@@ -22,7 +22,6 @@
 #include "window.h"
 #include "graphic_string.h"
 #include "controls_definition.h"
-#include "sys/plat_properties.h"
 #include "api/lcd_def.h"
 #include "util.h"
 #include "button.h"

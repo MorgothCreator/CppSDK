@@ -8,7 +8,6 @@ lib/lib/gfx/progressbar.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio.h \
  C:/GitHub/CppSDK/SDK/lib/include/global.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/lib/api/timer.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/systime.h \
@@ -30,7 +29,8 @@ lib/lib/gfx/progressbar.o: \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/util.h \
  C:/GitHub/CppSDK/SDK/lib/api/cursor_ctl_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
- C:/GitHub/CppSDK/SDK/lib/lib/gfx/graphic_string.h
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/graphic_string.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfx_gui_paint.h
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/progressbar.h:
 
@@ -47,8 +47,6 @@ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio.h:
 C:/GitHub/CppSDK/SDK/lib/include/global.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
-
-C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
@@ -95,3 +93,5 @@ C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
 C:/GitHub/CppSDK/SDK/lib/api/gpio.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/graphic_string.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/gfx_gui_paint.h:

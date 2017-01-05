@@ -28,7 +28,6 @@
 #include "util.h"
 #include "graphic_string.h"
 #include <lib/util/converters.h>
-#include "sys/plat_properties.h"
 #include "gfx_gui_paint.h"
 
 

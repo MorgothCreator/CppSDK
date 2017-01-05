@@ -823,7 +823,7 @@ void GI::Dev::MmcSd::ioctl(void *handler, unsigned int command,
 		*buffer = 0;
 		return;
 	}
-	GI::Dev::MmcSd *_handler = (GI::Dev::MmcSd *)handler;
+	//GI::Dev::MmcSd *_handler = (GI::Dev::MmcSd *)handler;
 	//HAL_SD_CardInfoTypedef* _SdCtrlStruct = &_heandler->uSdCardInfo;
 	switch (command)
 	{

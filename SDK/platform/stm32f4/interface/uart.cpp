@@ -5,6 +5,7 @@
  *  Author: XxXx
  */
 /*#####################################################*/
+#include <stdio.h>
 #include "include/stm32f4xx.h"
 #include "driver/stm32f4xx_hal_conf.h"
 #include "driver/stm32f4xx_hal_uart.h"
@@ -53,6 +54,7 @@ USART_TypeDef* COM_USART[] =
 /*#####################################################*/
 GI::Dev::Uart::Uart(const char *path)
 {
+	memset(this, 0, sizeof(*this));
 	unsigned int item_nr = 0;
 	while(1)
 	{
@@ -95,6 +97,11 @@ GI::Dev::Uart::Uart(const char *path)
 		unitNr = dev_nr;
 		udata = (void *) new GI::Dev::UsbDCdc(unitNr);
 		isVirtual = true;
+		return;
+	}
+	else
+	{
+		err = SYS_ERR_INVALID_PARAM;
 		return;
 	}
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -464,6 +471,8 @@ signed short GI::Dev::Uart::getCharNb()
 #endif
 	return data;
 }
+
+#if 0
 /*#####################################################*/
 /*
  * Copyright Patrick Powell 1995 & modified by Iulian Gheorghiu
@@ -1294,6 +1303,51 @@ void GI::Dev::Uart::printF(GI::String *string, ...)
 	VA_END;
 }*/
 #endif /* !HAVE_SNPRINTF */
+#endif
+
+void GI::Dev::Uart::printF(const char *pcString, ...)
+{
+	va_list args;
+	va_start (args, pcString);
+	char buff[1];
+	s32 len = vsnprintf(buff, 0, pcString, args);
+	va_end (args);
+	if(len > 0)
+	{
+		char *tmp_str = (char *)malloc(len + 1);
+		if(tmp_str)
+		{
+			va_start (args, pcString);
+			vsnprintf(tmp_str, len, pcString, args);
+			va_end (args);
+			print(tmp_str);
+			free(tmp_str);
+		}
+	}
+}
+
+void GI::Dev::Uart::printF(GI::String *string, ...)
+{
+	va_list args;
+	char *pcString = string->buff;
+	va_start (args, pcString);
+	char buff[1];
+	s32 len = vsnprintf(buff, 0, pcString, args);
+	va_end (args);
+	if(len > 0)
+	{
+		char *tmp_str = (char *)malloc(len + 1);
+		if(tmp_str)
+		{
+			va_start (args, pcString);
+			vsnprintf(tmp_str, len, pcString, args);
+			va_end (args);
+			print(tmp_str);
+			free(tmp_str);
+		}
+	}
+}
+
 
 int GI::Dev::Uart::print(const char *pcString)
 {

@@ -74,7 +74,6 @@ stm32f4/interface/mmcsd.o: \
  C:/GitHub/CppSDK/SDK/lib/api/uart.h \
  C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/plat_properties.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/uart.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/string.h \
@@ -272,8 +271,6 @@ C:/GitHub/CppSDK/SDK/lib/api/uart.h:
 C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
-
-C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/plat_properties.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 

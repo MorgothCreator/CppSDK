@@ -25,8 +25,6 @@
 #include <stdbool.h>
 #include <api/gpio.h>
 #include <api/i2c.h>
-//#include "timer_api.h"
-#include "sys/plat_properties.h"
 #include <lib/gfx/resource/fonts.h>
 /**********************************************/
 #ifdef FLASH_DEVICE

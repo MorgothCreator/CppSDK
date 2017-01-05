@@ -14,7 +14,6 @@ stm32f7/driver/USBH/Class/HID/Src/usbh_hid_keybd.o: \
  C:/GitHub/CppSDK/SDK/lib/include/global.h \
  C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/uart.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/string.h \
@@ -94,8 +93,6 @@ C:/GitHub/CppSDK/SDK/lib/include/global.h:
 C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
-
-C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 

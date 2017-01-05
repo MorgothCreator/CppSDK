@@ -36,6 +36,7 @@ RM := rm -rf
 -include lib/lib/fs/fat/src/option/subdir.mk
 -include lib/lib/fs/fat/src/subdir.mk
 -include lib/lib/fs/subdir.mk
+-include lib/lib/crypto/subdir.mk
 -include lib/lib/buffers/subdir.mk
 -include lib/lib/subdir.mk
 -include lib/include/subdir.mk
@@ -84,7 +85,7 @@ all: ExampleSTM32F4.elf
 ExampleSTM32F4.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU G++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -specs=nosys.specs -T"C:\GitHub\CppSDK\ExampleSTM32F4\LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -fno-exceptions -fno-rtti -lm -o "ExampleSTM32F4.elf" @"objects.list" $(USER_OBJS) $(LIBS)
+	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -specs=nosys.specs --specs=nano.specs -T"C:\GitHub\CppSDK\ExampleSTM32F4\LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -fno-exceptions -fno-rtti -lm -o "ExampleSTM32F4.elf" @"objects.list" $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

@@ -1,5 +1,5 @@
 lib/lib/fs/fat/src/option/cc932.o: \
- C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/src/option/cc932.c \
+ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/src/option/cc932.cpp \
  c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\ff.h \
  c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h \

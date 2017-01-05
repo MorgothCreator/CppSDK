@@ -67,9 +67,15 @@ public:
 	GI::Dev::I2c **I2C;
 	GI::Dev::Spi **SPI;
 	GI::Dev::Uart **UART;
+#if (MMCSD_INTERFACE_COUNT > 0)
 	GI::Dev::MmcSd *MMCSD[SCREEN_INTERFACE_COUNT];
+#endif
+#if (USBHMSC_INTERFACE_COUNT > 0)
 	GI::Dev::UsbHMsc *USBHMSC[USBHMSC_INTERFACE_COUNT];
+#endif
+#if (SCREEN_INTERFACE_COUNT > 0)
 	GI::Dev::Screen *SCREEN[SCREEN_INTERFACE_COUNT];
+#endif
 #if (USE_LWIP == 1)
 	GI::Dev::Eth *LWIP[1];
 #endif

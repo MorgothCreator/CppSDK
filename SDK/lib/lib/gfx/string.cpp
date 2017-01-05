@@ -5,6 +5,7 @@
  *      Author: John Smith
  */
 
+#include <stdio.h>
 #include "string.h"
 
 GI::Screen::String::String(GI::Dev::Screen *pDisplay) :
@@ -1665,7 +1666,7 @@ gfx_s32 GI::Screen::String::getStrPropTiny()
 		CharCnt++;
 	} while (1);
 }
-
+#if 0
 /*#####################################################*/
 /*
  * Copyright Patrick Powell 1995 & modified by Iulian Gheorghiu
@@ -2455,92 +2456,140 @@ int GI::Screen::String::vsnprintf (char *str, size_t count, const char *fmt, va_
  * A string
  *
  */
+#endif /* !HAVE_SNPRINTF */
+
+#endif
+
 void GI::Screen::String::appendF(const char *pcString, ...)
-//int snprintf (Uart_t* char *str,size_t count,const char *fmt,...)
 {
-	VA_LOCAL_DECL;
-	VA_START (pcString);
-	VA_SHIFT (str, char *);
-	VA_SHIFT (count, size_t );
-	VA_SHIFT (fmt, char *);
+	va_list args;
+	va_start (args, pcString);
 	char buff[1];
-	vsnprintf(buff, 65535, pcString, ap);
-	VA_END;
+	s32 len = vsnprintf(buff, 0, pcString, args);
+	va_end (args);
+	if(len > 0)
+	{
+		char *tmp_str = (char *)malloc(len + 1);
+		if(tmp_str)
+		{
+			va_start (args, pcString);
+			vsnprintf(tmp_str, len, pcString, args);
+			va_end (args);
+			append(tmp_str);
+			free(tmp_str);
+		}
+	}
 }
 
 void GI::Screen::String::appendF(GI::String *string, ...)
-//int snprintf (Uart_t* char *str,size_t count,const char *fmt,...)
 {
-	const char *pcString = string->buff;
-	VA_LOCAL_DECL;
-	VA_START (pcString);
-	VA_SHIFT (str, char *);
-	VA_SHIFT (count, size_t );
-	VA_SHIFT (fmt, char *);
+	va_list args;
+	char *pcString = string->buff;
+	va_start (args, pcString);
 	char buff[1];
-	vsnprintf(buff, 65535, (const char *)string->buff, ap);
-	VA_END;
+	s32 len = vsnprintf(buff, 0, pcString, args);
+	va_end (args);
+	if(len > 0)
+	{
+		char *tmp_str = (char *)malloc(len + 1);
+		if(tmp_str)
+		{
+			va_start (args, pcString);
+			vsnprintf(tmp_str, len, pcString, args);
+			va_end (args);
+			append(tmp_str);
+			free(tmp_str);
+		}
+	}
 }
 
 void GI::Screen::String::appendF(GI::Screen::String *string, ...)
-//int snprintf (Uart_t* char *str,size_t count,const char *fmt,...)
 {
-	const char *pcString = string->buff;
-	VA_LOCAL_DECL;
-	VA_START (pcString);
-	VA_SHIFT (str, char *);
-	VA_SHIFT (count, size_t );
-	VA_SHIFT (fmt, char *);
+	va_list args;
+	char *pcString = string->buff;
+	va_start (args, pcString);
 	char buff[1];
-	vsnprintf(buff, 65535, (const char *)string->buff, ap);
-	VA_END;
+	s32 len = vsnprintf(buff, 0, pcString, args);
+	va_end (args);
+	if(len > 0)
+	{
+		char *tmp_str = (char *)malloc(len + 1);
+		if(tmp_str)
+		{
+			va_start (args, pcString);
+			vsnprintf(tmp_str, len, pcString, args);
+			va_end (args);
+			append(tmp_str);
+			free(tmp_str);
+		}
+	}
 }
-
-
-
 
 
 void GI::Screen::String::setTextF(const char *pcString, ...)
-//int snprintf (Uart_t* char *str,size_t count,const char *fmt,...)
 {
 	clear();
-	VA_LOCAL_DECL;
-	VA_START (pcString);
-	VA_SHIFT (str, char *);
-	VA_SHIFT (count, size_t );
-	VA_SHIFT (fmt, char *);
+	va_list args;
+	va_start (args, pcString);
 	char buff[1];
-	vsnprintf(buff, 65535, pcString, ap);
-	VA_END;
+	s32 len = vsnprintf(buff, 0, pcString, args);
+	va_end (args);
+	if(len > 0)
+	{
+		char *tmp_str = (char *)malloc(len + 1);
+		if(tmp_str)
+		{
+			va_start (args, pcString);
+			vsnprintf(tmp_str, len, pcString, args);
+			va_end (args);
+			setText(tmp_str);
+			free(tmp_str);
+		}
+	}
 }
 
 void GI::Screen::String::setTextF(GI::String *string, ...)
-//int snprintf (Uart_t* char *str,size_t count,const char *fmt,...)
 {
 	clear();
-	const char *pcString = string->buff;
-	VA_LOCAL_DECL;
-	VA_START (pcString);
-	VA_SHIFT (str, char *);
-	VA_SHIFT (count, size_t );
-	VA_SHIFT (fmt, char *);
+	va_list args;
+	char *pcString = string->buff;
+	va_start (args, pcString);
 	char buff[1];
-	vsnprintf(buff, 65535, (const char *)string->buff, ap);
-	VA_END;
+	s32 len = vsnprintf(buff, 0, pcString, args);
+	va_end (args);
+	if(len > 0)
+	{
+		char *tmp_str = (char *)malloc(len + 1);
+		if(tmp_str)
+		{
+			va_start (args, pcString);
+			vsnprintf(tmp_str, len, pcString, args);
+			va_end (args);
+			setText(tmp_str);
+			free(tmp_str);
+		}
+	}
 }
 
 void GI::Screen::String::setTextF(GI::Screen::String *string, ...)
-//int snprintf (Uart_t* char *str,size_t count,const char *fmt,...)
 {
 	clear();
-	const char *pcString = string->buff;
-	VA_LOCAL_DECL;
-	VA_START (pcString);
-	VA_SHIFT (str, char *);
-	VA_SHIFT (count, size_t );
-	VA_SHIFT (fmt, char *);
+	va_list args;
+	char *pcString = string->buff;
+	va_start (args, pcString);
 	char buff[1];
-	vsnprintf(buff, 65535, (const char *)string->buff, ap);
-	VA_END;
+	s32 len = vsnprintf(buff, 0, pcString, args);
+	va_end (args);
+	if(len > 0)
+	{
+		char *tmp_str = (char *)malloc(len + 1);
+		if(tmp_str)
+		{
+			va_start (args, pcString);
+			vsnprintf(tmp_str, len, pcString, args);
+			va_end (args);
+			setText(tmp_str);
+			free(tmp_str);
+		}
+	}
 }
-#endif /* !HAVE_SNPRINTF */

@@ -28,7 +28,6 @@
 #include "util.h"
 #include "scrollbar.h"
 #include "graphic_string.h"
-#include "sys/plat_properties.h"
 
 
 

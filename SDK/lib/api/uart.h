@@ -111,12 +111,12 @@ public:
 	SysErr err;
 	CfgUart cfg;
 private:
-	int vsnprintf (char *str, size_t count, const char *fmt, va_list args);
+	/*int vsnprintf (char *str, size_t count, const char *fmt, va_list args);
 	void dopr (char *buffer, size_t maxlen, const char *format, va_list args);
 	void fmtstr (char *buffer, size_t *currlen, size_t maxlen, char *value, int flags, int min, int max);
 	void fmtint (char *buffer, size_t *currlen, size_t maxlen, long value, int base, int min, int max, int flags);
 	void fmtfp (char *buffer, size_t *currlen, size_t maxlen, LDOUBLE fvalue, int min, int max, int flags);
-	void dopr_outch (char *buffer, size_t *currlen, size_t maxlen, char c );
+	void dopr_outch (char *buffer, size_t *currlen, size_t maxlen, char c );*/
 
 	bool isVirtual;
 	unsigned char unitNr;

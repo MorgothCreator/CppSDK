@@ -34,6 +34,7 @@ lib/app/lwip/tftpserver \
 lib/device \
 lib/include \
 lib/lib/buffers \
+lib/lib/crypto \
 lib/lib/fs/fat/src \
 lib/lib/fs/fat/src/option \
 lib/lib/fs \

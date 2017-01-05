@@ -5,7 +5,6 @@ main.o: ../main.cpp C:/GitHub/CppSDK/SDK/lib/api/init.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio.h \
  C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/uart.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/string.h \
@@ -173,7 +172,8 @@ main.o: ../main.cpp C:/GitHub/CppSDK/SDK/lib/api/init.h \
  C:/GitHub/CppSDK/SDK/lib/device/mpu60x0_9x50.h \
  C:/GitHub/CppSDK/SDK/lib/device/ak8975.h \
  C:/GitHub/CppSDK/SDK/lib/device/bmp180.h \
- C:/GitHub/CppSDK/SDK/lib/device/mpl3115a2.h
+ C:/GitHub/CppSDK/SDK/lib/device/mpl3115a2.h \
+ C:/GitHub/CppSDK/SDK/lib/device/mpr121.h
 
 C:/GitHub/CppSDK/SDK/lib/api/init.h:
 
@@ -192,8 +192,6 @@ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/gpio.h:
 C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
-
-C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
@@ -532,3 +530,5 @@ C:/GitHub/CppSDK/SDK/lib/device/ak8975.h:
 C:/GitHub/CppSDK/SDK/lib/device/bmp180.h:
 
 C:/GitHub/CppSDK/SDK/lib/device/mpl3115a2.h:
+
+C:/GitHub/CppSDK/SDK/lib/device/mpr121.h:

@@ -60,7 +60,7 @@ stm32f4/sys/startup_stm32f469xx.o: C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/sta
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Assembler'
 	@echo %cd%
-	arm-none-eabi-as -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -I"C:/Users/John Smith/workspace/ExampleSTM32F4/inc" -g -o "$@" "$<"
+	arm-none-eabi-as -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -g -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

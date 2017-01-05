@@ -28,7 +28,6 @@
 #include "util.h"
 #include "graphic_string.h"
 #include "controls_definition.h"
-#include "sys/plat_properties.h"
 #include "gfx_gui_paint.h"
 
 

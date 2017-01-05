@@ -36,7 +36,7 @@ extern CfgI2c i2cCfg[];
 extern CfgUart uartCfg[];
 
 GI::Sys::Clock coreClk;
-#if (SCREEN_ENABLE == 1)
+#if (SCREEN_ENABLE == 1 && SCREEN_INTERFACE_COUNT > 0)
 GI::Dev::IntScreen screen(&lcd_OTM8009A_PORTRAIT, NULL);
 #endif
 GI::Board::Init dev;
@@ -139,8 +139,10 @@ GI::Board::Init::Init()
 		}
 	}
 /*******************************************************************/
+#if (SCREEN_INTERFACE_COUNT > 0)
 	SCREEN[0] = &screen;
 	CAPTOUCH[0] = new GI::Screen::Cursor(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
+#endif
 #if defined(STD_OUT_PATH)
 	_stdout = new GI::Std((char *)STD_OUT_PATH);
 #endif
@@ -150,7 +152,7 @@ GI::Board::Init::Init()
 #if defined(STD_ERR_PATH)
 	_stderr = new GI::Std((char *)STD_ERR_PATH);
 #endif
-#if (USE_MMCSD_ENABLE == 1)
+#if (USE_MMCSD_ENABLE == 1 && MMCSD_INTERFACE_COUNT > 0)
 	MMCSD[0] = new GI::Dev::MmcSd(0, (char *)MMCSD_CARD_DETECT_PIN, (char *)MMCSD_STATUS_LED_PIN);
 	MMCSD[0]->idle(0);
 #endif
@@ -169,7 +171,7 @@ GI::Board::Init::~Init()
 
 void GI::Board::Init::idle()
 {
-#if (USE_MMCSD_ENABLE == 1)
+#if (USE_MMCSD_ENABLE == 1 && MMCSD_INTERFACE_COUNT > 0)
 		MMCSD[0]->idle(0);
 #endif
 #if (USE_LWIP == 1)

@@ -307,7 +307,7 @@ GI::Dev::I2c::~I2c()
 #define Timeout 10
 #define I2C_TIMEOUT_BUSY_FLAG     ((uint32_t)10000)  /* 10 s  */
 
-unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
+SysErr GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 		unsigned int TransmitBytes, unsigned char *buff_receive,
 		unsigned int ReceiveBytes)
 {
@@ -346,7 +346,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 		I2Cx->CR1 = I2CxBack.CR1;
 
 
-		return HAL_BUSY;
+		return SYS_ERR_BUSY;
 	}
 	/*!< While the bus is busy */
 	unsigned int cnt = 0;
@@ -370,7 +370,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 				!= HAL_OK)
 		{
 			__HAL_UNLOCK(hi2c);
-			return HAL_TIMEOUT;
+			return SYS_ERR_TIMEOUT;
 		}
 
 		/* Send slave address */
@@ -383,12 +383,12 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 			if (hi2c->ErrorCode == HAL_I2C_ERROR_AF)
 			{
 				__HAL_UNLOCK(hi2c);
-				return HAL_TIMEOUT;
+				return SYS_ERR_TIMEOUT;
 			}
 			else
 			{
 				__HAL_UNLOCK(hi2c);
-				return HAL_TIMEOUT;
+				return SYS_ERR_TIMEOUT;
 			}
 		}
 
@@ -400,7 +400,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 				!= HAL_OK)
 		{
 			__HAL_UNLOCK(hi2c);
-			return HAL_TIMEOUT;
+			return SYS_ERR_TIMEOUT;
 		}
 
 		for (; cnt < TransmitBytes; cnt++)
@@ -414,7 +414,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 					!= HAL_OK)
 			{
 				__HAL_UNLOCK(hi2c);
-				return HAL_TIMEOUT;
+				return SYS_ERR_TIMEOUT;
 			}
 		}
 	}
@@ -441,7 +441,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 				!= HAL_OK)
 		{
 			__HAL_UNLOCK(hi2c);
-			return HAL_TIMEOUT;
+			return SYS_ERR_TIMEOUT;
 		}
 
 		/* Send slave address */
@@ -452,7 +452,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 				Timeout) != HAL_OK)
 		{
 			__HAL_UNLOCK(hi2c);
-			return HAL_TIMEOUT;
+			return SYS_ERR_TIMEOUT;
 		}
 		unsigned long data_cnt = 0;
 
@@ -499,7 +499,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 							Timeout) != HAL_OK)
 					{
 						__HAL_UNLOCK(hi2c);
-						return HAL_TIMEOUT;
+						return SYS_ERR_TIMEOUT;
 					}
 
 					/* Read data from DR */
@@ -514,7 +514,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 							Timeout) != HAL_OK)
 					{
 						__HAL_UNLOCK(hi2c);
-						return HAL_TIMEOUT;
+						return SYS_ERR_TIMEOUT;
 					}
 
 					/* Generate Stop */
@@ -536,7 +536,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 							Timeout) != HAL_OK)
 					{
 						__HAL_UNLOCK(hi2c);
-						return HAL_TIMEOUT;
+						return SYS_ERR_TIMEOUT;
 					}
 
 					/* Disable Acknowledge */
@@ -551,7 +551,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 							Timeout) != HAL_OK)
 					{
 						__HAL_UNLOCK(hi2c);
-						return HAL_TIMEOUT;
+						return SYS_ERR_TIMEOUT;
 					}
 
 					/* Generate Stop */
@@ -573,7 +573,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 						Timeout) != HAL_OK)
 				{
 					__HAL_UNLOCK(hi2c);
-					return HAL_TIMEOUT;
+					return SYS_ERR_TIMEOUT;
 				}
 
 				/* Read data from DR */
@@ -594,7 +594,7 @@ unsigned long GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 
 	/* Process Unlocked */
 	__HAL_UNLOCK(hi2c);
-	return HAL_OK;
+	return SYS_ERR_OK;
 }
 /*#####################################################*/
 SysErr GI::Dev::I2c::writeRead(unsigned char addr, unsigned char *buffSend,
@@ -607,12 +607,12 @@ SysErr GI::Dev::I2c::writeRead(unsigned char addr, unsigned char *buffSend,
 	while (twi_semaphore[unitNr]);
 	twi_semaphore[unitNr] = true;
 #endif
-	bool result = WR(addr << 1, buffSend, lenSend, buffReceive, lenReceive);
+	SysErr result = WR(addr << 1, buffSend, lenSend, buffReceive, lenReceive);
 
 #if (USE_DRIVER_SEMAPHORE == true)
 	twi_semaphore[unitNr] = false;
 #endif
-	if (result == HAL_OK)
+	if (result == SYS_ERR_OK)
 		return SYS_ERR_OK;
 	else
 		return SYS_ERR_NAK;
@@ -627,11 +627,11 @@ int GI::Dev::I2c::readBytes(unsigned char addr, unsigned char *buff, unsigned in
 		;
 	twi_semaphore[unitNr] = true;
 #endif
-	bool result = WR(addr << 1, NULL, 0, buff, len);
+	SysErr result = WR(addr << 1, NULL, 0, buff, len);
 #if (USE_DRIVER_SEMAPHORE == true)
 	twi_semaphore[unitNr] = false;
 #endif
-	if (result == HAL_OK)
+	if (result == SYS_ERR_OK)
 		return len;
 	else
 		return SYS_ERR_NAK;
@@ -647,11 +647,11 @@ int GI::Dev::I2c::writeBytes(unsigned char addr, unsigned char *buff, unsigned i
 		;
 	twi_semaphore[unitNr] = true;
 #endif
-	bool result = WR(addr << 1, buff, len, NULL, 0);
+	SysErr result = WR(addr << 1, buff, len, NULL, 0);
 #if (USE_DRIVER_SEMAPHORE == true)
 	twi_semaphore[unitNr] = false;
 #endif
-	if (result == HAL_OK)
+	if (result == SYS_ERR_OK)
 		return len;
 	else
 		return SYS_ERR_NAK;

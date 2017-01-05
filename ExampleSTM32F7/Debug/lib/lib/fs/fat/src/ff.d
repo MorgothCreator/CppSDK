@@ -1,4 +1,4 @@
-lib/lib/fs/fat/src/ff.o: C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/src/ff.c \
+lib/lib/fs/fat/src/ff.o: C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/src/ff.cpp \
  c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\ff.h \
  c:\github\cppsdk\sdk\lib\lib\fs\fat\inc\integer.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h \
@@ -10,7 +10,6 @@ lib/lib/fs/fat/src/ff.o: C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/src/ff.c \
  C:/GitHub/CppSDK/SDK/lib/include/global.h \
  C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/uart.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/string.h \
@@ -63,8 +62,6 @@ C:/GitHub/CppSDK/SDK/lib/include/global.h:
 C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
-
-C:/GitHub/CppSDK/SDK/platform/stm32f7/sys/plat_properties.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 

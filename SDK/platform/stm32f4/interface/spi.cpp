@@ -60,6 +60,7 @@ SPI_TypeDef* _SPI_[] =
  */
 GI::Dev::Spi::Spi(const char *path)
 {
+	memset(this, 0, sizeof(*this));
 	unsigned int item_nr = 0;
 	while(1)
 	{
@@ -221,8 +222,7 @@ GI::Dev::Spi::Spi(const char *path)
 	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Pin = 1 << (cfg.cs % 32);
-	HAL_GPIO_Init(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
+	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
 			&GPIO_InitStruct);
 	//property.OldCsSelect = -1;
 	err = SYS_ERR_OK;
