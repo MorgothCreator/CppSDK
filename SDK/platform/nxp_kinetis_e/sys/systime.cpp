@@ -28,7 +28,13 @@ void sysDelay(unsigned long milliSec)
 	}
 }
 //#####################################################
-void TimerCnt_Isr_Increment(void)
+#ifdef __cplusplus
+ extern "C" {
+#endif
+void SysTick_Handler(void)
 {
 	STimerCnt++;
 }
+#ifdef __cplusplus
+}
+#endif

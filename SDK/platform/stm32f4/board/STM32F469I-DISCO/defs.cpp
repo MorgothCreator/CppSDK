@@ -28,16 +28,16 @@
  */
 CfgGpio gpioCfg[] =
 {/*sck, mosi, miso, cs*/
-	{ "led-0"		,pin_mux_convert_to_pin(IOG,  6)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false },// Pin 0 mapped
-	{ "led-1"		,pin_mux_convert_to_pin(IOD,  4)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false },// Pin 1 mapped
-	{ "led-2"		,pin_mux_convert_to_pin(IOD,  5)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false },// Pin 2 mapped
-	{ "led-3"		,pin_mux_convert_to_pin(IOK,  3)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false },// Pin 3 mapped
-	{ "hbtn-0"		,pin_mux_convert_to_pin(IOA,  0)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false },// Pin 2 mapped
-	{ "bcklight"	,pin_mux_convert_to_pin(IOA,  3)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false },// Pin 3 mapped
-	{ "disprst"		,pin_mux_convert_to_pin(IOH,  7)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false },// Pin 4 mapped
-	{ "touchirq"	,pin_mux_convert_to_pin(IOJ,  5)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false },// Pin 5 mapped
-	{ "mmcsdcd"		,pin_mux_convert_to_pin(IOG,  2)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false },// Pin 6 mapped
-	{ ""			,0									,false	,CfgGpio::GPIO_IN_PULL_UP		, false }// End of table
+	{ "led-0"		,pin_mux_convert_to_pin(IOG,  6)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 0 mapped
+	{ "led-1"		,pin_mux_convert_to_pin(IOD,  4)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 1 mapped
+	{ "led-2"		,pin_mux_convert_to_pin(IOD,  5)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 2 mapped
+	{ "led-3"		,pin_mux_convert_to_pin(IOK,  3)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 3 mapped
+	{ "hbtn-0"		,pin_mux_convert_to_pin(IOA,  0)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 0 },// Pin 2 mapped
+	{ "bcklight"	,pin_mux_convert_to_pin(IOA,  3)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 1 },// Pin 3 mapped
+	{ "disprst"		,pin_mux_convert_to_pin(IOH,  7)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 1 },// Pin 4 mapped
+	{ "touchirq"	,pin_mux_convert_to_pin(IOJ,  5)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 0 },// Pin 5 mapped
+	{ "mmcsdcd"		,pin_mux_convert_to_pin(IOG,  2)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 1 },// Pin 6 mapped
+	{ ""			,0									,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 0 }// End of table
 };
 /*
  * !GPIO settings

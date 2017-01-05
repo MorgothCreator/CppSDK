@@ -60,6 +60,7 @@ GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin)
 	cfg.gpioMode = mode;
 	cfg.multiPin = multiPin;
 	setMode(mode);
+	setOut(cfg.defValue);
 }
 
 GI::Dev::Gpio::Gpio(CfgGpio *gpioPin)
@@ -67,6 +68,7 @@ GI::Dev::Gpio::Gpio(CfgGpio *gpioPin)
 	memset(this, 0, sizeof(*this));
 	memcpy(&this->cfg, gpioPin, sizeof(CfgGpio));
 	setMode(cfg.gpioMode);
+	setOut(cfg.defValue);
 }
 
 /*#####################################################*/

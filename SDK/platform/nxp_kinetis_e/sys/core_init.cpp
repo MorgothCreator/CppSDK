@@ -75,4 +75,5 @@ void GI::Sys::Clock::setClk(unsigned long fCpu)
 	while(!(ICS_S & ICS_S_LOCK_MASK));  /* Wait for PLL lock, now running at 40 MHz (1280 * 31.25Khz) */
     ICS_C2|=ICS_C2_BDIV(1)  ; 			/*BDIV=2, Bus clock = 20 MHz*/
 	ICS_S |= ICS_S_LOCK_MASK ; 			/* Clear Loss of lock sticky bit */	
+	SysTick_Config(FCPU / 1000);
 }

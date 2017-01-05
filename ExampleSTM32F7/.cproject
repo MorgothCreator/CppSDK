@@ -68,7 +68,7 @@
 							<tool id="fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.1854519198" name="MCU G++ Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.linker">
 								<option id="gnu.cpp.link.option.paths.266421864" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
 								<option id="gnu.cpp.link.option.userobjs.1602325500" name="Other objects" superClass="gnu.cpp.link.option.userobjs"/>
-								<option id="gnu.cpp.link.option.flags.1785778924" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-specs=nosys.specs --specs=nano.specs" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.1785778924" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-specs=nosys.specs" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.523335255" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

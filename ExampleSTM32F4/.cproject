@@ -62,13 +62,13 @@
 									<listOptionValue builtIn="false" value="STM32"/>
 									<listOptionValue builtIn="false" value="DEBUG"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.dialect.std.770776920" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.default" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.dialect.std.770776920" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.default" valueType="enumerated"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.cpp.967369101" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.cpp"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.s.255558273" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.s"/>
 							</tool>
 							<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.933484063" name="MCU GCC Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker"/>
 							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.352878251" name="MCU G++ Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.linker">
-								<option id="gnu.cpp.link.option.flags.1295999540" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-specs=nosys.specs --specs=nano.specs" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.1295999540" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-specs=nosys.specs" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.508823918" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

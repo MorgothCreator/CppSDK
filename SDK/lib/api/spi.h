@@ -40,7 +40,7 @@ typedef struct
 		spiMode2,
 		spiMode3,
 	}spiMode;
-	bool msbFirst;
+	bool lsbFirst;
 } CfgSpi;
 /*#####################################################*/
 namespace GI

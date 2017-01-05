@@ -15,14 +15,16 @@ GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin)
 	cfg.pin = pin;
 	cfg.gpioMode = mode;
 	cfg.multiPin = multiPin;
-	//setMode(mode);
+	setMode(mode);
+	setOut(cfg.defValue);
 }
 
 GI::Dev::Gpio::Gpio(CfgGpio *gpioPin)
 {
 	memset(this, 0, sizeof(*this));
 	memcpy(&this->cfg, gpioPin, sizeof(CfgGpio));
-	//setMode(cfg.gpioMode);
+	setMode(cfg.gpioMode);
+	setOut(cfg.defValue);
 }
 
 /*#####################################################*/
@@ -49,9 +51,9 @@ SysErr GI::Dev::Gpio::setOut(unsigned int value)
 		if (cfg.reverse)
 			state = (~state) & 0x01;
 		if (state)
-			BaseAddr->PDDR |= 1 << (cfg.pin % 32);
+			BaseAddr->PSOR |= 1 << (cfg.pin % 32);
 		else
-			BaseAddr->PDDR &= ~(1 << (cfg.pin % 32));
+			BaseAddr->PCOR |= 1 << (cfg.pin % 32);
 	}
 	return SYS_ERR_OK;
 }
@@ -138,7 +140,7 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 		break;
 	case CfgGpio::GPIO_OUT_PUSH_PULL:
 		CONFIG_PIN_AS_GPIO(BaseAddr, cfg.pin % 32, OUTPUT);
-		DISABLE_INPUT(BaseAddr, cfg.pin % 32);
+		ENABLE_INPUT(BaseAddr, cfg.pin % 32);
 		break;
 	default:
 		return SYS_ERR_INVALID_COMMAND;

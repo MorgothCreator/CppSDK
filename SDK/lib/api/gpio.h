@@ -96,6 +96,7 @@ typedef struct
 #endif
 	}gpioMode;
 	bool multiPin;
+	u32 defValue;
 } CfgGpio;
 /*#####################################################*/
 namespace GI
