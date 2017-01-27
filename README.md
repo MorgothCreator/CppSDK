@@ -33,6 +33,7 @@ At this moment include next features:
 			LCD using DSI interface.
 		Dedicated evices:
  			OTM8009a TFT display controller.
+			ILI9341 TFT display controller.
       
       
  	STM32F7 (System Workbench for STM32 IDE):
@@ -48,6 +49,7 @@ At this moment include next features:
 			LCD using DSI interface.
 		Dedicated evices:
  			OTM8009a TFT display controller.
+			ILI9341 TFT display controller.
       
  	NXP Kinetis E seties (Kinetis Design Studio IDE):
 		Board:
@@ -67,6 +69,7 @@ At this moment include next features:
 * AK8975 magnetometer sensor using I2C interface.
 * BMP180 pressure, altimeter and temperature sensor using I2C interface.
 * MPL3115a2 pressure altimeter and temperature sensor using I2C interface.
+* ILI9341 TFT display controller using SPI interface.
 
 > On several platforms will be disponible next interfaces:
 
