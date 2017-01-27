@@ -160,6 +160,7 @@ private:
 class ramdisk{
 public:
 	ramdisk(		/* FR_OK(0): successful, !=0: error code. */
+		const char *fs_name			/* File system name. */
 	);
 	~ramdisk();
 

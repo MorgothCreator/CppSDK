@@ -45,6 +45,7 @@ lib/lib/gfx/resource \
 lib/lib \
 lib/lib/util \
 . \
+stm32f4/board/STM32F429I-DISCO \
 stm32f4/board/STM32F469I-DISCO \
 stm32f4/driver/USBD/Class/CDC/Src \
 stm32f4/driver/USBD/Class/CDC \

@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 #include "integer.h"	/* Basic integer types */
-#include <board/board.h>		/* FatFs configuration options */
+#include <board.h>		/* FatFs configuration options */
 #include "diskio.h"		/* Declarations of low level disk I/O functions */
 
 #if _FATFS != _FFCONF

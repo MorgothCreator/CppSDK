@@ -45,6 +45,28 @@ LCD_TIMINGS lcd_ILI9341_PORTRAIT =
 /*
  * OTM8009A LCD timings
  */
+LCD_TIMINGS lcd_ILI9341_LANDSCAPE =
+{
+/*X size*/240,
+/*Y size*/320,
+/*ref clk*/0,
+/*pll M*/0,
+/*pll N*/0,
+/*pll M2*/0,
+/*raster clk*/27429000,
+/*palete len*/0,
+/*bus size*/0,
+/*hsw*/9,
+/*hfp*/2,
+/*hbp*/29,
+/*vsw*/1,
+/*vfp*/2,
+/*vbp*/3,
+/*LCD_ORIENTATION*/LCD_ORIENTATION_LANDSCAPE, };
+
+/*
+ * OTM8009A LCD timings
+ */
 LCD_TIMINGS lcd_OTM8009A_PORTRAIT =
 {
 /*X size*/480,

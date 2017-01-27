@@ -64,7 +64,8 @@
  */
 
 #include "include/stm32f7xx.h"
-#include "board/board.h"
+#include <board.h>
+
 
 #if !defined  (HSE_VALUE) 
 #define HSE_VALUE    ((unsigned long)25000000) /*!< Default value of the External oscillator in Hz */

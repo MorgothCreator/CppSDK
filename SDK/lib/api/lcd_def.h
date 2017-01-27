@@ -73,6 +73,9 @@ typedef struct
 	LCD_ORIENTATION orientation;
 } LCD_TIMINGS;
 //*****************************************************************************
+extern LCD_TIMINGS lcd_ILI9341_PORTRAIT;
+extern LCD_TIMINGS lcd_ILI9341_LANDSCAPE;
+
 extern LCD_TIMINGS lcd_OTM8009A_PORTRAIT;
 extern LCD_TIMINGS lcd_OTM8009A_LANDSCAPE;
 extern LCD_TIMINGS lcd_OTM8009A_PORTRAIT_FLIP;

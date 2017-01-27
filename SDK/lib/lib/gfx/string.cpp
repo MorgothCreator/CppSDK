@@ -2473,7 +2473,7 @@ void GI::Screen::String::appendF(const char *pcString, ...)
 		if(tmp_str)
 		{
 			va_start (args, pcString);
-			vsnprintf(tmp_str, len, pcString, args);
+			vsnprintf(tmp_str, len + 1, pcString, args);
 			va_end (args);
 			append(tmp_str);
 			free(tmp_str);
@@ -2495,7 +2495,7 @@ void GI::Screen::String::appendF(GI::String *string, ...)
 		if(tmp_str)
 		{
 			va_start (args, pcString);
-			vsnprintf(tmp_str, len, pcString, args);
+			vsnprintf(tmp_str, len + 1, pcString, args);
 			va_end (args);
 			append(tmp_str);
 			free(tmp_str);
@@ -2517,7 +2517,7 @@ void GI::Screen::String::appendF(GI::Screen::String *string, ...)
 		if(tmp_str)
 		{
 			va_start (args, pcString);
-			vsnprintf(tmp_str, len, pcString, args);
+			vsnprintf(tmp_str, len + 1, pcString, args);
 			va_end (args);
 			append(tmp_str);
 			free(tmp_str);
@@ -2540,7 +2540,7 @@ void GI::Screen::String::setTextF(const char *pcString, ...)
 		if(tmp_str)
 		{
 			va_start (args, pcString);
-			vsnprintf(tmp_str, len, pcString, args);
+			vsnprintf(tmp_str, len + 1, pcString, args);
 			va_end (args);
 			setText(tmp_str);
 			free(tmp_str);
@@ -2563,7 +2563,7 @@ void GI::Screen::String::setTextF(GI::String *string, ...)
 		if(tmp_str)
 		{
 			va_start (args, pcString);
-			vsnprintf(tmp_str, len, pcString, args);
+			vsnprintf(tmp_str, len + 1, pcString, args);
 			va_end (args);
 			setText(tmp_str);
 			free(tmp_str);
@@ -2586,7 +2586,7 @@ void GI::Screen::String::setTextF(GI::Screen::String *string, ...)
 		if(tmp_str)
 		{
 			va_start (args, pcString);
-			vsnprintf(tmp_str, len, pcString, args);
+			vsnprintf(tmp_str, len + 1, pcString, args);
 			va_end (args);
 			setText(tmp_str);
 			free(tmp_str);

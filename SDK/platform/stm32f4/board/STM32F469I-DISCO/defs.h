@@ -1,10 +1,11 @@
-#ifndef STM32F429I_DISCO
-#define STM32F429I_DISCO
+#ifndef __STM32F469I_DISCO__
+#define __STM32F469I_DISCO__
 
 #if defined(STM32F469I_DISCO)
 
 #include "../STM32F469I-DISCO/ffconf.h"
 #include "../STM32F469I-DISCO/lwipopts.h"
+#include <api/lcd_def.h>
 
 
 #define LED1_PORT			IOG
@@ -125,7 +126,7 @@
  * Screen settings
  */
 
-#define SCREEN_ENABLE					1
+#define SCREEN_ENABLE					lcd_OTM8009A_PORTRAIT
 #define USE_SCREEN_TYPE_DSI				1
 /*
  * !Screen settings

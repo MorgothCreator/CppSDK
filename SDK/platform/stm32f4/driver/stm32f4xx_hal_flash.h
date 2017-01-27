@@ -75,21 +75,21 @@ typedef enum
   */
 typedef struct
 {
-  __IO FLASH_ProcedureTypeDef ProcedureOnGoing;   /*Internal variable to indicate which procedure is ongoing or not in IT context*/
+  volatile FLASH_ProcedureTypeDef ProcedureOnGoing;   /*Internal variable to indicate which procedure is ongoing or not in IT context*/
   
-  __IO uint32_t               NbSectorsToErase;   /*Internal variable to save the remaining sectors to erase in IT context*/
+  volatile uint32_t               NbSectorsToErase;   /*Internal variable to save the remaining sectors to erase in IT context*/
   
-  __IO uint8_t                VoltageForErase;    /*Internal variable to provide voltage range selected by user in IT context*/
+  volatile uint8_t                VoltageForErase;    /*Internal variable to provide voltage range selected by user in IT context*/
   
-  __IO uint32_t               Sector;             /*Internal variable to define the current sector which is erasing*/
+  volatile uint32_t               Sector;             /*Internal variable to define the current sector which is erasing*/
   
-  __IO uint32_t               Bank;               /*Internal variable to save current bank selected during mass erase*/
+  volatile uint32_t               Bank;               /*Internal variable to save current bank selected during mass erase*/
   
-  __IO uint32_t               Address;            /*Internal variable to save address selected for program*/
+  volatile uint32_t               Address;            /*Internal variable to save address selected for program*/
   
   HAL_LockTypeDef             Lock;               /* FLASH locking object                */
 
-  __IO uint32_t               ErrorCode;          /* FLASH error code                    */
+  volatile uint32_t               ErrorCode;          /* FLASH error code                    */
 
 }FLASH_ProcessTypeDef;
 
@@ -191,7 +191,7 @@ typedef struct
   *         The value of this parameter depend on device used within the same series
   * @retval none
   */ 
-#define __HAL_FLASH_SET_LATENCY(__LATENCY__) (*(__IO uint8_t *)ACR_BYTE0_ADDRESS = (uint8_t)(__LATENCY__))
+#define __HAL_FLASH_SET_LATENCY(__LATENCY__) (*(volatile uint8_t *)ACR_BYTE0_ADDRESS = (uint8_t)(__LATENCY__))
 
 /**
   * @brief  Get the FLASH Latency.

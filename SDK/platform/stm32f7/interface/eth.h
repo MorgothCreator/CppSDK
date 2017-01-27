@@ -19,7 +19,8 @@
 #include "interface/LwIp/src/include/lwip/dhcp.h"
 #include <interface/uart.h>
 #include <lib/string.h>
-#include <board/board.h>
+#include <board.h>
+
 
 typedef enum {
 	DHCP_START = 1,

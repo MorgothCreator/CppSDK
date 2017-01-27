@@ -10,10 +10,16 @@ stm32f4/driver/USBD/Class/CDC/usbd_cdc_interface.o: \
  c:\github\cppsdk\sdk\platform\stm32f4\driver\stm32f4xx_hal_rcc.h \
  c:\github\cppsdk\sdk\platform\stm32f4\driver\stm32f4xx_hal_def.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/include/stm32f4xx.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h \
+ C:/GitHub/CppSDK/ExampleSTM32F4/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/board/STM32F469I-DISCO/defs.h \
  c:\github\cppsdk\sdk\platform\stm32f4\board\stm32f469i-disco\ffconf.h \
  c:\github\cppsdk\sdk\platform\stm32f4\board\stm32f469i-disco\lwipopts.h \
+ C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h \
+ C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h \
+ C:/GitHub/CppSDK/SDK/lib/include/global.h \
+ C:/GitHub/CppSDK/SDK/lib/api/i2c.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/include/stm32f469xx.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/Include/core_cm4.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/Include/core_cmInstr.h \
@@ -63,8 +69,7 @@ stm32f4/driver/USBD/Class/CDC/usbd_cdc_interface.o: \
  c:\github\cppsdk\sdk\platform\stm32f4\driver\usbd\core\inc\usbd_ioreq.h \
  c:\github\cppsdk\sdk\platform\stm32f4\driver\usbd\core\inc\usbd_ctlreq.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f4xx_hal_tim.h \
- C:/GitHub/CppSDK/SDK/lib/lib/buffers/ring_buff.h \
- C:/GitHub/CppSDK/SDK/lib/include/global.h
+ C:/GitHub/CppSDK/SDK/lib/lib/buffers/ring_buff.h
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/USBD/Class/CDC/usbd_cdc_interface.h:
 
@@ -86,13 +91,25 @@ c:\github\cppsdk\sdk\platform\stm32f4\driver\stm32f4xx_hal_def.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/include/stm32f4xx.h:
 
-C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h:
+C:/GitHub/CppSDK/ExampleSTM32F4/board.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/board/STM32F469I-DISCO/defs.h:
 
 c:\github\cppsdk\sdk\platform\stm32f4\board\stm32f469i-disco\ffconf.h:
 
 c:\github\cppsdk\sdk\platform\stm32f4\board\stm32f469i-disco\lwipopts.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/gpio.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h:
+
+C:/GitHub/CppSDK/SDK/lib/include/global.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/include/stm32f469xx.h:
 
@@ -193,5 +210,3 @@ c:\github\cppsdk\sdk\platform\stm32f4\driver\usbd\core\inc\usbd_ctlreq.h:
 C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f4xx_hal_tim.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/buffers/ring_buff.h:
-
-C:/GitHub/CppSDK/SDK/lib/include/global.h:

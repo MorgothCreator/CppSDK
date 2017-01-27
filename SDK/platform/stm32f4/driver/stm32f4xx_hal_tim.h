@@ -295,7 +295,7 @@ typedef struct
   DMA_HandleTypeDef           *hdma[7];      /*!< DMA Handlers array
                                              This array is accessed by a @ref DMA_Handle_index */
   HAL_LockTypeDef             Lock;          /*!< Locking object                    */
-  __IO HAL_TIM_StateTypeDef   State;         /*!< TIM operation state               */
+  volatile HAL_TIM_StateTypeDef   State;         /*!< TIM operation state               */
 }TIM_HandleTypeDef;
 /**
   * @}
@@ -959,7 +959,7 @@ typedef struct
   * @retval None
   */
 #define __HAL_TIM_SET_COMPARE(__HANDLE__, __CHANNEL__, __COMPARE__) \
-(*(__IO unsigned long *)(&((__HANDLE__)->Instance->CCR1) + ((__CHANNEL__) >> 2)) = (__COMPARE__))
+(*(volatile unsigned long *)(&((__HANDLE__)->Instance->CCR1) + ((__CHANNEL__) >> 2)) = (__COMPARE__))
 
 /**
   * @brief  Gets the TIM Capture Compare Register value on runtime
@@ -973,7 +973,7 @@ typedef struct
   * @retval None
   */
 #define __HAL_TIM_GET_COMPARE(__HANDLE__, __CHANNEL__) \
-  (*(__IO unsigned long *)(&((__HANDLE__)->Instance->CCR1) + ((__CHANNEL__) >> 2)))
+  (*(volatile unsigned long *)(&((__HANDLE__)->Instance->CCR1) + ((__CHANNEL__) >> 2)))
 
 /**
   * @brief  Sets the TIM Counter Register value on runtime.

@@ -1,10 +1,16 @@
 stm32f4/interface/mmcsd.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/mmcsd.cpp \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/include/stm32f4xx.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h \
+ C:/GitHub/CppSDK/ExampleSTM32F4/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/board/STM32F469I-DISCO/defs.h \
  c:\github\cppsdk\sdk\platform\stm32f4\board\stm32f469i-disco\ffconf.h \
  c:\github\cppsdk\sdk\platform\stm32f4\board\stm32f469i-disco\lwipopts.h \
+ C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h \
+ C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
+ C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h \
+ C:/GitHub/CppSDK/SDK/lib/include/global.h \
+ C:/GitHub/CppSDK/SDK/lib/api/i2c.h \
+ C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/include/stm32f469xx.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/Include/core_cm4.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/Include/core_cmInstr.h \
@@ -64,17 +70,11 @@ stm32f4/interface/mmcsd.o: \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/systime.h \
- C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h \
- C:/GitHub/CppSDK/SDK/lib/include/global.h \
  C:/GitHub/CppSDK/SDK/lib/api/mmcsd_def.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h \
  C:/GitHub/CppSDK/SDK/lib/api/init.h C:/GitHub/CppSDK/SDK/lib/api/std.h \
  C:/GitHub/CppSDK/SDK/lib/lib/string.h \
  C:/GitHub/CppSDK/SDK/lib/api/uart.h \
- C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h \
- C:/GitHub/CppSDK/SDK/lib/api/i2c.h \
- C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/uart.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/string.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h \
@@ -124,13 +124,25 @@ stm32f4/interface/mmcsd.o: \
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/include/stm32f4xx.h:
 
-C:/GitHub/CppSDK/SDK/platform/stm32f4/board/board.h:
+C:/GitHub/CppSDK/ExampleSTM32F4/board.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/board/STM32F469I-DISCO/defs.h:
 
 c:\github\cppsdk\sdk\platform\stm32f4\board\stm32f469i-disco\ffconf.h:
 
 c:\github\cppsdk\sdk\platform\stm32f4\board\stm32f469i-disco\lwipopts.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/gpio.h:
+
+C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h:
+
+C:/GitHub/CppSDK/SDK/lib/include/global.h:
+
+C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
+
+C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/include/stm32f469xx.h:
 
@@ -250,12 +262,6 @@ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/diskio.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/sys/systime.h:
 
-C:/GitHub/CppSDK/SDK/lib/api/gpio.h:
-
-C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h:
-
-C:/GitHub/CppSDK/SDK/lib/include/global.h:
-
 C:/GitHub/CppSDK/SDK/lib/api/mmcsd_def.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/gpio.h:
@@ -267,12 +273,6 @@ C:/GitHub/CppSDK/SDK/lib/api/std.h:
 C:/GitHub/CppSDK/SDK/lib/lib/string.h:
 
 C:/GitHub/CppSDK/SDK/lib/api/uart.h:
-
-C:/GitHub/CppSDK/SDK/lib/api/lcd_def.h:
-
-C:/GitHub/CppSDK/SDK/lib/api/i2c.h:
-
-C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/fonts.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f4/interface/uart.h:
 

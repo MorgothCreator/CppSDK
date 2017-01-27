@@ -15,6 +15,7 @@
 "lib/device/bmp180.o"
 "lib/device/ft5x06.o"
 "lib/device/hih6130.o"
+"lib/device/ili9341.o"
 "lib/device/lepton_flir.o"
 "lib/device/mpl3115a2.o"
 "lib/device/mpr121.o"

@@ -36,10 +36,10 @@ extern CfgI2c i2cCfg[];
 extern CfgUart uartCfg[];
 
 GI::Sys::Clock coreClk;
-#if (SCREEN_ENABLE == 1 && SCREEN_INTERFACE_COUNT > 0)
-GI::Dev::IntScreen screen(&lcd_OTM8009A_PORTRAIT, NULL);
-#endif
 GI::Board::Init dev;
+#if (defined(SCREEN_ENABLE) && SCREEN_INTERFACE_COUNT > 0)
+GI::Dev::IntScreen screen(&SCREEN_ENABLE, NULL);
+#endif
 
 GI::Board::Init::Init()
 {

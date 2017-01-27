@@ -30,7 +30,7 @@ lib/lib/gfx/picturebox.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/picturebox.cpp \
  C:/GitHub/CppSDK/SDK/lib/api/i2c.h C:/GitHub/CppSDK/SDK/lib/api/gpio.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/screen.h \
  C:/GitHub/CppSDK/SDK/lib/device/otm8009a.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h \
+ C:/GitHub/CppSDK/ExampleSTM32F7/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/ffconf.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/lwipopts.h \
@@ -109,7 +109,7 @@ C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/screen.h:
 
 C:/GitHub/CppSDK/SDK/lib/device/otm8009a.h:
 
-C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h:
+C:/GitHub/CppSDK/ExampleSTM32F7/board.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h:
 

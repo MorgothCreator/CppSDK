@@ -48,7 +48,7 @@
 /* Includes ------------------------------------------------------------------*/
 //#include "include/stm32f4xx.h"
 #include "main.h"
-#include "board/board.h"
+#include <board.h>
 #include "driver/stm32f7xx_hal.h"
 #include "driver/USBH/core/inc/usbh_core.h"
 #include "driver/stm32f7xx_hal_rcc.h"

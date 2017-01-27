@@ -151,12 +151,14 @@ GI::Dev::Spi::Spi(const char *path)
 	case SPI4_BASE:
 		__HAL_RCC_SPI4_CLK_ENABLE()
 		;
+		GPIO_InitStruct.Alternate = GPIO_AF5_SPI4;
 		break;
 #endif
 #ifdef __HAL_RCC_SPI5_CLK_ENABLE
 	case SPI5_BASE:
 		__HAL_RCC_SPI5_CLK_ENABLE()
 		;
+		GPIO_InitStruct.Alternate = GPIO_AF5_SPI5;
 		break;
 #endif
 #ifdef __HAL_RCC_SPI6_CLK_ENABLE
@@ -164,6 +166,7 @@ GI::Dev::Spi::Spi(const char *path)
 		__HAL_RCC_SPI6_CLK_ENABLE()
 		;
 		break;
+		GPIO_InitStruct.Alternate = GPIO_AF5_SPI6;
 #endif
 #ifdef __HAL_RCC_SPI7_CLK_ENABLE
 		case SPI7_BASE:

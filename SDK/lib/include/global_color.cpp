@@ -1,5 +1,4 @@
 /*
- /*
  *  include/global_color.cpp
  *
  *  Copyright (C) 2016  Iulian Gheorghiu <morgoth.creator@gmail.com>

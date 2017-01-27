@@ -16,11 +16,16 @@
 #include "driver/stm32f4xx_hal.h"
 #include <interface/screen.h>
 
+#if defined(STM32F429I_DISCO)
+#define LCD_FB_START_ADDRESS       ((uint32_t)0xD0000000)
+#elif defined (STM32F469I_DISCO)
+#define LCD_FB_START_ADDRESS       ((uint32_t)0xC0000000)
+#endif
+
 #if defined(STM32F429xx) || defined(STM32F439xx)|| defined(STM32F469xx) || defined(STM32F479xx)
 /**
  * @brief  LCD FB_StartAddress
  */
-#define LCD_FB_START_ADDRESS       ((uint32_t)0xC0000000)
 /** @brief Maximum number of LTDC layers
  */
 #define LTDC_MAX_LAYER_NUMBER             ((uint32_t) 2)
@@ -221,18 +226,24 @@ __weak void BSP_LCD_MspDeInit(void)
 	/** @brief Disable IRQ of DMA2D IP */
 	HAL_NVIC_DisableIRQ((IRQn_Type) DMA2D_IRQn);
 
+#if defined(STM32F469xx) || defined(STM32F479xx)
 	/** @brief Disable IRQ of DSI IP */
 	HAL_NVIC_DisableIRQ((IRQn_Type) DSI_IRQn);
+#endif
 
 	/** @brief Force and let in reset state LTDC, DMA2D and DSI Host + Wrapper IPs */
 	__HAL_RCC_LTDC_FORCE_RESET();
 	__HAL_RCC_DMA2D_FORCE_RESET();
+#if defined(STM32F469xx) || defined(STM32F479xx)
 	__HAL_RCC_DSI_FORCE_RESET();
+#endif
 
 	/** @brief Disable the LTDC, DMA2D and DSI Host and Wrapper clocks */
 	__HAL_RCC_LTDC_CLK_DISABLE();
 	__HAL_RCC_DMA2D_CLK_DISABLE();
+#if defined(STM32F469xx) || defined(STM32F479xx)
 	__HAL_RCC_DSI_CLK_DISABLE();
+#endif
 }
 
 /**
@@ -257,6 +268,7 @@ __weak void BSP_LCD_MspInit(void)
 	__HAL_RCC_DMA2D_FORCE_RESET();
 	__HAL_RCC_DMA2D_RELEASE_RESET();
 
+#if defined(STM32F469xx) || defined(STM32F479xx)
 	/** @brief Enable DSI Host and wrapper clocks */
 	__HAL_RCC_DSI_CLK_ENABLE()
 	;
@@ -264,7 +276,7 @@ __weak void BSP_LCD_MspInit(void)
 	/** @brief Soft Reset the DSI Host and wrapper */
 	__HAL_RCC_DSI_FORCE_RESET();
 	__HAL_RCC_DSI_RELEASE_RESET();
-
+#endif
 	/** @brief NVIC configuration for LTDC interrupt that is now enabled */
 	HAL_NVIC_SetPriority((IRQn_Type) LTDC_IRQn, 3, 0);
 	HAL_NVIC_EnableIRQ((IRQn_Type) LTDC_IRQn);
@@ -273,9 +285,11 @@ __weak void BSP_LCD_MspInit(void)
 	HAL_NVIC_SetPriority((IRQn_Type) DMA2D_IRQn, 3, 0);
 	HAL_NVIC_EnableIRQ((IRQn_Type) DMA2D_IRQn);
 
+#if defined(STM32F469xx) || defined(STM32F479xx)
 	/** @brief NVIC configuration for DSI interrupt that is now enabled */
 	HAL_NVIC_SetPriority((IRQn_Type) DSI_IRQn, 3, 0);
 	HAL_NVIC_EnableIRQ((IRQn_Type) DSI_IRQn);
+#endif
 }
 
 /**
@@ -286,7 +300,7 @@ __weak void BSP_LCD_MspInit(void)
  */
 void BSP_LCD_Reset(void)
 {
-#if !defined(USE_STM32469I_DISCO_REVA)
+#if !defined(USE_STM32469I_DISCO_REVA) || !defined(STM32F429I_DISCO)
 	/* EVAL Rev B and beyond : reset the LCD by activation of XRES (active low) connected to PH7 */
 	GPIO_InitTypeDef gpio_init_structure;
 
@@ -402,12 +416,15 @@ static void DMA2D_Config(void)
 	HAL_DMA2D_ConfigLayer(&Dma2dHandle, 0);
 }
 
+#if defined(STM32F429xx) || defined(STM32F439xx)
+
+#include <device/ili9341.h>
 /**
  * @brief  Initializes the LCD.
  * @param  None
  * @retval LCD state
  */
-uint8_t BSP_LCD_Init(void *_pDisplay)
+uint8_t BSP_LCD_InitEx(void *_pDisplay)
 {
 	GI::Dev::Screen *pDisplay = (GI::Dev::Screen *) _pDisplay;
 	/* On STM32F429I-DISCO, it is not possible to read ILI9341 ID because */
@@ -546,10 +563,14 @@ uint8_t BSP_LCD_Init(void *_pDisplay)
 	/* Initialize the font */
 	BSP_LCD_LayerDefaultInit(_pDisplay, 0, LCD_FB_START_ADDRESS);
 
+	ili9341_Init((char *)"spi-4.0", _pDisplay);
+
+
 	pDisplay->sClipRegion.sXMax = pDisplay->LcdTimings->X;
 	pDisplay->sClipRegion.sYMax = pDisplay->LcdTimings->Y;
 	return LCD_OK;
 }
+#endif/*!defined(STM32F429xx) || !defined(STM32F439xx)*/
 
 #endif
 
@@ -754,41 +775,9 @@ uint8_t BSP_LCD_InitEx(void *_pDisplay)
 	return LCD_OK;
 }
 #endif
-/**
- * @brief  Fills a buffer.
- * @param  LayerIndex: Layer index
- * @param  pDst: Pointer to destination buffer
- * @param  xSize: Buffer width
- * @param  ySize: Buffer height
- * @param  OffLine: Offset
- * @param  ColorIndex: Color index
- */
-static void LL_FillBuffer(uint32_t LayerIndex, void *pDst, uint32_t xSize,
-		uint32_t ySize, uint32_t OffLine, uint32_t ColorIndex)
-{
-	/*##-1- Configure the DMA2D Mode, Color Mode and output offset #############*/
-	Dma2dHandle.Init.Mode = DMA2D_R2M;
-	Dma2dHandle.Init.ColorMode = DMA2D_ARGB8888;
-	Dma2dHandle.Init.OutputOffset = OffLine;
-
-	/* DMA2D Initialization */
-	if (HAL_DMA2D_Init(&Dma2dHandle) == HAL_OK)
-	{
-		if (HAL_DMA2D_ConfigLayer(&Dma2dHandle, LayerIndex) == HAL_OK)
-		{
-			if (HAL_DMA2D_Start(&Dma2dHandle, ColorIndex | 0xFF000000,
-					(uint32_t) pDst, xSize, ySize) == HAL_OK)
-			{
-				/* Polling For DMA transfer */
-				HAL_DMA2D_PollForTransfer(&Dma2dHandle, 100);
-			}
-		}
-	}
-}
-
 #endif
 
-#if defined(STM32F469xx) || defined(STM32F479xx)
+#if defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F479xx)
 
 void GI::Dev::IntScreen::init(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
 {
@@ -850,6 +839,41 @@ int GI::Dev::Screen::setBacklight(unsigned char value)
 	err = SYS_ERR_NOT_INITIALIZED;
 	return SYS_ERR_NOT_INITIALIZED;
 }
+
+//#######################################################################################
+/**
+ * @brief  Fills a buffer.
+ * @param  LayerIndex: Layer index
+ * @param  pDst: Pointer to destination buffer
+ * @param  xSize: Buffer width
+ * @param  ySize: Buffer height
+ * @param  OffLine: Offset
+ * @param  ColorIndex: Color index
+ */
+static void LL_FillBuffer(uint32_t LayerIndex, void *pDst, uint32_t xSize,
+		uint32_t ySize, uint32_t OffLine, uint32_t ColorIndex)
+{
+	/*##-1- Configure the DMA2D Mode, Color Mode and output offset #############*/
+	Dma2dHandle.Init.Mode = DMA2D_R2M;
+	Dma2dHandle.Init.ColorMode = DMA2D_ARGB8888;
+	Dma2dHandle.Init.OutputOffset = OffLine;
+
+	/* DMA2D Initialization */
+	if (HAL_DMA2D_Init(&Dma2dHandle) == HAL_OK)
+	{
+		if (HAL_DMA2D_ConfigLayer(&Dma2dHandle, LayerIndex) == HAL_OK)
+		{
+			if (HAL_DMA2D_Start(&Dma2dHandle, ColorIndex | 0xFF000000,
+					(uint32_t) pDst, xSize, ySize) == HAL_OK)
+			{
+				/* Polling For DMA transfer */
+				HAL_DMA2D_PollForTransfer(&Dma2dHandle, 100);
+			}
+		}
+	}
+}
+
+
 //#######################################################################################
 bool GI::Dev::Screen::copyScreen(void *_pDisplayFrom, bool put_cursor,
 		signed int X, signed int Y, unsigned int color)

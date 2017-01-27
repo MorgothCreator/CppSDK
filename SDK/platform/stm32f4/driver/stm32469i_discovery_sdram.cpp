@@ -210,9 +210,9 @@ sdRam_Stm32469IDisco::~sdRam_Stm32469IDisco()
  * @param  RefreshCount: SDRAM refresh counter value
  * @retval None
  */
-void sdRam_Stm32469IDisco::Initialization_sequence(uint32_t RefreshCount)
+void sdRam_Stm32469IDisco::Initialization_sequence(unsigned long RefreshCount)
 {
-	  volatile uint32_t tmpmrd = 0;
+	  volatile unsigned long tmpmrd = 0;
 
 	  /* Step 1: Configure a clock configuration enable command */
 	  Command.CommandMode            = FMC_SDRAM_CMD_CLK_ENABLE;
@@ -246,7 +246,7 @@ void sdRam_Stm32469IDisco::Initialization_sequence(uint32_t RefreshCount)
 	  HAL_SDRAM_SendCommand(&sdramHandle, &Command, SDRAM_TIMEOUT);
 
 	  /* Step 5: Program the external memory mode register */
-	  tmpmrd = (uint32_t)SDRAM_MODEREG_BURST_LENGTH_1          |\
+	  tmpmrd = (unsigned long)SDRAM_MODEREG_BURST_LENGTH_1          |\
 	                     SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   |\
 	                     SDRAM_MODEREG_CAS_LATENCY_3           |\
 	                     SDRAM_MODEREG_OPERATING_MODE_STANDARD |\
@@ -272,10 +272,10 @@ void sdRam_Stm32469IDisco::Initialization_sequence(uint32_t RefreshCount)
  * @param  uwDataSize: Size of read data from the memory
  * @retval SDRAM status
  */
-uint8_t sdRam_Stm32469IDisco::ReadData(uint32_t uwStartAddress, uint32_t *pData,
-		uint32_t uwDataSize)
+unsigned char sdRam_Stm32469IDisco::ReadData(unsigned long uwStartAddress, unsigned long *pData,
+		unsigned long uwDataSize)
 {
-	if (HAL_SDRAM_Read_32b(&sdramHandle, (uint32_t *) uwStartAddress, pData,
+	if (HAL_SDRAM_Read_32b(&sdramHandle, (unsigned long *) uwStartAddress, pData,
 			uwDataSize) != HAL_OK)
 	{
 		return SDRAM_ERROR;
@@ -293,10 +293,10 @@ uint8_t sdRam_Stm32469IDisco::ReadData(uint32_t uwStartAddress, uint32_t *pData,
  * @param  uwDataSize: Size of read data from the memory
  * @retval SDRAM status
  */
-uint8_t sdRam_Stm32469IDisco::ReadData_DMA(uint32_t uwStartAddress,
-		uint32_t *pData, uint32_t uwDataSize)
+unsigned char sdRam_Stm32469IDisco::ReadData_DMA(unsigned long uwStartAddress,
+		unsigned long *pData, unsigned long uwDataSize)
 {
-	if (HAL_SDRAM_Read_DMA(&sdramHandle, (uint32_t *) uwStartAddress, pData,
+	if (HAL_SDRAM_Read_DMA(&sdramHandle, (unsigned long *) uwStartAddress, pData,
 			uwDataSize) != HAL_OK)
 	{
 		return SDRAM_ERROR;
@@ -314,10 +314,10 @@ uint8_t sdRam_Stm32469IDisco::ReadData_DMA(uint32_t uwStartAddress,
  * @param  uwDataSize: Size of written data from the memory
  * @retval SDRAM status
  */
-uint8_t sdRam_Stm32469IDisco::WriteData(uint32_t uwStartAddress,
-		uint32_t *pData, uint32_t uwDataSize)
+unsigned char sdRam_Stm32469IDisco::WriteData(unsigned long uwStartAddress,
+		unsigned long *pData, unsigned long uwDataSize)
 {
-	if (HAL_SDRAM_Write_32b(&sdramHandle, (uint32_t *) uwStartAddress, pData,
+	if (HAL_SDRAM_Write_32b(&sdramHandle, (unsigned long *) uwStartAddress, pData,
 			uwDataSize) != HAL_OK)
 	{
 		return SDRAM_ERROR;
@@ -335,10 +335,10 @@ uint8_t sdRam_Stm32469IDisco::WriteData(uint32_t uwStartAddress,
  * @param  uwDataSize: Size of written data from the memory
  * @retval SDRAM status
  */
-uint8_t sdRam_Stm32469IDisco::WriteData_DMA(uint32_t uwStartAddress,
-		uint32_t *pData, uint32_t uwDataSize)
+unsigned char sdRam_Stm32469IDisco::WriteData_DMA(unsigned long uwStartAddress,
+		unsigned long *pData, unsigned long uwDataSize)
 {
-	if (HAL_SDRAM_Write_DMA(&sdramHandle, (uint32_t *) uwStartAddress, pData,
+	if (HAL_SDRAM_Write_DMA(&sdramHandle, (unsigned long *) uwStartAddress, pData,
 			uwDataSize) != HAL_OK)
 	{
 		return SDRAM_ERROR;
@@ -354,7 +354,7 @@ uint8_t sdRam_Stm32469IDisco::WriteData_DMA(uint32_t uwStartAddress,
  * @param  SdramCmd: Pointer to SDRAM command structure
  * @retval SDRAM status
  */
-uint8_t sdRam_Stm32469IDisco::Sendcmd(FMC_SDRAM_CommandTypeDef *SdramCmd)
+unsigned char sdRam_Stm32469IDisco::Sendcmd(FMC_SDRAM_CommandTypeDef *SdramCmd)
 {
 	if (HAL_SDRAM_SendCommand(&sdramHandle, SdramCmd, SDRAM_TIMEOUT) != HAL_OK)
 	{

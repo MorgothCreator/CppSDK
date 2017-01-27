@@ -53,7 +53,8 @@
 #include "interface/LwIp/src/include/netif/etharp.h"
 #include "ethernetif.h"
 #include <string.h>
-#include <board/board.h>
+#include <board.h>
+
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

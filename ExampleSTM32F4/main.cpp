@@ -242,19 +242,15 @@ int main(void)
 					{
 					case 0:
 						ListBox->Items[0]->Caption->setTextF("HIH613x: T = %2.2f, H = %2.1f", hih613x_temp, hih613x_hum);
-						//SensorResultTextbox->text->appendF("HIH613x: T = %2.2f, H = %2.1f\n\r", hih613x_temp, hih613x_hum);
 						break;
 					case 1:
 						ListBox->Items[0]->Caption->setText((char *)"HIH613x: stale data");
-						//SensorResultTextbox->text->appendF("HIH613x: stale data\n\r");
 						break;
 					case 2:
 						ListBox->Items[0]->Caption->setText((char *)"HIH613x: in command mode");
-						//SensorResultTextbox->text->appendF("HIH613x: in command mode\n\r");
 						break;
 					case 3:
 						ListBox->Items[0]->Caption->setText((char *)"HIH613x: diagnostic");
-						//SensorResultTextbox->text->appendF("HIH613x: diagnostic\n\r");
 						break;
 					}
 				}

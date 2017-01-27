@@ -61,7 +61,7 @@ extern "C"
 {
 #endif /* __cplusplus */
 
-#include "board/board.h"
+#include <board.h>
 /** @addtogroup Library_configuration_section
  * @{
  */

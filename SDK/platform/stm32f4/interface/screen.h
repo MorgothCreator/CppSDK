@@ -17,7 +17,7 @@
 #include <string.h>
 
 #include "device/otm8009a.h"
-#include <board/board.h>
+#include <board.h>
 #include <sys/cache.h>
 #include <sys/systime.h>
 /*#####################################################*/

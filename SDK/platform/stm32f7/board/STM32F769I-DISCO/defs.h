@@ -122,7 +122,7 @@
  * Screen settings
  */
 
-#define SCREEN_ENABLE					1
+#define SCREEN_ENABLE					lcd_OTM8009A_PORTRAIT
 #define USE_SCREEN_TYPE_DSI				1
 /*
  * !Screen settings

@@ -10,7 +10,7 @@
 
 #include <stdbool.h>
 #include <string.h>
-#include "board/board.h"
+#include <board.h>
 #include "system_stm32f7xx.h"
 #include "driver/stm32f7xx_hal.h"
 #include "driver/stm32f7xx_hal_rcc.h"

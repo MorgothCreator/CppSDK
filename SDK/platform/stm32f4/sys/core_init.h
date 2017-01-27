@@ -10,7 +10,7 @@
 /*#####################################################*/
 /*#####################################################*/
 
-#include <board/board.h>
+#include <board.h>
 
 extern unsigned long FCPU;
 extern unsigned long PLL_REF_CLK;

@@ -25,7 +25,7 @@
 #ifdef FLASH_DEVICE
 #include <avr/pgmspace.h>
 #endif
-#include <board/board.h>
+#include <board.h>
 #include "fonts.h"
 
 //*****************************************************************************

@@ -28,7 +28,7 @@ main.o: ../main.cpp C:/GitHub/CppSDK/SDK/lib/api/init.h \
  C:/GitHub/CppSDK/SDK/lib/lib/gfx/keyboard.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h \
  C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h \
+ C:/GitHub/CppSDK/ExampleSTM32F7/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/ffconf.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/lwipopts.h \
@@ -239,7 +239,7 @@ C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/ff.h:
 
 C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/inc/integer.h:
 
-C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h:
+C:/GitHub/CppSDK/ExampleSTM32F7/board.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h:
 

@@ -17,7 +17,7 @@
 #include "api/gpio.h"
 #include "lib/fs/fat/inc/diskio.h"
 #include "lib/fs/fat/inc/ff.h"
-#include "board/board.h"
+#include <board.h>
 
 namespace GI
 {

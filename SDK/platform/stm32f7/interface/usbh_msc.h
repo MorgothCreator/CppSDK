@@ -13,7 +13,8 @@
 
 #include <stdbool.h>
 #include "api/gpio.h"
-#include "board/board.h"
+#include <board.h>
+
 
 namespace GI
 {

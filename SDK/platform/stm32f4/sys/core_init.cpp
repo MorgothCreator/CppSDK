@@ -22,7 +22,11 @@ unsigned long PLL_REF_CLK = HSE_VALUE;
 #if (defined(STM32F469xx) || defined(STM32F479xx)) && defined(STM32F469I_DISCO)
 #include "driver/stm32469i_discovery_sdram.h"
 sdRam_Stm32469IDisco *sdram;
+#elif defined(STM32F429xx) && defined(STM32F429I_DISCO)
+#include "driver/stm32f429i_discovery_sdram.h"
+sdRam_Stm32429IDisco *sdram;
 #endif
+
 
   /**
   * @brief  System Clock Configuration
@@ -161,6 +165,8 @@ void GI::Sys::Clock::setClk(unsigned long fCpu)
 	HAL_Init();
 #if (defined(STM32F469xx) || defined(STM32F479xx)) && defined(STM32F469I_DISCO)
 	sdram = new sdRam_Stm32469IDisco();
+#elif defined(STM32F429xx) && defined(STM32F429I_DISCO)
+	sdram = new sdRam_Stm32429IDisco();
 #endif
 	//SystemCoreClockUpdate();
 	//RCC_PCLK1Config(RCC_HCLK_Div4);

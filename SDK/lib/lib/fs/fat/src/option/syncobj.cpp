@@ -6,7 +6,7 @@
 //#include <windows.h>	// Win32
 //#include <ucos_ii.h>	// uC/OS-II
 #include "../../inc/ff.h"
-#include "board/board.h"
+#include <board.h>
 
 
 #if _FS_REENTRANT

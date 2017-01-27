@@ -135,7 +135,7 @@ typedef struct
 
   ADC_InitTypeDef               Init;                        /*!< ADC required parameters */
 
-  __IO uint32_t                 NbrOfCurrentConversionRank;  /*!< ADC number of current conversion rank */
+  volatile uint32_t                 NbrOfCurrentConversionRank;  /*!< ADC number of current conversion rank */
 
   DMA_HandleTypeDef             *DMA_Handle;                 /*!< Pointer DMA Handler */
 

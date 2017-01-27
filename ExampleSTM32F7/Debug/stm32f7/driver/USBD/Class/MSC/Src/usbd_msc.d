@@ -10,7 +10,7 @@ stm32f7/driver/USBD/Class/MSC/Src/usbd_msc.o: \
  c:\github\cppsdk\sdk\platform\stm32f7\driver\stm32f7xx_hal_rcc.h \
  c:\github\cppsdk\sdk\platform\stm32f7\driver\stm32f7xx_hal_def.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/include/stm32f7xx.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h \
+ C:/GitHub/CppSDK/ExampleSTM32F7/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/ffconf.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/lwipopts.h \
@@ -155,7 +155,7 @@ c:\github\cppsdk\sdk\platform\stm32f7\driver\stm32f7xx_hal_def.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/include/stm32f7xx.h:
 
-C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h:
+C:/GitHub/CppSDK/ExampleSTM32F7/board.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h:
 

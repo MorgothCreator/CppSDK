@@ -11,7 +11,7 @@ stm32f7/sys/stm32f7xx_it.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_ll_sdmmc.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_def.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/include/stm32f7xx.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h \
+ C:/GitHub/CppSDK/ExampleSTM32F7/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/ffconf.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/lwipopts.h \
@@ -161,7 +161,7 @@ C:/GitHub/CppSDK/SDK/platform/stm32f7/driver/stm32f7xx_hal_def.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/include/stm32f7xx.h:
 
-C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h:
+C:/GitHub/CppSDK/ExampleSTM32F7/board.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h:
 

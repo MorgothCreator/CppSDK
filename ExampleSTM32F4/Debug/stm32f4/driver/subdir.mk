@@ -75,12 +75,14 @@ C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f4xx_ll_sdmmc.c \
 C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f4xx_ll_usb.c 
 
 CPP_SRCS += \
-C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32469i_discovery_sdram.cpp 
+C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32469i_discovery_sdram.cpp \
+C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f429i_discovery_sdram.cpp 
 
 OBJS += \
 ./stm32f4/driver/misc.o \
 ./stm32f4/driver/stm32469i_discovery_sdram.o \
 ./stm32f4/driver/stm32469i_eval_sdram.o \
+./stm32f4/driver/stm32f429i_discovery_sdram.o \
 ./stm32f4/driver/stm32f4xx_hal.o \
 ./stm32f4/driver/stm32f4xx_hal_adc.o \
 ./stm32f4/driver/stm32f4xx_hal_adc_ex.o \
@@ -221,7 +223,8 @@ C_DEPS += \
 ./stm32f4/driver/stm32f4xx_ll_usb.d 
 
 CPP_DEPS += \
-./stm32f4/driver/stm32469i_discovery_sdram.d 
+./stm32f4/driver/stm32469i_discovery_sdram.d \
+./stm32f4/driver/stm32f429i_discovery_sdram.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -246,6 +249,14 @@ stm32f4/driver/stm32469i_eval_sdram.o: C:/GitHub/CppSDK/SDK/platform/stm32f4/dri
 	@echo 'Invoking: MCU GCC Compiler'
 	@echo %cd%
 	arm-none-eabi-gcc -x c++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F469I_DISCO -DSTM32F4 -DSTM32F469NIHx -DSTM32 -DDEBUG -I"C:/GitHub/CppSDK/SDK/lib" -I"C:/GitHub/CppSDK/SDK/platform/stm32f4" -I"C:/GitHub/CppSDK/ExampleSTM32F4" -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+stm32f4/driver/stm32f429i_discovery_sdram.o: C:/GitHub/CppSDK/SDK/platform/stm32f4/driver/stm32f429i_discovery_sdram.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: MCU G++ Compiler'
+	@echo %cd%
+	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F469I_DISCO -DSTM32F4 -DSTM32F469NIHx -DSTM32 -DDEBUG -I"C:/GitHub/CppSDK/SDK/lib" -I"C:/GitHub/CppSDK/ExampleSTM32F4" -I"C:/GitHub/CppSDK/SDK/platform/stm32f4" -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fno-exceptions -fno-rtti -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

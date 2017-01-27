@@ -17,7 +17,7 @@
 #include "driver/stm32f7xx_hal_gpio_ex.h"
 #include <interface/gpio.h>
 #include <api/init.h>
-#include "board/board.h"
+#include <board.h>
 
 extern CfgSpi spiCfg[];
 

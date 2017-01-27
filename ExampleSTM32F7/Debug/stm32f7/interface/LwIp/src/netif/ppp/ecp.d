@@ -1,7 +1,7 @@
 stm32f7/interface/LwIp/src/netif/ppp/ecp.o: \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/LwIp/src/netif/ppp/ecp.c \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/LwIp/src/include/lwip/opt.h \
- C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h \
+ C:/GitHub/CppSDK/ExampleSTM32F7/board.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/ffconf.h \
  C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/lwipopts.h \
@@ -45,7 +45,7 @@ stm32f7/interface/LwIp/src/netif/ppp/ecp.o: \
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/interface/LwIp/src/include/lwip/opt.h:
 
-C:/GitHub/CppSDK/SDK/platform/stm32f7/board/board.h:
+C:/GitHub/CppSDK/ExampleSTM32F7/board.h:
 
 C:/GitHub/CppSDK/SDK/platform/stm32f7/board/STM32F769I-DISCO/defs.h:
 

@@ -214,7 +214,7 @@
 #include "include/stm32f4xx.h"
 #include "driver/stm32f4xx_hal_conf.h"
 #include "sys/core_init.h"
-#include <board/board.h>
+#include <board.h>
 /**
   * @}
   */

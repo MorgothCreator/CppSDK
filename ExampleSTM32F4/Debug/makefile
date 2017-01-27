@@ -28,6 +28,7 @@ RM := rm -rf
 -include stm32f4/driver/USBD/Class/subdir.mk
 -include stm32f4/driver/subdir.mk
 -include stm32f4/board/STM32F469I-DISCO/subdir.mk
+-include stm32f4/board/STM32F429I-DISCO/subdir.mk
 -include lib/lib/util/subdir.mk
 -include lib/lib/gfx/resource/subdir.mk
 -include lib/lib/gfx/libdrawtext/subdir.mk
