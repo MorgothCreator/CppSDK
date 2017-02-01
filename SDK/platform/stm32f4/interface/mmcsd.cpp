@@ -373,7 +373,7 @@ volatile unsigned long TransferEnd = 0, DMAEndOfTransfer = 0;
 /**
  * @}
  */
-fatfs MmcSdFatFs;
+fatfs *MmcSdFatFs;
 
 #define PATH_BUF_SIZE   6
 static char g_cCwdBuf0[PATH_BUF_SIZE] = "SD1:/";
@@ -937,14 +937,14 @@ bool GI::Dev::MmcSd::idle(unsigned int unit_nr)
 		}
 		if (cardDetectGpio != NULL)
 			cardDetectGpio->events.stateDown = false;
-		MmcSdFatFs.fs.drv_rw_func.DriveStruct = (void *) this;//SdStruct;
-		MmcSdFatFs.fs.drv_rw_func.drv_ioctl_func = ioctl;
-		MmcSdFatFs.fs.drv_rw_func.drv_r_func = read;
-		MmcSdFatFs.fs.drv_rw_func.drv_w_func = write;
+		MmcSdFatFs->fs.drv_rw_func.DriveStruct = (void *) this;//SdStruct;
+		MmcSdFatFs->fs.drv_rw_func.drv_ioctl_func = ioctl;
+		MmcSdFatFs->fs.drv_rw_func.drv_r_func = read;
+		MmcSdFatFs->fs.drv_rw_func.drv_w_func = write;
 #if (_FFCONF == 82786)
 		if(!f_mount(2, &MmcSdFatFs))
 #else
-		if (MmcSdFatFs.mount("SD1:", 1) == FR_OK)
+		if (MmcSdFatFs->mount("SD1:", 1) == FR_OK)
 #endif
 		{
 			dir g_sDirObject = dir();
@@ -1016,6 +1016,7 @@ GI::Dev::MmcSd::MmcSd(unsigned int unit_nr, char *cardDetectPinPath, char *cardS
 	if(GI::Dev::DevRequest::request(cardDetectPinPath, &cardDetectGpio) == SYS_ERR_OK)
 		cardDetectGpio->lastState = true;
 	GI::Dev::DevRequest::request(cardStatusLedPinPath, &cardStatusLedPinGpio);
+	MmcSdFatFs = new fatfs();
 }
 
 GI::Dev::MmcSd::~MmcSd()

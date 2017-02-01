@@ -325,7 +325,6 @@ void sdRam_Stm32429IDisco::MspInit(void)
   
 */
   
-  /* Common GPIO configuration */
   GPIO_InitStructure.Mode  = GPIO_MODE_AF_PP;
   GPIO_InitStructure.Speed = GPIO_SPEED_FAST;
   GPIO_InitStructure.Pull  = GPIO_NOPULL;

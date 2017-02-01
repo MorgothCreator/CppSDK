@@ -565,11 +565,11 @@ int GI::Dev::Uart::print(GI::String *string)
 /*#####################################################*/
 int GI::Dev::Uart::write(char *data, unsigned int len)
 {
-	unsigned int len_cnt = len;
-	while(!len_cnt--)
+	unsigned int len_cnt = 0;
+	for(;len_cnt < len; len_cnt++ )
 	{
 		putChar(*data++);
 	}
-	return len - len_cnt;
+	return len_cnt;
 }
 /*#####################################################*/

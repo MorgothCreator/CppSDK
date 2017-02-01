@@ -227,7 +227,7 @@ GI::Dev::Spi::Spi(const char *path)
 	GPIO_InitStruct.Pin = 1 << (cfg.cs % 32);
 	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
 			&GPIO_InitStruct);
-	//property.OldCsSelect = -1;
+	HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);	//property.OldCsSelect = -1;
 	err = SYS_ERR_OK;
 	return;
 }
@@ -362,8 +362,8 @@ int GI::Dev::Spi::deassert()
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
-SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite,
-		unsigned char *buffRead, unsigned int len)
+SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
+		unsigned char *buffRead, unsigned int lenRead)
 {
 	if (!this)
 	{
@@ -378,8 +378,13 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite,
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
 	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
-	if (HAL_SPI_TransmitReceive(hspi, buffWrite, buffRead, len, 10) != HAL_OK)
+	memset(buffRead, 0xFF, lenRead);
+
+	if (HAL_SPI_Transmit(hspi, buffWrite, lenWrite, 10) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
+	if (HAL_SPI_Receive(hspi, buffRead, lenRead, 10) != HAL_OK)
+		status = SYS_ERR_UNKNOWN;
+
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)

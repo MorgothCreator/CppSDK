@@ -16,6 +16,7 @@
 #include "driver/stm32f4xx_hal.h"
 #include <interface/screen.h>
 
+#if (USE_EXT_RAM == 1)
 #if defined(STM32F429I_DISCO)
 #define LCD_FB_START_ADDRESS       ((uint32_t)0xD0000000)
 #elif defined (STM32F469I_DISCO)
@@ -1569,5 +1570,6 @@ void GI::Dev::Screen::drawTriangle(signed int Ax, signed int Ay, signed int Bx,
 }
 //#######################################################################################
 
-#else
 #endif
+
+#endif/*!USE_EXT_RAM == 1*/

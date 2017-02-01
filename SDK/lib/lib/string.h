@@ -37,6 +37,7 @@ namespace GI
 		void clone(GI::String* string);
 		void clear();
 		char *subString(unsigned int position, unsigned int len);
+		char *subString(unsigned int position);
 
 		char *buff;
 		signed int length;
@@ -49,6 +50,38 @@ namespace GI
 	};
 }
 
+namespace GI
+{
+	class StringArray
+	{
+	public:
+		StringArray();
+		~StringArray();
+		SysErr add(GI::String *str);
+		SysErr add(char *str);
+		SysErr insert(GI::String *str, unsigned int position);
+		SysErr insert(char *str, unsigned int position);
+		SysErr remove(unsigned int position);
+		SysErr toCharStrArray(char ***charArray, unsigned int *itemsCount);
+		SysErr freeCharStrArray(char **charArray, unsigned int itemsCount);
+		GI::String ** array;
+		unsigned int itemsCount;
+	};
+}
 
-
+namespace GI
+{
+	class StringCharArray
+	{
+	public:
+		StringCharArray();
+		~StringCharArray();
+		StringCharArray(GI::StringArray *strArray);
+		StringCharArray(GI::StringArray *strArray, unsigned int offset);
+		SysErr convert(GI::StringArray *strArray);
+		SysErr convert(GI::StringArray *strArray, unsigned int offset);
+		char ** array;
+		unsigned int itemsCount;
+	};
+}
 #endif /* LIB_LIB_STRING_H_ */

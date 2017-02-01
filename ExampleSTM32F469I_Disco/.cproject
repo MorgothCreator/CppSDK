@@ -34,7 +34,7 @@
 								<option id="gnu.c.compiler.option.include.paths.221394120" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\lib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\platform\stm32f4&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F4&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F469I_Disco&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.113710188" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F469I_DISCO"/>
@@ -44,6 +44,7 @@
 									<listOptionValue builtIn="false" value="DEBUG"/>
 								</option>
 								<option id="gnu.c.compiler.option.dialect.std.1093726987" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
+								<option id="fr.ac6.managedbuid.gnu.c.compiler.option.misc.other.1407323164" name="Other flags" superClass="fr.ac6.managedbuid.gnu.c.compiler.option.misc.other" useByScannerDiscovery="false" value="-fmessage-length=0" valueType="string"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.input.c.103933134" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.input.c"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.input.s.750236752" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.input.s"/>
 							</tool>
@@ -52,7 +53,7 @@
 								<option id="gnu.cpp.compiler.option.debugging.level.147187264" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.54814341" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\lib&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F4&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F469I_Disco&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\platform\stm32f4&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1195339293" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" useByScannerDiscovery="false" valueType="definedSymbols">
@@ -63,6 +64,8 @@
 									<listOptionValue builtIn="false" value="DEBUG"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.770776920" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.default" valueType="enumerated"/>
+								<option id="fr.ac6.managedbuild.gnu.cpp.compiler.option.misc.other.1294954402" name="Other flags" superClass="fr.ac6.managedbuild.gnu.cpp.compiler.option.misc.other" useByScannerDiscovery="false" value="-fmessage-length=0" valueType="string"/>
+								<option id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.noexceptions.479083958" name="Disable handling exceptions (-fno-exceptions)" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.noexceptions" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.cpp.967369101" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.cpp"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.s.255558273" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.s"/>
 							</tool>

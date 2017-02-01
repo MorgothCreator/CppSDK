@@ -33,9 +33,7 @@ bool GI::Screen::Cursor::dataReady()
 
 GI::Screen::Cursor::~Cursor()
 {
-	//if(TouchResponse) free(TouchResponse);
-	if(irqHeandle)
-		delete irqHeandle;
+
 }
 
 GI::Screen::Cursor::Cursor(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPinPath)
@@ -57,16 +55,23 @@ GI::Screen::Cursor::Cursor(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPi
 			touch_max_y = 600;
 			return;
 		}
-		if(twiStruct->writeRead(FT5X0X_TWI_ADDR1, &reg, 1, result, 38) == SYS_ERR_OK)
+		else if(twiStruct->writeRead(FT5X0X_TWI_ADDR1, &reg, 1, result, 38) == SYS_ERR_OK)
 		{
 			twi_addr = FT5X0X_TWI_ADDR1;
 			touch_max_x = 480;
 			touch_max_y = 800;
 			return;
 		}
-		if(twiStruct->writeRead(0x54, &reg, 1, result, 38) == SYS_ERR_OK)
+		else if(twiStruct->writeRead(0x54, &reg, 1, result, 38) == SYS_ERR_OK)
 		{
 			twi_addr = 0x54;
+			touch_max_x = 480;
+			touch_max_y = 800;
+			return;
+		}
+		else if(twiStruct->writeRead(0x00, &reg, 1, result, 38) == SYS_ERR_OK)
+		{
+			twi_addr = 0x00;
 			touch_max_x = 480;
 			touch_max_y = 800;
 			return;

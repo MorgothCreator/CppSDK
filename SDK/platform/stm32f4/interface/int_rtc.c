@@ -7,10 +7,10 @@
 
 #include <interface/int_rtc.h>
 #include <stdbool.h>
-#include "driver/stm32f7xx_hal_rcc.h"
-#include "driver/stm32f7xx_hal_pwr.h"
-#include "driver/stm32f7xx_hal_rtc.h"
-#include "driver/stm32f7xx_hal_rtc_ex.h"
+#include "driver/stm32f4xx_hal_rcc.h"
+#include "driver/stm32f4xx_hal_pwr.h"
+#include "driver/stm32f4xx_hal_rtc.h"
+#include "driver/stm32f4xx_hal_rtc_ex.h"
 
 static bool rtc_init_status = true;
 static RTC_HandleTypeDef RtcHandle;

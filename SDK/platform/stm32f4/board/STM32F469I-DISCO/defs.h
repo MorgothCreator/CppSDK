@@ -106,6 +106,7 @@
 #define LSE_VALUE  						((uint32_t)32768)		/*!< Value of the External Low Speed oscillator in Hz */
 #define EXTERNAL_CLOCK_VALUE    		((uint32_t)0000000)	/*!< Value of the External clock in Hz*/
 #define CORE_CLOCK_DEFAULT				((uint32_t)180000000)	/*!< Value of the Processor default clock in Hz*/
+#define USE_EXT_RAM						1
 
 /*
  * Processor clock selection.

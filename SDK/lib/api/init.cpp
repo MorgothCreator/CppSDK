@@ -38,7 +38,7 @@ extern CfgUart uartCfg[];
 GI::Sys::Clock coreClk;
 GI::Board::Init dev;
 #if (defined(SCREEN_ENABLE) && SCREEN_INTERFACE_COUNT > 0)
-GI::Dev::IntScreen screen(&SCREEN_ENABLE, NULL);
+GI::Dev::IntScreen *screen;
 #endif
 
 GI::Board::Init::Init()
@@ -131,7 +131,7 @@ GI::Board::Init::Init()
 	/*
 	 * Allocate create and initialize spi.
 	 */
-	for(dev_cnt = 0; dev_cnt < TWI_INTERFACE_COUNT; dev_cnt++)
+	for(dev_cnt = 0; dev_cnt < table_len; dev_cnt++)
 	{
 		if(spiCfg[dev_cnt].name[0] != 0)
 		{
@@ -139,8 +139,8 @@ GI::Board::Init::Init()
 		}
 	}
 /*******************************************************************/
-#if (SCREEN_INTERFACE_COUNT > 0)
-	SCREEN[0] = &screen;
+#if (SCREEN_INTERFACE_COUNT > 0 && defined(SCREEN_ENABLE))
+	SCREEN[0] = new GI::Dev::IntScreen(&SCREEN_ENABLE, NULL);;
 	CAPTOUCH[0] = new GI::Screen::Cursor(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
 #endif
 #if defined(STD_OUT_PATH)

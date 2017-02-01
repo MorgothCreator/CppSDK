@@ -250,11 +250,15 @@ public:
 	void deinit();
 	IntScreen(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
 	{
+#if (USE_EXT_RAM == 1)
 		init(timings, backlight);
+#endif
 	}
 	~IntScreen()
 	{
+#if (USE_EXT_RAM == 1)
 		deinit();
+#endif
 	}
 };
 }

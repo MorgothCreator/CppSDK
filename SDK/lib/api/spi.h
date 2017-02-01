@@ -55,7 +55,8 @@ public:
 	int ioctl(charDev *fp, int command, void *param);
 	int assert();
 	int deassert();
-	SysErr writeRead(unsigned char *buffWrite, unsigned char *buffRead, unsigned int len);
+	SysErr writeRead(unsigned char *buffWrite, unsigned int lenWrite,
+			unsigned char *buffRead, unsigned int lenRead);
 	int readBytes(unsigned char *buff, unsigned int len);
 	int writeBytes(unsigned char *buff, unsigned int len);
 	SysErr writeReadByte(unsigned char *byte);

@@ -1,5 +1,5 @@
 /*
- *  lib/device/ak8975.c
+ *  lib/device/ak8975.cpp
  *
  *  Copyright (C) 2015  Iulian Gheorghiu <morgoth.creator@gmail.com>
  *

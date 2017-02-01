@@ -49,8 +49,11 @@ public:
 	IO(char *path);
 	~IO();
 	int write(unsigned char *buff, unsigned int len);/*Char device*/
+	int write(unsigned char *buff);
 	SysErr write(bool state);/* Bit device */
 	SysErr write(u32 data);
+	SysErr write(char data);
+
 	int read(unsigned char *buff, unsigned int len);/*Char device*/
 	SysErr read(bool *state);/* Bit device */
 	SysErr read(u32 *data);

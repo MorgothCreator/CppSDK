@@ -7,14 +7,17 @@
 
 #define _USE_PASSWORD_PROTECTION	0
 
-#define _USE_HIH613x				1
-#define _USE_MPU60x0_9150			1
-#define _USE_AK8975					1
-#define _USE_BMP180					1
-#define _USE_MPL3115A2				1
-#define _USE_MPR121					1
+#define _USE_SCREEN					0
 
-#define _USE_SCREEN					1
+#if (_USE_SCREEN == 1)
+#define _USE_HIH613x				0
+#define _USE_MPU60x0_9150			0
+#define _USE_AK8975					0
+#define _USE_BMP180					0
+#define _USE_MPL3115A2				0
+#define _USE_MPR121					0
+#define _USE_L3GD20					0
+#endif
 
 #include <api/init.h>
 #include <stdio.h>
@@ -31,6 +34,9 @@
 #include <device/bmp180.h>
 #include <device/mpl3115a2.h>
 #include <device/mpr121.h>
+#include <device/l3gd20.h>
+
+#include <sys/core_init.h>
 
 #if (_USE_SCREEN == 1)
 GI::Screen::Gfx::Window *MainWindow = NULL;
@@ -40,13 +46,26 @@ GI::Screen::Gfx::TextBox *SensorResultTextboxGlobal;
 int main(void)
 {
 	GI::Sys::Timer timer_touch = GI::Sys::Timer(20);
-	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
+	GI::Sys::Timer blink_timer = GI::Sys::Timer(100);
 
+#if (_USE_HIH613x == 1)
 	GI::Sys::Timer hih613timer = GI::Sys::Timer(1000);
+#endif
+#if (_USE_MPU60x0_9150 == 1 && _USE_AK8975 == 1)
 	GI::Sys::Timer mpu60x0_9x50_timer = GI::Sys::Timer(200);
+#endif
+#if (_USE_BMP180 == 1)
 	GI::Sys::Timer bmp180_timer = GI::Sys::Timer(1000);
+#endif
+#if (_USE_MPL3115A2 == 1)
 	GI::Sys::Timer mpl3115_timer = GI::Sys::Timer(1000);
+#endif
+#if (_USE_MPR121 == 1)
 	GI::Sys::Timer mpr121_timer = GI::Sys::Timer(50);
+#endif
+#if (_USE_L3GD20 == 1)
+	GI::Sys::Timer l3gd20_timer = GI::Sys::Timer(50);
+#endif
 
 	/* Get control of "led-0" pin.*/
 	GI::IO led_pin = GI::IO((char *)"led-0");
@@ -81,9 +100,9 @@ int main(void)
 	 */
 	newTextBox(MainWindow, SensorResultTextbox);
 	SensorResultTextboxGlobal = SensorResultTextbox;
-	SensorResultTextbox->Position.X = 10;
-	SensorResultTextbox->Position.Y = 10;//FlirPictureBox->Position.Y + FlirPictureBox->Size.Y + 10;
-	SensorResultTextbox->Size.X = dev.SCREEN[0]->LcdTimings->X - 20;
+	SensorResultTextbox->Position.X = 5;
+	SensorResultTextbox->Position.Y = 5;//FlirPictureBox->Position.Y + FlirPictureBox->Size.Y + 10;
+	SensorResultTextbox->Size.X = dev.SCREEN[0]->LcdTimings->X - 10;
 	SensorResultTextbox->Size.Y = 80;
 	SensorResultTextbox->Size.ScrollSize = 20;
 	SensorResultTextbox->text->setText((char *)"This is a sensor result textbox");
@@ -92,8 +111,8 @@ int main(void)
 	 * Create a button.
 	 */
 	newButton(MainWindow, Buton1);
-	Buton1->Position.X = 10;
-	Buton1->Position.Y = SensorResultTextbox->Position.Y + SensorResultTextbox->Size.Y + 10;
+	Buton1->Position.X = 5;
+	Buton1->Position.Y = SensorResultTextbox->Position.Y + SensorResultTextbox->Size.Y + 5;
 	Buton1->Size.X = 100;
 	Buton1->Size.Y = 20;
 
@@ -104,27 +123,27 @@ int main(void)
 	ProgressBar1->MinimValue  = 0;
 	ProgressBar1->MaximValue = 100;
 	ProgressBar1->Value = 50;
-	ProgressBar1->Position.X = 10;
-	ProgressBar1->Position.Y = Buton1->Position.Y + Buton1->Size.Y + 10;
-	ProgressBar1->Size.X = dev.SCREEN[0]->LcdTimings->X - 20;
+	ProgressBar1->Position.X = 5;
+	ProgressBar1->Position.Y = Buton1->Position.Y + Buton1->Size.Y + 5;
+	ProgressBar1->Size.X = dev.SCREEN[0]->LcdTimings->X - 10;
 	ProgressBar1->Size.Y = 20;
 
 	/*
 	 * Create a check box.
 	 */
 	newCheckBox(MainWindow, CheckBox1);
-	CheckBox1->Position.X = 10;
-	CheckBox1->Position.Y = ProgressBar1->Position.Y + ProgressBar1->Size.Y + 10;
-	CheckBox1->Size.X = dev.SCREEN[0]->LcdTimings->X - 20;
+	CheckBox1->Position.X = 5;
+	CheckBox1->Position.Y = ProgressBar1->Position.Y + ProgressBar1->Size.Y + 5;
+	CheckBox1->Size.X = dev.SCREEN[0]->LcdTimings->X - 10;
 	CheckBox1->Size.Y = 20;
 
 	/*
 	 * Create a list box.
 	 */
     newListBox(MainWindow, ListBox);
-    ListBox->Position.X = 10;
-    ListBox->Position.Y = CheckBox1->Position.Y + CheckBox1->Size.Y + 10;
-    ListBox->Size.X = dev.SCREEN[0]->LcdTimings->X - 20;
+    ListBox->Position.X = 5;
+    ListBox->Position.Y = CheckBox1->Position.Y + CheckBox1->Size.Y + 5;
+    ListBox->Size.X = dev.SCREEN[0]->LcdTimings->X - 10;
     ListBox->Size.Y = MainWindow->Internals.pDisplay->LcdTimings->Y - (CheckBox1->Position.Y + CheckBox1->Size.Y + 30);
     ListBox->Size.ScrollSize = 20;
     ListBox->Size.ItemSizeY = 20;
@@ -161,19 +180,19 @@ int main(void)
 #endif
 
 #if (_USE_HIH613x == 1)
-	GI::Sensor::Hih613x hih6130 = GI::Sensor::Hih613x((char *)"i2c-0");
+	GI::Sensor::Hih613x hih6130 = GI::Sensor::Hih613x((char *)"i2c-2");
 #endif
 #if (_USE_MPU60x0_9150 == 1)
-	GI::Sensor::Mpu60x0_9x50 mpu60x0_9x50 = GI::Sensor::Mpu60x0_9x50((char *)"i2c-0", 0);
+	GI::Sensor::Mpu60x0_9x50 mpu60x0_9x50 = GI::Sensor::Mpu60x0_9x50((char *)"i2c-2", 0);
 #endif
 #if (_USE_AK8975 == 1)
 	/*
 	 * If AK8975 is inside MPU9150 you need to put this after you initialize the MPU device.
 	 */
-	GI::Sensor::Ak8975 ak8975_0 = GI::Sensor::Ak8975((char *)"i2c-0", 0);
+	GI::Sensor::Ak8975 ak8975_0 = GI::Sensor::Ak8975((char *)"i2c-2", 0);
 #endif
 #if (_USE_BMP180 == 1)
-	GI::Sensor::Bmp180 bmp180_0 = GI::Sensor::Bmp180((char *)"i2c-0", 0);
+	GI::Sensor::Bmp180 bmp180_0 = GI::Sensor::Bmp180((char *)"i2c-2", 0);
 #endif
 #if (_USE_MPL3115A2 == 1)
 	GI::Sensor::Mpl3115a2 mpl3115a2 = GI::Sensor::Mpl3115a2((char *)"i2c-0");
@@ -181,11 +200,48 @@ int main(void)
 #if (_USE_MPR121 == 1)
 	GI::Sensor::Mpr121 mpr121_0 = GI::Sensor::Mpr121((char *)"i2c-0", (char *)"", 0);
 #endif
+#if (_USE_L3GD20 == 1)
+	GI::Sensor::L3gd20 l3gd20_0 = GI::Sensor::L3gd20((char *)"spi-4.1");
+#endif
+
+	GI::IO terminal = GI::IO((char *)"uart-0");
+
 	tControlCommandData control_comand;
 
+	GI::String term_string = GI::String();
+
+	GI::Sys::Clock::changeCoreClk(25000000);
+	unsigned long baud = 1200;
+	terminal.ctl(GI::IO::IO_CTL_SET_SPEED, &baud);
 	while(1)
 	{
+		GI::Sys::Clock::sleep();
 		dev.idle();
+		/* Terminal */
+		unsigned long tmp_term_char = 0;
+		if(terminal.read(&tmp_term_char) == SYS_ERR_OK)
+		{
+			if(tmp_term_char == 0x7F)
+			{
+				int str_len;
+				for(str_len = 0; str_len < term_string.length; str_len++)
+				{
+					terminal.write((char)0x7F);
+				}
+				term_string.append((char) tmp_term_char);
+				terminal.write((unsigned char *)term_string.buff);
+			}
+			else if(tmp_term_char == 0x0D)
+			{
+				term_string.clear();
+				terminal.write((unsigned char *)"\n\r");
+			}
+			else
+			{
+				term_string.append((char) tmp_term_char);
+				terminal.write((char)tmp_term_char);
+			}
+		}
 #if (USE_LWIP == 1)
 		if(old_state_ip_assigned == false && dev.LWIP[0]->ipAssigned == true)
 		{
@@ -264,6 +320,7 @@ int main(void)
 				}
 				else
 					ListBox->Items[0]->Caption->setText((char *)"HIH613x:  error reading temperature and humidity\n\r");
+				//terminal.write((unsigned char *)"Salutare\n\r", strlen("Salutare\n\r"));
 			}
 #endif
 #if _USE_MPU60x0_9150 == 1
@@ -339,6 +396,18 @@ int main(void)
 					if(mpr121_return.released)
 						ListBox->Items[7]->Caption->setTextF("MPR121: Released - K0=%u, K1=%u, K2=%u, K3=%u, K4=%u, K5=%u, K6=%u, K7=%u, K8=%u, K9=%u, K10=%u, K11=%u", (unsigned long)mpr121_return.released & 0x01, (unsigned long)(mpr121_return.released >> 1) & 0x01, (unsigned long)(mpr121_return.released >> 2) & 0x01, (unsigned long)(mpr121_return.released >> 3) & 0x01, (unsigned long)(mpr121_return.released >> 4) & 0x01, (unsigned long)(mpr121_return.released >> 5) & 0x01, (unsigned long)(mpr121_return.released >> 6) & 0x01, (unsigned long)(mpr121_return.released >> 7) & 0x01, (unsigned long)(mpr121_return.released >> 8) & 0x01, (unsigned long)(mpr121_return.released >> 9) & 0x01, (unsigned long)(mpr121_return.released >> 10) & 0x01, (unsigned long)(mpr121_return.released >> 11) & 0x01);
 				}
+			}
+#endif
+#if _USE_L3GD20 == 1
+			if(l3gd20_timer.tick())
+			{
+				float l3gd20_Xg = 0;
+				float l3gd20_Yg = 0;
+				float l3gd20_Zg = 0;
+				if(!l3gd20_0.read(&l3gd20_Xg, &l3gd20_Yg, &l3gd20_Zg))
+					ListBox->Items[2]->Caption->setTextF("L3GD20: Giro:  Xg = %6.1f, Yg = %6.1f, Zg = %6.1f", l3gd20_Xg, l3gd20_Yg, l3gd20_Zg);
+				else
+					ListBox->Items[2]->Caption->setText((char *)"L3GD20: error reading giroscope");
 			}
 #endif
 	}

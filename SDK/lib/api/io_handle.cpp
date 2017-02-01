@@ -88,6 +88,18 @@ int GI::IO::write(unsigned char *buff, unsigned int len)
 	return SYS_ERR_NOT_IMPLEMENTED;
 }
 
+int GI::IO::write(unsigned char *buff)
+{
+	if(!devHandler || !ioDevType)
+		return SYS_ERR_NO_REGISTERED_DEVICE;
+	switch((int)ioDevType)
+	{
+	case IO_DEV_UART:
+		return ((GI::Dev::Uart *)devHandler)->print((char *)buff);
+	}
+	return SYS_ERR_NOT_IMPLEMENTED;
+}
+
 SysErr GI::IO::write(bool state)
 {
 	if(!devHandler || !ioDevType)
@@ -108,6 +120,21 @@ SysErr GI::IO::write(u32 data)
 	{
 	case IO_DEV_GPIO:
 		return ((GI::Dev::Gpio *)devHandler)->setOut(data);
+	}
+	return SYS_ERR_NOT_IMPLEMENTED;
+}
+
+SysErr GI::IO::write(char data)
+{
+	if(!devHandler || !ioDevType)
+		return SYS_ERR_NO_REGISTERED_DEVICE;
+	switch((int)ioDevType)
+	{
+	case IO_DEV_UART:
+		if(((GI::Dev::Uart *)devHandler)->write((char *)&data, 1) != 1)
+			return SYS_ERR_BUSY;
+		else
+			return SYS_ERR_OK;
 	}
 	return SYS_ERR_NOT_IMPLEMENTED;
 }
@@ -150,10 +177,20 @@ SysErr GI::IO::read(u32 *data)
 {
 	if(!devHandler || !ioDevType)
 		return SYS_ERR_NO_REGISTERED_DEVICE;
+	signed short tmp = -1;
 	switch((int)ioDevType)
 	{
 	case IO_DEV_GPIO:
 		return ((GI::Dev::Gpio *)devHandler)->getIn(data);
+	case IO_DEV_UART:
+		tmp = ((GI::Dev::Uart *)devHandler)->getCharNb();
+		if(tmp == -1)
+			return SYS_ERR_NOT_RECEIVED;
+		else
+		{
+			*data = tmp;
+			return SYS_ERR_OK;
+		}
 	}
 	return SYS_ERR_NOT_IMPLEMENTED;
 }
@@ -164,6 +201,8 @@ SysErr GI::IO::ctl(GI::IO::ioCtl_e cmd, unsigned long *data)
 		return SYS_ERR_NO_REGISTERED_DEVICE;
 	ioCtlRwMsgs_t *msgs = (ioCtlRwMsgs_t *)data;
 	ioCtlMsg_t *msg = msgs->msgs;
+	//unsigned char *tmp_buff;
+	//SysErr error;
 	switch((int)cmd)
 	{
 	case IO_CTL_NONE:
@@ -183,16 +222,17 @@ SysErr GI::IO::ctl(GI::IO::ioCtl_e cmd, unsigned long *data)
 		case IO_DEV_I2C:
 			return ((GI::Dev::I2c *)devHandler)->writeRead(msg[0].slaveAddr, msg[0].buff, msg[0].len, msg[1].buff, msg[1].len);
 		case IO_DEV_SPI:
-			if(msg[0].len == msg[1].len)
-				return ((GI::Dev::Spi *)devHandler)->writeRead(msg[0].buff, msg[1].buff, msg[0].len);
-			else
-			{
-				if(((GI::Dev::Spi *)devHandler)->writeBytes(msg[0].buff, msg[0].len) != SYS_ERR_OK)
+			//if(msg[0].len == msg[1].len)
+			//	return ((GI::Dev::Spi *)devHandler)->writeRead(msg[0].buff, msg[1].buff, msg[0].len);
+			//else
+			//{
+				/*if(((GI::Dev::Spi *)devHandler)->writeBytes(msg[0].buff, msg[0].len) != SYS_ERR_OK)
 					return SYS_ERR_WRITE;
 				if(((GI::Dev::Spi *)devHandler)->readBytes(msg[1].buff, msg[1].len) != SYS_ERR_OK)
-					return SYS_ERR_READ;
-			}
-			break;
+					return SYS_ERR_READ;*/
+				return ((GI::Dev::Spi *)devHandler)->writeRead(msg[0].buff, msg[0].len, msg[1].buff, msg[1].len);
+			//}
+			//break;
 		case IO_DEV_UART:
 			((GI::Dev::Uart *)devHandler)->write((char *)msg[0].buff, msg[0].len);
 			return SYS_ERR_OK;

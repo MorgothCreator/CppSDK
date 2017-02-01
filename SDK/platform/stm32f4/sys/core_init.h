@@ -61,6 +61,8 @@ namespace Sys
 		Clock();
 		~Clock();
 		static void setClk(unsigned long fCpu);
+		static void changeCoreClk(unsigned long fCpu);
+		static void sleep();
 };
 }
 }
