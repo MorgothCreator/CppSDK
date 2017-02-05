@@ -25,6 +25,7 @@ RM := rm -rf
 -include lib/lib/subdir.mk
 -include lib/include/subdir.mk
 -include lib/device/subdir.mk
+-include lib/app/sys/subdir.mk
 -include lib/api/subdir.mk
 -include subdir.mk
 -include objects.mk

@@ -56,7 +56,7 @@ void ili9341_WriteReg(GI::IO *spi_ctrl, unsigned char Reg)
  * @param  ReadSize Number of bytes to read
  * @retval Content of the register value
  */
-uint32_t ili9341_ReadData(GI::IO *spi_ctrl, unsigned char RegValue, uint8_t ReadSize)
+unsigned long ili9341_ReadData(GI::IO *spi_ctrl, unsigned char RegValue, unsigned char ReadSize)
 {
 	//GI::IO ncs = GI::IO((char *) "lcd_ncs");
 	GI::IO wrx = GI::IO((char *) "lcd_wrx");

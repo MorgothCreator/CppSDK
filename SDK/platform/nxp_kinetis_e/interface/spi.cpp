@@ -142,8 +142,8 @@ int GI::Dev::Spi::deassert()
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
-SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite,
-		unsigned char *buffRead, unsigned int len)
+SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
+		unsigned char *buffRead, unsigned int lenRead)
 {
 	if (!this)
 	{
@@ -162,7 +162,10 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite,
 	}
 	SysErr status = SYS_ERR_OK;
 	SPI_Type *hspi = (SPI_Type *) userData;
-	if (SPI_TransferWait(hspi, buffRead, buffWrite, len) != SPI_ERR_SUCCESS)
+	memset(buffRead, 0, lenRead);
+	if (SPI_TransferWait(hspi, buffWrite, buffWrite, lenWrite) != SPI_ERR_SUCCESS)
+		status = SYS_ERR_UNKNOWN;
+	if (SPI_TransferWait(hspi, buffRead, buffRead, lenRead) != SPI_ERR_SUCCESS)
 		status = SYS_ERR_UNKNOWN;
 	if (!DisableCsHandle)
 	{

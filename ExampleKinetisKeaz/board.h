@@ -8,6 +8,6 @@
 #ifndef STM32F4_BOARD_BOARD_H_
 #define STM32F4_BOARD_BOARD_H_
 
-#include "FRDM-KEAZ128/defs.h"
+#include "board/FRDM-KEAZ128/defs.h"
 
 #endif /* STM32F7_BOARD_BOARD_H_ */
