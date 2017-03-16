@@ -254,6 +254,7 @@ SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
 		return SYS_ERR_INVALID_HANDLER;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Init.WordLength = UART_WORDLENGTH_8B;
+	cfg.wordLen = wLen;
 	switch((unsigned char)cfg.wordLen)
 	{
 #ifdef UART_WORDLENGTH_7B
@@ -275,6 +276,7 @@ SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
 		return SYS_ERR_INVALID_HANDLER;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Init.StopBits = UART_STOPBITS_1;
+	cfg.stopBits = sBits;
 	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
 		UartHandle->Init.StopBits = UART_STOPBITS_2;
 	UART_SetConfig(UartHandle);

@@ -35,8 +35,8 @@ extern CfgSpi spiCfg[];
 extern CfgI2c i2cCfg[];
 extern CfgUart uartCfg[];
 
-GI::Sys::Clock coreClk;
-GI::Board::Init dev;
+GI::Sys::Clock coreClk = GI::Sys::Clock();
+GI::Board::Init dev = GI::Board::Init();
 #if (defined(SCREEN_ENABLE) && SCREEN_INTERFACE_COUNT > 0)
 GI::Dev::IntScreen *screen;
 #endif

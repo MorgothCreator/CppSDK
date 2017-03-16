@@ -13,6 +13,9 @@
 	SysErr (*fnc)(int argc, char *argv[]);
 }cmd_list;*/
 
+static GI::StringArray hystoryTable = GI::StringArray();
+
+
 Cmd::Cmd(char *inPath, char *outPath, char *errPath)
 {
 	memset(this, 0, sizeof(*this));
@@ -25,11 +28,11 @@ Cmd::Cmd(char *inPath, char *outPath, char *errPath)
 
 Cmd::~Cmd()
 {
-	inPath->~IO();
-	outPath->~IO();
-	errPath->~IO();
-	path->~String();
-	input->~String();
+	delete inPath;
+	delete outPath;
+	delete errPath;
+	delete path;
+	delete input;
 }
 
 SysErr Cmd::idle()
@@ -47,10 +50,44 @@ SysErr Cmd::idle()
 			input->append((char) tmp_term_char);
 			outPath->write((unsigned char *)input->buff);
 		}
+		else if(tmp_term_char ==27)
+		{
+			escape_received = true;
+			return SYS_ERR_OK;
+		}
+		else if(escape_received && tmp_term_char ==91)
+		{
+			escape_second_char = tmp_term_char;
+			return SYS_ERR_OK;
+		}
+		else if(escape_received && escape_second_char == 91)
+		{
+			int cnt = 0;
+			for(; cnt < input->length; cnt++)
+				outPath->write((char)0x7F);
+			if(tmp_term_char == 65)
+			{
+				hystoryUp(input);
+				outPath->write((unsigned char *)input->buff);
+			}
+			else if(tmp_term_char == 66)
+			{
+				//if(hystoryPtr != 0)
+				//{
+					hystoryDn(input);
+					outPath->write((unsigned char *)input->buff);
+				//}
+			}
+			escape_received = false;
+			escape_second_char = 0;
+			return SYS_ERR_OK;
+		}
 		else if(tmp_term_char != 0x0D)
 		{
 			input->append((char) tmp_term_char);
 			outPath->write((char)tmp_term_char);
+			escape_received = false;
+			escape_second_char = 0;
 		}
 		else
 		{
@@ -63,20 +100,63 @@ SysErr Cmd::idle()
 			{
 				ls(char_string->itemsCount, (char **)char_string->array);
 			}
-
-
-			unsigned int cnt = 0;
-			for(; cnt < char_string->itemsCount; cnt++)
+			else
+			if(!strcmp(result->array[0]->buff, "cd"))
 			{
-				outPath->write((unsigned char *)char_string->array[cnt]);
-				outPath->write((unsigned char *)"\n\r");
+				cd(char_string->itemsCount, (char **)char_string->array);
 			}
-			result->~StringArray();
-			char_string->~StringCharArray();
+			else
+			if(!strcmp(result->array[0]->buff, "cat"))
+			{
+				cat(char_string->itemsCount, (char **)char_string->array);
+			}
+			hystoryAdd(input);
+			outPath->write((unsigned char *)"GI@");
+			outPath->write((unsigned char *)path->buff);
+			outPath->write((unsigned char *)": ");
+			delete result;
+			delete char_string;
 			input->clear();
-			outPath->write((unsigned char *)"\n\r");
+			escape_received = false;
+			escape_second_char = 0;
 		}
 	}
 	return SYS_ERR_OK;
 }
 
+SysErr Cmd::hystoryAdd(GI::String *input)
+{
+	unsigned int cnt = 0;
+	if(hystoryTable.itemsCount)
+	{
+		for(; cnt < hystoryTable.itemsCount; cnt++)
+		{
+			if(!strcmp(hystoryTable.array[cnt]->buff, input->buff))
+			{
+				hystoryTable.remove(cnt);
+				break;
+			}
+		}
+		hystoryTable.insert(input, 0);
+	}
+	else
+		hystoryTable.add(input);
+	hystoryPtr = 0;
+	return SYS_ERR_OK;
+}
+
+SysErr Cmd::hystoryUp(GI::String *out)
+{
+	out->set(hystoryTable.array[hystoryPtr]);
+	if(hystoryPtr < hystoryTable.itemsCount - 1)
+		hystoryPtr++;
+	return SYS_ERR_OK;
+}
+
+SysErr Cmd::hystoryDn(GI::String *out)
+{
+	out->set(hystoryTable.array[hystoryPtr]);
+	if(hystoryPtr > 0)
+		hystoryPtr--;
+	return SYS_ERR_OK;
+}

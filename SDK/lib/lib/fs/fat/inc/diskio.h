@@ -54,9 +54,9 @@ DRESULT disk_ioctl(BYTE, BYTE, void*);
 #define STA_NODISK		0x02	/* No medium in the drive */
 #define STA_PROTECT		0x04	/* Write protected */
 
-#define MMC		0
-#define ATA		1
-#define USB		2
+#define MMC_IO		0
+#define ATA_IO		1
+#define USB_IO		2
 
 /* Command code for disk_ioctrl() */
 

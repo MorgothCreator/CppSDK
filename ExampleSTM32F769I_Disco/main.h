@@ -22,7 +22,7 @@
 #define _USE_INT_ADC					0
 #define _USE_SRF02						0
 
-#define _USE_LEPTON_FLIR				1
+#define _USE_LEPTON_FLIR				0
 #define _USE_nRF25l01					0
 
 #define USE_DRIVER_SEMAPHORE			true

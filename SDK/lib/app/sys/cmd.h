@@ -20,6 +20,8 @@ public:
 	~Cmd();
 	SysErr idle();
 	SysErr ls(int argc, char *argv[]);
+	SysErr cd(int argc, char *argv[]);
+	SysErr cat(int argc, char *argv[]);
 
 private:
 	GI::String *input;
@@ -27,6 +29,15 @@ private:
 	GI::IO *inPath;
 	GI::IO *outPath;
 	GI::IO *errPath;
+
+	SysErr cdInt(GI::String *_path, GI::String *input);
+	SysErr hystoryAdd(GI::String *input);
+	SysErr hystoryUp(GI::String *out);
+	SysErr hystoryDn(GI::String *out);
+
+	unsigned int hystoryPtr;
+	bool escape_received;
+	unsigned char escape_second_char;
 };
 
 

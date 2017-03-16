@@ -39,7 +39,7 @@ typedef struct
 	unsigned long speed;
 	enum wordLen_e{
 #if (UART_HAVE_WORD_LEN_5BITS == 1)
-		WORD_LEN_7,
+		WORD_LEN_5,
 #endif
 #if (UART_HAVE_WORD_LEN_6BITS == 1)
 		WORD_LEN_6,
@@ -62,7 +62,10 @@ typedef struct
 	enum parity_e{
 		PAR_NONE,
 		PAR_ODD,
-		PAR_EVEN
+		PAR_EVEN,
+		PAR_MASK,
+		PAR_ZERO,
+		PAR_ONE
 	}parity;
 	enum uartMode_e
 	{

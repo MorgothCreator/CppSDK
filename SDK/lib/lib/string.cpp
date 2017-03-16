@@ -33,6 +33,20 @@ GI::String::String(char *String)
 	}
 }
 
+GI::String::String(GI::String *String)
+{
+	memset(this, 0, sizeof(*this));
+	unsigned int len = String->length;
+	buff = (char *) malloc(len + 1);
+	if (buff)
+	{
+		strcpy((char *) buff, (const char *) String->buff);
+		length = len;
+		error = SYS_ERR_OK;
+		modifyed++;
+	}
+}
+
 GI::String::~String()
 {
 	if (buff)
@@ -134,6 +148,23 @@ void GI::String::set(GI::String *string)
 	strcat(Return, string->buff);
 	buff = Return;
 	length = LenSrc;
+	modifyed++;
+	error = SYS_ERR_OK;
+}
+
+void GI::String::append(GI::String *string)
+{
+	if(!buff || !string)
+		return;
+	unsigned int LenSrc = string->length;
+	unsigned int LenDest = length;
+	char *Return = (char *)realloc(buff, LenDest + LenSrc + 1);
+	//char *Return = (char *)realloc(dest, LenDest + LenSrc + 1);
+	if(!Return)
+		return;
+	strcat(Return, string->buff);
+	buff = Return;
+	length = LenDest + LenSrc;
 	modifyed++;
 	error = SYS_ERR_OK;
 }
@@ -273,6 +304,7 @@ char *GI::String::subString(unsigned int position, unsigned int len)
 		return NULL;
 	*Return = 0;
 	strncpy(Return, buff + position, len);
+	Return[len] = '\0';
 	return Return;
 }
 
@@ -317,10 +349,17 @@ SysErr GI::StringArray::add(GI::String *str)
 		return SYS_ERR_INVALID_HANDLER;
 	if(!array)
 		return SYS_ERR_UNKNOWN;
+	GI::String * tmp_str = new GI::String(str);
+	if(!tmp_str)
+		return SYS_ERR_OUT_OF_MEMORY;
 	GI::String **tmp_array = (GI::String **)realloc(array, sizeof(GI::String *) * (itemsCount + 1));
 	if(!tmp_array)
+	{
+		delete tmp_str;
 		return SYS_ERR_OUT_OF_MEMORY;
-	tmp_array[itemsCount] = str;
+	}
+	tmp_str->set(str);
+	tmp_array[itemsCount] = tmp_str;
 	array = tmp_array;
 	itemsCount++;
 	return SYS_ERR_OK;
@@ -354,11 +393,26 @@ SysErr GI::StringArray::insert(GI::String *str, unsigned int position)
 		return SYS_ERR_INVALID_HANDLER;
 	if(!array)
 		return SYS_ERR_UNKNOWN;
+	if(itemsCount == 0 && position == 0)
+	{
+		return add(str);
+	}
+	GI::String * tmp_str = new GI::String(str);
+	if(!tmp_str)
+		return SYS_ERR_OUT_OF_MEMORY;
 	GI::String **tmp_array = (GI::String **)realloc(array, sizeof(GI::String *) * (itemsCount + 1));
 	if(!tmp_array)
+	{
+		delete tmp_str;
 		return SYS_ERR_OUT_OF_MEMORY;
-	memmove(array + (sizeof(GI::String *) * (position + 1)), array + (sizeof(GI::String *) * position), sizeof(GI::String *) * (itemsCount - position));
-	tmp_array[position] = str;
+	}
+	//memmove(tmp_array + (sizeof(GI::String *) * (position + 1)), tmp_array + (sizeof(GI::String *) * position), sizeof(GI::String *) * (itemsCount - position));
+	unsigned long cnt = itemsCount - position;
+	for(; cnt > 0; cnt--)
+	{
+		tmp_array[cnt + position] = tmp_array[(cnt - 1) + position];
+	}
+	tmp_array[position] = tmp_str;
 	array = tmp_array;
 	itemsCount++;
 	return SYS_ERR_OK;
@@ -372,13 +426,17 @@ SysErr GI::StringArray::insert(char *str, unsigned int position)
 		return SYS_ERR_INVALID_HANDLER;
 	if(!array)
 		return SYS_ERR_UNKNOWN;
+	if(itemsCount == 0 && position == 0)
+	{
+		return add(str);
+	}
 	GI::String * tmp_str = new GI::String(str);
 	if(!tmp_str)
 		return SYS_ERR_OUT_OF_MEMORY;
 	GI::String **tmp_array = (GI::String **)realloc(array, sizeof(GI::String *) * (itemsCount + 1));
 	if(!tmp_array)
 		return SYS_ERR_OUT_OF_MEMORY;
-	memmove(array + (sizeof(GI::String *) * (position + 1)), array + (sizeof(GI::String *) * position), sizeof(GI::String *) * (itemsCount - position));
+	memmove(tmp_array + (sizeof(GI::String *) * (position + 1)), tmp_array + (sizeof(GI::String *) * position), sizeof(GI::String *) * (itemsCount - position));
 	tmp_array[itemsCount] = tmp_str;
 	array = tmp_array;
 	itemsCount++;
@@ -397,7 +455,7 @@ SysErr GI::StringArray::remove(unsigned int position)
 	memmove(array + (sizeof(GI::String *) * position), array + (sizeof(GI::String *) * (position + 1)), sizeof(GI::String *) * (itemsCount - position - 1));
 	GI::String **tmp_array = (GI::String **)realloc(array, sizeof(GI::String *) * (itemsCount - 1));
 	array = tmp_array;
-	itemsCount++;
+	itemsCount--;
 	if(!tmp_array)
 		return SYS_ERR_OUT_OF_MEMORY;
 	return SYS_ERR_OK;

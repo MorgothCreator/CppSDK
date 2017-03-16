@@ -10,10 +10,10 @@
 #define _USE_SCREEN					1
 
 #if (_USE_SCREEN == 1)
-#define _USE_HIH613x				1
-#define _USE_MPU60x0_9150			1
-#define _USE_AK8975					1
-#define _USE_BMP180					1
+#define _USE_HIH613x				0
+#define _USE_MPU60x0_9150			0
+#define _USE_AK8975					0
+#define _USE_BMP180					0
 #define _USE_MPL3115A2				0
 #define _USE_MPR121					0
 #define _USE_L3GD20					0
@@ -238,10 +238,10 @@ int main(void)
 		{
 			memset(&control_comand, 0, sizeof(tControlCommandData));
 			dev.CAPTOUCH[0]->idle();
-			if(dev.CAPTOUCH[0]->TouchResponse.touch_event1)
+			/*if(dev.CAPTOUCH[0]->TouchResponse.touch_event1)
 			{
 				dev.UART[1]->printF("X :%u Y:%u\n", dev.CAPTOUCH[0]->TouchResponse.x1, dev.CAPTOUCH[0]->TouchResponse.y1);
-			}
+			}*/
 			control_comand.Cursor = (CursorState)dev.CAPTOUCH[0]->TouchResponse.touch_event1;
 			control_comand.X = dev.CAPTOUCH[0]->TouchResponse.x1;
 			control_comand.Y = dev.CAPTOUCH[0]->TouchResponse.y1;

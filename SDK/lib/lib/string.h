@@ -22,6 +22,7 @@ namespace GI
 	public:
 		String();
 		String(char *String);
+		String(GI::String *String);
 		~String();
 		bool equal(char *string);
 		bool equal(GI::String *string);
@@ -30,6 +31,7 @@ namespace GI
 		void removeNewLine(GI::String *string);
 		void set(char* string);
 		void set(GI::String *string);
+		void append(GI::String *string);
 		void append(char* string);
 		void append(char Char);
 		void insert(GI::String* string, unsigned int location);

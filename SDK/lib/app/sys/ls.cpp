@@ -5,7 +5,6 @@
  *      Author: John Smith
  */
 
-#include "ls.h"
 #include "cmd.h"
 #include <include/global.h>
 #include <lib/fs/fat/inc/ff.h>
@@ -36,8 +35,7 @@ static const char *fs_err_table[] = {
 
 SysErr Cmd::ls(int argc, char *argv[])
 {
-	outPath->write((unsigned char *)"This is ls function\n\r");
-
+	//outPath->write((unsigned char *)"This is ls function\n\r");
     FRESULT res;
     DIR dir;
     //UINT i;
@@ -70,8 +68,8 @@ SysErr Cmd::ls(int argc, char *argv[])
     	if(res <= FR_INVALID_PARAMETER)
 			errPath->write((unsigned char *)fs_err_table[res]);
     	else
-			errPath->write("Unknown error");
-			errPath->write("\n\r");
+			errPath->write((unsigned char *)"Unknown error");
+		errPath->write((unsigned char *)"\n\r");
     }
 	return SYS_ERR_OK;
 }
