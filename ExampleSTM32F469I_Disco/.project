@@ -27,14 +27,29 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>board.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Common/board.h</locationURI>
+		</link>
+		<link>
 			<name>lib</name>
 			<type>2</type>
-			<locationURI>copy_PARENT/SDK/lib</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/SDK/lib</locationURI>
+		</link>
+		<link>
+			<name>main.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Common/main.cpp</locationURI>
+		</link>
+		<link>
+			<name>main.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Common/main.h</locationURI>
 		</link>
 		<link>
 			<name>stm32f4</name>
 			<type>2</type>
-			<locationURI>copy_PARENT/SDK/platform/stm32f4</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/SDK/platform/stm32f4</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

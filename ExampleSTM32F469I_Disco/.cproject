@@ -33,6 +33,7 @@
 								<option id="gnu.c.compiler.option.debugging.level.861939852" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.221394120" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\Common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\platform\stm32f4&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F469I_Disco&quot;"/>
 								</option>
@@ -53,6 +54,7 @@
 								<option id="gnu.cpp.compiler.option.debugging.level.147187264" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.54814341" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\Common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F469I_Disco&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\platform\stm32f4&quot;"/>
 								</option>

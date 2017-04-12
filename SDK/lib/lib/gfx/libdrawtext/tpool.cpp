@@ -309,5 +309,7 @@ int tpool_num_processors(void)
 	SYSTEM_INFO info;
 	GetSystemInfo(&info);
 	return info.dwNumberOfProcessors;
+#else
+	return 0;
 #endif
 }
