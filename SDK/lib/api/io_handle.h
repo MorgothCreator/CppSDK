@@ -23,6 +23,8 @@
 #define LIB_API_IO_HANDLE_H_
 
 #include <include/global.h>
+#include <string.h>
+#include <lib/string.h>
 
 typedef struct ioCtl_s{
 	unsigned int slaveAddr;
@@ -48,11 +50,31 @@ class IO
 public:
 	IO(char *path);
 	~IO();
+	static int write(char *path, unsigned char *buff, unsigned int len);
+	static int write(char *path, unsigned char *buff);
+	static int write(char *path, char *buff);
+	static int write(char *path, GI::String *string);
+	static SysErr write(char *path, bool state);/* Bit device */
+	static SysErr write(char *path, u32 data);
+	static SysErr write(char *path, char data);
+	static int writeF(char *path, char *buff, ...);
+	static int writeF(char *path, unsigned char *buff, ...);
+	static int writeF(char *path, GI::String *string, ...);
+
 	int write(unsigned char *buff, unsigned int len);/*Char device*/
-	int write(unsigned char *buff);
+    int write(unsigned char *buff);
+    int write(char *buff);
+    int write(GI::String *string);
 	SysErr write(bool state);/* Bit device */
 	SysErr write(u32 data);
-	SysErr write(char data);
+    SysErr write(char data);
+    int writeF(char *buff, ...);
+    int writeF(unsigned char *buff, ...);
+    int writeF(GI::String *string, ...);
+
+    static int read(char *path, unsigned char *buff, unsigned int len);/*Char device*/
+    static SysErr read(char *path, bool *state);/* Bit device */
+    static SysErr read(char *path, u32 *data);
 
 	int read(unsigned char *buff, unsigned int len);/*Char device*/
 	SysErr read(bool *state);/* Bit device */

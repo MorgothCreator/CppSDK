@@ -22,7 +22,6 @@
 #include "io_handle.h"
 
 #include <stdio.h>
-#include <string.h>
 
 #include <api/gpio.h>
 #include <api/i2c.h>
@@ -72,9 +71,125 @@ GI::IO::~IO()
 	devHandler = NULL;
 }
 /**********************************************************************************/
+int GI::IO::write(char *path, unsigned char *buff, unsigned int len)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.write(buff, len);
+}
+
+int GI::IO::write(char *path, unsigned char *buff)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.write(buff);
+}
+
+int GI::IO::write(char *path, char *buff)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.write(buff);
+}
+
+int GI::IO::write(char *path, GI::String *string)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.write(string);
+}
+
+SysErr GI::IO::write(char *path, bool state)/* Bit device */
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.write(state);
+}
+
+SysErr GI::IO::write(char *path, u32 data)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.write(data);
+}
+
+SysErr GI::IO::write(char *path, char data)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.write(data);
+}
+
+int GI::IO::writeF(char *path, char *buff, ...)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+    va_list args;
+    //char *pcString = (char *)buff;
+    va_start (args, buff);
+    char tmp_buff[1];
+    s32 len = vsnprintf(tmp_buff, 0, (char *)buff, args);
+    va_end (args);
+    int lend_send = 0;
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, buff);
+            vsnprintf(tmp_str, len + 1, (char *)buff, args);
+            va_end (args);
+            lend_send = tmp_io.write(tmp_str);
+            free(tmp_str);
+        }
+    }
+    return lend_send;
+}
+
+int GI::IO::writeF(char *path, unsigned char *buff, ...)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+    va_list args;
+    //char *pcString = (char *)buff;
+    va_start (args, buff);
+    char tmp_buff[1];
+    s32 len = vsnprintf(tmp_buff, 0, (char *)buff, args);
+    va_end (args);
+    int lend_send = 0;
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, buff);
+            vsnprintf(tmp_str, len + 1, (char *)buff, args);
+            va_end (args);
+            lend_send = tmp_io.write(tmp_str);
+            free(tmp_str);
+        }
+    }
+    return lend_send;
+}
+
+int GI::IO::writeF(char *path, GI::String *string, ...)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+    va_list args;
+    va_start (args, string->buff);
+    char buff[1];
+    s32 len = vsnprintf(buff, 0, string->buff, args);
+    va_end (args);
+    int lend_send = 0;
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, string->buff);
+            vsnprintf(tmp_str, len + 1, string->buff, args);
+            va_end (args);
+            lend_send = tmp_io.write(tmp_str);
+            free(tmp_str);
+        }
+    }
+    return lend_send;
+}
+/**********************************************************************************/
 int GI::IO::write(unsigned char *buff, unsigned int len)
 {
-	if(!devHandler || !ioDevType)
+	if(!devHandler || !ioDevType || !buff)
 		return SYS_ERR_NO_REGISTERED_DEVICE;
 	switch((int)ioDevType)
 	{
@@ -90,14 +205,38 @@ int GI::IO::write(unsigned char *buff, unsigned int len)
 
 int GI::IO::write(unsigned char *buff)
 {
-	if(!devHandler || !ioDevType)
-		return SYS_ERR_NO_REGISTERED_DEVICE;
-	switch((int)ioDevType)
-	{
-	case IO_DEV_UART:
-		return ((GI::Dev::Uart *)devHandler)->print((char *)buff);
-	}
-	return SYS_ERR_NOT_IMPLEMENTED;
+    if(!devHandler || !ioDevType || !buff)
+        return SYS_ERR_NO_REGISTERED_DEVICE;
+    switch((int)ioDevType)
+    {
+    case IO_DEV_UART:
+        return ((GI::Dev::Uart *)devHandler)->print((char *)buff);
+    }
+    return SYS_ERR_NOT_IMPLEMENTED;
+}
+
+int GI::IO::write(char *buff)
+{
+    if(!devHandler || !ioDevType || !buff)
+        return SYS_ERR_NO_REGISTERED_DEVICE;
+    switch((int)ioDevType)
+    {
+    case IO_DEV_UART:
+        return ((GI::Dev::Uart *)devHandler)->print((char *)buff);
+    }
+    return SYS_ERR_NOT_IMPLEMENTED;
+}
+
+int GI::IO::write(GI::String *string)
+{
+    if(!devHandler || !ioDevType || !string)
+        return SYS_ERR_NO_REGISTERED_DEVICE;
+    switch((int)ioDevType)
+    {
+    case IO_DEV_UART:
+        return ((GI::Dev::Uart *)devHandler)->print((char *)string->buff);
+    }
+    return SYS_ERR_NOT_IMPLEMENTED;
 }
 
 SysErr GI::IO::write(bool state)
@@ -137,6 +276,77 @@ SysErr GI::IO::write(char data)
 			return SYS_ERR_OK;
 	}
 	return SYS_ERR_NOT_IMPLEMENTED;
+}
+
+int GI::IO::writeF(char *buff, ...)
+{
+    va_list args;
+    //char *pcString = buff;
+    va_start (args, buff);
+    char tmp_buff[1];
+    s32 len = vsnprintf(tmp_buff, 0, buff, args);
+    va_end (args);
+    int lend_send = 0;
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, buff);
+            vsnprintf(tmp_str, len + 1, buff, args);
+            va_end (args);
+            lend_send = write(tmp_str);
+            free(tmp_str);
+        }
+    }
+    return lend_send;
+}
+
+int GI::IO::writeF(unsigned char *buff, ...)
+{
+    va_list args;
+    //char *pcString = (char *)buff;
+    va_start (args, buff);
+    char tmp_buff[1];
+    s32 len = vsnprintf(tmp_buff, 0, (char *)buff, args);
+    va_end (args);
+    int lend_send = 0;
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, buff);
+            vsnprintf(tmp_str, len + 1, (char *)buff, args);
+            va_end (args);
+            lend_send = write(tmp_str);
+            free(tmp_str);
+        }
+    }
+    return lend_send;
+}
+
+int GI::IO::writeF(GI::String *string, ...)
+{
+    va_list args;
+    va_start (args, string->buff);
+    char buff[1];
+    s32 len = vsnprintf(buff, 0, string->buff, args);
+    va_end (args);
+    int lend_send = 0;
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, string->buff);
+            vsnprintf(tmp_str, len + 1, string->buff, args);
+            va_end (args);
+            lend_send = write(tmp_str);
+            free(tmp_str);
+        }
+    }
+    return lend_send;
 }
 /**********************************************************************************/
 int GI::IO::read(unsigned char *buff, unsigned int len)
@@ -194,6 +404,25 @@ SysErr GI::IO::read(u32 *data)
 	}
 	return SYS_ERR_NOT_IMPLEMENTED;
 }
+/**********************************************************************************/
+int GI::IO::read(char *path, unsigned char *buff, unsigned int len)/*Char device*/
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.read(buff, len);
+}
+
+SysErr GI::IO::read(char *path, bool *state)/* Bit device */
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.read(state);
+}
+
+SysErr GI::IO::read(char *path, u32 *data)
+{
+	GI::IO tmp_io = GI::IO((char *)path);
+	return tmp_io.read(data);
+}
+
 /**********************************************************************************/
 SysErr GI::IO::ctl(GI::IO::ioCtl_e cmd, unsigned long *data)
 {
