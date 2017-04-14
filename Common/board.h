@@ -5,10 +5,12 @@
  *      Author: John Smith
  */
 
-#ifndef STM32F_BOARD_BOARD_H_
-#define STM32F_BOARD_BOARD_H_
+#ifndef _BOARD_BOARD_H_
+#define _BOARD_BOARD_H_
 
-#if defined(STM32F429I_DISCO)
+#if defined(MikromediaForSTM32M4)
+#include <board/STM/MikromediaForSTM32M4/defs.h>
+#elif defined(STM32F429I_DISCO)
 #include <board/STM/STM32F429I-DISCO/defs.h>
 #elif defined(STM32F469I_DISCO)
 #include <board/STM/STM32F469I-DISCO/defs.h>
@@ -20,4 +22,4 @@
 #include <board/NXP/FRDM-KEAZ128/defs.h>
 #endif
 
-#endif /* STM32F7_BOARD_BOARD_H_ */
+#endif /* _BOARD_BOARD_H_ */
