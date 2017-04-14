@@ -76,7 +76,7 @@
  the predefined commands of the "FMC_SDRAM_CommandTypeDef" structure.
 
  ------------------------------------------------------------------------------*/
-
+#ifdef STM32F469I_DISCO
 /* Includes ------------------------------------------------------------------*/
 #include "stm32469i_discovery_sdram.h"
 
@@ -512,3 +512,4 @@ void sdRam_Stm32469IDisco::MspDeInit(SDRAM_HandleTypeDef *hsdram,
  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+#endif

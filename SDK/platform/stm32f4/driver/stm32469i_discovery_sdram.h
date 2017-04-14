@@ -40,6 +40,7 @@
 #ifndef __STM32469I_DISCOVERY_SDRAM_H
 #define __STM32469I_DISCOVERY_SDRAM_H
 
+#ifdef STM32F469I_DISCO
 //#ifdef __cplusplus
 // extern "C" {
 //#endif
@@ -168,6 +169,7 @@ private:
 //#ifdef __cplusplus
 //}
 //#endif
+#endif /* !STM32F469I_DISCO */
 #endif /* __STM32469I_DISCOVERY_SDRAM_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

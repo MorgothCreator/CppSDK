@@ -37,6 +37,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#ifdef STM32F429I_DISCO
 #include "stm32f429i_discovery_sdram.h"
 
 /** @addtogroup BSP
@@ -410,3 +411,4 @@ void sdRam_Stm32429IDisco::MspInit(void)
   */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+#endif

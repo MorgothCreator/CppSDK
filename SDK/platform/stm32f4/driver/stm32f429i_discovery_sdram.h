@@ -40,6 +40,7 @@
 #ifndef __STM32F429I_DISCOVERY_SDRAM_H
 #define __STM32F429I_DISCOVERY_SDRAM_H
 
+#ifdef STM32F429I_DISCO
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -202,7 +203,7 @@ void              BSP_SDRAM_DMA_IRQHandler(void);*/
 #ifdef __cplusplus
 }
 #endif
-
+#endif /* !STM32F429I_DISCO */
 #endif /* __STM32F429I_DISCOVERY_SDRAM_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
