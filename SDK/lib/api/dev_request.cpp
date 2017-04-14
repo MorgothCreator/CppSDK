@@ -27,7 +27,7 @@ SysErr GI::Dev::DevRequest::request(char *path, GI::Dev::Gpio **device)
 	unsigned int dev_nr = 0;
 	while(1)
 	{
-		if(dev.GPIO[dev_nr] == NULL || dev.GPIO[dev_nr]->cfg.name[0] == 0 || dev.GPIO[dev_nr]->cfg.name[0] == '\0')
+		if(dev.GPIO == NULL || dev.GPIO[dev_nr] == NULL || dev.GPIO[dev_nr]->cfg.name[0] == 0 || dev.GPIO[dev_nr]->cfg.name[0] == '\0')
 		{
 			*device = NULL;
 			return SYS_ERR_INVALID_PATH;
@@ -45,7 +45,7 @@ SysErr GI::Dev::DevRequest::request(char *path, GI::Dev::I2c **device)
 	unsigned int dev_nr = 0;
 	while(1)
 	{
-		if(dev.I2C[dev_nr] == NULL || dev.I2C[dev_nr]->cfg.name == NULL || dev.I2C[dev_nr]->cfg.name[0] == '\0')
+		if(dev.I2C == NULL || dev.I2C[dev_nr] == NULL || dev.I2C[dev_nr]->cfg.name == NULL || dev.I2C[dev_nr]->cfg.name[0] == '\0')
 		{
 			*device = NULL;
 			return SYS_ERR_INVALID_PATH;
@@ -63,7 +63,7 @@ SysErr GI::Dev::DevRequest::request(char *path, GI::Dev::Spi **device)
 	unsigned int dev_nr = 0;
 	while(1)
 	{
-		if(dev.SPI[dev_nr] == NULL || dev.SPI[dev_nr]->cfg.name == NULL || dev.SPI[dev_nr]->cfg.name[0] == '\0')
+		if(dev.SPI == NULL || dev.SPI[dev_nr] == NULL || dev.SPI[dev_nr]->cfg.name == NULL || dev.SPI[dev_nr]->cfg.name[0] == '\0')
 		{
 			*device = NULL;
 			return SYS_ERR_INVALID_PATH;
@@ -81,7 +81,7 @@ SysErr GI::Dev::DevRequest::request(char *path, GI::Dev::Uart **device)
 	unsigned int dev_nr = 0;
 	while(1)
 	{
-		if(dev.UART[dev_nr] == NULL || dev.UART[dev_nr]->cfg.name == NULL || dev.UART[dev_nr]->cfg.name[0] == '\0')
+		if(dev.UART == NULL || dev.UART[dev_nr] == NULL || dev.UART[dev_nr]->cfg.name == NULL || dev.UART[dev_nr]->cfg.name[0] == '\0')
 		{
 			*device = NULL;
 			return SYS_ERR_INVALID_PATH;
