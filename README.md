@@ -86,14 +86,17 @@ To request controll of one of initialized interface use next examples:
 
 ```CPP
 /*
- * Put the '#include <api/init.h>' first on file because first  need to call the init function from this file.
+ * Put the '#include <api/init.h>' first on file because first
+ *     need to call the init function from this file.
  */
 #include <api/init.h>
-#include<api/io_handle.h>
-#include<api/timer.h>
+#include <api/io_handle.h>
 
 int main(void)
 {
+	/*
+	 * Take controll to "led-0" pin.
+	 */
 	GI::IO led_pin = GI::IO((char *)"led-0");
 	while(1)
 	{
@@ -106,6 +109,13 @@ int main(void)
 ```
 OR
 ```CPP
+/*
+ * Put the '#include <api/init.h>' first on file because first
+ *     need to call the init function from this file.
+ */
+#include <api/init.h>
+#include <api/io_handle.h>
+
 int main(void)
 {
 	while(1)
@@ -118,18 +128,20 @@ int main(void)
 }
 ```
 
-> Blinking led 1 using non blocking timer:
+> Heartbeating one led 1 using non blocking timer:
 
 ```CPP
 /*
- * Put the '#include <api/init.h>' first on file because first  need to call the init function from this file.
+ * Put the '#include <api/init.h>' first on file because first 
+ *     need to call the init function from this file.
  */
 #include <api/init.h>
-#include<api/io_handle.h>
-#include<api/timer.h>
+#include <api/io_handle.h>
+#include <api/timer.h>
 
 int main(void)
 {
+	bool led_state = false;
 	/*
 	 * Create a 500ms nonblocking timer.
 	 */
@@ -147,34 +159,55 @@ int main(void)
 		{
 			bool state;
 			/*
-			 * Get "led-0" state.
+			 * Get 'led-0' pin state.
 			 */
 			led_pin.read(&state);
 			if(state)
-				/*
-				 * If "led-0" state is '1' put it to '0'.
-				 */
+			{
+				if(led_state)
+				{
+					/*
+					 * If 'led_state == true' will be a long pause.
+					 */
+					blink_timer.interval(780);
+					led_state = false;
+				}
+				else
+				{
+					/*
+					 * If 'led_state == false' will be a short pause.
+					 */
+					blink_timer.interval(180);
+					led_state = true;
+				}
 				led_pin.write(false);
+			}
 			else
-				/*
-				 * If "led-0" state is '0' put it to '1'.
-				 */
+			{
+				blink_timer.interval(20);
 				led_pin.write(true);
+			}
 		}
 	}
 }
 ```
 OR
 ```CPP
+/*
+ * Put the '#include <api/init.h>' first on file because first 
+ *     need to call the init function from this file.
+ */
+#include <api/init.h>
+#include <api/io_handle.h>
+#include <api/timer.h>
+
 int main(void)
 {
+	bool led_state = false;
 	/*
 	 * Create a 500ms nonblocking timer.
 	 */
 	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
-	/*
-	 * Take controll to "led-0" pin.
-	 */
 	while(1)
 	{
 		/*
@@ -184,19 +217,34 @@ int main(void)
 		{
 			bool state;
 			/*
-			 * Get "led-0" state.
+			 * Get 'led-0' pin state.
 			 */
 			GI::IO::read((char *)"led-0", &state);
 			if(state)
-				/*
-				 * If "led-0" state is '1' put it to '0'.
-				 */
+			{
+				if(led_state)
+				{
+					/*
+					 * If 'led_state == true' will be a long pause.
+					 */
+					blink_timer.interval(780);
+					led_state = false;
+				}
+				else
+				{
+					/*
+					 * If 'led_state == false' will be a short pause.
+					 */
+					blink_timer.interval(180);
+					led_state = true;
+				}
 				GI::IO::write((char *)"led-0", false);
+			}
 			else
-				/*
-				 * If "led-0" state is '0' put it to '1'.
-				 */
+			{
+				blink_timer.interval(20);
 				GI::IO::write((char *)"led-0", true);
+			}
 		}
 	}
 }
