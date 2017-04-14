@@ -60,7 +60,7 @@ void fs_close(fs_file *file)
 /*-----------------------------------------------------------------------------------*/
 unsigned long fs_read(fs_file *file, char *buffer, int count)
 {
-	unsigned long read;
+	int read;
 	if (f_eof(file))
 	{
 		return FS_READ_EOF;

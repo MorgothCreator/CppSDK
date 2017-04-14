@@ -58,7 +58,7 @@ SysErr Cmd::cat(int argc, char *argv[])
 	SysErr err = cdInt(&directory_with_path, &directory);
 	if(err != SYS_ERR_OK)
 	{
-		errPath->write((unsigned char *)"Invalid path.\n\r");
+		errPath->write((char *)"Invalid path.\n\r");
 		return SYS_ERR_INVALID_PATH;
 	}
 	file file_read = file();
@@ -85,9 +85,9 @@ SysErr Cmd::cat(int argc, char *argv[])
 	else
 	{
 		if(res <= FR_INVALID_PARAMETER)
-			errPath->write((unsigned char *)fs_err_table[res]);
+			errPath->write((char *)fs_err_table[res]);
 		else
-			errPath->write("Unknown error");
+			errPath->write((char *)"Unknown error");
 	}
 	errPath->write((unsigned char *)"\n\r");
 
