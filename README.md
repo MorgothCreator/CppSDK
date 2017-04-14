@@ -365,22 +365,7 @@ int main(void)
 		 */
 		if(timer_touch.tick())
 		{
-			/*
-			 * Clear the 'controll_comand' structure.
-			 */
-			memset(&control_comand, 0, sizeof(tControlCommandData));
-			/*
-			 * Call the idle function of the touchscreen.
-			 */
-			dev.CAPTOUCH[0]->idle();
-			/*
-			 * Copy relevant data from touchscreen to 'controll_comand' 
-			 *	structure that will be passed to main window.
-			 */
-			control_comand.Cursor = (CursorState)dev.CAPTOUCH[0]->TouchResponse.touch_event1;
-			control_comand.X = dev.CAPTOUCH[0]->TouchResponse.x1;
-			control_comand.Y = dev.CAPTOUCH[0]->TouchResponse.y1;
-			MainWindow->idle(&control_comand);
+			MainWindow->idle(dev.CAPTOUCH[0]->idle());
 			/*
 			 * The idle function of 'pass' window will be called by parent window, 
 			 *	but the idle function on 'pass' controll need to be call by user 
