@@ -66,7 +66,7 @@ typedef enum
 /*#####################################################*/
 typedef struct
 {
-	char name[9];
+	char name[12];
 	unsigned int pin;
 	bool reverse;
 	enum gpioMode_e{

@@ -33,7 +33,7 @@
 /*#####################################################*/
 typedef struct
 {
-	char name[9];
+	char name[12];
 	unsigned int tx;
 	unsigned int rx;
 	unsigned long speed;

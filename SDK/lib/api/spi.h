@@ -28,7 +28,7 @@
 /*#####################################################*/
 typedef struct
 {
-	char name[9];
+	char name[12];
 	unsigned int sck;
 	unsigned int moSi;
 	unsigned int miSo;
