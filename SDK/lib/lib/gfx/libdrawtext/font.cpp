@@ -549,7 +549,7 @@ static unsigned char sample_pixel(struct dtx_glyphmap *gm, int x, int y)
 
 static int count_bits(int x)
 {
-	int i, n = 0;
+	unsigned int i, n = 0;
 	for(i=0; i<sizeof x * CHAR_BIT; i++) {
 		n += x & 1;
 		x >>= 1;
@@ -1156,7 +1156,7 @@ static int next_pow2(int x)
 
 static int find_pow2(int x)
 {
-	int i;
+	unsigned int i;
 	for(i=0; i<sizeof x * CHAR_BIT; i++) {
 		if((1 << i) == x) {
 			return i;

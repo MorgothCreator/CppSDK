@@ -126,8 +126,8 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 		break;
 	default:
 		return SYS_ERR_INVALID_COMMAND;
-
 	}
+    IOCPortConfigureSet((cfg.pin % 32), IOC_PORT_GPIO, pin_func);
 	return SYS_ERR_OK;
 }
 /*#####################################################*/

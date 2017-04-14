@@ -1415,7 +1415,7 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 			gfx_u32 len_of_selection_tab = Internals.Header.Size.TabGroupSelectorSize * Internals.Header.TabGroupTabsListNr;
 			if(len_of_selection_tab > Internals.Size.X - (header_btn_space * 2) - 2)
 			{
-				if(Internals.Header.TabGroupSelectorPosition < len_of_selection_tab - (Internals.Size.X - (header_btn_space * 2)) - 2)
+				if(Internals.Header.TabGroupSelectorPosition < (gfx_s32)(len_of_selection_tab - (Internals.Size.X - (header_btn_space * 2)) - 2))
 				{
 					Internals.Header.TabGroupSelectorPosition++;
 					TabGroupSelectorPositionHasChanged = true;

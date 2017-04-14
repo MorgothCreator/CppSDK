@@ -4,7 +4,7 @@
  *  Created on: Dec 9, 2016
  *      Author: John Smith
  */
-//#if defined(STM32F469I_DISCO)
+#if defined(FRDM_KEAZ128)
 
 #include "defs.h"
 #include <stdio.h>
@@ -109,7 +109,7 @@ CfgUart uartCfg[] =
 {
 //{ "uart-0", pin_mux_convert_to_pin(IOA, 9)	, pin_mux_convert_to_pin(IOA, 10)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 //{ "uart-1", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-//{ "uart-2", pin_mux_convert_to_pin(IOB, 10)	, pin_mux_convert_to_pin(IOB, 11)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
+{ "uart-2", pin_mux_convert_to_pin(IOD, 7)	, pin_mux_convert_to_pin(IOD, 6)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 //{ "uart-3", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 //{ "uart-4", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 //{ "uart-5", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
@@ -122,4 +122,4 @@ CfgUart uartCfg[] =
  * UART settings
  */
 
-//#endif/*!STM32F769I_DISCO*/
+#endif/*!FRDM_KEAZ*/

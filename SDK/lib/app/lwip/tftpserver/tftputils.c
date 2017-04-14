@@ -2,6 +2,8 @@
 
 #include "tftputils.h"
 #include <string.h>
+#include <main.h>
+#if (USE_TFTP == 1 && USE_LWIP == 1)
 
 /**
   * @brief  Extracts the opcode from a TFTP message
@@ -89,4 +91,4 @@ u32_t tftp_is_correct_ack(char *buf, int block)
 
   return 1;
 }
-
+#endif

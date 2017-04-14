@@ -36,6 +36,7 @@
 *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 ******************************************************************************/
+#if defined(SmartRf06)
 
 #include <stdint.h>
 #include "inc/hw_types.h"
@@ -499,3 +500,4 @@ const ccfg_t __ccfg __attribute__((section(".ccfg"))) __attribute__((used)) =
     DEFAULT_CCFG_CCFG_PROT_95_64    , // 0x50003FF8
     DEFAULT_CCFG_CCFG_PROT_127_96   , // 0x50003FFC
 };
+#endif

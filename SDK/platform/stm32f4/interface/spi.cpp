@@ -113,9 +113,9 @@ GI::Dev::Spi::Spi(const char *path)
 
 	/*##-1- Enable peripherals and GPIO Clocks #################################*/
 	/* Enable GPIO TX/RX clock */
-	//_gpio_init(property.pinSck >> 5);
-	//_gpio_init(property.pinMiSo >> 5);
-	//_gpio_init(property.pinMoSi >> 5);
+	//_gpio_init(pinSck >> 5);
+	//_gpio_init(pinMiSo >> 5);
+	//_gpio_init(pinMoSi >> 5);
 	//SPIx_SCK_GPIO_CLK_ENABLE();
 	//SPIx_MISO_GPIO_CLK_ENABLE();
 	//SPIx_MOSI_GPIO_CLK_ENABLE();
@@ -167,6 +167,7 @@ GI::Dev::Spi::Spi(const char *path)
 		;
 		break;
 		GPIO_InitStruct.Alternate = GPIO_AF5_SPI6;
+		break;
 #endif
 #ifdef __HAL_RCC_SPI7_CLK_ENABLE
 		case SPI7_BASE:
@@ -227,7 +228,7 @@ GI::Dev::Spi::Spi(const char *path)
 	GPIO_InitStruct.Pin = 1 << (cfg.cs % 32);
 	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
 			&GPIO_InitStruct);
-	HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);	//property.OldCsSelect = -1;
+	HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);	//OldCsSelect = -1;
 	err = SYS_ERR_OK;
 	return;
 }
@@ -325,12 +326,12 @@ int GI::Dev::Spi::assert()
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (spi_semaphore[property.unitNr])
+	while (spi_semaphore[unitNr])
 		;
 #endif
 	setSpeed(speed);
 #if (USE_DRIVER_SEMAPHORE == true)
-	spi_semaphore[property.unitNr] = true;
+	spi_semaphore[unitNr] = true;
 #endif
 	HAL_GPIO_WritePin(
 			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
@@ -356,7 +357,7 @@ int GI::Dev::Spi::deassert()
 			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
 			(unsigned short) (1 << cfg.cs % 32), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
-	spi_semaphore[property.unitNr] = false;
+	spi_semaphore[unitNr] = false;
 #endif
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;

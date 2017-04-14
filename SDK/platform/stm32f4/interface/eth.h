@@ -12,6 +12,7 @@
 #include <interface/uart.h>
 #include <lib/string.h>
 #include <board.h>
+#if (USE_LWIP == 1)
 
 typedef enum {
 	DHCP_START = 1,
@@ -39,5 +40,5 @@ public:
 };
 }
 }
-
+#endif
 #endif /* AM33_INTERFACE_LAN_INTERFACE_H_ */

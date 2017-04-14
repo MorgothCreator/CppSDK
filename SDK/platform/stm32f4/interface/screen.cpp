@@ -15,6 +15,7 @@
 #include "driver/stm32f4xx_hal_cortex.h"
 #include "driver/stm32f4xx_hal.h"
 #include <interface/screen.h>
+#include <api/io_handle.h>
 
 #if (USE_EXT_RAM == 1)
 #if defined(STM32F429I_DISCO)
@@ -302,6 +303,13 @@ __weak void BSP_LCD_MspInit(void)
 void BSP_LCD_Reset(void)
 {
 #if !defined(USE_STM32469I_DISCO_REVA) || !defined(STM32F429I_DISCO)
+	GI::IO displayRst = GI::IO((char *)"disprst");
+	displayRst.write(false);
+	HAL_Delay(20); /* wait 20 ms */
+	displayRst.write(true);
+	HAL_Delay(10); /* wait 20 ms */
+
+#if 0
 	/* EVAL Rev B and beyond : reset the LCD by activation of XRES (active low) connected to PH7 */
 	GPIO_InitTypeDef gpio_init_structure;
 
@@ -326,6 +334,7 @@ void BSP_LCD_Reset(void)
 
 	/* Wait for 10ms after releasing XRES before sending commands */
 	HAL_Delay(10);
+#endif
 #else
 
 #endif /* USE_STM32469I_DISCO_REVA == 0 */
@@ -567,6 +576,8 @@ uint8_t BSP_LCD_InitEx(void *_pDisplay)
 	ili9341_Init((char *)"spi-4.0", _pDisplay);
 
 
+	pDisplay->sClipRegion.sXMin = 0;
+	pDisplay->sClipRegion.sYMin = 0;
 	pDisplay->sClipRegion.sXMax = pDisplay->LcdTimings->X;
 	pDisplay->sClipRegion.sYMax = pDisplay->LcdTimings->Y;
 	return LCD_OK;
@@ -771,6 +782,8 @@ uint8_t BSP_LCD_InitEx(void *_pDisplay)
 	OTM8009A_Init(_pDisplay, hdsivideo_handle.ColorCoding);
 
 	/***********************End OTM8009A Initialization****************************/
+	pDisplay->sClipRegion.sXMin = 0;
+	pDisplay->sClipRegion.sYMin = 0;
 	pDisplay->sClipRegion.sXMax = pDisplay->LcdTimings->X;
 	pDisplay->sClipRegion.sYMax = pDisplay->LcdTimings->Y;
 	return LCD_OK;

@@ -3,7 +3,9 @@
 #define __TFTP_UTILS_H_
 
 #include "tftpserver.h"
+#include <main.h>
 
+#if (USE_TFTP == 1 && USE_LWIP == 1)
 tftp_opcode tftp_decode_op(char *buf);
 void tftp_extract_filename(char *fname, char *buf);
 u16_t tftp_extract_block(char *buf);
@@ -13,5 +15,5 @@ void tftp_set_errormsg(char * buffer, char* errormsg);
 u32_t tftp_is_correct_ack(char *buf, int block);
 void tftp_set_data_message(char* packet, char* buf, int buflen);
 void tftp_set_block(char* packet, u16_t block);
-
+#endif
 #endif

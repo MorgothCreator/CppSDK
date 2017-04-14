@@ -9,6 +9,7 @@
 #include "core_init.h"
 //#include "board_properties.h"
 #include "driver/sys_ctrl.h"
+#include <sys/systime.h>
 
 unsigned long CoreFreq = 48000000;
 unsigned long FCPU = CORE_CLOCK_DEFAULT;
@@ -19,6 +20,7 @@ static void SystemClock_Config(unsigned long int_osc_freq,
 {
 	SysCtrlPowerEverything();
 	CoreFreq = core_freq;
+	SysDelayTimerSetup();
 }
 
 GI::Sys::Clock::Clock()

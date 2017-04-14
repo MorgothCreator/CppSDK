@@ -50,13 +50,13 @@ typedef struct {
 } vfs_dirent_t;
 typedef FIL vfs_t;
 
-struct tm {
+/*struct tm {
   int tm_year;
   int tm_mon;
   int tm_mday;
   int tm_hour;
   int tm_min;
-};
+};*/
 
 #define time(x)
 #define vfs_eof f_eof

@@ -11,7 +11,6 @@ RM := rm -rf
 -include nxp_kinetis_e/sys/subdir.mk
 -include nxp_kinetis_e/interface/subdir.mk
 -include nxp_kinetis_e/driver/subdir.mk
--include nxp_kinetis_e/board/FRDM-KEAZ128/subdir.mk
 -include lib/lib/util/subdir.mk
 -include lib/lib/gfx/resource/subdir.mk
 -include lib/lib/gfx/libdrawtext/subdir.mk
@@ -25,6 +24,11 @@ RM := rm -rf
 -include lib/lib/subdir.mk
 -include lib/include/subdir.mk
 -include lib/device/subdir.mk
+-include lib/board/TI/SmartRF06/subdir.mk
+-include lib/board/STM/STM32F769I-DISCO/subdir.mk
+-include lib/board/STM/STM32F469I-DISCO/subdir.mk
+-include lib/board/STM/STM32F429I-DISCO/subdir.mk
+-include lib/board/NXP/FRDM-KEAZ128/subdir.mk
 -include lib/app/sys/subdir.mk
 -include lib/api/subdir.mk
 -include subdir.mk

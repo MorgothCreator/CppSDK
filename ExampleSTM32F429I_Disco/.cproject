@@ -253,4 +253,5 @@
 			<resource resourceType="PROJECT" workspacePath="/ExampleSTM32F429I_Disco"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

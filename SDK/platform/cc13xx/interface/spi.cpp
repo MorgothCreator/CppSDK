@@ -159,12 +159,12 @@ int GI::Dev::Spi::assert()
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (spi_semaphore[property.unitNr])
+	while (spi_semaphore[unitNr])
 		;
 #endif
 	setSpeed(speed);
 #if (USE_DRIVER_SEMAPHORE == true)
-	spi_semaphore[property.unitNr] = true;
+	spi_semaphore[unitNr] = true;
 #endif
 	HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = 1 << (cfg.cs % 32);
 	err = SYS_ERR_OK;
@@ -186,7 +186,7 @@ int GI::Dev::Spi::deassert()
 	}
 	HWREG(GPIO_BASE + GPIO_O_DOUTSET31_0) = 1 << (cfg.cs % 32);
 #if (USE_DRIVER_SEMAPHORE == true)
-	spi_semaphore[property.unitNr] = false;
+	spi_semaphore[unitNr] = false;
 #endif
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;

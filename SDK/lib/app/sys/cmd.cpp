@@ -42,7 +42,7 @@ SysErr Cmd::idle()
 	{
 		if(tmp_term_char == 0x7F)
 		{
-			int str_len;
+			unsigned int str_len;
 			for(str_len = 0; str_len < input->length; str_len++)
 			{
 				outPath->write((char)0x7F);
@@ -62,7 +62,7 @@ SysErr Cmd::idle()
 		}
 		else if(escape_received && escape_second_char == 91)
 		{
-			int cnt = 0;
+			unsigned int cnt = 0;
 			for(; cnt < input->length; cnt++)
 				outPath->write((char)0x7F);
 			if(tmp_term_char == 65)

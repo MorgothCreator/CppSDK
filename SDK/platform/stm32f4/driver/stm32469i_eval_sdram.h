@@ -39,11 +39,11 @@
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32469I_EVAL_SDRAM_H
 #define __STM32469I_EVAL_SDRAM_H
-
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 #ifdef __cplusplus
  extern "C" {
 #endif
+
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"

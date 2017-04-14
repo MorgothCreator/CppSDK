@@ -26,9 +26,24 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>board.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Common/board.h</locationURI>
+		</link>
+		<link>
 			<name>lib</name>
 			<type>2</type>
 			<locationURI>PARENT-4-PROJECT_LOC/GitHub/CppSDK/SDK/lib</locationURI>
+		</link>
+		<link>
+			<name>main.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Common/main.cpp</locationURI>
+		</link>
+		<link>
+			<name>main.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Common/main.h</locationURI>
 		</link>
 		<link>
 			<name>nxp_kinetis_e</name>

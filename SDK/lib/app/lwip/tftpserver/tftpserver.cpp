@@ -1,5 +1,7 @@
 /* tftpserver.c */
 
+#include <main.h>
+#if (USE_TFTP == 1 && USE_LWIP == 1)
 #include "tftpserver.h"
 #include "tftputils.h"
 #include "lib/fs/fat/inc/ff.h"
@@ -624,3 +626,4 @@ void tftpd_init(unsigned short port)
     }
   }
 }
+#endif

@@ -39,7 +39,7 @@ devHandle(NULL)
 			IoDevices = STDIO_UART;
 		}
 	}
-#if (SCREEN_INTERFACE_COUNT > 0)
+#if (defined(SCREEN_ENABLE) && SCREEN_INTERFACE_COUNT > 0)
 	else if(!strncmp((char *)"SCREEN<", devPath, sizeof("SCREEN<") - 1))
 	{
 		char* ptr = strchr((const char *)(devPath + sizeof("SCREEN<") - 1), (int)'>');

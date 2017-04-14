@@ -42,7 +42,7 @@ namespace GI
 		char *subString(unsigned int position);
 
 		char *buff;
-		signed int length;
+		unsigned int length;
 		/*
 		 * Private variables.
 		 */

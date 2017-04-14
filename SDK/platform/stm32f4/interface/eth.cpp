@@ -5,8 +5,9 @@
  *      Author: John Smith
  */
 
-#include <interface/eth.h>
+#include "eth.h"
 
+#if (USE_LWIP == 1)
 #include "driver/stm32f4xx_hal_eth.h"
 #include "driver/stm32f4xx_hal.h"
 #include "interface/LwIp/src/include/lwip/netif.h"
@@ -310,3 +311,4 @@ void GI::Dev::Eth::getIp(GI::String *string)
 			(unsigned int)(ipAddr >> 24)& 0xFF);
 	string->set(buff);
 }
+#endif

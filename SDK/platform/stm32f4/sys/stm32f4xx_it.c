@@ -24,7 +24,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 
-#include "../board/STM32F469I-DISCO/lwipopts.h"
+#include <board/STM/STM32F469I-DISCO/lwipopts.h>
 #include "sys/systime.h"
 #include "driver/USBD/Class/CDC/usbd_cdc_interface.h"
 #include "driver/stm32f4xx_hal_dma.h"

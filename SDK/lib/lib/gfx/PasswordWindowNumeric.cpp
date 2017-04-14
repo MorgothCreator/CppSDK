@@ -94,7 +94,7 @@ bool GI::Screen::Gfx::PasswordWindowNumeric::idle()
 			password->set(tmp);
 			if(tmp)
 				free(tmp);
-			int cnt = 0;
+			unsigned int cnt = 0;
 			internals.textBox->Caption->clear();
 			for(; cnt < password->length; cnt++)
 			{
@@ -121,7 +121,7 @@ bool GI::Screen::Gfx::PasswordWindowNumeric::idle()
 		}
 		//internals.hideText = true;
 		password->append(character);
-		int cnt = 0;
+		unsigned int cnt = 0;
 		internals.textBox->Caption->clear();
 		for(; cnt < password->length; cnt++)
 		{

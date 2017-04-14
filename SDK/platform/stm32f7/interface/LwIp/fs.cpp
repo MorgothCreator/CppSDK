@@ -30,6 +30,7 @@
  *
  */
 
+#include <main.h>
 #include <string.h>
 //#include "lib/fs/fat/inc/ff.h"
 #include "interface/LwIp/src/include/lwip/apps/httpd_opts.h"

@@ -20,6 +20,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include <api/io_handle.h>
 
 /* ECHO protocol states */
 enum echoclient_states
@@ -62,18 +63,13 @@ static err_t tcp_echoclient_connected(void *arg, struct tcp_pcb *tpcb, err_t err
     {
       es->state = ES_CONNECTED;
       es->pcb = tpcb;
-      unsigned char *data = (unsigned char *)calloc(1, strlen((const char*)arg));
-      if(!data)
-    	  return ERR_MEM;
-      sprintf((char*)data, (const char*)arg);
-
       /* allocate pbuf */
-      es->p_tx = pbuf_alloc(PBUF_TRANSPORT, strlen((char*)data) , PBUF_POOL);
+      es->p_tx = pbuf_alloc(PBUF_TRANSPORT, strlen((char*)arg) , PBUF_POOL);
 
       if (es->p_tx)
       {
         /* copy data to pbuf */
-        pbuf_take(es->p_tx, (char*)data, strlen((char*)data));
+        pbuf_take(es->p_tx, (char*)arg, strlen((char*)arg));
 
         /* pass newly allocated es structure as argument to tpcb */
         tcp_arg(tpcb, es);
@@ -90,9 +86,13 @@ static err_t tcp_echoclient_connected(void *arg, struct tcp_pcb *tpcb, err_t err
         /* send data */
         tcp_echoclient_send(tpcb,es);
 
+        GI::IO terminal = GI::IO((char *)"uart-0");
+        terminal.write((unsigned char*)"Connected\r");
+        terminal.write((unsigned char*)arg);
+        terminal.write((unsigned char*)"\r");
+
         return err;
       }
-      free(data);
     }
     else
     {
@@ -120,6 +120,8 @@ static err_t tcp_echoclient_connected(void *arg, struct tcp_pcb *tpcb, err_t err
   */
 static err_t tcp_echoclient_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 {
+    GI::IO terminal = GI::IO((char *)"uart-0");
+    terminal.write((unsigned char*)"Receive\r");
   struct echoclient *es;
   err_t ret_err;
 
@@ -160,6 +162,10 @@ static err_t tcp_echoclient_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p
     /* Acknowledge data reception */
     tcp_recved(tpcb, p->tot_len);
     LWIP_LO_DEBUG((p->payload, p->len));
+
+    GI::IO terminal = GI::IO((char *)"uart-0");
+    terminal.write((unsigned char*)p->payload, p->len);
+
 
     pbuf_free(p);
     tcp_echoclient_connection_close(tpcb, es);
@@ -339,10 +345,16 @@ void tcp_setup(char *ip_addr, char *mesage)
     ip_addr_t ip;
     //IP4_ADDR(&ip, 110,777,888,999);    //IP of my PHP server
     err_t err = dns_gethostbyname(ip_addr, &ip, tcp_dns_found, NULL);
-    //if(err)
+    if(err)
+    {
     	//uart.printf(DebugCom,  "tcp_dns_found: Error getting IP for this DNS\n");
-    //else
+    	return;
+    }
+    else
+    {
     	//uart.printf(DebugCom, "tcp_dns_found: %u.%u.%u.%u\n", ((ip.addr >> 0) & 0xFF), ((ip.addr >> 8) & 0xFF), ((ip.addr >> 16) & 0xFF), ((ip.addr >> 24) & 0xFF));
+    }
+
 
     struct tcp_pcb *pcb;
     /* create the control block */

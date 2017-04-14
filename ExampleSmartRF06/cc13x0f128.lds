@@ -71,55 +71,110 @@ SECTIONS
         KEEP(*(.vectors))
         *(.text*)
         *(.rodata*)
-        *(.init)
-        *(.fini*)
+    KEEP (*(.init))
+    KEEP (*(.fini))
         *(.eh_frame*)
         _etext = .;
     } > FLASH = 0
+  /* Constant data into ROM memory*/
+  .rodata :
+  {
+    . = ALIGN(4);
+    *(.rodata)         /* .rodata sections (constants, strings, etc.) */
+    *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
+    . = ALIGN(4);
+  } >FLASH
 
-   .ARM.exidx :
-    {
-        __exidx_start = .;
-        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-        __exidx_end = .;
-    } > FLASH
+  .ARM.extab   : {
+  	. = ALIGN(4);
+  	*(.ARM.extab* .gnu.linkonce.armextab.*)
+  	. = ALIGN(4);
+  } >FLASH
 
-    .ARM.extab :
-    {
-        *(.ARM.extab* .gnu.linkonce.armextab.*)
-    } > FLASH
+  .ARM : {
+    . = ALIGN(4);
+    __exidx_start = .;
+    *(.ARM.exidx*)
+    __exidx_end = .;
+    . = ALIGN(4);
+  } >FLASH
 
-    .data :
-    {
-        _data = .;
-        *(vtable)
-        *(.data*)
-        _edata = .;
-    } > SRAM
+  .preinit_array     :
+  {
+    . = ALIGN(4);
+    PROVIDE_HIDDEN (__preinit_array_start = .);
+    KEEP (*(.preinit_array*))
+    PROVIDE_HIDDEN (__preinit_array_end = .);
+    . = ALIGN(4);
+  } >FLASH
 
-    .bss :
-    {
-        __bss_start__ = .;
-        _bss = .;
-        *(.bss*)
-        *(COMMON)
-        _ebss = .;
-        __bss_end__ = .;
-    } > SRAM
+  .init_array :
+  {
+    . = ALIGN(4);
+    PROVIDE_HIDDEN (__init_array_start = .);
+    KEEP (*(SORT(.init_array.*)))
+    KEEP (*(.init_array*))
+    PROVIDE_HIDDEN (__init_array_end = .);
+    . = ALIGN(4);
+  } >FLASH
+
+  .fini_array :
+  {
+    . = ALIGN(4);
+    PROVIDE_HIDDEN (__fini_array_start = .);
+    KEEP (*(SORT(.fini_array.*)))
+    KEEP (*(.fini_array*))
+    PROVIDE_HIDDEN (__fini_array_end = .);
+    . = ALIGN(4);
+  } >FLASH
+
+  /* Used by the startup to initialize data */
+  _sidata = LOADADDR(.data);
+
+  /* Initialized data sections into RAM memory */
+  .data :
+  {
+    . = ALIGN(4);
+    _data = .;        /* create a global symbol at data start */
+    _sdata = .;        /* create a global symbol at data start */
+    *(.data)           /* .data sections */
+    *(.data*)          /* .data* sections */
+
+    . = ALIGN(4);
+    _edata = .;        /* define a global symbol at data end */
+  } >SRAM AT> FLASH
+
+
+  /* Uninitialized data section into RAM memory */
+  . = ALIGN(4);
+  .bss :
+  {
+    /* This is used by the startup in order to initialize the .bss secion */
+    _bss = .;         /* define a global symbol at bss start */
+    __bss_start__ = _bss;
+    *(.bss)
+    *(.bss*)
+    *(COMMON)
+
+    . = ALIGN(4);
+    _ebss = .;         /* define a global symbol at bss end */
+    __bss_end__ = _ebss;
+  } >SRAM
 
     .ccfg :
     {
     } > FLASH_CCFG
 
-    /* User_heap_stack section, used to check that there is enough SRAM left */
-    ._user_heap_stack :
-    {
-      . = ALIGN(4);
-      . = . + _Min_Heap_Size;
-      end = .;
-      . = . + _Min_Stack_Size;
-      . = ALIGN(4);
-    } > SRAM
+  /* User_heap_stack section, used to check that there is enough RAM left */
+  ._user_heap_stack :
+  {
+    . = ALIGN(8);
+    PROVIDE ( end = . );
+    PROVIDE ( _end = . );
+    . = . + _Min_Heap_Size;
+    . = . + _Min_Stack_Size;
+    . = ALIGN(8);
+  } >SRAM
 
     .gpram :
     {

@@ -14,6 +14,9 @@
 
 extern CfgUart uartCfg[];
 extern unsigned long FCPU;
+#if (USE_DRIVER_SEMAPHORE == true)
+volatile bool uart_semaphore[UART_INTERFACE_COUNT];
+#endif
 /*#####################################################*/
 GI::Dev::Uart::Uart(const char *path)
 {

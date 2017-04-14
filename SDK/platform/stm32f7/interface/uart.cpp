@@ -562,7 +562,7 @@ int GI::Dev::Uart::print(GI::String *string)
 int GI::Dev::Uart::write(char *data, unsigned int len)
 {
 	unsigned int len_cnt = len;
-	while(!len_cnt--)
+	while(len_cnt--)
 	{
 		putChar(*data++);
 	}

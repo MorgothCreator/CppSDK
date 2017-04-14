@@ -5,6 +5,8 @@
  *      Author: John Smith
  */
 
+#include <main.h>
+
 #if (_USE_SCREEN == 1)
 #define _USE_HIH613x				0
 #define _USE_MPU60x0_9150			0
@@ -50,6 +52,8 @@
 #include <sys/core_init.h>
 #include <app/sys/cmd.h>
 
+#include <app/lwip/http_client/http_client.h>
+
 #if (_USE_SCREEN == 1)
 GI::Screen::Gfx::Window *MainWindow = NULL;
 GI::Screen::Gfx::TextBox *SensorResultTextboxGlobal;
@@ -59,6 +63,8 @@ int main(void)
 {
 	GI::Sys::Timer timer_touch = GI::Sys::Timer(20);
 	GI::Sys::Timer blink_timer = GI::Sys::Timer(100);
+
+	bool led_state = false;
 
 #if (_USE_HIH613x == 1)
 	GI::Sys::Timer hih613timer = GI::Sys::Timer(1000);
@@ -184,12 +190,17 @@ int main(void)
     /*
      * Put on parent window caption the IP of ETH interface.
      */
+
+    GI::String ipAddressStr = GI::String();
+    //GI::String timeAddressStr = GI::String();
 #if (USE_LWIP == 1)
     GI::String ip_str_buff = GI::String();
     dev.LWIP[0]->getIp(&ip_str_buff);
-	MainWindow->Caption->setTextF("IP:%s\n\r", ip_str_buff.buff);
+	//MainWindow->Caption->setTextF("IP:%s\n\r", ip_str_buff.buff);
+    ipAddressStr.set((char *)"IP:");
+    ipAddressStr.append(ip_str_buff.buff);
 	bool old_state_ip_assigned = false;
-	dev._stdout->printF("IP:%s\n\r", ip_str_buff.buff);
+	//dev._stdout->printF("IP:%s\n\r", ip_str_buff.buff);
 #endif
 
 #if (_USE_HIH613x == 1)
@@ -220,10 +231,14 @@ int main(void)
 	tControlCommandData control_comand;
 #endif
 
-	Cmd term = Cmd((char *)"uart-5", (char *)"uart-5", (char *)"uart-5");
+	Cmd term = Cmd((char *)CONSOLE_UART_IN, (char *)CONSOLE_UART_OUT, (char *)CONSOLE_UART_ERR);
 	/*GI::Sys::Clock::changeCoreClk(25000000);
 	unsigned long baud = 1200;
 	terminal.ctl(GI::IO::IO_CTL_SET_SPEED, &baud);*/
+
+	//GI::IO terminal = GI::IO((char *)CONSOLE_UART_OUT);
+	//terminal.write((unsigned char *)buffer, bytesread);
+
 	while(1)
 	{
 		//GI::Sys::Clock::sleep();
@@ -238,8 +253,22 @@ int main(void)
 		     */
 		    GI::String ip_str_buff = GI::String();
 		    dev.LWIP[0]->getIp(&ip_str_buff);
-			MainWindow->Caption->setTextF("IP:%s\n\r", ip_str_buff.buff);
-			dev._stdout->printF("IP:%s\n\r", ip_str_buff.buff);
+			//MainWindow->Caption->setTextF("IP:%s\n\r", ip_str_buff.buff);
+			//dev._stdout->printF("IP:%s\n\r", ip_str_buff.buff);
+		    ipAddressStr.set((char *)"IP:");
+		    ipAddressStr.append(ip_str_buff.buff);
+		}
+#endif
+#if (USE_LWIP == 1)
+		if(ipAddressStr.modifyed || dev.SNTP_CLIENT->time_update)
+		{
+			ipAddressStr.modifyed = 0;
+			dev.SNTP_CLIENT->time_update = 0;
+			MainWindow->Caption->setTextF(&ipAddressStr);
+			/*@todo: "The server does not respond"*/
+			//tcp_setup((char *)"google.com",(char *)"GET /");
+			if(dev.SNTP_CLIENT->time_str->length)
+				MainWindow->Caption->appendF(",Time:%s", dev.SNTP_CLIENT->time_str->buff);
 		}
 #endif
 		/*
@@ -277,10 +306,24 @@ int main(void)
 			bool state;
 			led_pin.read(&state);
 			if(state)
+			{
+				if(led_state)
+				{
+					blink_timer.interval(780);
+					led_state = false;
+				}
+				else
+				{
+					blink_timer.interval(180);
+					led_state = true;
+				}
 				led_pin.write(false);
+			}
 			else
+			{
+				blink_timer.interval(20);
 				led_pin.write(true);
-			//terminal.write((unsigned char *)"Salutare\n\r", strlen("Salutare\n\r"));
+			}
 		}
 #if _USE_HIH613x == 1
 			if(hih613timer.tick())

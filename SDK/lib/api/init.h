@@ -51,6 +51,9 @@
 #include <app/lwip/httpd/httpd.h>
 #endif
 
+#include<app/lwip/ftpserver/ftpd.h>
+#include<app/lwip/tftpserver/tftpserver.h>
+#include<app/lwip/sntp/sntp.h>
 
 namespace GI {
 namespace Board{
@@ -73,16 +76,19 @@ public:
 #if (USBHMSC_INTERFACE_COUNT > 0)
 	GI::Dev::UsbHMsc *USBHMSC[USBHMSC_INTERFACE_COUNT];
 #endif
-#if (SCREEN_INTERFACE_COUNT > 0)
+#if (defined(SCREEN_ENABLE) && SCREEN_INTERFACE_COUNT > 0)
 	GI::Dev::Screen *SCREEN[SCREEN_INTERFACE_COUNT];
+    GI::Screen::Cursor *CAPTOUCH[1];
 #endif
 #if (USE_LWIP == 1)
 	GI::Dev::Eth *LWIP[1];
 #endif
-#if (USE_LWIP_HTTPD_SERVER == 1)
+#if (USE_LWIP_HTTPD_SERVER == 1 && USE_LWIP == 1)
 	GI::App::HttpServer *LWIP_HTTP_SERVER[1];
 #endif
-	GI::Screen::Cursor *CAPTOUCH[1];
+#if (USE_SNTP == 1 && USE_LWIP == 1)
+	GI::App::SntpClient *SNTP_CLIENT;
+#endif
 };
 }
 }

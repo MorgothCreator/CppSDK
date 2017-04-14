@@ -52,7 +52,7 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif 
+#endif
 
 /** @addtogroup STM32F7xx_System_Includes
  * @{

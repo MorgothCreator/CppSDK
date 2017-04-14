@@ -143,6 +143,7 @@ sdRam_Stm32469IDisco::sdRam_Stm32469IDisco()
 	sdramstatus = SDRAM_ERROR;
 	/* SDRAM device configuration */
 	sdramHandle.Instance = FMC_SDRAM_DEVICE;
+	HAL_Delay(20); /* wait 20 ms */
 
 	/* Timing configuration for 100Mhz as SDRAM clock frequency (System clock is up to 200Mhz) */
 	Timing.LoadToActiveDelay = 2;

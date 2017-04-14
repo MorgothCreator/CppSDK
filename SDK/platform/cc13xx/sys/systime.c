@@ -6,7 +6,7 @@
  */ 
 
 #include <sys/systime.h>
-
+#include <driver/systick.h>
 /******************************************************************************
 **                      INTERNAL VARIABLE DEFINITIONS
 *******************************************************************************/
@@ -14,10 +14,17 @@ static volatile unsigned long long flagIsr = 1;
 volatile unsigned long long STimerCnt;
 //Rtc_t RtcStruct;
 
+void TimerCnt_Isr_Increment(void)
+{
+    STimerCnt++;
+}
 //#####################################################
 void SysDelayTimerSetup(void)
 {
-
+    SysTickEnable();
+    SysTickPeriodSet(48000);
+    SysTickIntRegister(TimerCnt_Isr_Increment);
+    SysTickIntEnable();
 }
 //#####################################################
 void sysDelay(unsigned int milliSec)

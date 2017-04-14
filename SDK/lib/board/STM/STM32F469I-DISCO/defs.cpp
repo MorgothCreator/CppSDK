@@ -6,7 +6,7 @@
  */
 #if defined(STM32F469I_DISCO)
 
-#include <board/STM32F469I-DISCO/defs.h>
+#include <board/STM/STM32F469I-DISCO/defs.h>
 #include <stdio.h>
 
 #include <api/gpio.h>

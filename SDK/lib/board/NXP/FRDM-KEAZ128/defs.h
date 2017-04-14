@@ -1,11 +1,10 @@
-#ifndef __STM32F429I_DISCO__
-#define __STM32F429I_DISCO__
+#ifndef __FRDM_KEAZ128__
+#define __FRDM_KEAZ128__
 
-#if defined(STM32F429I_DISCO)
+#if defined(FRDM_KEAZ128)
 
-#include "../STM32F429I-DISCO/ffconf.h"
-#include "../STM32F429I-DISCO/lwipopts.h"
-#include <api/lcd_def.h>
+#include "../FRDM-KEAZ128/ffconf.h"
+#include "../FRDM-KEAZ128/lwipopts.h"
 
 
 #define LED1_PORT			IOG
@@ -79,7 +78,7 @@
 //#define STM32F417xx
 //#define STM32F427xx
 //#define STM32F437xx
-#define STM32F429xx
+//#define STM32F429xx
 //#define STM32F439xx
 //#define STM32F401xC
 //#define STM32F401xE
@@ -88,7 +87,7 @@
 //#define STM32F410Rx
 //#define STM32F411xE
 //#define STM32F446xx
-//#define STM32F469xx
+#define STM32F469xx
 //#define STM32F479xx
 
 /*
@@ -106,7 +105,7 @@
 #define LSE_VALUE  						((uint32_t)32768)		/*!< Value of the External Low Speed oscillator in Hz */
 #define EXTERNAL_CLOCK_VALUE    		((uint32_t)0000000)	/*!< Value of the External clock in Hz*/
 #define CORE_CLOCK_DEFAULT				((uint32_t)180000000)	/*!< Value of the Processor default clock in Hz*/
-#define USE_EXT_RAM						1
+
 /*
  * Processor clock selection.
  */
@@ -126,7 +125,8 @@
  * Screen settings
  */
 
-#define SCREEN_ENABLE					lcd_ILI9341_PORTRAIT
+#define SCREEN_ENABLE					1
+#define USE_SCREEN_TYPE_DSI				1
 /*
  * !Screen settings
  */
@@ -146,8 +146,8 @@
  */
 
 #define TOUCH_SCREEN_ENABLE				1
-#define TOUCH_SCREEN_TYPE_ANALOG		1
-#define TOUCH_SCREEN_TYPE_CAPACITIVE	0
+#define TOUCH_SCREEN_TYPE_ANALOG		0
+#define TOUCH_SCREEN_TYPE_CAPACITIVE	1
 /*
  * !Touch screen settings
  */
@@ -208,9 +208,7 @@
 /*
  * Eth general settings
  */
-#define USE_LWIP							0
 #define LWIP_DEBUG_EN						0
-#define USE_DHCP							1
 #define MAX_DHCP_TRIES  					4
 
 /*Static IP ADDRESS: IP_ADDR0.IP_ADDR1.IP_ADDR2.IP_ADDR3 */
@@ -267,7 +265,7 @@
  * MmcSd settings
  */
 
-#define USE_MMCSD_ENABLE					0
+#define USE_MMCSD_ENABLE					1
 #define MMCSD_CARD_DETECT_PIN				"mmcsdcd"
 #define MMCSD_STATUS_LED_PIN				"led-1"
 /*
@@ -278,5 +276,5 @@
 
 
 
-#endif/*!STM32F769I_DISCO*/
+#endif/*!FRDM_KEAZ*/
 #endif

@@ -1,10 +1,11 @@
-#ifndef STM32F429I_DISCO
-#define STM32F429I_DISCO
+#ifndef __STM32F469I_DISCO__
+#define __STM32F469I_DISCO__
 
-//#if defined(STM32F469I_DISCO)
+#if defined(STM32F469I_DISCO)
 
-#include "../FRDM-KEAZ128/ffconf.h"
-#include "../FRDM-KEAZ128/lwipopts.h"
+#include "../STM32F469I-DISCO/ffconf.h"
+#include "../STM32F469I-DISCO/lwipopts.h"
+#include <api/lcd_def.h>
 
 
 #define LED1_PORT			IOG
@@ -105,6 +106,7 @@
 #define LSE_VALUE  						((uint32_t)32768)		/*!< Value of the External Low Speed oscillator in Hz */
 #define EXTERNAL_CLOCK_VALUE    		((uint32_t)0000000)	/*!< Value of the External clock in Hz*/
 #define CORE_CLOCK_DEFAULT				((uint32_t)180000000)	/*!< Value of the Processor default clock in Hz*/
+#define USE_EXT_RAM						1
 
 /*
  * Processor clock selection.
@@ -125,7 +127,7 @@
  * Screen settings
  */
 
-#define SCREEN_ENABLE					1
+#define SCREEN_ENABLE					lcd_OTM8009A_PORTRAIT
 #define USE_SCREEN_TYPE_DSI				1
 /*
  * !Screen settings
@@ -208,9 +210,7 @@
 /*
  * Eth general settings
  */
-#define USE_LWIP							0
 #define LWIP_DEBUG_EN						0
-#define USE_DHCP							1
 #define MAX_DHCP_TRIES  					4
 
 /*Static IP ADDRESS: IP_ADDR0.IP_ADDR1.IP_ADDR2.IP_ADDR3 */
@@ -278,5 +278,5 @@
 
 
 
-//#endif/*!STM32F769I_DISCO*/
+#endif/*!STM32F769I_DISCO*/
 #endif

@@ -132,6 +132,7 @@ extern void trimDevice(void);
 //*****************************************************************************
 extern uint32_t _etext;
 extern uint32_t _data;
+extern uint32_t _sdata;
 extern uint32_t _edata;
 extern uint32_t _bss;
 extern uint32_t _ebss;
@@ -232,10 +233,26 @@ ResetISR(void)
         *pui32Dest++ = *pui32Src++;
     }
 
-    //
+    __asm(
+            "     movs  r1, #0\n"
+            "    b  LoopCopyDataInit\n"
+            "    CopyDataInit:\n"
+            "    ldr  r3, =_sidata\n"
+            "    ldr  r3, [r3, r1]\n"
+            "    str  r3, [r0, r1]\n"
+            "    adds  r1, r1, #4\n"
+            "    LoopCopyDataInit:\n"
+            "    ldr  r0, =_sdata\n"
+            "    ldr  r3, =_edata\n"
+            "    adds  r2, r0, r1\n"
+            "    cmp  r2, r3\n"
+            "    bcc  CopyDataInit"
+);
+   //
     // Zero fill the bss segment.
     //
-    __asm("    ldr     r0, =_bss\n"
+    __asm(
+          "    ldr     r0, =_bss\n"
           "    ldr     r1, =_ebss\n"
           "    mov     r2, #0\n"
           "    .thumb_func\n"
@@ -243,7 +260,8 @@ ResetISR(void)
           "        cmp     r0, r1\n"
           "        it      lt\n"
           "        strlt   r2, [r0], #4\n"
-          "        blt     zero_loop");
+          "        blt     zero_loop\n"
+          "         bl __libc_init_array");
    //
    // Call the application's entry point.
    //

@@ -536,6 +536,8 @@ uint8_t BSP_LCD_Init(void *_pDisplay)
 	/* Initialize the font */
 	BSP_LCD_LayerDefaultInit(_pDisplay, 0, LCD_FB_START_ADDRESS);
 
+	pDisplay->sClipRegion.sXMin = 0;
+	pDisplay->sClipRegion.sYMin = 0;
 	pDisplay->sClipRegion.sXMax = pDisplay->LcdTimings->X;
 	pDisplay->sClipRegion.sYMax = pDisplay->LcdTimings->Y;
 	return LCD_OK;
@@ -851,6 +853,8 @@ static uint8_t BSP_LCD_InitEx(void *screenHeandle)
 	 */
 	OTM8009A_Init(screenHeandle, hdsivideo_handle.ColorCoding);
 	/***********************End OTM8009A Initialization****************************/
+	pDisplay->sClipRegion.sXMin = 0;
+	pDisplay->sClipRegion.sYMin = 0;
 	pDisplay->sClipRegion.sXMax = pDisplay->LcdTimings->X;
 	pDisplay->sClipRegion.sYMax = pDisplay->LcdTimings->Y;
 	return LCD_OK;

@@ -35,6 +35,8 @@
 #define __FTPD_H__
 
 #include "vfs.h"
+#include <main.h>
+#if (USE_FTP == 1 && USE_LWIP == 1)
 #include "interface/LwIp/src/include/lwip/ip4_addr.h"
 #include "lib/buffers/ring_buff.h"
 
@@ -74,5 +76,6 @@ typedef struct  {
 }ftpd_msgstate;
 
 void ftpd_init(unsigned short port);
+#endif
 
 #endif	/* __FTPD_H__ */

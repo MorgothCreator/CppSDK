@@ -24,6 +24,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <time.h>
+#include <api/io_handle.h>
 #include "vfs.h"
 #include <string.h>
 #include <stdlib.h>
@@ -38,9 +40,12 @@ FIL guard_for_the_whole_fs;
 int vfs_read (void* buffer, int dummy, int len, vfs_file_t* file) {
 	unsigned int bytesread;
 	FRESULT r = f_read(file, buffer, len, &bytesread);
+
 	//uart.puts(DebugCom, buffer, len);
 	if (r != FR_OK)
 		return 0;
+	//GI::IO terminal = GI::IO((char *)"uart-0");
+	//terminal.write((unsigned char *)buffer, bytesread);
 	return bytesread;
 }
 
@@ -74,6 +79,8 @@ int vfs_stat(vfs_t* vfs, const char* filename, vfs_stat_t* st) {
 void vfs_close(vfs_t* vfs) {
 	if (vfs != &guard_for_the_whole_fs) {
 		/* Close a file */
+		//GI::IO terminal = GI::IO((char *)"uart-0");
+		//terminal.write((unsigned char *)"\r\r\r\r\r\r\r\rFile closed \r\r\r\r\r\r\r\r");
 		f_close(vfs);
 	}
 }
@@ -99,11 +106,15 @@ vfs_file_t* vfs_open(vfs_t* vfs, const char* filename, const char* mode) {
 		if (*mode == 'w') flags |= FA_WRITE | FA_CREATE_ALWAYS;
 		mode++;
 	}
+
+
 	FRESULT r = f_open(f, filename, flags);
 	if (FR_OK != r) {
 		free(f);
 		return NULL;
 	}
+	//GI::IO terminal = GI::IO((char *)"uart-0");
+	//terminal.write((unsigned char *)"\r\r\r\r\r\r\r\rFile oppened \r\r\r\r\r\r\r\r");
 	return f;
 }
 

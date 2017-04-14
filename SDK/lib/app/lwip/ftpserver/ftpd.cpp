@@ -30,8 +30,12 @@
  * ftpd.c - This file is part of the FTP daemon for lwIP
  *
  */
+
+#include <main.h>
 #define FTP_FIFO_SIZE 1460
 
+#if (USE_FTP == 1 && USE_LWIP == 1)
+#include <time.h>
 #include "ftpd.h"
 
 #include "lib/buffers/ring_buff.h"
@@ -306,34 +310,37 @@ static void send_data(struct tcp_pcb *pcb, ftpd_datastate *fsd)
 	u16_t len;
 	/* We cannot send more data than space available in the send
 	   buffer. */
-	if (tcp_sndbuf(pcb) < sfifo_used(&fsd->fifo)) {
-		len = tcp_sndbuf(pcb);
-	} else {
-		len = (u16_t) sfifo_used(&fsd->fifo);
-	}
-	unsigned char tmp_buff[FTP_FIFO_SIZE];
-	unsigned int length = fsd->fifo.pop(tmp_buff, len);
-	err = tcp_write(pcb, tmp_buff, (u16_t)(length), 1);
-	if (err != ERR_OK) {
-		LWIP_LO_DEBUG(("send_data: error writing 1!\n"));
-		return;
-	}
-	if(sfifo_used(&fsd->fifo))
+	while(sfifo_used(&fsd->fifo))
 	{
-		/* We cannot send more data than space available in the send
-		   buffer. */
 		if (tcp_sndbuf(pcb) < sfifo_used(&fsd->fifo)) {
 			len = tcp_sndbuf(pcb);
 		} else {
 			len = (u16_t) sfifo_used(&fsd->fifo);
 		}
-		length = fsd->fifo.pop(tmp_buff, len);
-		err = tcp_write(pcb, tmp_buff, length, 1);
+		unsigned char tmp_buff[FTP_FIFO_SIZE];
+		unsigned int length = fsd->fifo.pop(tmp_buff, len);
+		err = tcp_write(pcb, tmp_buff, (u16_t)(length), 1);
 		if (err != ERR_OK) {
-			LWIP_LO_DEBUG(("send_data: error writing 2!\n"));
+			LWIP_LO_DEBUG(("send_data: error writing 1!\n"));
 			return;
 		}
 	}
+//	if(sfifo_used(&fsd->fifo))
+//	{
+//		/* We cannot send more data than space available in the send
+//		   buffer. */
+//		if (tcp_sndbuf(pcb) < sfifo_used(&fsd->fifo)) {
+//			len = tcp_sndbuf(pcb);
+//		} else {
+//			len = (u16_t) sfifo_used(&fsd->fifo);
+//		}
+//		length = fsd->fifo.pop(tmp_buff, len);
+//		err = tcp_write(pcb, tmp_buff, length, 1);
+//		if (err != ERR_OK) {
+//			LWIP_LO_DEBUG(("send_data: error writing 2!\n"));
+//			return;
+//		}
+//	}
 }
 
 static void send_file(ftpd_datastate *fsd, struct tcp_pcb *pcb)
@@ -372,8 +379,8 @@ static void send_file(ftpd_datastate *fsd, struct tcp_pcb *pcb)
 				free(buffer);
 			return;
 		}
-		unsigned int len_written = sfifo_write(&fsd->fifo, buffer, len);
 		send_data(pcb, fsd);
+		unsigned int len_written = sfifo_write(&fsd->fifo, buffer, len);
 		if(len_written != len)
 		{
 			sfifo_write(&fsd->fifo, buffer + len_written, len - len_written);
@@ -1306,3 +1313,4 @@ void ftpd_init(unsigned short port)
 	pcb = tcp_listen(pcb);
 	tcp_accept(pcb, ftpd_msgaccept);
 }
+#endif

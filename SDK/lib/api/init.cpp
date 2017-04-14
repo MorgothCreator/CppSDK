@@ -19,6 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <main.h>
 #include <stdio.h>
 #include "init.h"
 #include <api/i2c.h>
@@ -29,6 +30,7 @@
 #include <api/spi.h>
 #include <api/i2c.h>
 #include <api/gpio.h>
+#include <api/init.h>
 
 extern CfgGpio gpioCfg[];
 extern CfgSpi spiCfg[];
@@ -140,7 +142,7 @@ GI::Board::Init::Init()
 	}
 /*******************************************************************/
 #if (SCREEN_INTERFACE_COUNT > 0 && defined(SCREEN_ENABLE))
-	SCREEN[0] = new GI::Dev::IntScreen(&SCREEN_ENABLE, NULL);;
+	SCREEN[0] = new GI::Dev::IntScreen(&SCREEN_ENABLE, NULL);
 	CAPTOUCH[0] = new GI::Screen::Cursor(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
 #endif
 #if defined(STD_OUT_PATH)
@@ -159,8 +161,17 @@ GI::Board::Init::Init()
 #if (USE_LWIP == 1)
 	LWIP[0] = new GI::Dev::Eth(0, 0);
 #endif
-#if (USE_LWIP_HTTPD_SERVER == 1)
+#if (USE_LWIP_HTTPD_SERVER == 1 && USE_LWIP == 1)
 	LWIP_HTTP_SERVER[0] = new GI::App::HttpServer(LWIP_HTTPD_SERVER_PORT);
+#endif
+#if (USE_TFTP == 1 && USE_LWIP == 1)
+	tftpd_init(TFTP_SERVER_PORT);
+#endif
+#if (USE_FTP == 1 && USE_LWIP == 1)
+	ftpd_init(FTP_SERVER_PORT);
+#endif
+#if (USE_SNTP == 1 && USE_LWIP == 1)
+	SNTP_CLIENT = new GI::App::SntpClient();
 #endif
 }
 
@@ -172,11 +183,10 @@ GI::Board::Init::~Init()
 void GI::Board::Init::idle()
 {
 #if (USE_MMCSD_ENABLE == 1 && MMCSD_INTERFACE_COUNT > 0)
-		MMCSD[0]->idle(0);
+	MMCSD[0]->idle(0);
 #endif
 #if (USE_LWIP == 1)
-		LWIP[0]->idle(0);
+	LWIP[0]->idle(0);
 #endif
-
 }
 

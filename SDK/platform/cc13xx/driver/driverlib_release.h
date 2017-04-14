@@ -83,7 +83,7 @@ extern "C"
     const volatile uint8_t driverlib_release_##group##_##build
 
 /// External declaration of the DriverLib release locking object
-extern DRIVERLIB_DECLARE_RELEASE(0, 45180);
+//extern DRIVERLIB_DECLARE_RELEASE(0, 45180);
 
 
 

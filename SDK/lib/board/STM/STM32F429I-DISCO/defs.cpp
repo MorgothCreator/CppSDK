@@ -6,7 +6,7 @@
  */
 #if defined(STM32F429I_DISCO)
 
-#include <board/STM32F469I-DISCO/defs.h>
+#include <board/STM/STM32F469I-DISCO/defs.h>
 #include <stdio.h>
 
 #include <api/gpio.h>
@@ -75,7 +75,7 @@ CfgI2c i2cCfg[] =
  */
 CfgUart uartCfg[] =
 {
-{ "uart-0", pin_mux_convert_to_pin(IOA, 9)	, pin_mux_convert_to_pin(IOA, 10)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
+{ "uart-con", pin_mux_convert_to_pin(IOA, 9)	, pin_mux_convert_to_pin(IOA, 10)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 { "", 0	, 0	, 0	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC}// End of table
 };
 /*
