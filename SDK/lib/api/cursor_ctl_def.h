@@ -28,6 +28,7 @@
 #include <api/lcd_def.h>
 #include <api/i2c.h>
 #include <api/gpio.h>
+#include <lib/gfx/controls_definition.h>
 /*#####################################################*/
 #define TouchScreen_Type_Int	0
 #define TouchScreen_Type_FT5x06	1
@@ -42,7 +43,7 @@ class Cursor
 public:
 	Cursor(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPinPath);
 	~Cursor();
-	bool idle();
+	tControlCommandData *idle();
 
 	double LcdTouch_U_Calibration_Value;
 	double LcdTouch_R_Calibration_Value;
@@ -92,6 +93,7 @@ public:
 	GI::Dev::I2c *twiStruct;
 	GI::Dev::Gpio *irqHeandle;
 	void *UsrData;
+	tControlCommandData cursor_ctl;
 private:
 	bool dataReady();
 

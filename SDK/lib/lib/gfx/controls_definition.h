@@ -156,12 +156,24 @@ typedef struct
 {
 	gfx_s32 X;
 	gfx_s32 Y;
+	gfx_s32 X2;
+	gfx_s32 Y2;
+	gfx_s32 X3;
+	gfx_s32 Y3;
+	gfx_s32 X4;
+	gfx_s32 Y4;
+	gfx_s32 X5;
+	gfx_s32 Y5;
+	CursorState Cursor;
+	CursorState Cursor2;
+	CursorState Cursor3;
+	CursorState Cursor4;
+	CursorState Cursor5;
 	gfx_u32 Data;
 	void* Settings;
 	bool CursorCoordonateUsed;
 	bool WindowRefresh;
 	ControlCommands Comand;
-	CursorState Cursor;
 }tControlCommandData;
 /*#####################################################*/
 typedef struct

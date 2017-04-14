@@ -83,16 +83,20 @@ GI::Screen::Cursor::Cursor(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPi
 
 #define ft5x06_TouchIdle_offset 8
 
-bool GI::Screen::Cursor::idle()
+tControlCommandData *GI::Screen::Cursor::idle()
 {
-	if(!this)
-		return false;
-	if(!irqHeandle->in())
-		return false;
+	if(!this || !irqHeandle->in())
+	{
+		memset(&cursor_ctl, 0, sizeof(tControlCommandData));
+		return &cursor_ctl;
+	}
 	unsigned char reg = 0xF9;
 	unsigned char result[38];
 	if(twiStruct->writeRead(twi_addr, &reg, 1, result, 38) != SYS_ERR_OK)
-		return false;
+	{
+		memset(&cursor_ctl, 0, sizeof(tControlCommandData));
+		return &cursor_ctl;
+	}
 	//if(Response[0] != 0xAA || Response[1] != 0xAA) return 0;
 	//TouchScreen_Data_t* TouchResponse = &TouchResponse;
 	TouchResponse.touch_point = result[ft5x06_TouchIdle_offset + 1] & 0x0F;
@@ -335,5 +339,21 @@ bool GI::Screen::Cursor::idle()
 		TouchResponse.y5 = -1;
 	}
 
-	return true;
+	memset(&cursor_ctl, 0, sizeof(tControlCommandData));
+	cursor_ctl.Cursor = (CursorState)TouchResponse.touch_event1;
+	cursor_ctl.X = TouchResponse.x1;
+	cursor_ctl.Y = TouchResponse.y1;
+	cursor_ctl.Cursor2 = (CursorState)TouchResponse.touch_event2;
+	cursor_ctl.X2 = TouchResponse.x2;
+	cursor_ctl.Y2 = TouchResponse.y2;
+	cursor_ctl.Cursor3 = (CursorState)TouchResponse.touch_event3;
+	cursor_ctl.X3 = TouchResponse.x3;
+	cursor_ctl.Y3 = TouchResponse.y3;
+	cursor_ctl.Cursor4 = (CursorState)TouchResponse.touch_event4;
+	cursor_ctl.X4 = TouchResponse.x4;
+	cursor_ctl.Y4 = TouchResponse.y4;
+	cursor_ctl.Cursor5 = (CursorState)TouchResponse.touch_event5;
+	cursor_ctl.X5 = TouchResponse.x5;
+	cursor_ctl.Y5 = TouchResponse.y5;
+	return &cursor_ctl;
 }
