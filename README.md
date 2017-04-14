@@ -104,6 +104,19 @@ int main(void)
 	}
 }
 ```
+OR
+```CPP
+int main(void)
+{
+	while(1)
+	{
+		GI::IO::write((char *)"led-0", true);
+		GI::Sys::Timer::delay(500);
+		GI::IO::write((char *)"led-0", false);
+		GI::Sys::Timer::delay(500);
+	}
+}
+```
 
 > Blinking led 1 using non blocking timer:
 
@@ -147,6 +160,43 @@ int main(void)
 				 * If "led-0" state is '0' put it to '1'.
 				 */
 				led_pin.write(true);
+		}
+	}
+}
+```
+OR
+```CPP
+int main(void)
+{
+	/*
+	 * Create a 500ms nonblocking timer.
+	 */
+	GI::Sys::Timer blink_timer = GI::Sys::Timer(500);
+	/*
+	 * Take controll to "led-0" pin.
+	 */
+	while(1)
+	{
+		/*
+		 * Ceck if is a tick.
+		 */
+		if(blink_timer.tick())
+		{
+			bool state;
+			/*
+			 * Get "led-0" state.
+			 */
+			GI::IO::read((char *)"led-0", &state);
+			if(state)
+				/*
+				 * If "led-0" state is '1' put it to '0'.
+				 */
+				GI::IO::write((char *)"led-0", false);
+			else
+				/*
+				 * If "led-0" state is '0' put it to '1'.
+				 */
+				GI::IO::write((char *)"led-0", true);
 		}
 	}
 }
