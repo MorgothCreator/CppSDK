@@ -126,42 +126,42 @@ GI::Dev::Spi::Spi(const char *path)
 	/* Enable SPI3 clock */
 	switch ((unsigned int) SpiHandle->Instance)
 	{
-#ifdef __HAL_RCC_SPI1_CLK_ENABLE
+#ifdef SPI1_BASE
 	case SPI1_BASE:
 		__HAL_RCC_SPI1_CLK_ENABLE()
 		;
 		GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
 		break;
 #endif
-#ifdef __HAL_RCC_SPI2_CLK_ENABLE
+#ifdef SPI2_BASE
 	case SPI2_BASE:
 		__HAL_RCC_SPI2_CLK_ENABLE()
 		;
 		GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
 		break;
 #endif
-#ifdef __HAL_RCC_SPI3_CLK_ENABLE
+#ifdef SPI3_BASE
 	case SPI3_BASE:
 		__HAL_RCC_SPI3_CLK_ENABLE()
 		;
 		GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
 		break;
 #endif
-#ifdef __HAL_RCC_SPI4_CLK_ENABLE
+#ifdef SPI4_BASE
 	case SPI4_BASE:
 		__HAL_RCC_SPI4_CLK_ENABLE()
 		;
 		GPIO_InitStruct.Alternate = GPIO_AF5_SPI4;
 		break;
 #endif
-#ifdef __HAL_RCC_SPI5_CLK_ENABLE
+#ifdef SPI5_BASE
 	case SPI5_BASE:
 		__HAL_RCC_SPI5_CLK_ENABLE()
 		;
 		GPIO_InitStruct.Alternate = GPIO_AF5_SPI5;
 		break;
 #endif
-#ifdef __HAL_RCC_SPI6_CLK_ENABLE
+#ifdef SPI6_BASE
 	case SPI6_BASE:
 		__HAL_RCC_SPI6_CLK_ENABLE()
 		;
@@ -169,13 +169,13 @@ GI::Dev::Spi::Spi(const char *path)
 		GPIO_InitStruct.Alternate = GPIO_AF5_SPI6;
 		break;
 #endif
-#ifdef __HAL_RCC_SPI7_CLK_ENABLE
+#ifdef SPI7_BASE
 		case SPI7_BASE:
 		__HAL_RCC_SPI7_CLK_ENABLE();
 		break;
 #endif
-#ifdef __HAL_RCC_SPI8_CLK_ENABLE
-		case SPI1_BASE:
+#ifdef SPI8_BASE
+		case SPI8_BASE:
 		__HAL_RCC_SPI8_CLK_ENABLE();
 		break;
 #endif
@@ -255,40 +255,52 @@ GI::Dev::Spi::~Spi()
 	//SPIx_RELEASE_RESET();
 	switch ((unsigned int) SpiHandle->Instance)
 	{
-#if defined(__HAL_RCC_SPI1_FORCE_RESET)
+#ifdef SPI1_BASE
 	case SPI1_BASE:
 		__HAL_RCC_SPI1_FORCE_RESET();
 		__HAL_RCC_SPI1_RELEASE_RESET();
 		break;
 #endif
-#if defined(__HAL_RCC_SPI2_FORCE_RESET)
+#ifdef SPI2_BASE
 	case SPI2_BASE:
 		__HAL_RCC_SPI2_FORCE_RESET();
 		__HAL_RCC_SPI2_RELEASE_RESET();
 		break;
 #endif
-#if defined(__HAL_RCC_SPI3_FORCE_RESET)
+#ifdef SPI3_BASE
 	case SPI3_BASE:
 		__HAL_RCC_SPI3_FORCE_RESET();
 		__HAL_RCC_SPI3_RELEASE_RESET();
 		break;
 #endif
-#if defined(__HAL_RCC_SPI4_FORCE_RESET)
+#ifdef SPI4_BASE
 	case SPI4_BASE:
 		__HAL_RCC_SPI4_FORCE_RESET();
 		__HAL_RCC_SPI4_RELEASE_RESET();
 		break;
 #endif
-#ifdef __HAL_RCC_SPI5_FORCE_RESET
+#ifdef SPI5_BASE
 	case SPI5_BASE:
 		__HAL_RCC_SPI5_FORCE_RESET();
 		__HAL_RCC_SPI5_RELEASE_RESET();
 		break;
 #endif
-#ifdef __HAL_RCC_SPI6_FORCE_RESET
+#ifdef SPI6_BASE
 	case SPI6_BASE:
 		__HAL_RCC_SPI6_FORCE_RESET();
 		__HAL_RCC_SPI6_RELEASE_RESET();
+		break;
+#endif
+#ifdef SPI7_BASE
+	case SPI7_BASE:
+		__HAL_RCC_SPI7_FORCE_RESET();
+		__HAL_RCC_SPI7_RELEASE_RESET();
+		break;
+#endif
+#ifdef SPI8_BASE
+	case SPI8_BASE:
+		__HAL_RCC_SPI8_FORCE_RESET();
+		__HAL_RCC_SPI8_RELEASE_RESET();
 		break;
 #endif
 	}

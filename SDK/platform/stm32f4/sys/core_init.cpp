@@ -42,8 +42,8 @@ unsigned long actualFcpu;
 
 void setVoltageScale(unsigned long core_freq)
 {
-	HAL_StatusTypeDef ret = HAL_OK;
 #if defined(PWR_REGULATOR_VOLTAGE_SCALE3)
+	HAL_StatusTypeDef ret = HAL_OK;
 	if(core_freq > 168000000)
 	{
 		__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
@@ -85,25 +85,35 @@ void setVoltageScale(unsigned long core_freq)
 		}
 	}
 #else
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) ||\
+    defined(STM32F469xx) || defined(STM32F479xx)
+	HAL_StatusTypeDef ret = HAL_OK;
+#endif
 	if(core_freq > 144000000)
 		{
 			__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) ||\
+    defined(STM32F469xx) || defined(STM32F479xx)
 			ret = HAL_PWREx_DisableOverDrive();
 			if(ret != HAL_OK)
 			{
 				while(1)
 				{	;}
 			}
+#endif
 		}
 		else
 		{
 			__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) ||\
+    defined(STM32F469xx) || defined(STM32F479xx)
 			ret = HAL_PWREx_DisableOverDrive();
 			if(ret != HAL_OK)
 			{
 				while(1)
 				{	;}
 			}
+#endif
 		}
 #endif
 }
@@ -359,6 +369,8 @@ void GI::Sys::Clock::changeCoreClk(unsigned long fCpu)
 		}
 	}
 
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) ||\
+    defined(STM32F469xx) || defined(STM32F479xx)
 	if (fCpu > 180000000)
 	{
 		if (HAL_PWREx_EnableOverDrive() != HAL_OK)
@@ -381,7 +393,7 @@ void GI::Sys::Clock::changeCoreClk(unsigned long fCpu)
 			}
 		}
 	}
-
+#endif
 	if(fCpu > 16000000)
 	{
 		/* The voltage scaling allows optimizing the power consumption when the device is
