@@ -32,6 +32,7 @@
 								<option id="gnu.c.compiler.option.debugging.level.1968975428" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.113530907" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F769I_Disco&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F769I_Disco&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\Common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\platform\stm32f7&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\lib&quot;"/>
@@ -71,6 +72,7 @@
 								<option id="fr.ac6.managedbuild.gnu.cpp.compiler.option.optimization.level.1496231212" name="Optimization Level" superClass="fr.ac6.managedbuild.gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1746649926" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1075387513" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F769I_Disco&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\ExampleSTM32F769I_Disco&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\Common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\GitHub\CppSDK\SDK\platform\stm32f7&quot;"/>

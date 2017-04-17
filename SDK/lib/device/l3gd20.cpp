@@ -60,7 +60,7 @@ bool GI::Sensor::L3gd20::writeRegs(unsigned char* pBuffer,
 		return false;
 	tmp_buff[0] = WriteAddr;
 	memcpy(tmp_buff + 1, pBuffer, NumByteToWrite);
-	if (SPI->write(tmp_buff, NumByteToWrite + 1) != NumByteToWrite + 1)
+	if (SPI->write(tmp_buff, NumByteToWrite + 1) != (int)NumByteToWrite + 1)
 		return false;
 	return true;
 }

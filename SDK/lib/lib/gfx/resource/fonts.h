@@ -295,4 +295,10 @@ extern const tFont g_sFontCmtt46;
 extern const tFont g_sFontCmtt48;
 //extern const tFont g_sFontFixed6x8;
 
+/*#####################################################*/
+#ifdef USE_VISUAL_STUDIO
+#include "fonts.cpp"
+#endif
+/*#####################################################*/
+
 #endif

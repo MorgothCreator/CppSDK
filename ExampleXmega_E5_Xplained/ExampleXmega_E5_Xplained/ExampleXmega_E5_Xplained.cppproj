@@ -1,0 +1,1050 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>6.2</ProjectVersion>
+    <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
+    <ProjectGuid>{4bcca38f-80f4-4515-9bd6-cc6697519c63}</ProjectGuid>
+    <avrdevice>ATxmega32E5</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>Executable</OutputType>
+    <Language>CPP</Language>
+    <OutputFileName>$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AssemblyName>ExampleXmega_E5_Xplained</AssemblyName>
+    <Name>ExampleXmega_E5_Xplained</Name>
+    <RootNamespace>ExampleXmega_E5_Xplained</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress />
+    <UncachedRange />
+    <preserveEEPROM>true</preserveEEPROM>
+    <OverrideVtorValue />
+    <BootSegment>2</BootSegment>
+    <eraseonlaunchrule>1</eraseonlaunchrule>
+    <AsfFrameworkConfig>
+      <framework-data xmlns="">
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.21.0" />
+        </dependencies>
+      </framework-data>
+    </AsfFrameworkConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>NDEBUG</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>NDEBUG</Value>
+          </ListValues>
+        </avrgcccpp.compiler.symbols.DefSymbols>
+        <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </avrgcccpp.linker.libraries.Libraries>
+      </AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>DEBUG</Value>
+      <Value>Xmega_E5_Xplained</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>C:\GitHub\CppSDK\Common</Value>
+      <Value>C:\GitHub\CppSDK\SDK\lib</Value>
+      <Value>C:\GitHub\CppSDK\SDK\platform\xmega</Value>
+      <Value>..</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.general.SubroutinesFunctionPrologues>True</avrgcccpp.compiler.general.SubroutinesFunctionPrologues>
+  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcccpp.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>DEBUG</Value>
+      <Value>Xmega_E5_Xplained</Value>
+    </ListValues>
+  </avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>C:\GitHub\CppSDK\Common</Value>
+      <Value>C:\GitHub\CppSDK\SDK\lib</Value>
+      <Value>C:\GitHub\CppSDK\SDK\platform\xmega</Value>
+      <Value>..</Value>
+    </ListValues>
+  </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+    </ListValues>
+  </avrgcccpp.linker.libraries.Libraries>
+  <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+</AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="main.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="main.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\Common\board.h">
+      <Link>Common\board.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\Common\main_app.cpp">
+      <Link>Common\main_app.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\Common\main_app.h">
+      <Link>Common\main_app.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\adc.h">
+      <Link>lib\api\adc.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\cursor_ctl_def.h">
+      <Link>lib\api\cursor_ctl_def.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\dev_request.cpp">
+      <Link>lib\api\dev_request.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\dev_request.h">
+      <Link>lib\api\dev_request.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\eth.h">
+      <Link>lib\api\eth.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\gpio.h">
+      <Link>lib\api\gpio.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\i2c.h">
+      <Link>lib\api\i2c.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\init.cpp">
+      <Link>lib\api\init.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\init.h">
+      <Link>lib\api\init.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\io_handle.cpp">
+      <Link>lib\api\io_handle.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\io_handle.h">
+      <Link>lib\api\io_handle.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\lcd_def.cpp">
+      <Link>lib\api\lcd_def.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\lcd_def.h">
+      <Link>lib\api\lcd_def.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\mmcsd_def.h">
+      <Link>lib\api\mmcsd_def.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\qspi_def.h">
+      <Link>lib\api\qspi_def.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\rtc_def.h">
+      <Link>lib\api\rtc_def.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\spi.h">
+      <Link>lib\api\spi.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\std.cpp">
+      <Link>lib\api\std.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\std.h">
+      <Link>lib\api\std.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\timer.cpp">
+      <Link>lib\api\timer.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\timer.h">
+      <Link>lib\api\timer.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\uart.h">
+      <Link>lib\api\uart.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\debug.h">
+      <Link>lib\app\lwip\debug.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\ftpserver\ftpd.cpp">
+      <Link>lib\app\lwip\ftpserver\ftpd.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\ftpserver\ftpd.h">
+      <Link>lib\app\lwip\ftpserver\ftpd.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\ftpserver\vfs.cpp">
+      <Link>lib\app\lwip\ftpserver\vfs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\ftpserver\vfs.h">
+      <Link>lib\app\lwip\ftpserver\vfs.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\httpd\httpd.cpp">
+      <Link>lib\app\lwip\httpd\httpd.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\httpd\httpd.h">
+      <Link>lib\app\lwip\httpd\httpd.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\http_client\http_client.cpp">
+      <Link>lib\app\lwip\http_client\http_client.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\http_client\http_client.h">
+      <Link>lib\app\lwip\http_client\http_client.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\sntp\sntp.cpp">
+      <Link>lib\app\lwip\sntp\sntp.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\sntp\sntp.h">
+      <Link>lib\app\lwip\sntp\sntp.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\tftpserver\tftpserver.cpp">
+      <Link>lib\app\lwip\tftpserver\tftpserver.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\tftpserver\tftpserver.h">
+      <Link>lib\app\lwip\tftpserver\tftpserver.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\tftpserver\tftputils.c">
+      <Link>lib\app\lwip\tftpserver\tftputils.c</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\lwip\tftpserver\tftputils.h">
+      <Link>lib\app\lwip\tftpserver\tftputils.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\sys\cat.cpp">
+      <Link>lib\app\sys\cat.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\sys\cd.cpp">
+      <Link>lib\app\sys\cd.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\sys\cmd.cpp">
+      <Link>lib\app\sys\cmd.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\sys\cmd.h">
+      <Link>lib\app\sys\cmd.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\sys\ls.cpp">
+      <Link>lib\app\sys\ls.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\sys\util.cpp">
+      <Link>lib\app\sys\util.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\app\sys\util.h">
+      <Link>lib\app\sys\util.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\ATMEL\FeatherAdaloggerM0\defs.cpp">
+      <Link>lib\board\ATMEL\FeatherAdaloggerM0\defs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\ATMEL\FeatherAdaloggerM0\defs.h">
+      <Link>lib\board\ATMEL\FeatherAdaloggerM0\defs.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\ATMEL\FeatherAdaloggerM0\ffconf.h">
+      <Link>lib\board\ATMEL\FeatherAdaloggerM0\ffconf.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\ATMEL\FeatherAdaloggerM0\lwipopts.h">
+      <Link>lib\board\ATMEL\FeatherAdaloggerM0\lwipopts.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\ATMEL\Xmega-E5_Xplained\defs.cpp">
+      <Link>lib\board\ATMEL\Xmega-E5_Xplained\defs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\ATMEL\Xmega-E5_Xplained\defs.h">
+      <Link>lib\board\ATMEL\Xmega-E5_Xplained\defs.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\ATMEL\Xmega-E5_Xplained\ffconf.h">
+      <Link>lib\board\ATMEL\Xmega-E5_Xplained\ffconf.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\ATMEL\Xmega-E5_Xplained\lwipopts.h">
+      <Link>lib\board\ATMEL\Xmega-E5_Xplained\lwipopts.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\NXP\FRDM-KEAZ128\defs.cpp">
+      <Link>lib\board\NXP\FRDM-KEAZ128\defs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\NXP\FRDM-KEAZ128\defs.h">
+      <Link>lib\board\NXP\FRDM-KEAZ128\defs.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\NXP\FRDM-KEAZ128\ffconf.h">
+      <Link>lib\board\NXP\FRDM-KEAZ128\ffconf.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\NXP\FRDM-KEAZ128\lwipopts.h">
+      <Link>lib\board\NXP\FRDM-KEAZ128\lwipopts.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\MikromediaForSTM32M4\defs.cpp">
+      <Link>lib\board\STM\MikromediaForSTM32M4\defs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\MikromediaForSTM32M4\defs.h">
+      <Link>lib\board\STM\MikromediaForSTM32M4\defs.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\MikromediaForSTM32M4\ffconf.h">
+      <Link>lib\board\STM\MikromediaForSTM32M4\ffconf.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\MikromediaForSTM32M4\lwipopts.h">
+      <Link>lib\board\STM\MikromediaForSTM32M4\lwipopts.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F429I-DISCO\defs.cpp">
+      <Link>lib\board\STM\STM32F429I-DISCO\defs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F429I-DISCO\defs.h">
+      <Link>lib\board\STM\STM32F429I-DISCO\defs.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F429I-DISCO\ffconf.h">
+      <Link>lib\board\STM\STM32F429I-DISCO\ffconf.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F429I-DISCO\lwipopts.h">
+      <Link>lib\board\STM\STM32F429I-DISCO\lwipopts.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F469I-DISCO\defs.cpp">
+      <Link>lib\board\STM\STM32F469I-DISCO\defs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F469I-DISCO\defs.h">
+      <Link>lib\board\STM\STM32F469I-DISCO\defs.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F469I-DISCO\ffconf.h">
+      <Link>lib\board\STM\STM32F469I-DISCO\ffconf.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F469I-DISCO\lwipopts.h">
+      <Link>lib\board\STM\STM32F469I-DISCO\lwipopts.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F769I-DISCO\defs.cpp">
+      <Link>lib\board\STM\STM32F769I-DISCO\defs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F769I-DISCO\defs.h">
+      <Link>lib\board\STM\STM32F769I-DISCO\defs.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F769I-DISCO\ffconf.h">
+      <Link>lib\board\STM\STM32F769I-DISCO\ffconf.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\STM\STM32F769I-DISCO\lwipopts.h">
+      <Link>lib\board\STM\STM32F769I-DISCO\lwipopts.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\TI\SmartRF06\defs.cpp">
+      <Link>lib\board\TI\SmartRF06\defs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\TI\SmartRF06\defs.h">
+      <Link>lib\board\TI\SmartRF06\defs.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\TI\SmartRF06\ffconf.h">
+      <Link>lib\board\TI\SmartRF06\ffconf.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\board\TI\SmartRF06\lwipopts.h">
+      <Link>lib\board\TI\SmartRF06\lwipopts.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\ak8975.cpp">
+      <Link>lib\device\ak8975.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\ak8975.h">
+      <Link>lib\device\ak8975.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\bmp180.cpp">
+      <Link>lib\device\bmp180.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\bmp180.h">
+      <Link>lib\device\bmp180.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\ft5x06.cpp">
+      <Link>lib\device\ft5x06.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\ft5x06.h">
+      <Link>lib\device\ft5x06.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\hih6130.cpp">
+      <Link>lib\device\hih6130.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\hih6130.h">
+      <Link>lib\device\hih6130.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\ili9341.cpp">
+      <Link>lib\device\ili9341.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\ili9341.h">
+      <Link>lib\device\ili9341.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\l3gd20.cpp">
+      <Link>lib\device\l3gd20.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\l3gd20.h">
+      <Link>lib\device\l3gd20.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\lepton_flir.cpp">
+      <Link>lib\device\lepton_flir.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\lepton_flir.h">
+      <Link>lib\device\lepton_flir.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\mi0283_gpio.cpp">
+      <Link>lib\device\mi0283_gpio.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\mi0283_gpio.h">
+      <Link>lib\device\mi0283_gpio.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\mpl3115a2.cpp">
+      <Link>lib\device\mpl3115a2.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\mpl3115a2.h">
+      <Link>lib\device\mpl3115a2.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\mpr121.cpp">
+      <Link>lib\device\mpr121.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\mpr121.h">
+      <Link>lib\device\mpr121.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\mpu60x0_9x50.cpp">
+      <Link>lib\device\mpu60x0_9x50.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\mpu60x0_9x50.h">
+      <Link>lib\device\mpu60x0_9x50.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\otm8009a.cpp">
+      <Link>lib\device\otm8009a.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\device\otm8009a.h">
+      <Link>lib\device\otm8009a.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\include\global.h">
+      <Link>lib\include\global.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\include\global_color.cpp">
+      <Link>lib\include\global_color.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\buffers\ring_buff.cpp">
+      <Link>lib\lib\buffers\ring_buff.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\buffers\ring_buff.h">
+      <Link>lib\lib\buffers\ring_buff.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\crypto\aes.cpp">
+      <Link>lib\lib\crypto\aes.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\crypto\aes.h">
+      <Link>lib\lib\crypto\aes.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat.cpp">
+      <Link>lib\lib\fs\fat.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat.h">
+      <Link>lib\lib\fs\fat.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\inc\diskio.h">
+      <Link>lib\lib\fs\fat\inc\diskio.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\inc\fattime.h">
+      <Link>lib\lib\fs\fat\inc\fattime.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\inc\ff.h">
+      <Link>lib\lib\fs\fat\inc\ff.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\inc\integer.h">
+      <Link>lib\lib\fs\fat\inc\integer.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\src\diskio.cpp">
+      <Link>lib\lib\fs\fat\src\diskio.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\src\fattime.cpp">
+      <Link>lib\lib\fs\fat\src\fattime.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\src\ff.cpp">
+      <Link>lib\lib\fs\fat\src\ff.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\src\option\cc932.cpp">
+      <Link>lib\lib\fs\fat\src\option\cc932.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\src\option\cc936.cpp">
+      <Link>lib\lib\fs\fat\src\option\cc936.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\src\option\cc949.cpp">
+      <Link>lib\lib\fs\fat\src\option\cc949.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\src\option\cc950.cpp">
+      <Link>lib\lib\fs\fat\src\option\cc950.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\src\option\ccsbcs.cpp">
+      <Link>lib\lib\fs\fat\src\option\ccsbcs.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\fat\src\option\syncobj.cpp">
+      <Link>lib\lib\fs\fat\src\option\syncobj.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\ram.cpp">
+      <Link>lib\lib\fs\ram.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\fs\ram.h">
+      <Link>lib\lib\fs\ram.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\3d.cpp">
+      <Link>lib\lib\gfx\3d.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\3d.h">
+      <Link>lib\lib\gfx\3d.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\bitmap.cpp">
+      <Link>lib\lib\gfx\bitmap.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\bitmap.h">
+      <Link>lib\lib\gfx\bitmap.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\button.cpp">
+      <Link>lib\lib\gfx\button.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\button.h">
+      <Link>lib\lib\gfx\button.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\checkbox.cpp">
+      <Link>lib\lib\gfx\checkbox.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\checkbox.h">
+      <Link>lib\lib\gfx\checkbox.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\controls_definition.cpp">
+      <Link>lib\lib\gfx\controls_definition.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\controls_definition.h">
+      <Link>lib\lib\gfx\controls_definition.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\files\stl.cpp">
+      <Link>lib\lib\gfx\files\stl.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\files\stl.h">
+      <Link>lib\lib\gfx\files\stl.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\gfxdef.h">
+      <Link>lib\lib\gfx\gfxdef.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\gfx_gui_paint.cpp">
+      <Link>lib\lib\gfx\gfx_gui_paint.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\gfx_gui_paint.h">
+      <Link>lib\lib\gfx\gfx_gui_paint.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\gfx_util.cpp">
+      <Link>lib\lib\gfx\gfx_util.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\gfx_util.h">
+      <Link>lib\lib\gfx\gfx_util.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\graphic_string.cpp">
+      <Link>lib\lib\gfx\graphic_string.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\graphic_string.h">
+      <Link>lib\lib\gfx\graphic_string.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\item.cpp">
+      <Link>lib\lib\gfx\item.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\item.h">
+      <Link>lib\lib\gfx\item.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\keyboard.cpp">
+      <Link>lib\lib\gfx\keyboard.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\keyboard.h">
+      <Link>lib\lib\gfx\keyboard.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\cfg.h">
+      <Link>lib\lib\gfx\libdrawtext\cfg.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\draw.cpp">
+      <Link>lib\lib\gfx\libdrawtext\draw.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\drawrast.cpp">
+      <Link>lib\lib\gfx\libdrawtext\drawrast.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\drawtext.h">
+      <Link>lib\lib\gfx\libdrawtext\drawtext.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\drawtext_impl.cpp">
+      <Link>lib\lib\gfx\libdrawtext\drawtext_impl.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\drawtext_impl.h">
+      <Link>lib\lib\gfx\libdrawtext\drawtext_impl.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\font.cpp">
+      <Link>lib\lib\gfx\libdrawtext\font.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\tpool.cpp">
+      <Link>lib\lib\gfx\libdrawtext\tpool.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\tpool.h">
+      <Link>lib\lib\gfx\libdrawtext\tpool.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\libdrawtext\utf8.cpp">
+      <Link>lib\lib\gfx\libdrawtext\utf8.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\listbox.cpp">
+      <Link>lib\lib\gfx\listbox.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\listbox.h">
+      <Link>lib\lib\gfx\listbox.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\PasswordWindowNumeric.cpp">
+      <Link>lib\lib\gfx\PasswordWindowNumeric.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\PasswordWindowNumeric.h">
+      <Link>lib\lib\gfx\PasswordWindowNumeric.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\picturebox.cpp">
+      <Link>lib\lib\gfx\picturebox.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\picturebox.h">
+      <Link>lib\lib\gfx\picturebox.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\progressbar.cpp">
+      <Link>lib\lib\gfx\progressbar.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\progressbar.h">
+      <Link>lib\lib\gfx\progressbar.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\resource\fonts.cpp">
+      <Link>lib\lib\gfx\resource\fonts.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\resource\fonts.h">
+      <Link>lib\lib\gfx\resource\fonts.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\scrollbar.cpp">
+      <Link>lib\lib\gfx\scrollbar.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\scrollbar.h">
+      <Link>lib\lib\gfx\scrollbar.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\string.cpp">
+      <Link>lib\lib\gfx\string.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\string.h">
+      <Link>lib\lib\gfx\string.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\textbox.cpp">
+      <Link>lib\lib\gfx\textbox.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\textbox.h">
+      <Link>lib\lib\gfx\textbox.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\util.cpp">
+      <Link>lib\lib\gfx\util.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\util.h">
+      <Link>lib\lib\gfx\util.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\window.cpp">
+      <Link>lib\lib\gfx\window.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\gfx\window.h">
+      <Link>lib\lib\gfx\window.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\operators.cpp">
+      <Link>lib\lib\operators.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\operators.h">
+      <Link>lib\lib\operators.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\string.cpp">
+      <Link>lib\lib\string.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\string.h">
+      <Link>lib\lib\string.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\util\converters.cpp">
+      <Link>lib\lib\util\converters.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\util\converters.h">
+      <Link>lib\lib\util\converters.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\util\hex_string.cpp">
+      <Link>lib\lib\util\hex_string.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\lib\lib\util\hex_string.h">
+      <Link>lib\lib\util\hex_string.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\driver\i2c.h">
+      <Link>xmega\driver\i2c.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\driver\spi.h">
+      <Link>xmega\driver\spi.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\driver\uart.h">
+      <Link>xmega\driver\uart.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\eth.cpp">
+      <Link>xmega\interface\eth.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\eth.h">
+      <Link>xmega\interface\eth.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\gpio.cpp">
+      <Link>xmega\interface\gpio.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\gpio.h">
+      <Link>xmega\interface\gpio.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\i2c.cpp">
+      <Link>xmega\interface\i2c.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\i2c.h">
+      <Link>xmega\interface\i2c.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\mmcsd.cpp">
+      <Link>xmega\interface\mmcsd.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\mmcsd.h">
+      <Link>xmega\interface\mmcsd.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\mmcsd_def.h">
+      <Link>xmega\interface\mmcsd_def.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\screen.cpp">
+      <Link>xmega\interface\screen.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\screen.h">
+      <Link>xmega\interface\screen.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\screen_def.h">
+      <Link>xmega\interface\screen_def.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\spi.cpp">
+      <Link>xmega\interface\spi.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\spi.h">
+      <Link>xmega\interface\spi.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\uart.cpp">
+      <Link>xmega\interface\uart.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\uart.h">
+      <Link>xmega\interface\uart.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\usbh_msc.h">
+      <Link>xmega\interface\usbh_msc.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\usbh_msc_def.h">
+      <Link>xmega\interface\usbh_msc_def.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\interface\usb_def.h">
+      <Link>xmega\interface\usb_def.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\sys\cache.h">
+      <Link>xmega\sys\cache.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\sys\core_init.cpp">
+      <Link>xmega\sys\core_init.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\sys\core_init.h">
+      <Link>xmega\sys\core_init.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\sys\systime.cpp">
+      <Link>xmega\sys\systime.cpp</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="C:\GitHub\CppSDK\SDK\platform\xmega\sys\systime.h">
+      <Link>xmega\sys\systime.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="lib\" />
+    <Folder Include="lib\api\" />
+    <Folder Include="lib\app\" />
+    <Folder Include="lib\app\lwip\" />
+    <Folder Include="lib\app\lwip\ftpserver\" />
+    <Folder Include="lib\app\lwip\httpd\" />
+    <Folder Include="lib\app\lwip\http_client\" />
+    <Folder Include="lib\app\lwip\sntp\" />
+    <Folder Include="lib\app\lwip\tftpserver\" />
+    <Folder Include="lib\app\sys\" />
+    <Folder Include="lib\board\" />
+    <Folder Include="lib\board\ATMEL\" />
+    <Folder Include="lib\board\ATMEL\FeatherAdaloggerM0\" />
+    <Folder Include="lib\board\ATMEL\Xmega-E5_Xplained\" />
+    <Folder Include="lib\board\NXP\" />
+    <Folder Include="lib\board\NXP\FRDM-KEAZ128\" />
+    <Folder Include="lib\board\STM\" />
+    <Folder Include="lib\board\STM\MikromediaForSTM32M4\" />
+    <Folder Include="lib\board\STM\STM32F429I-DISCO\" />
+    <Folder Include="lib\board\STM\STM32F469I-DISCO\" />
+    <Folder Include="lib\board\STM\STM32F769I-DISCO\" />
+    <Folder Include="lib\board\TI\" />
+    <Folder Include="lib\board\TI\SmartRF06\" />
+    <Folder Include="lib\device\" />
+    <Folder Include="lib\include\" />
+    <Folder Include="lib\lib\" />
+    <Folder Include="lib\lib\buffers\" />
+    <Folder Include="lib\lib\crypto\" />
+    <Folder Include="lib\lib\fs\" />
+    <Folder Include="lib\lib\fs\fat\" />
+    <Folder Include="lib\lib\fs\fat\inc\" />
+    <Folder Include="lib\lib\fs\fat\src\" />
+    <Folder Include="lib\lib\fs\fat\src\option\" />
+    <Folder Include="lib\lib\gfx\" />
+    <Folder Include="lib\lib\gfx\files\" />
+    <Folder Include="lib\lib\gfx\libdrawtext\" />
+    <Folder Include="lib\lib\gfx\resource\" />
+    <Folder Include="lib\lib\util\" />
+    <Folder Include="xmega\" />
+    <Folder Include="xmega\driver\" />
+    <Folder Include="xmega\interface\" />
+    <Folder Include="xmega\sys\" />
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>

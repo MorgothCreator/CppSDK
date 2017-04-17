@@ -106,6 +106,11 @@
 void ili9341_Init(const char *spiPath, void *_pDisplay);
 
 
+ /*#####################################################*/
+ #ifdef USE_VISUAL_STUDIO
+ #include "ili9341.cpp"
+ #endif
+ /*#####################################################*/
 
 
 #endif /* LIB_DEVICE_ILI9341_H_ */

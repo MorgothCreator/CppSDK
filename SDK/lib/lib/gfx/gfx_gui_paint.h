@@ -168,8 +168,8 @@ typedef struct Gfx_res_s {
 extern Gfx_res_t sysem_gui_res;
 void gui_put_item(void *pDisplay, gfx_s32 x_start, gfx_s32 y_start, gfx_s32 x_len, gfx_s32 y_len, gfx_u32 int_color, gfx_u32 border_color, CursorState cursor, GUI_PAINT_STYLE style, bool enabled);
 /*#####################################################*/
-#ifdef HEADER_INCLUDE_C_FILES
-#include "gfx_gui_paint.c"
+#ifdef USE_VISUAL_STUDIO
+#include "gfx_gui_paint.cpp"
 #endif
 /*#####################################################*/
 #endif /* PAINT_H_ */

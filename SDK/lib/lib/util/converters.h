@@ -44,8 +44,8 @@ public:
 };
 }
 //#####################################################
-#ifdef HEADER_INCLUDE_C_FILES
-#include <lib/util/converters.cpp>
+#ifdef USE_VISUAL_STUDIO
+#include "converters.cpp"
 #endif
 //#####################################################
 #endif

@@ -171,4 +171,9 @@ public:
 
 //extern avr_fs *ram_fs_root[];
 
+/*#####################################################*/
+#ifdef USE_VISUAL_STUDIO
+#include "ram.cpp"
+#endif
+/*#####################################################*/
 #endif /* RAM_FS_H_ */

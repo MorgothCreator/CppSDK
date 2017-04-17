@@ -73,7 +73,7 @@ public:
 }
 }
 /*#####################################################*/
-#ifdef HEADER_INCLUDE_C_FILES
+#ifdef USE_VISUAL_STUDIO
 #include <device/hih6130.cpp>
 #endif
 
