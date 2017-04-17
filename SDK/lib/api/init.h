@@ -96,10 +96,4 @@ public:
 extern GI::Sys::Clock coreClk;
 extern GI::Board::Init dev;
 
-/*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "init.cpp"
-#endif
-/*#####################################################*/
-
 #endif /* STM32F7_BOARD_INIT_H_ */

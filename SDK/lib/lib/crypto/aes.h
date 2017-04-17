@@ -40,9 +40,8 @@ private:
 	unsigned char* Iv;
 };
 
-/*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "aes.cpp"
-#endif
-/*#####################################################*/
+
+
+
+
 #endif /* AES_H_ */

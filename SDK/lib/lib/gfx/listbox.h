@@ -196,8 +196,8 @@ private:
 }
 }
 //#######################################################################################
-#ifdef USE_VISUAL_STUDIO
-#include "listbox.cpp"
+#ifdef HEADER_INCLUDE_C_FILES
+#include "listbox.c"
 #endif
 //#######################################################################################
 #endif /* LISTBOX_H_ */

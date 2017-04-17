@@ -136,8 +136,8 @@ bool picturebox_put_bitmap(tPictureBox* settings, gfx_u8 *file, gfx_s32 X, gfx_s
 bool picturebox_put_fbitmap(tPictureBox* settings, char *path, gfx_s32 X, gfx_s32 Y, bool use_transparency, bool scale);
 #endif
 //#######################################################################################
-#ifdef USE_VISUAL_STUDIO
-#include "picturebox.cpp"
+#ifdef HEADER_INCLUDE_C_FILES
+#include "picturebox.c"
 #endif
 //#######################################################################################
 #endif /* BUTON_H_ */

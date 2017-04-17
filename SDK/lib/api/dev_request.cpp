@@ -19,8 +19,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <api/init.h>
 #include "dev_request.h"
+#include <api/init.h>
 
 SysErr GI::Dev::DevRequest::request(char *path, GI::Dev::Gpio **device)
 {

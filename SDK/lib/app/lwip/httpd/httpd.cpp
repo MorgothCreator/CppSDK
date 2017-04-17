@@ -81,7 +81,6 @@
  */
 
 #include <main.h>
-#if (USE_FTP == 1 && USE_LWIP == 1)
 #include "httpd.h"
 #include "interface/LwIp/src/include/lwip/apps/httpd.h"
 #include "interface/LwIp/src/include/lwip/debug.h"
@@ -2453,4 +2452,3 @@ GI::App::HttpServer::HttpServer(unsigned short port)
 }
 
 #endif /* LWIP_TCP */
-#endif

@@ -136,7 +136,7 @@ static const gfx_u8 CharTable6x8[] =
 	0x14,0x36,0x77,0x36,0x14,0x00 };//			128
 
 
-#if (__SIZEOF_INT__ == 4)
+#ifndef INT_SIZE_IS_2_BYTES
 //#if 4 == sizeof(gfx_u32)
 #define ReturnCommand_gp  (unsigned)(29)
 #define ReturnCommand_gm  (unsigned)(0x07 << ReturnCommand_gp)
@@ -243,9 +243,5 @@ namespace Screen
 }
 }
 
-/*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "string.cpp"
-#endif
-/*#####################################################*/
+
 #endif /* LIB_LIB_GFX_STRING_H_ */

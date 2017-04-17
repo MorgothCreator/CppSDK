@@ -86,10 +86,4 @@ namespace GI
 		unsigned int itemsCount;
 	};
 }
-/*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "string.cpp"
-#endif
-/*#####################################################*/
-
 #endif /* LIB_LIB_STRING_H_ */

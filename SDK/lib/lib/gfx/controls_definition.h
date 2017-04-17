@@ -35,7 +35,7 @@
 #define FONT_FMT_UNCOMPRESSED   0x00
 #define ABSENT_CHAR_REPLACEMENT '.'
 /*#####################################################*/
-/*#if (__SIZEOF_INT__ == 4)
+#ifndef INT_SIZE_IS_2_BYTES
 //#if 4 == sizeof(gfx_u32)
 #define ReturnCommand_gp  (unsigned)(29)
 #define ReturnCommand_gm  (unsigned)(0x07 << ReturnCommand_gp)
@@ -54,7 +54,7 @@
 #define ReturnCommand_GoLeft  (unsigned)(0x03<<ReturnCommand_gp)
 #define ReturnCommand_GoRight  (unsigned)(0x04<<ReturnCommand_gp)
 #define ReturnCommand_MaxValue  (unsigned)(0x08)
-#endif*/
+#endif
 /*#####################################################*/
 #define BORDER_LINE_ONE_LIGHT		2
 #define BORDER_LINE_TWO_LIGHT		1.5
@@ -266,8 +266,8 @@ void put_triangle(void *pDisplay, gfx_s32  Ax,gfx_s32  Ay,gfx_s32  Bx,gfx_s32  B
 
 
 /*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "controls_definition.cpp"
+#ifdef HEADER_INCLUDE_C_FILES
+#include "controls_definition.c"
 #endif
 /*#####################################################*/
 #endif /* CONTROLS_DEFINITION_H_ */

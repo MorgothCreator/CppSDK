@@ -8,8 +8,6 @@
 #ifndef NXP_KEAZ_SYS_CORE_INIT_H_
 #define NXP_KEAZ_SYS_CORE_INIT_H_
 
-#include <board.h>
-
 extern unsigned long FCPU;
 extern unsigned long PLL_REF_CLK;
 

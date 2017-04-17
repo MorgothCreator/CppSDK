@@ -154,8 +154,8 @@ private:
 }
 }
 //#######################################################################################
-#ifdef USE_VISUAL_STUDIO
-#include "progressbar.cpp"
+#ifdef HEADER_INCLUDE_C_FILES
+#include "progressbar.c"
 #endif
 //#######################################################################################
 #endif /* PROGRESSBAR_H_ */

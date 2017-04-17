@@ -31,20 +31,11 @@
 #include <api/i2c.h>
 #include <api/gpio.h>
 #include <api/init.h>
-#include <lib/operators.h>
 
-#if (USE_GPIO == 1)
 extern CfgGpio gpioCfg[];
-#endif
-#if (USE_SPI == 1)
 extern CfgSpi spiCfg[];
-#endif
-#if (USE_I2C == 1)
 extern CfgI2c i2cCfg[];
-#endif
-#if (USE_UART == 1)
 extern CfgUart uartCfg[];
-#endif
 
 GI::Sys::Clock coreClk = GI::Sys::Clock();
 GI::Board::Init dev = GI::Board::Init();
@@ -70,7 +61,8 @@ GI::Board::Init::Init()
     /*
      * Allocate memory to store pins handlers pointers.
      */
-    GPIO = (GI::Dev::Gpio **) calloc(1, (table_len + 1) * sizeof(GI::Dev::Gpio *));
+    GPIO = (GI::Dev::Gpio **) calloc(1,
+                                     (table_len + 1) * sizeof(GI::Dev::Gpio *));
     /*
      * Allocate create and initialize pins.
      */
@@ -95,7 +87,8 @@ GI::Board::Init::Init()
     /*
      * Allocate memory to store uarts handlers pointers.
      */
-    UART = (GI::Dev::Uart **) calloc(1, (table_len + 1) * sizeof(GI::Dev::Uart *));
+    UART = (GI::Dev::Uart **) calloc(1,
+                                     (table_len + 1) * sizeof(GI::Dev::Uart *));
     /*
      * Allocate create and initialize uarts.
      */

@@ -256,11 +256,9 @@ private:
 };
 }
 }
-
 /*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "MPU60x0_9150.cpp"
+#ifdef HEADER_INCLUDE_C_FILES
+#include "MPU60x0_9150.c"
 #endif
-/*#####################################################*/
 
 #endif /* MPU60X0_9150_H_ */

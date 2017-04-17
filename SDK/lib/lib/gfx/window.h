@@ -671,8 +671,8 @@ private:
 }
 }
 //#######################################################################################
-#ifdef USE_VISUAL_STUDIO
-#include "window.cpp"
+#ifdef HEADER_INCLUDE_C_FILES
+#include "window.c"
 #endif
 //#######################################################################################
 #endif /* WINDOW_H_ */

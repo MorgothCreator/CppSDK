@@ -210,12 +210,6 @@ uint8_t OTM8009A_Init(void *_pDisplay, uint32_t ColorCoding);
 }
 #endif
 
- /*#####################################################*/
- #ifdef USE_VISUAL_STUDIO
- #include "otm8009a.cpp"
- #endif
- /*#####################################################*/
-
 #endif /* __OTM8009A_480X800_H */
 /**
   * @}

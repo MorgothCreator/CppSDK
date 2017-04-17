@@ -9,27 +9,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <api/spi.h>
-#include <interface/gpio.h>
+#include <driver/gpio.h>
 #include <driver/spi.h>
 #include <sys/core_init.h>
 
 extern CfgSpi spiCfg[];
-
-SPI_t* SPI_BASE_PTRS[] =
-{
-#ifdef SPIC
-		&SPIC,
-#endif
-#ifdef SPID
-		&SPID,
-#endif
-#ifdef SPIE
-		&SPIE,
-#endif
-#ifdef SPIF
-		&SPIF,
-#endif
-		};
 
 GI::Dev::Spi::Spi(const char *path)
 {
@@ -70,13 +54,11 @@ GI::Dev::Spi::Spi(const char *path)
 	}
 
 	memset(this, 0, sizeof(*this));
-	memcpy(&cfg, &spiCfg[item_nr], sizeof(CfgSpi));
 	unitNr = _portNr;
 	channel = _channel;
-	userData = (void *) SPI_BASE_PTRS[_portNr];
+	memcpy(&cfg, &spiCfg[item_nr], sizeof(CfgSpi));
 
-
-	/*SPI_Type *Addr[] = SPI_BASE_PTRS;
+	SPI_Type *Addr[] = SPI_BASE_PTRS;
 	SPI_Type *pSPI = Addr[_portNr];
 	SPI_ConfigType pConfig;
 	pConfig.u32BusClkHz = FCPU / 2;
@@ -92,7 +74,7 @@ GI::Dev::Spi::Spi(const char *path)
 	GPIO_Type *BaseAddr = GpioAddr[cfg.cs >> 5];
 	CONFIG_PIN_AS_GPIO(BaseAddr, cfg.cs % 32, OUTPUT);
 	DISABLE_INPUT(BaseAddr, cfg.cs % 32);
-	OUTPUT_SET(BaseAddr, cfg.cs % 32);*/
+	OUTPUT_SET(BaseAddr, cfg.cs % 32);
 }
 
 /**
@@ -110,8 +92,8 @@ GI::Dev::Spi::~Spi()
 		err = SYS_ERR_INVALID_HANDLER;
 		return;
 	}
-	//SPI_Type *SpiHandle = (SPI_Type *) userData;
-	//SPI_DeInit(SpiHandle);
+	SPI_Type *SpiHandle = (SPI_Type *) userData;
+	SPI_DeInit(SpiHandle);
 }
 
 /*#####################################################*/
@@ -130,8 +112,9 @@ int GI::Dev::Spi::assert()
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[property.unitNr] = true;
 #endif
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-	BaseAddr->OUTCLR = BIT_MASK_TABLE[cfg.cs % 8];
+	GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
+	GPIO_Type *BaseAddr = GpioAddr[cfg.cs >> 5];
+	OUTPUT_CLEAR(BaseAddr, cfg.cs % 32);
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }
@@ -149,15 +132,15 @@ int GI::Dev::Spi::deassert()
 		err = SYS_ERR_INVALID_HANDLER;
 		return SYS_ERR_INVALID_HANDLER;
 	}
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-	BaseAddr->OUTSET = BIT_MASK_TABLE[cfg.cs % 8];
+	GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
+	GPIO_Type *BaseAddr = GpioAddr[cfg.cs >> 5];
+	OUTPUT_SET(BaseAddr, cfg.cs % 32);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[property.unitNr] = false;
 #endif
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }
-/*#####################################################*/
 /*#####################################################*/
 SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		unsigned char *buffRead, unsigned int lenRead)
@@ -173,37 +156,22 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 #endif
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTCLR = BIT_MASK_TABLE[cfg.cs % 8];
+		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
+		GPIO_Type *BaseAddr = GpioAddr[cfg.cs >> 5];
+		OUTPUT_CLEAR(BaseAddr, cfg.cs % 32);
 	}
 	SysErr status = SYS_ERR_OK;
-	SPI_t *port = (SPI_t *) userData;
+	SPI_Type *hspi = (SPI_Type *) userData;
 	memset(buffRead, 0, lenRead);
-
-	unsigned int cnt = 0;
-	unsigned char *tmp_buff_ptr = buffWrite;
-	//unsigned char tmp_read;
-	for(; cnt < lenWrite; cnt++)
-	{
-		/* Start transmission */
-		port->DATA = *tmp_buff_ptr++;
-		/* Wait for transmission complete */
-		while(!(port->STATUS & SPI_IF_bm)) { }
-		//tmp_read = port->DATA;
-	}
-	tmp_buff_ptr = buffRead;
-	for(cnt = 0; cnt < lenRead; cnt++)
-	{
-		/* Start transmission */
-		port->DATA = 0xFF;
-		/* Wait for transmission complete */
-		while(!(port->STATUS & SPI_IF_bm)) { }
-		*tmp_buff_ptr++ = port->DATA;
-	}
+	if (SPI_TransferWait(hspi, buffWrite, buffWrite, lenWrite) != SPI_ERR_SUCCESS)
+		status = SYS_ERR_UNKNOWN;
+	if (SPI_TransferWait(hspi, buffRead, buffRead, lenRead) != SPI_ERR_SUCCESS)
+		status = SYS_ERR_UNKNOWN;
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTSET = BIT_MASK_TABLE[cfg.cs % 8];
+		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
+		GPIO_Type *BaseAddr = GpioAddr[cfg.cs >> 5];
+		OUTPUT_SET(BaseAddr, cfg.cs % 32);
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
@@ -224,26 +192,19 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 #endif
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTCLR = BIT_MASK_TABLE[cfg.cs % 8];
+		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
+		GPIO_Type *BaseAddr = GpioAddr[cfg.cs >> 5];
+		OUTPUT_CLEAR(BaseAddr, cfg.cs % 32);
 	}
 	SysErr status = SYS_ERR_OK;
-	SPI_t *port = (SPI_t *) userData;
-	unsigned int cnt = 0;
-	unsigned char *tmp_buff_ptr = buff;
-	for(cnt = 0; cnt < len; cnt++)
-	{
-		/* Start transmission */
-		port->DATA = 0xFF;
-		/* Wait for transmission complete */
-		while(!(port->STATUS & SPI_IF_bm)) { }
-		*tmp_buff_ptr++ = port->DATA;
-	}
-
+	SPI_Type *hspi = (SPI_Type *) userData;
+	if (SPI_TransferWait(hspi, buff, buff, len) != SPI_ERR_SUCCESS)
+		status = SYS_ERR_UNKNOWN;
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTSET = BIT_MASK_TABLE[cfg.cs % 8];
+		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
+		GPIO_Type *BaseAddr = GpioAddr[cfg.cs >> 5];
+		OUTPUT_SET(BaseAddr, cfg.cs % 32);
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
@@ -266,27 +227,20 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 #endif
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTCLR = BIT_MASK_TABLE[cfg.cs % 8];
+		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
+		GPIO_Type *BaseAddr = GpioAddr[cfg.cs >> 5];
+		OUTPUT_CLEAR(BaseAddr, cfg.cs % 32);
 	}
 	SysErr status = SYS_ERR_OK;
-	SPI_t *port = (SPI_t *) userData;
-	unsigned int cnt = 0;
-	unsigned char *tmp_buff_ptr = buff;
-	//unsigned char tmp_read;
-	for(; cnt < len; cnt++)
-	{
-		/* Start transmission */
-		port->DATA = *tmp_buff_ptr++;
-		/* Wait for transmission complete */
-		while(!(port->STATUS & SPI_IF_bm)) { }
-		//tmp_read = port->DATA;
-	}
+	SPI_Type *hspi = (SPI_Type *) userData;
+	if (SPI_TransferWait(hspi, buff, buff, len) != SPI_ERR_SUCCESS)
+		status = SYS_ERR_UNKNOWN;
 
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTSET = BIT_MASK_TABLE[cfg.cs % 8];
+		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
+		GPIO_Type *BaseAddr = GpioAddr[cfg.cs >> 5];
+		OUTPUT_SET(BaseAddr, cfg.cs % 32);
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
@@ -303,12 +257,8 @@ SysErr GI::Dev::Spi::writeReadByte(unsigned char *byte)
 		err = SYS_ERR_INVALID_HANDLER;
 		return SYS_ERR_INVALID_HANDLER;
 	}
-	SPI_t *port = (SPI_t *) userData;
-	/* Start transmission */
-	port->DATA = *byte;
-	/* Wait for transmission complete */
-	while(!(port->STATUS & SPI_IF_bm)) { }
-	*byte = port->DATA;
+	SPI_Type *hspi = (SPI_Type *) userData;
+	SPI_TransferWait(hspi, byte, byte, 1);
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }
@@ -323,28 +273,8 @@ SysErr GI::Dev::Spi::setSpeed(unsigned long baud)
 #if (USE_DRIVER_SEMAPHORE == true)
 	while (spi_semaphore[unitNr]);
 #endif
-	SPI_t *port = (SPI_t *) userData;
-	//SPI_SetBaudRate(hspi, FCPU/2, cfg.speed);
-
-	u32 new_speed = 0;
-	if(cfg.speed > FCPU/2)
-		new_speed = SPI_CLK2X_bm | SPI_PRESCALER_DIV4_gc;
-	else if(cfg.speed > FCPU/4)
-		new_speed = SPI_PRESCALER_DIV4_gc;
-	else if(cfg.speed > FCPU/8)
-		new_speed = SPI_CLK2X_bm | SPI_PRESCALER_DIV16_gc;
-	else if(cfg.speed > FCPU/16)
-		new_speed = SPI_PRESCALER_DIV16_gc;
-	else if(cfg.speed > FCPU/32)
-		new_speed = SPI_CLK2X_bm | SPI_PRESCALER_DIV64_gc;
-	else if(cfg.speed > FCPU/64)
-		new_speed = SPI_PRESCALER_DIV64_gc;
-	else if(cfg.speed > FCPU/128)
-		new_speed = SPI_PRESCALER_DIV128_gc;
-	else
-		new_speed = SPI_PRESCALER_DIV128_gc;
-
-	port->CTRL = (port->CTRL & ~(SPI_CLK2X_bm | SPI_PRESCALER_gm)) | new_speed;
+	SPI_Type *hspi = (SPI_Type *) userData;
+	SPI_SetBaudRate(hspi, FCPU/2, cfg.speed);
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }

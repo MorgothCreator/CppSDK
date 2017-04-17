@@ -29,5 +29,11 @@ typedef enum
 	IsNoCard = 0, IsSd, IsSdhc,
 } mmcsd_type_e;
 /*#####################################################*/
+//extern const const mmcsd_t mmcsd;
+/*#####################################################*/
+#ifdef HEADER_INCLUDE_C_FILES
+#include "mmcsd_api.c"
+#endif
+/*#####################################################*/
 #endif /* MMCSD_API_H_ */
 /*#####################################################*/

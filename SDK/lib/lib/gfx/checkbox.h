@@ -192,8 +192,8 @@ private:
 }
 }
 //#######################################################################################
-#ifdef USE_VISUAL_STUDIO
-#include "checkbox.cpp"
+#ifdef HEADER_INCLUDE_C_FILES
+#include "checkbox.c"
 #endif
 //#######################################################################################
 #endif /* CHECKBOX_H_ */

@@ -95,11 +95,4 @@ typedef struct charDev_s
 
 } charDev;
 
-/*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "global_color.cpp"
-#endif
-/*#####################################################*/
-
-
 #endif /* LIB_API_GLOBAL_DEF_HPP_ */

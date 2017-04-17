@@ -13,22 +13,6 @@
 
 extern CfgI2c i2cCfg[];
 
-TWI_t* I2C_BASE_PTRS[] =
-{
-#ifdef TWIC
-		&TWIC,
-#endif
-#ifdef TWID
-		&TWID,
-#endif
-#ifdef TWIE
-		&TWIE,
-#endif
-#ifdef TWIF
-		&TWIF,
-#endif
-		};
-
 //#####################################################
 /**
  * @brief  Initializes peripherals used by the I2C EEPROM driver.
@@ -70,40 +54,99 @@ GI::Dev::I2c::I2c(const char *path)
 	memset(this, 0, sizeof(*this));
 	memcpy(&cfg, &i2cCfg[item_nr], sizeof(CfgI2c));
 
-	udata = (void *) I2C_BASE_PTRS[dev_nr];
+	I2C_Type *pI2C[]= I2C_BASE_PTRS;
+
+	udata = (void *) pI2C[dev_nr];
 	unitNr = dev_nr;
-	//I2C_ConfigType  sI2C_Config = {0};
+	I2C_ConfigType  sI2C_Config = {0};
 
     /* Initialize I2C module with interrupt mode */
-    //sI2C_Config.u16Slt = 0;
-    //sI2C_Config.u16F = 0xBC;  /* Baud rate at 100 kbit/sec, MULT = 4 , ICR=60*/
-    //sI2C_Config.sSetting.bMSTEn=1;
-    //sI2C_Config.sSetting.bIntEn = 0;
-    //sI2C_Config.sSetting.bI2CEn = 1;
+    sI2C_Config.u16Slt = 0;
+    sI2C_Config.u16F = 0xBC;  /* Baud rate at 100 kbit/sec, MULT = 4 , ICR=60*/
+    sI2C_Config.sSetting.bMSTEn=1;
+    sI2C_Config.sSetting.bIntEn = 0;
+    sI2C_Config.sSetting.bI2CEn = 1;
 
-    //I2C_Init(pI2C[dev_nr], &sI2C_Config);
+    I2C_Init(pI2C[dev_nr], &sI2C_Config);
 }
 /*#####################################################*/
 GI::Dev::I2c::~I2c()
 {
-	//I2C_Deinit((I2C_Type *)udata);
+	I2C_Deinit((I2C_Type *)udata);
 }
 
 SysErr GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 		unsigned int TransmitBytes, unsigned char *buff_receive,
 		unsigned int ReceiveBytes)
 {
-	TWI_t *pI2Cx = (TWI_t *)udata;
-	uint8_t u8ErrorStatus = 0;
+	I2C_Type *pI2Cx = (I2C_Type *)udata;
+	uint8_t u8ErrorStatus;
 	if (!noSendWriteOnRead)
 	{
+
+		 uint32_t i;
+
+
+		/* send start signals to bus */
+		u8ErrorStatus = I2C_Start(pI2Cx);
+
+		/* send device address to slave */
+		u8ErrorStatus = I2C_WriteOneByte(pI2Cx, addr| I2C_WRITE);
+
+		/* if no error occur, received the correct ack from slave
+				continue to send data to slave
+			*/
+		if( u8ErrorStatus == I2C_ERROR_NULL )
+		{
+			for(i=0;i<TransmitBytes;i++)
+			{
+				u8ErrorStatus = I2C_WriteOneByte(pI2Cx,buff_send[i]);
+				if( u8ErrorStatus != I2C_ERROR_NULL )
+				{
+					return (SysErr)u8ErrorStatus;
+				}
+			}
+		 }
 	}
 	if (!ReceiveBytes)
 	{
+		 /* send stop signals to bus */
+		 u8ErrorStatus = I2C_Stop(pI2Cx);
+
 		 return (SysErr)u8ErrorStatus;
 	}
 	else
 	{
+		uint32_t i;
+		uint8_t u8ErrorStatus;
+
+		/* send start signals to bus */
+		u8ErrorStatus = I2C_Start(pI2Cx);
+
+		/* send device address to slave */
+		u8ErrorStatus = I2C_WriteOneByte(pI2Cx,addr | I2C_READ);
+
+		/* if no error occur, received the correct ack from slave
+		            continue to send data to slave
+		        */
+		/* dummy read one byte to switch to Rx mode */
+		I2C_ReadOneByte(pI2Cx,&buff_receive[0],I2C_SEND_ACK);
+
+		if( u8ErrorStatus == I2C_ERROR_NULL )
+		{
+			for(i=0;i<ReceiveBytes-1;i++)
+			{
+				u8ErrorStatus = I2C_ReadOneByte(pI2Cx,&buff_receive[i],I2C_SEND_ACK);
+				if( u8ErrorStatus != I2C_ERROR_NULL )
+				{
+					return (SysErr)u8ErrorStatus;
+				}
+			}
+			u8ErrorStatus = I2C_ReadOneByte(pI2Cx,&buff_receive[i],I2C_SEND_NACK);
+		}
+		/* send stop signals to bus */
+		u8ErrorStatus = I2C_Stop(pI2Cx);
+
 		return (SysErr)u8ErrorStatus;
 	}
 	return SYS_ERR_OK;

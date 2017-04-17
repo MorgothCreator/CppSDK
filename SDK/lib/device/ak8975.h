@@ -121,10 +121,18 @@ typedef struct AK8975_s{
 	//STimer_t Timeout_Timer;
 }AK8975_t;
 
+
 /*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "ak8975.cpp"
+#define new_ak8975 AK8975_t
+#ifndef new_
+#define new_(structure) (structure*)calloc(1,sizeof(structure));
 #endif
+#define free_ak8975(address) free(address);
+/*#####################################################*/
+#ifdef HEADER_INCLUDE_C_FILES
+#include "ak8975.c"
+#endif
+
 /*#####################################################*/
 #endif
 /*#####################################################*/

@@ -1,9 +1,0 @@
-	  <Compile Include="C:\GitHub\CppSDK\Common\**\*.*">
-		  <Link>Common\%(RecursiveDir)%(FileName)%(Extension)</Link>
-	  </Compile>
-	  <Compile Include="C:\GitHub\CppSDK\SDK\lib\**\*.*">
-		  <Link>lib\%(RecursiveDir)%(FileName)%(Extension)</Link>
-	  </Compile>
-	  <Compile Include="C:\GitHub\CppSDK\SDK\platform\atsamd21\**\*.*">
-		  <Link>atsamd21\%(RecursiveDir)%(FileName)%(Extension)</Link>
-	  </Compile>

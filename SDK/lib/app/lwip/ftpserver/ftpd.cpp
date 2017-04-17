@@ -31,9 +31,9 @@
  *
  */
 
+#include <main.h>
 #define FTP_FIFO_SIZE 1460
 
-#include <main.h>
 #if (USE_FTP == 1 && USE_LWIP == 1)
 #include <time.h>
 #include "ftpd.h"

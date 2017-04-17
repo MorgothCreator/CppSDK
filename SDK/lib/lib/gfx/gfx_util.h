@@ -28,8 +28,8 @@
 // Utility to divide or multiply the base color
 //gfx_u32 gfx_modify_color(gfx_u32 color, s8 modify);
 //#######################################################
-#ifdef USE_VISUAL_STUDIO
-#include "gfx_util.cpp"
+#ifdef HEADER_INCLUDE_C_FILES
+#include "gfx_util.c"
 #endif
 //#######################################################
 #endif

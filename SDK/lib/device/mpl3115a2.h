@@ -96,8 +96,15 @@ private:
 typedef struct MPL3115A2_s{
 }MPL3115A2_t;
 /*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "mpl3115a2.cpp"
+/*#####################################################*/
+#define new_mpl3115a2 MPL3115A2_t
+#ifndef new_
+#define new_(structure) (structure*)calloc(1,sizeof(structure));
+#endif
+#define free_mpl3115a2(address) free(address);
+/*#####################################################*/
+#ifdef HEADER_INCLUDE_C_FILES
+#include "mpl3115a2.c"
 #endif
 /*#####################################################*/
 #endif /* MPL3115A2_H_ */

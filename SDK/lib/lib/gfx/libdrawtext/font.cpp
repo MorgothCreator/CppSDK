@@ -17,9 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "cfg.h"
-
-#ifndef __AVR_ARCH__
-
 #ifndef NO_FREETYPE
 #define USE_FREETYPE
 #endif
@@ -39,7 +36,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "drawtext.h"
 #include "drawtext_impl.h"
 #include "tpool.h"
-#include <lib/fs/fat/inc/ff.h>
 
 #define FTSZ_TO_PIXELS(x)	((x) / 64)
 #define MAX_IMG_WIDTH		4096
@@ -1168,4 +1164,3 @@ static int find_pow2(int x)
 	}
 	return 0;
 }
-#endif

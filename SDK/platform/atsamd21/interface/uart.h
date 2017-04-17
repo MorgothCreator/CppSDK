@@ -9,7 +9,7 @@
 #define NXP_KEAZ_INTERFACE_UART_H_
 
 #include <include/global.h>
-#include "sam.h"
+
 
 #define UART_HAVE_MODE_SYNCHRONOUS			0
 #define UART_HAVE_MODE_SPI					0
@@ -22,11 +22,7 @@
 #define UART_HAVE_WORD_LEN_7BITS			0
 #define UART_HAVE_WORD_LEN_9BITS			1
 
-#if defined(__AVR_ATxmega8E5__) || defined(__AVR_ATxmega16E5__) || defined(__AVR_ATxmega32E5__)
-#define UART_INTERFACE_COUNT				4
-#else
-#define UART_INTERFACE_COUNT				8
-#endif
+#define UART_INTERFACE_COUNT	8
 
 
 

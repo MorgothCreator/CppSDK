@@ -236,10 +236,15 @@ private:
 };
 }
 }
-
 /*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "lepton_flir.cpp"
+#define new_lepton_flir LEPTON_FLIR_t
+#ifndef new_
+#define new_(structure) (structure*)calloc(1,sizeof(structure));
+#endif
+#define free_lepton_flir(address) free(address);
+/*#####################################################*/
+#ifdef HEADER_INCLUDE_C_FILES
+#include "lepton_flir.c"
 #endif
 
 /*#####################################################*/

@@ -1310,7 +1310,7 @@ gfx_s32 GI::Screen::String::drawString()
 						((lX + lX0) <= LcdStruct->sClipRegion.sXMax) &&
 						((lY + lY0) >= LcdStruct->sClipRegion.sYMin) && _ulOpaque == true)
 						{
-#if (__SIZEOF_INT__ == 2)
+#ifdef USE_16_BIT_COLOR_DEPTH
 							if(ulVisible == true)
 							LcdStruct->drawPixel(lX + lX0, lY + lY0, background_color);
 #else
@@ -1417,7 +1417,7 @@ gfx_s32 GI::Screen::String::drawString()
 						((lX + lX0) <= LcdStruct->sClipRegion.sXMax) &&
 						((lY + lY0) >= LcdStruct->sClipRegion.sYMin))
 						{
-#if (__SIZEOF_INT__ == 2)
+#ifdef USE_16_BIT_COLOR_DEPTH
 							if(ulVisible == true)
 							LcdStruct->drawPixel(lX + lX0, lY + lY0, foreground_color);
 #else

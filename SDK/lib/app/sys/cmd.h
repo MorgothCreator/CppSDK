@@ -40,14 +40,5 @@ private:
 	unsigned char escape_second_char;
 };
 
-extern const char *fs_err_table[];
-/*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "cat.cpp"
-#include "cd.cpp"
-#include "cmd.cpp"
-#include "ls.cpp"
-#endif
-/*#####################################################*/
 
 #endif /* LIB_APP_SYS_CMD_H_ */

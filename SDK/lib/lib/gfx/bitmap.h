@@ -37,9 +37,6 @@ private:
 	gfx_s32 height;
 };
 
-/*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "bitmap.cpp"
-#endif
-/*#####################################################*/
+
+
 #endif /* LIB_LIB_GFX_BITMAP_H_ */

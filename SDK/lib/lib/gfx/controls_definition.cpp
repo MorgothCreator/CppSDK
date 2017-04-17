@@ -29,7 +29,7 @@
 #include "sys/cache.h"
 #include "resource/fonts.h"
 //#######################################################################################
-#if (__SIZEOF_INT__ == 4)
+#ifndef USE_16_BIT_COLOR_DEPTH
 controlscolor controls_color =
 {
 	(0x39<<16)|(0x39<<8)|(0x39),
@@ -59,36 +59,35 @@ controlscolor controls_color =
 #define COLOR_24_to_16(R, G, B) ((unsigned)(((R)>>3)&0b11111) | (((G)<<3)&0b11111100000) | (((B)<<8)&0b1111100000000000))
 controlscolor controls_color =
 {
-	COLOR_24_to_16(0x39,0x39,0x39),
-	COLOR_24_to_16(0x00,0x00,0x00),
-	COLOR_24_to_16(0xF0,0xF0,0xF0),
-	COLOR_24_to_16(0xA0,0xA0,0xA0),
-	COLOR_24_to_16(0x80,0x80,0x80),
-	COLOR_24_to_16(0x80,0x80,0x80),
-	COLOR_24_to_16(0x37,0x37,0x37),
-	COLOR_24_to_16(0xF0,0xF0,0xF0),
-	COLOR_24_to_16(0x80,0x80,0x80),
-	COLOR_24_to_16(0x7F,0x7F,0x7F),
+		.Control_Color_Enabled_Ink_Pull = COLOR_24_to_16(0x39,0x39,0x39),
+		.Control_Color_Enabled_Ink_Push = COLOR_24_to_16(0x00,0x00,0x00),
+		.Control_Color_Enabled_Buton_Pull = COLOR_24_to_16(0xFF,0xFF,0xFF),
+		.Control_Color_Enabled_Buton_Push = COLOR_24_to_16(0x91,0x91,0x91),
+		.Control_Color_Enabled_Border_Pull = COLOR_24_to_16(0xFF,0xFF,0xFF),
+		.Control_Color_Enabled_Border_Push = COLOR_24_to_16(0xFF,0xFF,0xFF),
+		.Control_Color_Enabled_BackGround = COLOR_24_to_16(0x37,0x37,0x37),
+		.Control_Color_Enabled_WindowBorder = COLOR_24_to_16(0x55,0x55,0x55),
+		.Control_Color_Enabled_WindowHeader = COLOR_24_to_16(0x7F,0x7F,0x7F),
 
-	COLOR_24_to_16(0x39,0x39,0x39),
+		.Control_Color_Disabled_Ink_Pull = COLOR_24_to_16((0x00)/2,(0x00)/2,(0x00)/2),
 	//COLOR_24_to_16((0x39)/2,(0x39)/2,(0x39)/2),
-	COLOR_24_to_16(0x98, 0x9C, 0xB6),
+		.Control_Color_Disabled_Buton_Pull = COLOR_24_to_16((0xFF)/2,(0xFF)/2,(0xFF)/2),
 	//COLOR_24_to_16((0x91)/2,(0x91)/2,(0x91)/2),
-	COLOR_24_to_16(0x80,0x80,0x80),
+		.Control_Color_Disabled_Border_Pull = COLOR_24_to_16((0xFF)/2,(0xFF)/2,(0xFF)/2),
 	//COLOR_24_to_16((0xFF)/2,(0xFF)/2,(0xFF)/2),
-	COLOR_24_to_16((0x37),(0x37),(0x37)),
-	COLOR_24_to_16(0x98, 0x9C, 0xB6),
-	COLOR_24_to_16(0x98, 0x9C, 0xB6),
-	COLOR_24_to_16(0x98, 0x9C, 0xB6),
-//#ifdef USE_FONT_CMSS14B
-	(tFont*)&g_sFontCmss14b
-//#else
-	//(tFont*)NULL
-//#endif
+		.Control_Color_Disabled_BackGround = COLOR_24_to_16((0x37)/2,(0x37)/2,(0x37)/2),
+		.Control_Color_Disabled_WindowBorder = COLOR_24_to_16(0x98, 0x9C, 0xB6),
+		.Control_Color_Disabled_WindowHeader = COLOR_24_to_16(0x98, 0x9C, 0xB6),
+		.Scren = COLOR_24_to_16(0x98, 0x9C, 0xB6),
+#ifdef USE_FONT_CMSS14B
+	.DefaultFont = (tFont*)&g_sFontCmss14b
+#else
+	.DefaultFont = (tFont*)NULL
+#endif
 };
 #endif
 //#######################################################################################
-#if (__SIZEOF_INT__ == 4)
+#ifndef USE_16_BIT_COLOR_DEPTH
 gfx_u32 controlls_change_color(gfx_u32 color, double value)
 {
 	if(value>(double)0)

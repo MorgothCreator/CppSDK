@@ -124,10 +124,5 @@ public:
 
 #define newIo(name, path) GI::IO *name = new GI::IO::IO(path)
 #define deleteIo(name) delete name
-/*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include "io_handle.cpp"
-#endif
-/*#####################################################*/
 
 #endif /* LIB_API_IO_HANDLE_H_ */

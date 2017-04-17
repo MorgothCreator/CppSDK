@@ -50,8 +50,8 @@ namespace Sys {
 /*#####################################################*/
 #define timer(Name)  STimer_t Name
 /*#####################################################*/
-#ifdef USE_VISUAL_STUDIO
-#include <api/timer.cpp>
+#ifdef HEADER_INCLUDE_C_FILES
+#include <api/timer_api.cpp>
 #endif
 /*#####################################################*/
 #endif /* SYS_TIMER_H_ */

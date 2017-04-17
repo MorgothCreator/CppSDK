@@ -143,5 +143,16 @@ typedef struct Adc_s
 	unsigned char SampleTime[ADC_CHANNELS_NR_PER_UNIT];/*!< Sample time, watch the ADC controller documentation */
 } Adc_t;
 
+/*#####################################################*/
+#define new_adc Adc_t
+#ifndef new_
+#define new_(structure) (structure*)calloc(1,sizeof(structure));
+#endif
+#define free_adc(address) free(address);
+/*#####################################################*/
+//#ifdef HEADER_INCLUDE_C_FILES
+//#include "adc_def.c"
+//#endif
+/*#####################################################*/
 #endif /* ADC_DEF_H_ */
 /*#####################################################*/

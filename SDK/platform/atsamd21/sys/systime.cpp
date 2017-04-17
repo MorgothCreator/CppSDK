@@ -6,8 +6,9 @@
  */
 
 #include <sys/systime.h>
+#include "core_cm0plus.h"
 
-//extern unsigned long FCPU;
+extern unsigned long FCPU;
 /******************************************************************************
 **                      INTERNAL VARIABLE DEFINITIONS
 *******************************************************************************/
@@ -16,7 +17,7 @@ volatile unsigned long long STimerCnt = 0;
 //#####################################################
 void SysDelayTimerSetup(void)
 {
-	//SysTick_Config(FCPU / 1000);
+	SysTick_Config(FCPU / 1000);
 }
 //#####################################################
 void sysDelay(unsigned long milliSec)
