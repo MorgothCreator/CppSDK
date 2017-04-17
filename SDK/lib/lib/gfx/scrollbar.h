@@ -156,7 +156,7 @@ private:
 }
 }
 //#######################################################################################
-#ifdef HEADER_INCLUDE_C_FILES
-#include "scrollbar.c"
+#ifdef USE_VISUAL_STUDIO
+#include "scrollbar.cpp"
 #endif
 #endif /* SCROLLBAR_H_ */

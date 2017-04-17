@@ -38,8 +38,8 @@ bool put_roll_string_P(tDisplay *pDisplay, graphic_strings_t *StringsStruct);
 #endif
 #define free_roll_str(address) free(address);
 /*#####################################################*/
-#ifdef HEADER_INCLUDE_C_FILES
-#include "graphic_string.c"
+#ifdef USE_VISUAL_STUDIO
+#include "graphic_string.cpp"
 #endif
 /*#####################################################*/
 #endif /* GRAPHIC_STRING_H_ */

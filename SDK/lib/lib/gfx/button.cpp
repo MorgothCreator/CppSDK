@@ -21,8 +21,8 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
-#include "button.h"
 #include "window.h"
+#include "button.h"
 #include "api/lcd_def.h"
 #include "util.h"
 #include "api/timer.h"

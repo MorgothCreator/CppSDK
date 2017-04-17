@@ -183,5 +183,9 @@ public:
 		windowHandlerName->password = new GI::String();\
 		windowHandlerName->clearText = new GI::String();
 
-
+/*#####################################################*/
+#ifdef USE_VISUAL_STUDIO
+#include "PasswordWindowNumeric.cpp"
+#endif
+/*#####################################################*/
 #endif /* PASSWORDWINDOWNUMERIC_H_ */

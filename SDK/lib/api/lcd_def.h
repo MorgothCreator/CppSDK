@@ -311,7 +311,7 @@ typedef struct
 #define COLOR_CONVERSION_32_TO_16(COLOR_32) \
 		(unsigned short)((((COLOR_32 >> 19) & 0x1F) << 11) | (((COLOR_32 >> 10) & 0x3F) << 5) | ((COLOR_32 >> 3) & 0x1F))
 
-#ifdef USE_16_BIT_COLOR_DEPTH
+#if (__SIZEOF_INT__ == 2)
 #define ClrAliceBlue            COLOR_CONVERSION_32_TO_16(0x00F0F8FF)
 #define ClrAntiqueWhite         COLOR_CONVERSION_32_TO_16(0x00FAEBD7)
 #define ClrAqua                 COLOR_CONVERSION_32_TO_16(0x0000FFFF)
@@ -596,10 +596,6 @@ typedef struct
 #define ClrYellowGreen          0x009ACD32
 #endif
 
-/**********************************************/
-#ifdef HEADER_INCLUDE_C_FILES
-#include "lib/gfx/resource/fonts.c"
-#endif
 //*****************************************************************************
 //
 // Masks and shifts to aid in color format translation by drivers.
@@ -613,4 +609,10 @@ typedef struct
 #define ClrBlueShift            0
 
 /**********************************************/
+/*#####################################################*/
+#ifdef USE_VISUAL_STUDIO
+#include "lcd_def.cpp"
+#endif
+/*#####################################################*/
+
 #endif /* LCD_DEF_H_ */

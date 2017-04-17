@@ -36,14 +36,14 @@
 			<locationURI>PARENT-4-PROJECT_LOC/GitHub/CppSDK/SDK/lib</locationURI>
 		</link>
 		<link>
-			<name>main.cpp</name>
+			<name>main_app.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Common/main.cpp</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/Common/main_app.cpp</locationURI>
 		</link>
 		<link>
-			<name>main.h</name>
+			<name>main_app.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Common/main.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/Common/main_app.h</locationURI>
 		</link>
 		<link>
 			<name>nxp_kinetis_e</name>

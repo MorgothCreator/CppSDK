@@ -144,8 +144,8 @@ private:
 }
 }
 //#######################################################################################
-#ifdef HEADER_INCLUDE_C_FILES
-#include "keyboard.c"
+#ifdef USE_VISUAL_STUDIO
+#include "keyboard.cpp"
 #endif
 //#######################################################################################
 #endif /* BUTON_H_ */

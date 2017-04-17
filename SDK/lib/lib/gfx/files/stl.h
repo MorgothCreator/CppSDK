@@ -62,8 +62,8 @@ typedef struct
 void stl_get_triangle(_3d_points *triangle_bounds, unsigned char *file, unsigned long triangle_nr);
 unsigned long stl_get_nr_of_triangles(unsigned char *file);
 
-#ifdef HEADER_INCLUDE_C_FILES
-#include "stl.c"
+#ifdef USE_VISUAL_STUDIO
+#include "stl.cpp"
 #endif
 
 #endif /* STL_H_ */

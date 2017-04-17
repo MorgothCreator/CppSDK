@@ -17,5 +17,10 @@ void GetHexBuff(char *hex_str, u8 *data, u32 data_len);
 bool GetBinFromHexChar(u8 *dest, char src);
 u32 GetBinFromHexBuff(u8 *bin_buff, char *data,
 		u32 dest_buff_len);
+/*#####################################################*/
+#ifdef USE_VISUAL_STUDIO
+#include "hex_string.cpp"
+#endif
+/*#####################################################*/
 
 #endif /* LIB_LIB_UTIL_HEX_STRING_H_ */

@@ -23,6 +23,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include <main.h>
+#if (USE_FTP == 1 && USE_LWIP == 1)
 
 #include <time.h>
 #include <api/io_handle.h>
@@ -147,3 +149,4 @@ struct tm dummy;
 struct tm* gmtime(ftp_time_t* c_t) {
 	return &dummy;
 }
+#endif

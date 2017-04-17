@@ -79,4 +79,9 @@ public:
 	DIR dr;
 };
 
+/*#####################################################*/
+#ifdef USE_VISUAL_STUDIO
+#include "fat.cpp"
+#endif
+/*#####################################################*/
 #endif /* LIB_LIB_FS_FAT_FAT_H_ */

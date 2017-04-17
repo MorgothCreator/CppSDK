@@ -6,6 +6,7 @@
  */
 
 #include <interface/eth.h>
+#include <main.h>
 
 
 struct netif gnetif;
@@ -88,7 +89,7 @@ void ethernetif_notify_conn_changed(GI::Dev::Eth *heandle, struct netif *netif)
 		IP4_ADDR(&ipaddr, IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
 		IP4_ADDR(&netmask, NETMASK_ADDR0, NETMASK_ADDR1 , NETMASK_ADDR2, NETMASK_ADDR3);
 		IP4_ADDR(&gw, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-		dhcpState = DHCP_ADDRESS_ASSIGNED;
+		heandle->dhcpState = DHCP_ADDRESS_ASSIGNED;
 #if (LWIP_DEBUG_EN == 1)
 		//uint8_t iptxt[20];
 
@@ -222,7 +223,7 @@ static void DHCP_Process(GI::Dev::Eth *heandle, struct netif *netif)
  * @param  localtime the current LocalTime value
  * @retval None
  */
-static void periodicHandle(GI::Dev::Eth *heandle, struct netif *netif)
+void periodicHandle(GI::Dev::Eth *heandle, struct netif *netif)
 {
 	/* Fine DHCP periodic process every 500ms */
 	if (HAL_GetTick() - DHCPfineTimer >= DHCP_FINE_TIMER_MSECS)

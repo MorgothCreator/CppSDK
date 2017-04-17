@@ -49,5 +49,5 @@ public:
 };
 }
 }
-
+void periodicHandle(GI::Dev::Eth *heandle, struct netif *netif);
 #endif /* AM33_INTERFACE_LAN_INTERFACE_H_ */

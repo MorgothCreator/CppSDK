@@ -28,7 +28,10 @@ RM := rm -rf
 -include lib/board/STM/STM32F769I-DISCO/subdir.mk
 -include lib/board/STM/STM32F469I-DISCO/subdir.mk
 -include lib/board/STM/STM32F429I-DISCO/subdir.mk
+-include lib/board/STM/MikromediaForSTM32M4/subdir.mk
 -include lib/board/NXP/FRDM-KEAZ128/subdir.mk
+-include lib/board/ATMEL/Xmega-E5_Xplained/subdir.mk
+-include lib/board/ATMEL/FeatherAdaloggerM0/subdir.mk
 -include lib/app/sys/subdir.mk
 -include lib/api/subdir.mk
 -include subdir.mk
@@ -78,7 +81,7 @@ all: ExampleKinetisKeaz.elf secondary-outputs
 ExampleKinetisKeaz.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\GitHub\CppSDK\ExampleKinetisKeaz\LinkerScript.ld" -Xlinker --gc-sections -Wl,-Map,"ExampleKinetisKeaz.map" --specs=nano.specs -specs=nosys.specs -o "ExampleKinetisKeaz.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\GitHub\CppSDK\ExampleKinetisKeaz\LinkerScript.ld" -Xlinker --gc-sections -Wl,-Map,"ExampleKinetisKeaz.map" -specs=nosys.specs -o "ExampleKinetisKeaz.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

@@ -4,6 +4,7 @@
  *  Created on: Dec 2, 2016
  *      Author: John Smith
  */
+#if (USE_FTP == 1 && USE_LWIP == 1)
 
 #include "http_client.h"
 //#include "api/lan_api.h"
@@ -373,3 +374,4 @@ void tcp_setup(char *ip_addr, char *mesage)
 		tcp_connect(pcb, &ip, 80, tcp_echoclient_connected);
     }
 }
+#endif

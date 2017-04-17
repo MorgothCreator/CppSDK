@@ -143,8 +143,8 @@ private:
 }
 }
 /*#####################################################*/
-#ifdef HEADER_INCLUDE_C_FILES
-#include "mpr121.c"
+#ifdef USE_VISUAL_STUDIO
+#include "mpr121.cpp"
 #endif
 /*#####################################################*/
 #endif /* MPR121_H_ */

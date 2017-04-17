@@ -108,8 +108,8 @@ typedef enum gfx_IntTouch_mouse_state_Enum
 }gfx_IntTouch_mouse_state_t;
 
 /*#####################################################*/
-#ifdef HEADER_INCLUDE_C_FILES
-#include "ft5x06.c"
+#ifdef USE_VISUAL_STUDIO
+#include "ft5x06.cpp"
 #endif
 /*#####################################################*/
 

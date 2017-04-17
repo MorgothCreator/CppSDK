@@ -365,4 +365,17 @@ int ff_del_syncobj (_SYNC_t sobj);				/* Delete a sync object */
 }
 #endif
 
+/*#####################################################*/
+#ifdef USE_VISUAL_STUDIO
+#include "../src/ff.cpp"
+#include "../src/diskio.cpp"
+#include "../src/fattime.cpp"
+#include "../src/option/cc932.cpp"
+#include "../src/option/cc936.cpp"
+#include "../src/option/cc949.cpp"
+#include "../src/option/cc950.cpp"
+#include "../src/option/ccsbcs.cpp"
+#include "../src/option/syncobj.cpp"
+#endif
+/*#####################################################*/
 #endif /* _FATFS */

@@ -33,7 +33,7 @@ static const char first_shift[] = { 0, 7, 5, 4, 3 };	/* see above */
 #define CONT_SHIFT	6
 
 /* last charcodes for 1, 2, 3 or 4-byte utf8 chars */
-static const int utf8_lastcode[] = { 0x7f, 0x7ff, 0xfff, 0x1fffff };
+static const long utf8_lastcode[] = { 0x7f, 0x7ff, 0xfff, 0x1fffff };
 
 #define prefix_mask(x)	(~first_mask[x])
 #define prefix(x)		((prefix_mask(x) << 1) & 0xff)

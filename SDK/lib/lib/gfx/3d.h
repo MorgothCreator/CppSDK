@@ -81,7 +81,7 @@ void put_3d_triangle(GI::Dev::Screen *pDisplay, _3d_points *Points, gfx_s32 X_of
 void put_3d_rectangle(GI::Dev::Screen *pDisplay, _3d_points *Points, gfx_s32 X_offset, gfx_s32 Y_offset, double X_Angle, double Y_Angle, double Z_Angle, gfx_u32 Color);
 
 //#######################################################################################
-#ifdef HEADER_INCLUDE_C_FILES
-#include <lib/gfx/3d.cpp>
+#ifdef USE_VISUAL_STUDIO
+#include "3d.cpp"
 #endif
 #endif /* 3D_H_ */

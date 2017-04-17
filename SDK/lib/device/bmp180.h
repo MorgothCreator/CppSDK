@@ -105,16 +105,9 @@ typedef struct BMP180_s{
 	//STimer_t Timeout_Timer;
 }BMP180_t;
 
-
 /*#####################################################*/
-#define new_bmp180 BMP180_t
-#ifndef new_
-#define new_(structure) (structure*)calloc(1,sizeof(structure));
-#endif
-#define free_bmp180(address) free(address);
-/*#####################################################*/
-#ifdef HEADER_INCLUDE_C_FILES
-#include "bmp180.c"
+#ifdef USE_VISUAL_STUDIO
+#include "bmp180.cpp"
 #endif
 
 /*#####################################################*/

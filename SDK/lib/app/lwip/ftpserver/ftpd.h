@@ -34,8 +34,8 @@
 #ifndef __FTPD_H__
 #define __FTPD_H__
 
-#include "vfs.h"
 #include <main.h>
+#include "vfs.h"
 #if (USE_FTP == 1 && USE_LWIP == 1)
 #include "interface/LwIp/src/include/lwip/ip4_addr.h"
 #include "lib/buffers/ring_buff.h"

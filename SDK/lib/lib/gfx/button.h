@@ -144,8 +144,8 @@ private:
 }
 }
 //#######################################################################################
-#ifdef HEADER_INCLUDE_C_FILES
-#include "button.c"
+#ifdef USE_VISUAL_STUDIO
+#include "button.cpp"
 #endif
 //#######################################################################################
 #endif /* BUTON_H_ */

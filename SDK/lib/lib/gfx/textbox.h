@@ -175,8 +175,8 @@ private:
 }
 }
 //#######################################################################################
-#ifdef HEADER_INCLUDE_C_FILES
-#include "textbox.c"
+#ifdef USE_VISUAL_STUDIO
+#include "textbox.cpp"
 #endif
 //#######################################################################################
 #endif /* TEXTBOX_H_ */

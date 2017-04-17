@@ -93,7 +93,7 @@ SysErr GI::Sensor::Bmp180::readPressure(signed long *pressure, unsigned char oss
 	SysErr err;
 	if((err = I2C->writeRead(BMP180_ADDR | (IcNr & 0x03), &reg, 1, result, 3)))
 		return err;
-	*pressure = (signed long)(((result[0] << 16) + (result[1] << 8) + result[0]) >> (8 - oss));
+	*pressure = (signed long)(((unsigned long)result[0] << 16) + ((unsigned long)result[1] << 8) + ((unsigned long)result[0] >> (8 - oss)));
 	return SYS_ERR_OK;
 }
 

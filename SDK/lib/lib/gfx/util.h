@@ -26,7 +26,9 @@ namespace Screen
 }
 }
 
-
-
-
+/*#####################################################*/
+#ifdef USE_VISUAL_STUDIO
+#include "util.cpp"
+#endif
+/*#####################################################*/
 #endif /* LIB_LIB_GFX_UTIL_H_ */
