@@ -15,21 +15,25 @@ This project will provide some example applications, to use this examples withou
 
 For different platforms I use different IDE's to develop this SDK, see description on each platform.
 
-For STM32 I use <a href="http://www.openstm32.org/HomePage">System Workbench for STM32 IDE</a>, I decide to begin with this platform because this manufacturer offer a huge low level driver support.
+-For STM32 I use <a href="http://www.openstm32.org/HomePage">System Workbench for STM32 IDE</a>, I decide to begin with this platform because this manufacturer offer a huge low level driver support.
 
-For NXP Kinetis E I use <a href="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/kinetis-design-studio-integrated-development-environment-ide:KDS_IDE">Kinetis Design Studio IDE</a>, I extend the development on kinetis E series because is one of the 32bit cortex platform that can work on 5V power voltage, this has the advantage of high noise immunity and is designed for high reliable industrial applications.
+-For NXP Kinetis E I use <a href="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/kinetis-design-studio-integrated-development-environment-ide:KDS_IDE">Kinetis Design Studio IDE</a>, I extend the development on kinetis E series because is one of the 32bit cortex platform that can work on 5V power voltage, this has the advantage of high noise immunity and is designed for high reliable industrial applications.
+
+-For TI CC13xx I use <a href="http://processors.wiki.ti.com/index.php/Download_CCS">Code Composer Studio IDE</a>
 
 At this moment include next features:
 
 	STM32F4 (System Workbench for STM32 IDE):
 		Board:
-			STM32F469I configuration board.
+			MikromediaForSTM32M4 configuration files.
+			STM32F429I-DISCO configuration files.
+			STM32F469I-DISCO configuration files.
 		Drivers:
 			I2C.
 			UART.
 			SPI.
 			GPIO.
-			MMCSD.
+			MMCSD (no SPI mode).
 			LCD using DSI interface.
 		Dedicated evices:
  			OTM8009a TFT display controller.
@@ -38,7 +42,7 @@ At this moment include next features:
       
  	STM32F7 (System Workbench for STM32 IDE):
 		Board:
-			STM32F769I configuration board.
+			STM32F769I configuration files.
 		Drivers:
 			I2C.
 			UART.
@@ -53,7 +57,16 @@ At this moment include next features:
       
  	NXP Kinetis E seties (Kinetis Design Studio IDE):
 		Board:
-			FRDM-KEAZ128Q80 configuration board.
+			FRDM-KEAZ128Q80 configuration files.
+		Drivers:
+			I2C.
+			UART.
+			SPI.
+			GPIO.
+      
+ 	CC13xx (Code Compose Studio):
+		Board:
+			SmartRF06 configuration files.
 		Drivers:
 			I2C.
 			UART.
@@ -74,12 +87,12 @@ At this moment include next features:
 > On several platforms will be disponible next interfaces:
 
 * For platforms that are provided the ETH interface driver will come with the LwIp library and some applications like HTTP server, TFTP server and other applications.
-* For platforms that are provided the USB MSC host driver will mount the FS automaticaly when a USB pen drive is inserted (the FS supported are FAT12, FAT16, FAT32 and exFAT).
+* For platforms that are provided the USB MSC host driver will mount the FS automaticaly when a USB pen drive is inserted (the supported FS are FAT12, FAT16, FAT32 and exFAT).
 * For platforms that are provided the USB MSC device you need to link a MMCSD interface or a custom disk driver.
 
 > All namespaces and classes are under "GI" namespace.
 
-Please watch for available interfaces in "[platform directory]/board/[Board directory]/def.cpp" file.
+Please loock for available interfaces in "SDK/lib/board/[Manufacturer]/[Board directory]/def.cpp" file.
 To request controll of one of initialized interface use next examples:
 
 > Example of blinking led 1 on the board:
@@ -128,7 +141,7 @@ int main(void)
 }
 ```
 
-> Heartbeating one led 1 using non blocking timer:
+> Heartbeating one led using non blocking timer:
 
 ```CPP
 /*
@@ -350,11 +363,8 @@ int main(void)
 	newWindowPasswordNumeric(MainWindow, pass, 2, 2);
 	
 	/*
-	 * Create a controll structure to pass data from touch screen to window.
-	 */
-	tControlCommandData control_comand;
-	/*
-	 * Create a nonblocking timmer to call the idle function of parrent window every 20 miliseconds .
+	 * Create a nonblocking timmer to call the idle function of parrent window every 20 miliseconds.
+	 * The 20ms is the maximum refresh rate of cursor and window.
 	 */
 	GI::Sys::Timer timer_touch = GI::Sys::Timer(20);
 
