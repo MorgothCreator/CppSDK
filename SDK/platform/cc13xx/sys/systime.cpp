@@ -14,12 +14,14 @@ static volatile unsigned long long flagIsr = 1;
 volatile unsigned long long STimerCnt;
 //Rtc_t RtcStruct;
 
+GI::Sys::Systime sysTime = GI::Sys::Systime();
+
 void TimerCnt_Isr_Increment(void)
 {
     STimerCnt++;
 }
 //#####################################################
-void SysDelayTimerSetup(void)
+GI::Sys::Systime::Systime()
 {
     SysTickEnable();
     SysTickPeriodSet(48000);
@@ -27,7 +29,12 @@ void SysDelayTimerSetup(void)
     SysTickIntEnable();
 }
 //#####################################################
-void sysDelay(unsigned int milliSec)
+GI::Sys::Systime::~Systime()
+{
+
+}
+//#####################################################
+void GI::Sys::Systime::sysDelay(unsigned long milliSec)
 {
 	flagIsr = STimerCnt + milliSec;
 	while(flagIsr < STimerCnt);

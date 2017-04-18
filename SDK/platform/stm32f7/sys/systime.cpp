@@ -15,12 +15,17 @@ extern unsigned long FCPU;
 volatile unsigned long long TimerTimeoutValue = 1;
 volatile unsigned long long STimerCnt = 0;
 //#####################################################
-void SysDelayTimerSetup(void)
+GI::Sys::Systime::Systime()
 {
 	SysTick_Config(FCPU / 1000);
 }
+
+GI::Sys::Systime::~Systime()
+{
+
+}
 //#####################################################
-void sysDelay(unsigned long milliSec)
+void GI::Sys::Systime::sysDelay(unsigned long milliSec)
 {
 	TimerTimeoutValue = STimerCnt + (unsigned long long)milliSec;
 	while(1) {

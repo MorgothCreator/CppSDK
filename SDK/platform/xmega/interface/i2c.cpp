@@ -17,15 +17,23 @@ TWI_t* I2C_BASE_PTRS[] =
 {
 #ifdef TWIC
 		&TWIC,
+#else
+		NULL,
 #endif
 #ifdef TWID
 		&TWID,
+#else
+		NULL,
 #endif
 #ifdef TWIE
 		&TWIE,
+#else
+		NULL,
 #endif
 #ifdef TWIF
 		&TWIF,
+#else
+		NULL,
 #endif
 		};
 

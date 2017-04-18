@@ -102,7 +102,7 @@
  */
 
 #define EXTERNAL_CLOCK_VALUE    		((unsigned long)0000000)	/*!< Value of the External clock in Hz*/
-#define CORE_CLOCK_DEFAULT				((unsigned long)2000000)	/*!< Value of the Processor default clock in Hz*/
+#define CORE_CLOCK_DEFAULT				((unsigned long)32000000)	/*!< Value of the Processor default clock in Hz*/
 
 /*
  * Processor clock selection.

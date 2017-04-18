@@ -17,7 +17,7 @@
 #define CONSOLE_UART_OUT                "uart-0"
 #define CONSOLE_UART_ERR                "uart-0"
 
-#define USE_TERMINAL                    0
+#define USE_TERMINAL                    1
 
 #define USE_DHCP                        0
 

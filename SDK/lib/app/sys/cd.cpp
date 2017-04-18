@@ -4,6 +4,9 @@
  *  Created on: Feb 8, 2017
  *      Author: John Smith
  */
+#ifdef FLASH_DEVICE
+#include <avr/pgmspace.h>
+#endif
 #include <lib/fs/fat.h>
 #include "cmd.h"
 
@@ -19,7 +22,13 @@ SysErr Cmd::cd(int argc, char *argv[])
 	}
 	if(err != SYS_ERR_OK)
 	{
-		errPath->write((unsigned char *)"Invalid path.\n\r");
+#if __AVR_XMEGA__
+		char tmp[sizeof("Invalid path.\n\r")];
+		strcpy_P(tmp, PSTR("Invalid path.\n\r"));
+		errPath->write(tmp);
+#else
+		errPath->write((char *)"Invalid path.\n\r");
+#endif
 		return SYS_ERR_INVALID_PATH;
 	}
 	return SYS_ERR_OK;

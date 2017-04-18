@@ -145,7 +145,7 @@ ORDERED_OBJS += \
 -Wl,-T"../cc13x0f128.lds" \
 $(GEN_CMDS__FLAG) \
 -Wl,--start-group \
--lstdc++ \
+-lstdc++_nano \
 -Wl,--end-group \
 
 -include ../makefile.init
@@ -325,7 +325,7 @@ all: $(OBJS) $(LDS_SRCS) $(GEN_CMDS)
 ExampleSmartRF06.out: $(OBJS) $(LDS_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GNU Linker'
-	"D:/App/ti/ccsv7/tools/compiler/gcc-arm-none-eabi-4_9-2015q3/bin/arm-none-eabi-gcc.exe" -DSmartRf06 -O1 -ffunction-sections -fdata-sections -fsingle-precision-constant -g -gdwarf-3 -gstrict-dwarf -Wall -specs="nosys.specs" -fno-strict-aliasing --asm -std=c99 -mthumb -Wl,-Map,"ExampleSmartRF06.map" -Wl,--gc-sections -L"C:/ti/tirtos_cc13xx_cc26xx_2_15_00_17/products/cc13xxware_2_03_00_16456/driverlib/bin/gcc" -fno-exceptions --specs=nano.specs -o"ExampleSmartRF06.out" $(ORDERED_OBJS)
+	"D:/App/ti/ccsv7/tools/compiler/gcc-arm-none-eabi-4_9-2015q3/bin/arm-none-eabi-gcc.exe" -fno-exceptions -DSmartRf06 -O1 -ffunction-sections -fdata-sections -fsingle-precision-constant -g -gdwarf-3 -gstrict-dwarf -Wall -specs="nosys.specs" -fno-strict-aliasing -fno-use-cxa-atexit --asm -std=c99 -mthumb -Wl,-Map,"ExampleSmartRF06.map" -Wl,--gc-sections -L"C:/ti/tirtos_cc13xx_cc26xx_2_15_00_17/products/cc13xxware_2_03_00_16456/driverlib/bin/gcc" -fno-exceptions --specs=nano.specs -o"ExampleSmartRF06.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build

@@ -772,231 +772,231 @@ LINKER_SCRIPT_DEP+=
 ./%.o: .././%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Common/%.o: C:/GitHub/CppSDK/Common/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/api/%.o: C:/GitHub/CppSDK/SDK/lib/api/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/app/lwip/ftpserver/%.o: C:/GitHub/CppSDK/SDK/lib/app/lwip/ftpserver/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/app/lwip/httpd/%.o: C:/GitHub/CppSDK/SDK/lib/app/lwip/httpd/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/app/lwip/http_client/%.o: C:/GitHub/CppSDK/SDK/lib/app/lwip/http_client/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/app/lwip/sntp/%.o: C:/GitHub/CppSDK/SDK/lib/app/lwip/sntp/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/app/lwip/tftpserver/%.o: C:/GitHub/CppSDK/SDK/lib/app/lwip/tftpserver/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/app/lwip/tftpserver/%.o: C:/GitHub/CppSDK/SDK/lib/app/lwip/tftpserver/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/app/sys/%.o: C:/GitHub/CppSDK/SDK/lib/app/sys/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/board/ATMEL/FeatherAdaloggerM0/%.o: C:/GitHub/CppSDK/SDK/lib/board/ATMEL/FeatherAdaloggerM0/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/board/ATMEL/Xmega-E5_Xplained/%.o: C:/GitHub/CppSDK/SDK/lib/board/ATMEL/Xmega-E5_Xplained/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/board/NXP/FRDM-KEAZ128/%.o: C:/GitHub/CppSDK/SDK/lib/board/NXP/FRDM-KEAZ128/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/board/STM/MikromediaForSTM32M4/%.o: C:/GitHub/CppSDK/SDK/lib/board/STM/MikromediaForSTM32M4/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/board/STM/STM32F429I-DISCO/%.o: C:/GitHub/CppSDK/SDK/lib/board/STM/STM32F429I-DISCO/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/board/STM/STM32F469I-DISCO/%.o: C:/GitHub/CppSDK/SDK/lib/board/STM/STM32F469I-DISCO/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/board/STM/STM32F769I-DISCO/%.o: C:/GitHub/CppSDK/SDK/lib/board/STM/STM32F769I-DISCO/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/board/TI/SmartRF06/%.o: C:/GitHub/CppSDK/SDK/lib/board/TI/SmartRF06/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/device/%.o: C:/GitHub/CppSDK/SDK/lib/device/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/include/%.o: C:/GitHub/CppSDK/SDK/lib/include/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/buffers/%.o: C:/GitHub/CppSDK/SDK/lib/lib/buffers/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/crypto/%.o: C:/GitHub/CppSDK/SDK/lib/lib/crypto/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/fs/%.o: C:/GitHub/CppSDK/SDK/lib/lib/fs/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/fs/fat/src/%.o: C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/src/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/fs/fat/src/option/%.o: C:/GitHub/CppSDK/SDK/lib/lib/fs/fat/src/option/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/gfx/%.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/gfx/files/%.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/files/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/gfx/libdrawtext/%.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/libdrawtext/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/gfx/resource/%.o: C:/GitHub/CppSDK/SDK/lib/lib/gfx/resource/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/%.o: C:/GitHub/CppSDK/SDK/lib/lib/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 lib/lib/util/%.o: C:/GitHub/CppSDK/SDK/lib/lib/util/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 xmega/interface/%.o: C:/GitHub/CppSDK/SDK/platform/xmega/interface/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 xmega/sys/%.o: C:/GitHub/CppSDK/SDK/platform/xmega/sys/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
@@ -1025,7 +1025,7 @@ all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER_SCRIPT_DEP)
 	@echo Building target: $@
 	@echo Invoking: AVR8/GNU Linker : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="ExampleXmega_E5_Xplained.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atxmega32e5  
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="ExampleXmega_E5_Xplained.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mrelax -mmcu=atxmega32e5  
 	@echo Finished building target: $@
 	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "ExampleXmega_E5_Xplained.elf" "ExampleXmega_E5_Xplained.hex"
 	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "ExampleXmega_E5_Xplained.elf" "ExampleXmega_E5_Xplained.eep" || exit 0

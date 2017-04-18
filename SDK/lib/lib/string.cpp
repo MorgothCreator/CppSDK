@@ -51,6 +51,7 @@ GI::String::~String()
 {
 	if (buff)
 		free((void *) buff);
+	memset(this, 0, sizeof(*this));
 }
 
 bool GI::String::equal(GI::String *string)

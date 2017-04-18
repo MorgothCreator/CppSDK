@@ -18,8 +18,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#if __AVR_XMEGA__
+#include <avr/pgmspace.h>
+#endif
 #include <main.h>
+#include <board.h>
 #include <stdio.h>
 #include "init.h"
 #include <api/i2c.h>
@@ -34,14 +37,21 @@
 #include <lib/operators.h>
 
 #if (USE_GPIO == 1)
+#if __AVR_XMEGA__
+extern const CfgGpio *gpioCfg[];
+#else
 extern CfgGpio gpioCfg[];
 #endif
+#endif
+
 #if (USE_SPI == 1)
 extern CfgSpi spiCfg[];
 #endif
+
 #if (USE_I2C == 1)
 extern CfgI2c i2cCfg[];
 #endif
+
 #if (USE_UART == 1)
 extern CfgUart uartCfg[];
 #endif
@@ -64,8 +74,13 @@ GI::Board::Init::Init()
      */
     for (table_len = 0; table_len < 512; table_len++)
     {
+#if __AVR_XMEGA__
+		if (pgm_read_byte(&gpioCfg[table_len]->name[0]) == 0)
+			break;
+#else
         if (gpioCfg[table_len].name[0] == 0)
             break;
+#endif
     }
     /*
      * Allocate memory to store pins handlers pointers.
@@ -76,9 +91,19 @@ GI::Board::Init::Init()
      */
     for (dev_cnt = 0; dev_cnt < table_len; dev_cnt++)
     {
+#if __AVR_XMEGA__
+        if (pgm_read_byte(&gpioCfg[dev_cnt]->name[0]) != 0)
+#else
         if (gpioCfg[dev_cnt].name[0] != 0)
+#endif
         {
+#if __AVR_XMEGA__
+			CfgGpio tmp;
+			memcpy_P(&tmp, gpioCfg[dev_cnt], sizeof(CfgGpio));
+            GPIO[dev_cnt] = new GI::Dev::Gpio(&tmp);
+#else
             GPIO[dev_cnt] = new GI::Dev::Gpio(&gpioCfg[dev_cnt]);
+#endif
         }
     }
 #endif

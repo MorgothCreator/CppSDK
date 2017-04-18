@@ -13,11 +13,11 @@
 #define USE_I2C                         0
 #define USE_SPI                         0
 
-#define CONSOLE_UART_IN		            "uart-0"
-#define CONSOLE_UART_OUT	            "uart-0"
-#define CONSOLE_UART_ERR	            "uart-0"
+#define CONSOLE_UART_IN		            "uart-2"
+#define CONSOLE_UART_OUT	            "uart-2"
+#define CONSOLE_UART_ERR	            "uart-2"
 
-#define USE_TERMINAL                    0
+#define USE_TERMINAL                    1
 
 #define USE_DHCP						0
 

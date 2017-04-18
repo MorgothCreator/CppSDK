@@ -20,7 +20,6 @@ static void SystemClock_Config(unsigned long int_osc_freq,
 {
 	SysCtrlPowerEverything();
 	CoreFreq = core_freq;
-	SysDelayTimerSetup();
 }
 
 GI::Sys::Clock::Clock()

@@ -8,6 +8,8 @@
 #ifndef LIB_APP_SYS_CMD_H_
 #define LIB_APP_SYS_CMD_H_
 
+#ifdef __AVR_XMEGA__
+#endif
 #include <lib/string.h>
 #include <api/io_handle.h>
 #include <include/global.h>
@@ -23,6 +25,7 @@ public:
 	SysErr cd(int argc, char *argv[]);
 	SysErr cat(int argc, char *argv[]);
 
+	void printError(int error);
 private:
 	GI::String *input;
 	GI::String *path;
@@ -40,7 +43,12 @@ private:
 	unsigned char escape_second_char;
 };
 
+#if __AVR_XMEGA__
+#include <avr/pgmspace.h>
+extern PGM_P fs_err_table[];
+#else
 extern const char *fs_err_table[];
+#endif
 /*#####################################################*/
 #ifdef USE_VISUAL_STUDIO
 #include "cat.cpp"

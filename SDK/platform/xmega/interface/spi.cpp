@@ -19,15 +19,23 @@ SPI_t* SPI_BASE_PTRS[] =
 {
 #ifdef SPIC
 		&SPIC,
+#else
+		NULL,
 #endif
 #ifdef SPID
 		&SPID,
+#else
+		NULL,
 #endif
 #ifdef SPIE
 		&SPIE,
+#else
+		NULL,
 #endif
 #ifdef SPIF
 		&SPIF,
+#else
+		NULL,
 #endif
 		};
 

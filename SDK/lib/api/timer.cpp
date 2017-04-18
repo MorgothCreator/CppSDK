@@ -96,6 +96,6 @@ bool GI::Sys::Timer::enabled()
 }
 //#####################################################
 void GI::Sys::Timer::delay(u32 milliSec) {
-	sysDelay(milliSec);
+	GI::Sys::Systime::sysDelay(milliSec);
 }
 //#####################################################

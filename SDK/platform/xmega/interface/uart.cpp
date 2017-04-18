@@ -21,27 +21,43 @@ USART_t* UART_BASE_PTRS[] =
 {
 #ifdef USARTC0
 		&USARTC0,
+#else
+		NULL,
 #endif
 #ifdef USARTC1
 		&USARTC1,
+#else
+		NULL,
 #endif
 #ifdef USARTD0
 		&USARTD0,
+#else
+		NULL,
 #endif
 #ifdef USARTD1
 		&USARTD1,
+#else
+		NULL,
 #endif
 #ifdef USARTE0
 		&USARTE0,
+#else
+		NULL,
 #endif
 #ifdef USARTE1
 		&USARTE1,
+#else
+		NULL,
 #endif
 #ifdef USARTF0
 		&USARTF0,
+#else
+		NULL,
 #endif
 #ifdef USARTF1
 		&USARTF1
+#else
+		NULL,
 #endif
 		};
 
@@ -75,6 +91,7 @@ GI::Dev::Uart::Uart(const char *path)
 			err = SYS_ERR_INVALID_PATH;
 			return;
 		}
+		memset(this, 0, sizeof(*this));
 		unitNr = dev_nr;
 	}
 	else
@@ -82,10 +99,8 @@ GI::Dev::Uart::Uart(const char *path)
 		err = SYS_ERR_INVALID_PARAM;
 		return;
 	}
-	memset(this, 0, sizeof(*this));
 	memcpy(&cfg, &uartCfg[item_nr], sizeof(CfgUart));
 
-	udata = (void *)UART_BASE_PTRS[unitNr];
 #if defined(__AVR_ATxmega8E5__) || defined(__AVR_ATxmega16E5__) || defined(__AVR_ATxmega32E5__)
 	switch(unitNr)
 	{
@@ -109,6 +124,7 @@ GI::Dev::Uart::Uart(const char *path)
 		PORTC.DIRCLR = 1<<2;
 		PORTC.DIRSET = 1<<3;
 		PORTC.OUTSET = 1<<3;
+		udata = (void *)UART_BASE_PTRS[0];
 		break;
 	case 1:
 		PORTC.REMAP |= PORT_USART0_bm;
@@ -130,6 +146,7 @@ GI::Dev::Uart::Uart(const char *path)
 		PORTC.DIRCLR = 1<<6;
 		PORTC.DIRSET = 1<<7;
 		PORTC.OUTSET = 1<<7;
+		udata = (void *)UART_BASE_PTRS[0];
 		break;
 	case 2:
 		PORTD.REMAP &= ~PORT_USART0_bm;
@@ -151,6 +168,7 @@ GI::Dev::Uart::Uart(const char *path)
 		PORTD.DIRCLR = 1<<2;
 		PORTD.DIRSET = 1<<3;
 		PORTD.OUTSET = 1<<3;
+		udata = (void *)UART_BASE_PTRS[2];
 		break;
 	case 3:
 		PORTD.REMAP |= PORT_USART0_bm;
@@ -172,11 +190,13 @@ GI::Dev::Uart::Uart(const char *path)
 		PORTD.DIRCLR = 1<<6;
 		PORTD.DIRSET = 1<<7;
 		PORTD.OUTSET = 1<<7;
+		udata = (void *)UART_BASE_PTRS[2];
 		break;
 	default:
 		return;
 	}
 #else
+	udata = (void *)UART_BASE_PTRS[unitNr];
 	switch(unitNr)
 	{
 #ifdef USARTC0
@@ -351,28 +371,56 @@ GI::Dev::Uart::Uart(const char *path)
 		return;
 	}
 #endif
-/*	UART_ConfigType UartConfig;
-	UartConfig.u32SysClkHz = FCPU;
-	UartConfig.u32Baudrate = cfg.speed;
-	if(cfg.parity != CfgUart::PAR_NONE)
+	unsigned int ubrr = ((FCPU / 8) / cfg.speed) -1;
+	((USART_t*)udata)->BAUDCTRLA = (unsigned char)ubrr;
+	((USART_t*)udata)->BAUDCTRLB = (unsigned char)((ubrr>>8) & 0x0F);
+	unsigned char tmp = 0;
+	if(cfg.wordLen == CfgUart::WORD_LEN_5)
+		tmp = USART_CHSIZE_5BIT_gc;
+	else if(cfg.wordLen == CfgUart::WORD_LEN_6)
+		tmp = USART_CHSIZE_6BIT_gc;
+	else if(cfg.wordLen == CfgUart::WORD_LEN_7)
+		tmp = USART_CHSIZE_7BIT_gc;
+	else if(cfg.wordLen == CfgUart::WORD_LEN_8)
+		tmp = USART_CHSIZE_8BIT_gc;
+	else if(cfg.wordLen == CfgUart::WORD_LEN_9)
+		tmp = USART_CHSIZE_9BIT_gc;
+	else
+		tmp = USART_CHSIZE_8BIT_gc;
+		
+	if(cfg.parity == CfgUart::PAR_EVEN)
+		tmp |= USART_PMODE_EVEN_gc;
+	else if(cfg.parity == CfgUart::PAR_ODD)
+		tmp |= USART_PMODE_ODD_gc;
+		
+#if UART_HAVE_MODE_SYNCHRONOUS == 1
+	if(cfg.uartMode == CfgUart::MODE_SYNC)
 	{
-		UartConfig.sctrl1settings.bits.bPe = true;
-		if( cfg.parity == CfgUart::PAR_EVEN)
-			UartConfig.sctrl1settings.bits.bPt = false;
-		else
-			UartConfig.sctrl1settings.bits.bPt = true;
-
+		tmp |= USART_CMODE_SYNCHRONOUS_gc;
 	}
-	if(cfg.wordLen == CfgUart::WORD_LEN_8)
-		UartConfig.sctrl1settings.bits.bM = false;
-	else
-		UartConfig.sctrl1settings.bits.bM = true;
-	if(cfg.stopBits == CfgUart::STOP_BITS_ONE)
-		UartConfig.bSbns = false;
-	else
-		UartConfig.bSbns = true;
-	UART_Init(addr_table[unitNr], &UartConfig);*/
+#endif
+#if UART_HAVE_MODE_SPI == 1
+	if(cfg.uartMode == CfgUart::MODE_SPI)
+	{
+		tmp |= USART_CMODE_MSPI_gc;
+	}
+#endif
+#if UART_HAVE_MODE_IR == 1
+	if(cfg.uartMode == CfgUart::MODE_IR)
+	{
+		tmp |= USART_CMODE_IRDA_gc;
+	}
+#endif
 
+	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+		tmp |= USART_SBMODE_bm;
+	((USART_t*)udata)->CTRLC = tmp;
+	tmp = USART_CLK2X_bm;
+	if(cfg.rx)
+		tmp |= USART_RXEN_bm;
+	if(cfg.tx)
+		tmp |= USART_TXEN_bm;
+	((USART_t*)udata)->CTRLB = tmp;
 }
 /*#####################################################*/
 GI::Dev::Uart::~Uart()
@@ -385,11 +433,9 @@ SysErr GI::Dev::Uart::setSpeed(unsigned long baudRate)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	/*USART_t *UartHandle = (UART_Type *) udata;
-	UART_ConfigBaudrateType Baud;
-	Baud.u32SysClkHz = FCPU;
-	Baud.u32Baudrate = baudRate;
-	UART_SetBaudrate(UartHandle, &Baud);*/
+	unsigned int ubrr = ((FCPU / 8) / cfg.speed) -1;
+	((USART_t*)udata)->BAUDCTRLA = (unsigned char)ubrr;
+	((USART_t*)udata)->BAUDCTRLB = (unsigned char)((ubrr>>8) & 0x0F);
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -397,12 +443,20 @@ SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	/*USART_t *UartHandle = (UART_Type *) udata;
-
-	if(cfg.wordLen == CfgUart::WORD_LEN_8)
-		UART_Set8BitMode(UartHandle);
+	unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_CHSIZE_gm;
+	if(cfg.wordLen == CfgUart::WORD_LEN_5)
+		tmp = USART_CHSIZE_5BIT_gc;
+	else if(cfg.wordLen == CfgUart::WORD_LEN_6)
+		tmp = USART_CHSIZE_6BIT_gc;
+	else if(cfg.wordLen == CfgUart::WORD_LEN_7)
+		tmp = USART_CHSIZE_7BIT_gc;
+	else if(cfg.wordLen == CfgUart::WORD_LEN_8)
+		tmp = USART_CHSIZE_8BIT_gc;
+	else if(cfg.wordLen == CfgUart::WORD_LEN_9)
+		tmp = USART_CHSIZE_9BIT_gc;
 	else
-		UART_Set9BitMode(UartHandle);*/
+		tmp = USART_CHSIZE_8BIT_gc;
+	((USART_t*)udata)->CTRLC = tmp;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -410,11 +464,10 @@ SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	/*USART_t *UartHandle = (UART_Type *) udata;
+	unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_SBMODE_bm;
 	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
-		UART_Set2StopBit(UartHandle);
-	else
-		UART_Set1StopBit(UartHandle);*/
+		tmp |= USART_SBMODE_bm;
+	((USART_t*)udata)->CTRLC = tmp;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -422,11 +475,12 @@ SysErr GI::Dev::Uart::setParBits(CfgUart::parity_e pBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	/*USART_t *UartHandle = (UART_Type *) udata;
-	if(cfg.stopBits == CfgUart::STOP_BITS_ONE)
-		UartHandle->BDH &= ~UART_BDH_SBNS_MASK;
-	else
-		UartHandle->BDH |= UART_BDH_SBNS_MASK;*/
+	unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_PMODE_gm;
+	if(cfg.parity == CfgUart::PAR_EVEN)
+		tmp |= USART_PMODE_EVEN_gc;
+	else if(cfg.parity == CfgUart::PAR_ODD)
+		tmp |= USART_PMODE_ODD_gc;
+	((USART_t*)udata)->CTRLC = tmp;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -434,10 +488,7 @@ SysErr GI::Dev::Uart::getSpeed(unsigned long *baudRate)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	/*USART_t *UartHandle = (UART_Type *) udata;
-	u32 tmpBaud = (UART_BDH_SBR(UartHandle->BDH) << 8) + UartHandle->BDL;
-	tmpBaud = tmpBaud << 4;
-	*baudRate = FCPU / tmpBaud;*/
+	*baudRate = (FCPU / 8) / ((((USART_t*)udata)->BAUDCTRLB << 8) | ((USART_t*)udata)->BAUDCTRLA);
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -445,11 +496,19 @@ SysErr GI::Dev::Uart::getWordLen(CfgUart::wordLen_e *wLen)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	/*USART_t *UartHandle = (UART_Type *) udata;
-	if(UartHandle->C1 & UART_C1_M_MASK)
+	unsigned char tmp = ((USART_t*)udata)->CTRLC & USART_CHSIZE_gm;
+	if(cfg.wordLen == USART_CHSIZE_5BIT_gc)
+		*wLen = CfgUart::WORD_LEN_5;
+	else if(cfg.wordLen == USART_CHSIZE_6BIT_gc)
+		*wLen = CfgUart::WORD_LEN_6;
+	else if(cfg.wordLen == USART_CHSIZE_7BIT_gc)
+		*wLen = CfgUart::WORD_LEN_7;
+	else if(cfg.wordLen == USART_CHSIZE_8BIT_gc)
+		*wLen = CfgUart::WORD_LEN_8;
+	else if(cfg.wordLen == USART_CHSIZE_9BIT_gc)
 		*wLen = CfgUart::WORD_LEN_9;
 	else
-		*wLen = CfgUart::WORD_LEN_8;*/
+		*wLen = CfgUart::WORD_LEN_8;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -457,11 +516,11 @@ SysErr GI::Dev::Uart::getStopBits(CfgUart::stopBits_e *sBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	/*USART_t *UartHandle = (UART_Type *) udata;
-	if(UartHandle->C1 & UART_BDH_SBNS_MASK)
+	unsigned char tmp = ((USART_t*)udata)->CTRLC & USART_SBMODE_bm;
+	if(cfg.stopBits == USART_SBMODE_bm)
 		*sBits = CfgUart::STOP_BITS_TWO;
 	else
-		*sBits = CfgUart::STOP_BITS_ONE;*/
+		*sBits = CfgUart::STOP_BITS_ONE;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -469,16 +528,15 @@ SysErr GI::Dev::Uart::getParBits(CfgUart::parity_e *pBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	/*USART_t *UartHandle = (UART_Type *) udata;
-	if(UartHandle->C1 & UART_C1_PE_MASK)
-	{
-		if(UartHandle->C1 & UART_C1_PT_MASK)
-			*pBits = CfgUart::PAR_ODD;
-		else
-			*pBits = CfgUart::PAR_EVEN;
-	}
+	unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_PMODE_gm;
+	if(cfg.parity == USART_PMODE_EVEN_gc)
+		*pBits = CfgUart::PAR_EVEN;
+	else if(cfg.parity == USART_PMODE_ODD_gc)
+		*pBits = CfgUart::PAR_ODD;
+	else if(cfg.parity == USART_PMODE_DISABLED_gc)
+		*pBits = CfgUart::PAR_NONE;
 	else
-		*pBits = CfgUart::PAR_NONE;*/
+		*pBits = CfgUart::PAR_NONE;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/

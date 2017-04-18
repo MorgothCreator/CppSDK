@@ -14,7 +14,7 @@ SysErr Sys::Util::strToCmd(GI::String *inStr, GI::StringArray **result)
 	GI::StringArray *tmp_cmt_splitted = new GI::StringArray();
 	unsigned int char_count = 0;
 	GI::String *tmp_in_str = new GI::String(inStr->buff);
-	while(tmp_in_str->length)
+	while(tmp_in_str && tmp_in_str->length)
 	{
 		if(tmp_in_str->buff[char_count] == splitChard[0] || tmp_in_str->buff[char_count] == splitChard[1] || tmp_in_str->buff[char_count] == '\0')
 		{

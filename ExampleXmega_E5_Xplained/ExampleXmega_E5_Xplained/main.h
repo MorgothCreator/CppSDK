@@ -13,11 +13,11 @@
 #define USE_I2C                         0
 #define USE_SPI                         0
 
-#define CONSOLE_UART_IN		            "uart-0"
-#define CONSOLE_UART_OUT	            "uart-0"
-#define CONSOLE_UART_ERR	            "uart-0"
+#define CONSOLE_UART_IN		            "uart-3"
+#define CONSOLE_UART_OUT	            "uart-3"
+#define CONSOLE_UART_ERR	            "uart-3"
 
-#define USE_TERMINAL                    0
+#define USE_TERMINAL                    1
 
 #define USE_DHCP						0
 
@@ -67,7 +67,7 @@
 
 #define _USE_INT_ADC					0
 
-#define USE_DRIVER_SEMAPHORE			true
+#define USE_DRIVER_SEMAPHORE			false
 
 #include <main_app.h>
 

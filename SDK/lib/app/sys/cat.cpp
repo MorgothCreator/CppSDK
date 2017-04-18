@@ -5,6 +5,9 @@
  *      Author: John Smith
  */
 
+#ifdef FLASH_DEVICE
+#include <avr/pgmspace.h>
+#endif
 #include <lib/fs/fat.h>
 #include "cmd.h"
 
@@ -35,7 +38,13 @@ SysErr Cmd::cat(int argc, char *argv[])
 	SysErr err = cdInt(&directory_with_path, &directory);
 	if(err != SYS_ERR_OK)
 	{
+#if __AVR_XMEGA__
+		char tmp[sizeof("Invalid path.\n\r")];
+		strcpy_P(tmp, PSTR("Invalid path.\n\r"));
+		errPath->write(tmp);
+#else
 		errPath->write((char *)"Invalid path.\n\r");
+#endif
 		return SYS_ERR_INVALID_PATH;
 	}
 	file file_read = file();
@@ -61,12 +70,8 @@ SysErr Cmd::cat(int argc, char *argv[])
 	}
 	else
 	{
-		if(res <= FR_INVALID_PARAMETER)
-			errPath->write((char *)fs_err_table[res]);
-		else
-			errPath->write((char *)"Unknown error");
+		printError(res);
 	}
-	errPath->write((unsigned char *)"\n\r");
 
 	return SYS_ERR_OK;
 }

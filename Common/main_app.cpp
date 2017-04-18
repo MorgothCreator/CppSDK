@@ -330,21 +330,21 @@ void main_app(void)
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 						ListBox->Items[0]->Caption->setText((char *)"HIH613x: stale data");
 #else
-						GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"HIH613x: stale data");
+						GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x: stale data");
 #endif
 						break;
 					case 2:
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 						ListBox->Items[0]->Caption->setText((char *)"HIH613x: in command mode");
 #else
-						GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"HIH613x: in command mode");
+						GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x: in command mode");
 #endif
 						break;
 					case 3:
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 						ListBox->Items[0]->Caption->setText((char *)"HIH613x: diagnostic");
 #else
-						GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"HIH613x: diagnostic");
+						GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x: diagnostic");
 #endif
 						break;
 					}
@@ -353,7 +353,7 @@ void main_app(void)
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					SensorResultTextbox->text->append((char *)"HIH613x:  error reading temperature and humidity\n\r");
 #else
-					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"HIH613x:  error reading temperature and humidity\n\r");
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x:  error reading temperature and humidity\n\r");
 #endif
 			}
 #endif
@@ -373,7 +373,7 @@ void main_app(void)
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[1]->Caption->setTextF((char *)"MPU60x0: Temp:  %2.2f Gr Celsius\n\r", mpu60x0_9150_temp);
 #else
-				GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: Temp:  %2.2f Gr Celsius\n\r", mpu60x0_9150_temp);
+					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: Temp:  %2.2f Gr Celsius\n\r", mpu60x0_9150_temp);
 #endif
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)

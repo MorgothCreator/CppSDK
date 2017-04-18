@@ -10,12 +10,21 @@
 //#####################################################
 extern volatile unsigned long long STimerCnt;
 
-void SysDelayTimerSetup(void);
-void sysDelay(unsigned long milliSec);
-void TimerCnt_Isr_Increment(void);
+namespace GI
+{
+	namespace Sys
+	{
+		class Systime {
+			public:
+			Systime();
+			~Systime();
+			static void sysDelay(unsigned long milliSec);
+		};
+	}
+}
 //#####################################################
 #ifdef HEADER_INCLUDE_C_FILES
-#include "sysdelay.c"
+#include "sysdelay.cpp"
 #endif
 //#####################################################
 #endif /* SYSDELAY_H_ */

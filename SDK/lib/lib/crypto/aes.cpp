@@ -5,7 +5,7 @@
  *  Author:
  */ 
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 #include <avr/pgmspace.h>
 #endif
 #include <string.h>
@@ -53,7 +53,7 @@ static unsigned char* Iv;
 // The lookup-tables are marked const so they can be placed in read-only storage instead of RAM
 // The numbers below can be computed dynamically trading ROM for RAM -
 // This can be useful in (embedded) bootloader applications, where ROM is often limited.
-#if FLASH_DEVICE
+#if __AVR_XMEGA__
 static const unsigned char sbox[256] PROGMEM =   {
 #else
 const unsigned char sbox[256] =   {
@@ -76,7 +76,7 @@ const unsigned char sbox[256] =   {
 	0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
 0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 };
 
-#if FLASH_DEVICE
+#if __AVR_XMEGA__
 static const unsigned char rsbox[256] PROGMEM = {
 #else
 const unsigned char rsbox[256] =   {
@@ -102,7 +102,7 @@ const unsigned char rsbox[256] =   {
 // The round constant word array, Rcon[i], contains the values given by
 // x to th e power (i-1) being powers of x (x is denoted as {02}) in the field GF(2^8)
 // Note that i starts at 1, not 0).
-#if FLASH_DEVICE
+#if __AVR_XMEGA__
 static const unsigned char Rcon[255] PROGMEM = {
 #else
 const unsigned char Rcon[255] =   {
@@ -129,7 +129,7 @@ const unsigned char Rcon[255] =   {
 /*****************************************************************************/
 unsigned char Aes::getSBoxValue(unsigned char num)
 {
-#if FLASH_DEVICE
+#if __AVR_XMEGA__
 	return pgm_read_byte(&sbox[num]);
 #else
 	return sbox[num];
@@ -138,7 +138,7 @@ unsigned char Aes::getSBoxValue(unsigned char num)
 
 unsigned char Aes::getSBoxInvert(unsigned char num)
 {
-#if FLASH_DEVICE
+#if __AVR_XMEGA__
 	return pgm_read_byte(&rsbox[num]);
 #else
 	return rsbox[num];
@@ -192,7 +192,7 @@ void Aes::KeyExpansion(void)
 				tempa[3] = getSBoxValue(tempa[3]);
 			}
 
-#if FLASH_DEVICE
+#if __AVR_XMEGA__
 			tempa[0] =  tempa[0] ^ pgm_read_byte(&Rcon[i/Nk]);
 #else
 			tempa[0] =  tempa[0] ^ Rcon[i/Nk];

@@ -5,9 +5,10 @@
  *      Author: John Smith
  */
 #include <string.h>
+#include <avr/pgmspace.h>
 #include <api/gpio.h>
 
-unsigned char BIT_MASK_TABLE[] = {
+const unsigned char BIT_MASK_TABLE [] PROGMEM = {
 		0b00000001,
 		0b00000010,
 		0b00000100,
@@ -23,51 +24,83 @@ PORT_t *GPIO_BASE_PTRS[] =
 		&PORTA
 #ifdef PORTB
 		, PORTB
+#else
+		, NULL
 #endif
 #ifdef PORTC
 		, &PORTC
+#else
+		, NULL
 #endif
 #ifdef PORTD
 		, &PORTD
+#else
+		, NULL
 #endif
 #ifdef PORTE
 		, &PORTE
+#else
+		, NULL
 #endif
 #ifdef PORTF
 		, &PORTF
+#else
+		, NULL
 #endif
 #ifdef PORTG
 		, &PORTG
+#else
+		, NULL
 #endif
 #ifdef PORTH
 		, &PORTH
+#else
+		, NULL
 #endif
 #ifdef PORTI
 		, &PORTI
+#else
+		, NULL
 #endif
 #ifdef PORTJ
 		, &PORTJ
+#else
+		, NULL
 #endif
 #ifdef PORTK
 		, &PORTK
+#else
+		, NULL
 #endif
 #ifdef PORTL
 		,&PORTL
+#else
+		, NULL
 #endif
 #ifdef PORTM
 		,&PORTM
+#else
+		, NULL
 #endif
 #ifdef PORTN
 		,&PORTN
+#else
+		, NULL
 #endif
 #ifdef PORTO
 		,&PORTO
+#else
+		, NULL
 #endif
 #ifdef PORTP
 		,&PORTP
+#else
+		, NULL
 #endif
 #ifdef PORTR
 		,&PORTR
+#else
+		, NULL
 #endif
 };
 /*#####################################################*/
@@ -92,8 +125,7 @@ GI::Dev::Gpio::Gpio(CfgGpio *gpioPin)
 /*#####################################################*/
 GI::Dev::Gpio::~Gpio()
 {
-	//HAL_GPIO_DeInit((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.pin >> 5],
-			//(unsigned int) (1 << (cfg.pin % 32)));
+	setMode(CfgGpio::GPIO_IN_FLOATING);
 }
 /*#####################################################*/
 SysErr GI::Dev::Gpio::setOut(unsigned int value)
@@ -103,8 +135,8 @@ SysErr GI::Dev::Gpio::setOut(unsigned int value)
 	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
 	if (cfg.multiPin)
 	{
-		BaseAddr->OUT = (BaseAddr->OUT & ~(cfg.pin % 32))
-				| (value & (cfg.pin % 32));
+		BaseAddr->OUT = (BaseAddr->OUT & ~(cfg.pin % 8))
+				| (value & (cfg.pin % 8));
 	}
 	else
 	{
@@ -112,9 +144,9 @@ SysErr GI::Dev::Gpio::setOut(unsigned int value)
 		if (cfg.reverse)
 			state = (~state) & 0x01;
 		if (state)
-			BaseAddr->OUTSET |= 1 << (cfg.pin % 32);
+			BaseAddr->OUTSET = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
 		else
-			BaseAddr->OUTCLR |= 1 << (cfg.pin % 32);
+			BaseAddr->OUTCLR = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
 	}
 	return SYS_ERR_OK;
 }
@@ -126,19 +158,19 @@ signed int GI::Dev::Gpio::in()
 	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
 	if (cfg.multiPin)
 	{
-		return BaseAddr->DIR & (cfg.pin % 32);
+		return BaseAddr->IN & (cfg.pin % 8);
 	}
 	else
 	{
 		if (cfg.reverse)
 		{
-			if(BaseAddr->IN & (cfg.pin % 32))
+			if(BaseAddr->IN & pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]))
 				return false;
 			else
 				return true;
 		}
 		else
-			return BaseAddr->IN & (cfg.pin % 32);
+			return BaseAddr->IN & pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
 	}
 }
 /*#####################################################*/
@@ -166,19 +198,19 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 	{
 	case CfgGpio::GPIO_IN_PULL_UP:
 		ctl_pin[cfg.pin % 8] = PORT_OPC_PULLUP_gc;
-		BaseAddr->DIRCLR = 1 << (cfg.pin % 8);
+		BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
 		break;
 	case CfgGpio::GPIO_IN_PULL_DOWN:
 		ctl_pin[cfg.pin % 8] = PORT_OPC_PULLDOWN_gc;
-		BaseAddr->DIRCLR = 1 << (cfg.pin % 8);
+		BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
 		break;
 	case CfgGpio::GPIO_IN_FLOATING:
 		ctl_pin[cfg.pin % 8] = PORT_OPC_TOTEM_gc;
-		BaseAddr->DIRCLR = 1 << (cfg.pin % 8);
+		BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
 		break;
 	case CfgGpio::GPIO_OUT_PUSH_PULL:
 		ctl_pin[cfg.pin % 8] = PORT_OPC_TOTEM_gc;
-		BaseAddr->DIRSET = 1 << (cfg.pin % 8);
+		BaseAddr->DIRSET = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
 		break;
 	default:
 		return SYS_ERR_INVALID_COMMAND;

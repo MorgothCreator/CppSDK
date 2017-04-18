@@ -63,13 +63,20 @@ GI::Dev::Uart::Uart(const char *path)
 	}
 	UART_Type *addr_table[] = UART_BASE_PTRS;
 	udata = (void *)addr_table[unitNr];
-	//SIM_SCGC |=  SIM_SCGC_UART2_MASK;		/* Enable bus clock in UART2*/
-	//UART_BDH_REG(addr_table[unitNr]) = 0;							/* One stop bit*/
-	//UART_BDL_REG(addr_table[unitNr]) = 128;						/* Baud rate at 9600*/
-	//UART_C1_REG(addr_table[unitNr])  = 0;							/* No parity enable,8 bit format*/
-	//UART_C2_REG(addr_table[unitNr]) |= UART_C2_TE_MASK;			/* Enable Transmitter*/
-	//UART_C2_REG(addr_table[unitNr]) |= UART_C2_RE_MASK;			/* Enable Receiver*/
-	//UART_C2_REG(addr_table[unitNr]) |= UART_C2_RIE_MASK;			/* Enable Receiver interrupts*/
+	switch(unitNr)
+	{
+	case 0:
+		SIM_SCGC |=  SIM_SCGC_UART0_MASK;		/* Enable bus clock in UART0*/
+		break;
+	case 1:
+		SIM_SCGC |=  SIM_SCGC_UART1_MASK;		/* Enable bus clock in UART0*/
+		break;
+	case 2:
+		SIM_SCGC |=  SIM_SCGC_UART2_MASK;		/* Enable bus clock in UART0*/
+		break;
+	default:
+		return;
+	}
 	UART_ConfigType UartConfig;
 	UartConfig.u32SysClkHz = FCPU;
 	UartConfig.u32Baudrate = cfg.speed;
@@ -91,6 +98,15 @@ GI::Dev::Uart::Uart(const char *path)
 	else
 		UartConfig.bSbns = true;
 	UART_Init(addr_table[unitNr], &UartConfig);
+	//SIM_SCGC |=  SIM_SCGC_UART2_MASK;		/* Enable bus clock in UART2*/
+	//UART_BDH_REG(addr_table[unitNr]) = 0;							/* One stop bit*/
+	//UART_BDL_REG(addr_table[unitNr]) = 128;						/* Baud rate at 9600*/
+	//UART_C1_REG(addr_table[unitNr])  = 0;							/* No parity enable,8 bit format*/
+	if(cfg.tx)
+		UART_C2_REG(addr_table[unitNr]) |= UART_C2_TE_MASK;			/* Enable Transmitter*/
+	if(cfg.rx)
+		UART_C2_REG(addr_table[unitNr]) |= UART_C2_RE_MASK;			/* Enable Receiver*/
+	//UART_C2_REG(addr_table[unitNr]) |= UART_C2_RIE_MASK;			/* Enable Receiver interrupts*/
 
 }
 /*#####################################################*/
