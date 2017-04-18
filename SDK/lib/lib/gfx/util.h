@@ -1,8 +1,5 @@
 /*
  * util.h
- *
- *  Created on: Dec 17, 2016
- *      Author: John Smith
  */
 
 #ifndef LIB_LIB_GFX_UTIL_H_

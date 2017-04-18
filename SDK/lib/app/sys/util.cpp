@@ -1,8 +1,5 @@
 /*
- * util.cpp
- *
- *  Created on: Jan 29, 2017
- *      Author: John Smith
+ * app/sys/util.cpp
  */
 
 #include "util.h"

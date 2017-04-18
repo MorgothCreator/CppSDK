@@ -1,8 +1,5 @@
 /*
- * twi_interface.h
- *
- * Created: 2/8/2013 5:00:12 PM
- *  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ * interface/i2c.h
  */
 /*#####################################################*/
 #ifndef TWI_INTERFACE_H_

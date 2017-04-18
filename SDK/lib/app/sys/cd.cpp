@@ -1,8 +1,5 @@
 /*
- * cd.cpp
- *
- *  Created on: Feb 8, 2017
- *      Author: John Smith
+ * app/sys/cd.cpp
  */
 #ifdef FLASH_DEVICE
 #include <avr/pgmspace.h>

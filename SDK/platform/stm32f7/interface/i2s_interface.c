@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    stm32469i_discovery_audio.c
+  * @file    i2s_interface.c
   * @author  MCD Application Team
   * @version V1.0.1
   * @date    29-September-2015

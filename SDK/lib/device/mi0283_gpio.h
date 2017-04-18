@@ -1,8 +1,5 @@
 /*
- * mi0283_gpio.h
- *
- *  Created on: Apr 14, 2017
- *      Author: Cutare
+ * device/mi0283_gpio.h
  */
 
 #ifndef LIB_DEVICE_MI0283_GPIO_H_

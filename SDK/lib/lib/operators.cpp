@@ -1,8 +1,5 @@
 /*
- * operators.cpp
- *
- *  Created on: Apr 16, 2017
- *      Author: Cutare
+ * lib/operators.cpp
  */
 
 #include <stdio.h>

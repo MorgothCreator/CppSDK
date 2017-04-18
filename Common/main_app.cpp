@@ -1,8 +1,5 @@
 /*
- * main.cpp
- *
- *  Created on: Dec 9, 2016
- *      Author: John Smith
+ * main_app.cpp
  */
 
 #include <main.h>

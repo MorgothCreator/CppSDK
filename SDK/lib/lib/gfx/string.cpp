@@ -1,8 +1,5 @@
 /*
- * string.cpp
- *
- *  Created on: Dec 10, 2016
- *      Author: John Smith
+ * lib/gfx/string.cpp
  */
 
 #include <stdio.h>

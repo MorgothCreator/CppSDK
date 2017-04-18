@@ -1,8 +1,5 @@
 /*
- * mcspi_interface.h
- *
- * Created: 3/7/2013 6:40:42 PM
- *  Author: XxXx
+ * interface/spi.h
  */
 
 #ifndef MCSPI_INTERFACE_H_

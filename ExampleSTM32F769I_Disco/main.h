@@ -1,8 +1,5 @@
 /*
  * main.h
- *
- *  Created on: Apr 16, 2017
- *      Author: Cutare
  */
 
 #ifndef MAIN_H_

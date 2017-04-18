@@ -1,8 +1,5 @@
 /*
- * STM32F769I-DISCO.cpp
- *
- *  Created on: Dec 9, 2016
- *      Author: John Smith
+ * defs.cpp
  */
 #if defined(STM32F429I_DISCO)
 

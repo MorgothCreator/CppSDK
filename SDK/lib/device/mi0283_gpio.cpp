@@ -1,8 +1,5 @@
 /*
- * mi0283_gpio.cpp
- *
- *  Created on: Apr 14, 2017
- *      Author: Cutare
+ * device/mi0283_gpio.cpp
  */
 
 #include "mi0283_gpio.h"

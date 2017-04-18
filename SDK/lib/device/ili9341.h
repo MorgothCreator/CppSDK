@@ -1,8 +1,5 @@
 /*
- * ili9341.h
- *
- *  Created on: Jan 27, 2017
- *      Author: John Smith
+ * device/ili9341.h
  */
 
 #ifndef LIB_DEVICE_ILI9341_H_

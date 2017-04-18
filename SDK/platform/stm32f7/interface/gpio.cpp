@@ -1,8 +1,5 @@
 /*
- * gpio_interface.cpp
- *
- *  Created on: Mar 21, 2013
- *      Author: Iulian Gheorghiu
+ * interface/gpio.cpp
  */
 #include <api/gpio.h>
 #include <interface/gpio.h>

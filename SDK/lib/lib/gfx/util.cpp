@@ -1,8 +1,5 @@
 /*
- * util.cpp
- *
- *  Created on: Dec 17, 2016
- *      Author: John Smith
+ * lib/gfx/util.cpp
  */
 
 #include "util.h"

@@ -1,8 +1,5 @@
 /*
- * usb_dev_com_interface.h
- *
- *  Created on: Nov 23, 2014
- *      Author: Morgoth
+ * interface/usbd_cdc.h
  */
 
 #ifndef USB_DEV_COM_INTERFACE_H_

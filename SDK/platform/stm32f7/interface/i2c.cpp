@@ -1,8 +1,5 @@
 /*
- * twi_interface.c
- *
- * Created: 2/8/2013 5:00:27 PM
- *  Iulian Gheorghiu <morgoth.creator@gmail.com>
+ * interface/i2c.cpp
  */
 /*#####################################################*/
 #include <interface/i2c.h>

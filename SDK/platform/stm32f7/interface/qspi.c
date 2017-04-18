@@ -1,8 +1,5 @@
 /*
- * qspi_interface.c
- *
- *  Created on: Nov 20, 2016
- *      Author: John Smith
+ * interface/qspi.cpp
  */
 
 #include <api/qspi_def.h>

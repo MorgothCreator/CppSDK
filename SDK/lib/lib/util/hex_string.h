@@ -1,8 +1,5 @@
 /*
- * hex_string.h
- *
- *  Created on: Sep 11, 2016
- *      Author: John Smith
+ * lib/util/hex_string.h
  */
 
 #ifndef LIB_LIB_UTIL_HEX_STRING_H_

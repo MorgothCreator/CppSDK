@@ -1,8 +1,5 @@
 /*
- * item.cpp
- *
- *  Created on: Dec 15, 2016
- *      Author: John Smith
+ * lib/gfx/item.cpp
  */
 
 #include "item.h"

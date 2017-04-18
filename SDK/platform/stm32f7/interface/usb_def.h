@@ -1,8 +1,5 @@
 /*
- * usbd_cdc_def.h
- *
- *  Created on: Dec 22, 2016
- *      Author: John Smith
+ * interface/usbd_def.h
  */
 
 #ifndef STM32F7_INTERFACE_USB_DEF_H_

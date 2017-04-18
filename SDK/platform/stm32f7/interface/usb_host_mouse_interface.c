@@ -1,8 +1,5 @@
 /*
- * usb_mouse_interface.c
- *
- *  Created on: Nov 13, 2014
- *      Author: Morgoth
+ * interface/usb_host_mouse_interface.c
  */
 
 

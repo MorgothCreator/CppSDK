@@ -1,8 +1,5 @@
 /*
- * usb_interface.h
- *
- * Created: 3/7/2013 6:44:43 PM
- *  Author: XxXx
+ * interface/usbh_msc.h
  */ 
 
 

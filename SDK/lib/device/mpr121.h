@@ -1,8 +1,5 @@
 /*
- * mpr121.h
- *
- * Created: 5/31/2015 12:09:21 PM
- *  Author: eu
+ * device/mpr121.h
  */ 
 
 

@@ -1,8 +1,5 @@
 /*
- * util.h
- *
- *  Created on: Jan 29, 2017
- *      Author: John Smith
+ * app/sys/util.h
  */
 
 #ifndef LIB_APP_SYS_UTIL_H_

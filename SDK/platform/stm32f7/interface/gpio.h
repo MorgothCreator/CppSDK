@@ -1,8 +1,5 @@
 /*
- * gpio_interface.hpp
- *
- *  Created on: Dec 9, 2016
- *      Author: John Smith
+ * interface/gpio.hpp
  */
 
 #ifndef STM32F7_INTERFACE_GPIO_H_

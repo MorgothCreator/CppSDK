@@ -1,8 +1,5 @@
 /*
- * PasswordWindowNumeric.c
- *
- *  Created on: Sep 18, 2016
- *      Author: John Smith
+ * lib/gfx/PasswordWindowNumeric.cpp
  */
 
 #include <stdlib.h>

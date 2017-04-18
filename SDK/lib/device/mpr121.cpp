@@ -1,8 +1,5 @@
 /*
- * mpr121.c
- *
- * Created: 5/31/2015 12:09:32 PM
- *  Author: eu
+ * device/mpr121.cpp
  */ 
 
 //#include <avr/io.h>

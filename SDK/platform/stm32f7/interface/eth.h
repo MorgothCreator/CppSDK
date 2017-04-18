@@ -1,8 +1,5 @@
 /*
- * lan_interface.h
- *
- *  Created on: Jul 3, 2016
- *      Author: John Smith
+ * interface/eth.h
  */
 
 #ifndef AM33_INTERFACE_LAN_INTERFACE_H_

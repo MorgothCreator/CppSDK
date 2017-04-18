@@ -1,8 +1,5 @@
 /*
- * mcspi_interface.c
- *
- * Created: 3/7/2013 6:41:33 PM
- *  Author: XxXx
+ * interface/spi.cpp
  */
 
 //#include "driver/spi.h"

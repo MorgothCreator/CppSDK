@@ -1,8 +1,5 @@
 /*
- * qspi_interface.h
- *
- *  Created on: Nov 20, 2016
- *      Author: John Smith
+ * interface/qspi.h
  */
 
 #ifndef STM32F4XX_INTERFACE_QSPI_INTERFACE_H_

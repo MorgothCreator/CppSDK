@@ -1,8 +1,5 @@
 /*
  * lib/crypto/aes.cpp
- *
- * Created: 11/6/2015 6:02:04 PM
- *  Author:
  */ 
 
 #ifdef __AVR_XMEGA__

@@ -1,8 +1,5 @@
 /*
- * uart_interface.c
- *
- * Created: 2/8/2013 2:06:44 AM
- *  Author: XxXx
+ * interface/uart.cpp
  */
 /*#####################################################*/
 #include <stdlib.h>

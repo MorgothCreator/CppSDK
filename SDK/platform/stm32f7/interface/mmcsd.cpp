@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
- * @file    stm32f4_discovery_sdio_sd.c
- * @author  MCD Application Team
+ * @file    interface/mmcsd.cpp
+ * @author  MCD Application Team modified by Gheorghiu Iulian to fit this project
  * @version V1.0.0
  * @date    30-September-2011
  * @brief   This file provides a set of functions needed to manage the SDIO SD

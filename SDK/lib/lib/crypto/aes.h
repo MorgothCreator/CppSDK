@@ -1,8 +1,5 @@
 /*
  * lib/crypto/aes.h
- *
- * Created: 11/6/2015 6:01:53 PM
- *  Author:
  */ 
 
 

@@ -1,8 +1,5 @@
 /*
- * usb_dev_com_interface.c
- *
- *  Created on: Oct 17, 2015
- *      Author: John Smith
+ * interface/usbd_cdc.c
  */
 
 #include "stdbool.h"

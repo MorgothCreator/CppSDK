@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    audio_interface.c
+  * @file    i2s_interface.h
   * @author  MCD Application Team
   * @version V1.0.1
   * @date    29-September-2015

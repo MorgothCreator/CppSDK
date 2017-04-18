@@ -1,8 +1,5 @@
 /*
- * usbh_msc_def.h
- *
- *  Created on: Dec 10, 2016
- *      Author: John Smith
+ * interface/usbh_msc_def.h
  */
 
 #ifndef STM32F7_INTERFACE_USBH_MSC_DEF_H_

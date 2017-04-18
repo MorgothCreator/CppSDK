@@ -1,8 +1,5 @@
 /*
- * main.h
- *
- *  Created on: Dec 9, 2016
- *      Author: John Smith
+ * main_app.h
  */
 
 #ifndef MAIN_APP_H_

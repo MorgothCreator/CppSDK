@@ -1,8 +1,5 @@
 /*
- * hs_mmcsd_interface_def.h
- *
- *  Created on: Nov 15, 2015
- *      Author: John Smith
+ * interface/mmcsd_def.h
  */
 
 #ifndef AM33_INTERFACE_HS_MMCSD_INTERFACE_DEF_H_

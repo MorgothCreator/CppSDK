@@ -1,8 +1,5 @@
 /*
- * string.h
- *
- *  Created on: Dec 13, 2016
- *      Author: John Smith
+ * lib/string.h
  */
 
 #ifndef LIB_LIB_STRING_H_

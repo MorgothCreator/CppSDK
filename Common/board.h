@@ -1,8 +1,5 @@
 /*
  * board.h
- *
- *  Created on: Dec 9, 2016
- *      Author: John Smith
  */
 
 #ifndef _BOARD_BOARD_H_

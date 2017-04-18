@@ -1,8 +1,5 @@
 /*
- * lan_interface.c
- *
- *  Created on: Jul 3, 2016
- *      Author: John Smith
+ * interface/eth.cpp
  */
 
 #include <interface/eth.h>

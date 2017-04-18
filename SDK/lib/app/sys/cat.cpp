@@ -1,8 +1,5 @@
 /*
- * cat.cpp
- *
- *  Created on: Feb 8, 2017
- *      Author: John Smith
+ * app/sys/cat.cpp
  */
 
 #ifdef FLASH_DEVICE

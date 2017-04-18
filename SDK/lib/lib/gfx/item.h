@@ -1,8 +1,5 @@
 /*
- * item.h
- *
- *  Created on: Dec 15, 2016
- *      Author: John Smith
+ * lib/gfx/item.h
  */
 
 #ifndef LIB_LIB_GFX_ITEM_H_

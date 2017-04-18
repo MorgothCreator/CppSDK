@@ -1,8 +1,5 @@
 /*
- * uart_interface.h
- *
- * Created: 2/8/2013 2:07:01 AM
- *  Author: XxXx
+ * interface/uart.h
  */
 /*#####################################################*/
 #ifndef UART_INTERFACE_H_

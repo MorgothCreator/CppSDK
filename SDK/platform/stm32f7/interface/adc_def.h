@@ -1,8 +1,5 @@
 /*
- * adc_interface.h
- *
- *  Created on: Dec 28, 2014
- *      Author: Iulian Gheorghiu
+ * interface/adc_interface.h
  */
 /*#####################################################*/
 #ifndef ADC_INTERFACE_DEF_H_

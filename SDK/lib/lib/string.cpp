@@ -1,8 +1,5 @@
 /*
- * string.cpp
- *
- *  Created on: Dec 13, 2016
- *      Author: John Smith
+ * lib/string.cpp
  */
 
 #include "string.h"

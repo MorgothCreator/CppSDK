@@ -1,8 +1,5 @@
 /*
- * ili9341.cpp
- *
- *  Created on: Jan 27, 2017
- *      Author: John Smith
+ * device/ili9341.cpp
  */
 
 #include "ili9341.h"

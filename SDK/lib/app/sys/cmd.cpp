@@ -1,8 +1,5 @@
 /*
- * cmd.cpp
- *
- *  Created on: Jan 29, 2017
- *      Author: John Smith
+ * app/sys/cmd.cpp
  */
 
 #include "cmd.h"

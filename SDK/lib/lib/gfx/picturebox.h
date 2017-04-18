@@ -1,3 +1,6 @@
+/*
+ *  lib/gfx/picturebox.cpp
+ */
 #ifndef PICTUREBOX_H_
 #define PICTUREBOX_H_
 //#######################################################################################

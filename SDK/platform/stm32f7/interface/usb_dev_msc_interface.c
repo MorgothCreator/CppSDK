@@ -1,9 +1,6 @@
 
 /*
- * usb_dev_msc_interface.c
- *
- *  Created on: Oct 18, 2015
- *      Author: Iulian Gheorghiu
+ * interface/usb_dev_msc_interface.c
  */
 
 #include <sys/systime.h>

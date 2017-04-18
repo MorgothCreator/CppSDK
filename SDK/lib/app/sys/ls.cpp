@@ -1,8 +1,5 @@
 /*
- * ls.cpp
- *
- *  Created on: Jan 28, 2017
- *      Author: John Smith
+ * app/sys/ls.cpp
  */
 
 #ifdef FLASH_DEVICE

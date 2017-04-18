@@ -1,6 +1,6 @@
 //*****************************************************************************
 //
-// grlib.h - Prototypes for the low level primitives provided by the graphics
+// lib/gfx/resources/grlib.h - Prototypes for the low level primitives provided by the graphics
 //           library.
 //
 // Copyright (c) 2007-2010 Texas Instruments Incorporated.  All rights reserved.

@@ -1,8 +1,5 @@
 /*
- * int_rtc_interface.c
- *
- *  Created on: Sep 25, 2016
- *      Author: John Smith
+ * interface/int_rtc.cpp
  */
 
 #include <interface/int_rtc.h>

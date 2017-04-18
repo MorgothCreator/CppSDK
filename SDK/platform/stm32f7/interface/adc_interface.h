@@ -1,5 +1,5 @@
 /*
- * adc_interface.h
+ * interface/adc_interface.h
  *
  *  Created on: Dec 26, 2014
  *      Author: Iulian Gheorghiu

@@ -1,8 +1,5 @@
 /*
- * hs_mmcsd_interface.h
- *
- * Created: 2/11/2013 3:10:12 PM
- *  Author: XxXx
+ * interface/mmcsd.h
  */
 /*#####################################################*/
 #ifndef HS_MMCSD_INTERFACE_H_
@@ -11,8 +8,8 @@
 /*#####################################################*/
 /**
  ******************************************************************************
- * @file    stm32f4_discovery_sdio_sd.h
- * @author  MCD Application Team
+ * @file    interface/mmcsd.h
+ * @author  MCD Application Team modified by Gheorghiu Iulian to fit this project
  * @version V1.0.0
  * @date    30-September-2011
  * @brief   This file contains all the functions prototypes for the SD Card

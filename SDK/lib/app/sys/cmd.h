@@ -1,8 +1,5 @@
 /*
- * sys.h
- *
- *  Created on: Jan 28, 2017
- *      Author: John Smith
+ * app/sys/cmd.h
  */
 
 #ifndef LIB_APP_SYS_CMD_H_

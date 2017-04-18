@@ -1,8 +1,5 @@
 /*
- * operators.h
- *
- *  Created on: Apr 16, 2017
- *      Author: Cutare
+ * lib/operators.h
  */
 
 #ifndef LIB_LIB_OPERATORS_H_
