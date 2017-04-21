@@ -82,7 +82,7 @@ void main_app(void)
     MainWindow->AllowVScroll = false;
     MainWindow->HideHScroll = true;
     MainWindow->HideVScroll = true;
-    MainWindow->MaxMinEnabled = false;
+    MainWindow->MaxMinEnabled = true;
     MainWindow->MinimizeButonEnabled = false;
     MainWindow->CloseButonEnabled = false;
     MainWindow->Caption->textAlign = alignLeft;
@@ -211,9 +211,6 @@ void main_app(void)
 #if (_USE_L3GD20 == 1)
 	GI::Sensor::L3gd20 l3gd20_0 = GI::Sensor::L3gd20((char *)"spi-4.1");
 #endif
-#if (_USE_SCREEN == 1)
-	tControlCommandData control_comand;
-#endif
 
 #if (USE_UART == 1 && USE_TERMINAL == 1)
 	Cmd term = Cmd((char *)CONSOLE_UART_IN, (char *)CONSOLE_UART_OUT, (char *)CONSOLE_UART_ERR);
@@ -320,37 +317,37 @@ void main_app(void)
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 						ListBox->Items[0]->Caption->setTextF((char *)"HIH613x: T = %2.2f, H = %2.1f", hih613x_temp, hih613x_hum);
 #else
-						GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"HIH613x: T = %2.2f, H = %2.1f", hih613x_temp, hih613x_hum);
+						GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"HIH613x: T = %2.2f, H = %2.1f\r", hih613x_temp, hih613x_hum);
 #endif
 						break;
 					case 1:
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 						ListBox->Items[0]->Caption->setText((char *)"HIH613x: stale data");
 #else
-						GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x: stale data");
+						GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x: stale data\r");
 #endif
 						break;
 					case 2:
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 						ListBox->Items[0]->Caption->setText((char *)"HIH613x: in command mode");
 #else
-						GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x: in command mode");
+						GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x: in command mode\r");
 #endif
 						break;
 					case 3:
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 						ListBox->Items[0]->Caption->setText((char *)"HIH613x: diagnostic");
 #else
-						GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x: diagnostic");
+						GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x: diagnostic\r");
 #endif
 						break;
 					}
 				}
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
-					SensorResultTextbox->text->append((char *)"HIH613x:  error reading temperature and humidity\n\r");
+					SensorResultTextbox->text->append((char *)"HIH613x:  error reading temperature and humidity");
 #else
-					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x:  error reading temperature and humidity\n\r");
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"HIH613x:  error reading temperature and humidity\r");
 #endif
 			}
 #endif
@@ -368,41 +365,41 @@ void main_app(void)
 				signed short mpu60x0_9150_accel_Za = 0;
 				if(!mpu60x0_9x50.getTempData(&mpu60x0_9150_temp))
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
-					ListBox->Items[1]->Caption->setTextF((char *)"MPU60x0: Temp:  %2.2f Gr Celsius\n\r", mpu60x0_9150_temp);
+					ListBox->Items[1]->Caption->setTextF((char *)"MPU60x0: Temp:  %2.2f Gr Celsius", mpu60x0_9150_temp);
 #else
-					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: Temp:  %2.2f Gr Celsius\n\r", mpu60x0_9150_temp);
+					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: Temp:  %2.2f Gr Celsius\r", mpu60x0_9150_temp);
 #endif
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
-					ListBox->Items[1]->Caption->setText((char *)"MPU60x0: error reading temperature\n\r");
+					ListBox->Items[1]->Caption->setText((char *)"MPU60x0: error reading temperature");
 #else
-					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: error reading temperature\n\r");
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: error reading temperature\r");
 #endif
 
 				if(!mpu60x0_9x50.getGyroData(&mpu60x0_9150_gyro_Xg, &mpu60x0_9150_gyro_Yg, &mpu60x0_9150_gyro_Zg))
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[2]->Caption->setTextF((char *)"MPU60x0: Giro:  Xg = %6d, Yg = %6d, Zg = %6d", mpu60x0_9150_gyro_Xg, mpu60x0_9150_gyro_Yg, mpu60x0_9150_gyro_Zg);
 #else
-					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: Giro:  Xg = %6d, Yg = %6d, Zg = %6d", mpu60x0_9150_gyro_Xg, mpu60x0_9150_gyro_Yg, mpu60x0_9150_gyro_Zg);
+					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: Giro:  Xg = %6d, Yg = %6d, Zg = %6d\r", mpu60x0_9150_gyro_Xg, mpu60x0_9150_gyro_Yg, mpu60x0_9150_gyro_Zg);
 #endif
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[2]->Caption->setText((char *)"MPU60x0: error reading giroscope");
 #else
-					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: error reading giroscope");
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: error reading giroscope\r");
 #endif
 
 				if(!mpu60x0_9x50.getAccelData(&mpu60x0_9150_accel_Xa, &mpu60x0_9150_accel_Ya, &mpu60x0_9150_accel_Za))
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[3]->Caption->setTextF((char *)"MPU60x0: Accel: Xa = %6d, Ya = %6d, Za = %6d", mpu60x0_9150_accel_Xa, mpu60x0_9150_accel_Ya, mpu60x0_9150_accel_Za);
 #else
-					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: Accel: Xa = %6d, Ya = %6d, Za = %6d", mpu60x0_9150_accel_Xa, mpu60x0_9150_accel_Ya, mpu60x0_9150_accel_Za);
+					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: Accel: Xa = %6d, Ya = %6d, Za = %6d\r", mpu60x0_9150_accel_Xa, mpu60x0_9150_accel_Ya, mpu60x0_9150_accel_Za);
 #endif
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[3]->Caption->setText((char *)"MPU60x0: error reading accelerometer");
 #else
-					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: error reading accelerometer");
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"MPU60x0: error reading accelerometer\r");
 #endif
 			}
 #endif
@@ -414,13 +411,13 @@ void main_app(void)
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[4]->Caption->setTextF((char *)"AK8975: Magne: Xm = %6d, Ym = %6d, Zm = %6d", AK8975_X_Axis, AK8975_Y_Axis, AK8975_Z_Axis);
 #else
-					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"AK8975: Magne: Xm = %6d, Ym = %6d, Zm = %6d", AK8975_X_Axis, AK8975_Y_Axis, AK8975_Z_Axis);
+					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"AK8975: Magne: Xm = %6d, Ym = %6d, Zm = %6d\r", AK8975_X_Axis, AK8975_Y_Axis, AK8975_Z_Axis);
 #endif
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[4]->Caption->setText((char *)"AK8975: error reading magnetometer");
 #else
-					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"AK8975: error reading magnetometer");
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"AK8975: error reading magnetometer\r");
 #endif
 			}
 #endif
@@ -436,13 +433,13 @@ void main_app(void)
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[5]->Caption->setTextF((char *)"BMP180: Temp = %2.1f, Press = %4.2f, Alt = %4.2f", bmp180_temperature, bmp180_pressure, bmp180_altitude);
 #else
-					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"BMP180: Temp = %2.1f, Press = %4.2f, Alt = %4.2f", bmp180_temperature, bmp180_pressure, bmp180_altitude);
+					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"BMP180: Temp = %2.1f, Press = %4.2f, Alt = %4.2f\r", bmp180_temperature, bmp180_pressure, bmp180_altitude);
 #endif
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[5]->Caption->setText((char *)"BMP180: error reading temp, press and altitude");
 #else
-					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"BMP180: error reading temp, press and altitude");
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"BMP180: error reading temp, press and altitude\r");
 #endif
 			}
 #endif
@@ -454,13 +451,13 @@ void main_app(void)
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[6]->Caption->setTextF((char *)"MPL3115A1: T = %3.3f, P = %3.5f, Alt = %4.3f", mpl3115a2_temp, 0.0, mpl3115a2_altitude);
 #else
-					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPL3115A1: T = %3.3f, P = %3.5f, Alt = %4.3f", mpl3115a2_temp, 0.0, mpl3115a2_altitude);
+					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPL3115A1: T = %3.3f, P = %3.5f, Alt = %4.3f\r", mpl3115a2_temp, 0.0, mpl3115a2_altitude);
 #endif
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[6]->Caption->setText((char *)"MPL3115A1: error reading temp, press and altitude");
 #else
-					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"MPL3115A1: error reading temp, press and altitude");
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"MPL3115A1: error reading temp, press and altitude\r");
 #endif
 			}
 #endif
@@ -474,13 +471,13 @@ void main_app(void)
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 						ListBox->Items[7]->Caption->setTextF((char *)"MPR121: Pushed   - K0=%u, K1=%u, K2=%u, K3=%u, K4=%u, K5=%u, K6=%u, K7=%u, K8=%u, K9=%u, K10=%u, K11=%u",     (unsigned long)mpr121_return.pushed & 0x01,   (unsigned long)(mpr121_return.pushed >> 1) & 0x01,   (unsigned long)(mpr121_return.pushed >> 2) & 0x01,   (unsigned long)(mpr121_return.pushed >> 3) & 0x01,   (unsigned long)(mpr121_return.pushed >> 4) & 0x01,   (unsigned long)(mpr121_return.pushed >> 5) & 0x01,   (unsigned long)(mpr121_return.pushed >> 6) & 0x01,   (unsigned long)(mpr121_return.pushed >> 7) & 0x01,   (unsigned long)(mpr121_return.pushed >> 8) & 0x01,   (unsigned long)(mpr121_return.pushed >> 9) & 0x01,   (unsigned long)(mpr121_return.pushed >> 10) & 0x01,   (unsigned long)(mpr121_return.pushed >> 11) & 0x01);
 #else
-						GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPR121: Pushed   - K0=%u, K1=%u, K2=%u, K3=%u, K4=%u, K5=%u, K6=%u, K7=%u, K8=%u, K9=%u, K10=%u, K11=%u",     (unsigned long)mpr121_return.pushed & 0x01,   (unsigned long)(mpr121_return.pushed >> 1) & 0x01,   (unsigned long)(mpr121_return.pushed >> 2) & 0x01,   (unsigned long)(mpr121_return.pushed >> 3) & 0x01,   (unsigned long)(mpr121_return.pushed >> 4) & 0x01,   (unsigned long)(mpr121_return.pushed >> 5) & 0x01,   (unsigned long)(mpr121_return.pushed >> 6) & 0x01,   (unsigned long)(mpr121_return.pushed >> 7) & 0x01,   (unsigned long)(mpr121_return.pushed >> 8) & 0x01,   (unsigned long)(mpr121_return.pushed >> 9) & 0x01,   (unsigned long)(mpr121_return.pushed >> 10) & 0x01,   (unsigned long)(mpr121_return.pushed >> 11) & 0x01);
+						GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPR121: Pushed   - K0=%u, K1=%u, K2=%u, K3=%u, K4=%u, K5=%u, K6=%u, K7=%u, K8=%u, K9=%u, K10=%u, K11=%u\r",     (unsigned long)mpr121_return.pushed & 0x01,   (unsigned long)(mpr121_return.pushed >> 1) & 0x01,   (unsigned long)(mpr121_return.pushed >> 2) & 0x01,   (unsigned long)(mpr121_return.pushed >> 3) & 0x01,   (unsigned long)(mpr121_return.pushed >> 4) & 0x01,   (unsigned long)(mpr121_return.pushed >> 5) & 0x01,   (unsigned long)(mpr121_return.pushed >> 6) & 0x01,   (unsigned long)(mpr121_return.pushed >> 7) & 0x01,   (unsigned long)(mpr121_return.pushed >> 8) & 0x01,   (unsigned long)(mpr121_return.pushed >> 9) & 0x01,   (unsigned long)(mpr121_return.pushed >> 10) & 0x01,   (unsigned long)(mpr121_return.pushed >> 11) & 0x01);
 #endif
 					if(mpr121_return.released)
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 						ListBox->Items[7]->Caption->setTextF((char *)"MPR121: Released - K0=%u, K1=%u, K2=%u, K3=%u, K4=%u, K5=%u, K6=%u, K7=%u, K8=%u, K9=%u, K10=%u, K11=%u", (unsigned long)mpr121_return.released & 0x01, (unsigned long)(mpr121_return.released >> 1) & 0x01, (unsigned long)(mpr121_return.released >> 2) & 0x01, (unsigned long)(mpr121_return.released >> 3) & 0x01, (unsigned long)(mpr121_return.released >> 4) & 0x01, (unsigned long)(mpr121_return.released >> 5) & 0x01, (unsigned long)(mpr121_return.released >> 6) & 0x01, (unsigned long)(mpr121_return.released >> 7) & 0x01, (unsigned long)(mpr121_return.released >> 8) & 0x01, (unsigned long)(mpr121_return.released >> 9) & 0x01, (unsigned long)(mpr121_return.released >> 10) & 0x01, (unsigned long)(mpr121_return.released >> 11) & 0x01);
 #else
-						GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPR121: Released - K0=%u, K1=%u, K2=%u, K3=%u, K4=%u, K5=%u, K6=%u, K7=%u, K8=%u, K9=%u, K10=%u, K11=%u", (unsigned long)mpr121_return.released & 0x01, (unsigned long)(mpr121_return.released >> 1) & 0x01, (unsigned long)(mpr121_return.released >> 2) & 0x01, (unsigned long)(mpr121_return.released >> 3) & 0x01, (unsigned long)(mpr121_return.released >> 4) & 0x01, (unsigned long)(mpr121_return.released >> 5) & 0x01, (unsigned long)(mpr121_return.released >> 6) & 0x01, (unsigned long)(mpr121_return.released >> 7) & 0x01, (unsigned long)(mpr121_return.released >> 8) & 0x01, (unsigned long)(mpr121_return.released >> 9) & 0x01, (unsigned long)(mpr121_return.released >> 10) & 0x01, (unsigned long)(mpr121_return.released >> 11) & 0x01);
+						GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MPR121: Released - K0=%u, K1=%u, K2=%u, K3=%u, K4=%u, K5=%u, K6=%u, K7=%u, K8=%u, K9=%u, K10=%u, K11=%u\r", (unsigned long)mpr121_return.released & 0x01, (unsigned long)(mpr121_return.released >> 1) & 0x01, (unsigned long)(mpr121_return.released >> 2) & 0x01, (unsigned long)(mpr121_return.released >> 3) & 0x01, (unsigned long)(mpr121_return.released >> 4) & 0x01, (unsigned long)(mpr121_return.released >> 5) & 0x01, (unsigned long)(mpr121_return.released >> 6) & 0x01, (unsigned long)(mpr121_return.released >> 7) & 0x01, (unsigned long)(mpr121_return.released >> 8) & 0x01, (unsigned long)(mpr121_return.released >> 9) & 0x01, (unsigned long)(mpr121_return.released >> 10) & 0x01, (unsigned long)(mpr121_return.released >> 11) & 0x01);
 #endif
 				}
 			}
@@ -493,15 +490,15 @@ void main_app(void)
 				float l3gd20_Zg = 0;
 				if(!l3gd20_0.read(&l3gd20_Xg, &l3gd20_Yg, &l3gd20_Zg))
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
-					ListBox->Items[2]->Caption->setTextF((char *)"L3GD20: Giro:  Xg = %6.1f, Yg = %6.1f, Zg = %6.1f", l3gd20_Xg, l3gd20_Yg, l3gd20_Zg);
+					ListBox->Items[2]->Caption->setTextF((char *)"L3GD20: Giro:  Xg = %6.4f, Yg = %6.4f, Zg = %6.4f", l3gd20_Xg, l3gd20_Yg, l3gd20_Zg);
 #else
-					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"L3GD20: Giro:  Xg = %6.1f, Yg = %6.1f, Zg = %6.1f", l3gd20_Xg, l3gd20_Yg, l3gd20_Zg);
+					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"L3GD20: Giro:  Xg = %6.4f, Yg = %6.4f, Zg = %6.4f\r", l3gd20_Xg, l3gd20_Yg, l3gd20_Zg);
 #endif
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
 					ListBox->Items[2]->Caption->setText((char *)"L3GD20: error reading giroscope");
 #else
-					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"L3GD20: error reading giroscope");
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"L3GD20: error reading giroscope\r");
 #endif
 			}
 #endif
