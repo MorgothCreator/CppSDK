@@ -2,24 +2,16 @@
  *  device/ft5x06.cpp
  */
 
-#include <device/ft5x06.h>
+#include "ft5x06.h"
 #include <api/dev_request.h>
-bool GI::Screen::Cursor::dataReady()
-{
-	if(!this)
-		return false;
-	if(!irqHeandle->in())
-		return false;
-	else
-		return true;
-}
+#include <lib/util/converters.h>
 
-GI::Screen::Cursor::~Cursor()
+GI::Sensor::Ft5x06::~Ft5x06()
 {
 
 }
 
-GI::Screen::Cursor::Cursor(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPinPath)
+GI::Sensor::Ft5x06::Ft5x06(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPinPath)
 {
 	if(!pDisplay)
 		return;
@@ -66,7 +58,7 @@ GI::Screen::Cursor::Cursor(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPi
 
 #define ft5x06_TouchIdle_offset 8
 
-tControlCommandData *GI::Screen::Cursor::idle()
+tControlCommandData *GI::Sensor::Ft5x06::idle()
 {
 	if(!this || !irqHeandle->in())
 	{
@@ -339,4 +331,9 @@ tControlCommandData *GI::Screen::Cursor::idle()
 	cursor_ctl.X5 = TouchResponse.x5;
 	cursor_ctl.Y5 = TouchResponse.y5;
 	return &cursor_ctl;
+}
+
+void GI::Sensor::Ft5x06::touchCalibrate()
+{
+
 }

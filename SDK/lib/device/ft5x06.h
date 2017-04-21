@@ -90,6 +90,20 @@ typedef enum gfx_IntTouch_mouse_state_Enum
 	Gfx_IntTouch_MouseMove
 }gfx_IntTouch_mouse_state_t;
 
+namespace GI
+{
+namespace Sensor
+{
+class Ft5x06 : public Cursor {
+public:
+	Ft5x06(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPinPath);
+	~Ft5x06();
+	tControlCommandData *idle();
+	void touchCalibrate();
+};
+}
+}
+
 /*#####################################################*/
 #ifdef USE_VISUAL_STUDIO
 #include "ft5x06.cpp"

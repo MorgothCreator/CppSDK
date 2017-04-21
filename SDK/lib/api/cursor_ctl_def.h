@@ -19,14 +19,13 @@
 /*#####################################################*/
 namespace GI
 {
-namespace Screen
-{
+namespace Sensor {
 class Cursor
 {
 public:
-	Cursor(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPinPath);
-	~Cursor();
-	tControlCommandData *idle();
+	//Cursor(GI::Dev::Screen *pDisplay, char *i2cpath, char *irqPinPath);
+	//~Cursor();
+	bool dataReady();
 
 	double LcdTouch_U_Calibration_Value;
 	double LcdTouch_R_Calibration_Value;
@@ -39,6 +38,7 @@ public:
 	unsigned int touch_max_y;
 	unsigned int press_max;
 	unsigned int TouchScreen_Type;
+
 	unsigned char LastState1;
 	unsigned char LastState2;
 	unsigned char LastState3;
@@ -78,7 +78,6 @@ public:
 	void *UsrData;
 	tControlCommandData cursor_ctl;
 private:
-	bool dataReady();
 
 };
 }
