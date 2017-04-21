@@ -17,17 +17,11 @@
 
 #define UART_HAVE_STOP_BITS_ONE_AND_HALF	0
 
-#define UART_HAVE_WORD_LEN_5BITS			0
-#define UART_HAVE_WORD_LEN_6BITS			0
-#define UART_HAVE_WORD_LEN_7BITS			0
+#define UART_HAVE_WORD_LEN_5BITS			1
+#define UART_HAVE_WORD_LEN_6BITS			1
+#define UART_HAVE_WORD_LEN_7BITS			1
 #define UART_HAVE_WORD_LEN_9BITS			1
 
-#if defined(__AVR_ATxmega8E5__) || defined(__AVR_ATxmega16E5__) || defined(__AVR_ATxmega32E5__)
-#define UART_INTERFACE_COUNT				4
-#else
-#define UART_INTERFACE_COUNT				8
-#endif
-
-
+#define UART_INTERFACE_COUNT				6
 
 #endif /* NXP_KEAZ_INTERFACE_UART_H_ */

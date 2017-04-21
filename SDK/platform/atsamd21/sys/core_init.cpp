@@ -6,6 +6,7 @@
  */
 
 #include "core_init.h"
+#include <sys/system/system.h>
 /**********************************************************************************************
 * External objects
 **********************************************************************************************/
@@ -53,6 +54,8 @@ static void SystemClock_Config(unsigned long int_osc_freq, unsigned long ext_osc
 GI::Sys::Clock::Clock()
 {
 	setClk(FCPU);
+
+	system_init();
 }
 
 GI::Sys::Clock::~Clock()
@@ -62,5 +65,5 @@ GI::Sys::Clock::~Clock()
 
 void GI::Sys::Clock::setClk(unsigned long fCpu)
 {
-	SystemClock_Config(2000000, EXTERNAL_CLOCK_VALUE, CORE_CLOCK_DEFAULT);
+	SystemClock_Config(1000000, EXTERNAL_CLOCK_VALUE, CORE_CLOCK_DEFAULT);
 }

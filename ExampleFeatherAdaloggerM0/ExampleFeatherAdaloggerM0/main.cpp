@@ -10,6 +10,5 @@
 
 int main(void)
 {
-	SystemInit();
 	main_app();
 }

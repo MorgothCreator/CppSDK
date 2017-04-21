@@ -9,11 +9,15 @@
 #include <stdio.h>
 #include <api/i2c.h>
 #include "i2c.h"
-#include <driver/i2c.h>
+#include <driver/i2c_master.h>
 
 extern CfgI2c i2cCfg[];
 
-TWI_t* I2C_BASE_PTRS[] =
+#if (USE_DRIVER_SEMAPHORE == true)
+volatile bool twi_semaphore[TWI_INTERFACE_COUNT];
+#endif
+
+/*TWI_t* I2C_BASE_PTRS[] =
 {
 #ifdef TWIC
 		&TWIC,
@@ -27,7 +31,7 @@ TWI_t* I2C_BASE_PTRS[] =
 #ifdef TWIF
 		&TWIF,
 #endif
-		};
+		};*/
 
 //#####################################################
 /**
@@ -67,21 +71,63 @@ GI::Dev::I2c::I2c(const char *path)
 		return;
 	}
 
+	Sercom *hw;
+	switch (dev_nr)
+	{
+	case 0:
+		hw = SERCOM0;
+		break;
+	case 1:
+		hw = SERCOM1;
+		break;
+	case 2:
+		hw = SERCOM2;
+		break;
+	case 3:
+		hw = SERCOM3;
+		break;
+	case 4:
+		hw = SERCOM4;
+		break;
+	case 5:
+		hw = SERCOM5;
+		break;
+	default:
+		err = SYS_ERR_DEVICE_NOT_FOUND;
+		return;
+	}
+
 	memset(this, 0, sizeof(*this));
 	memcpy(&cfg, &i2cCfg[item_nr], sizeof(CfgI2c));
 
-	udata = (void *) I2C_BASE_PTRS[dev_nr];
+	struct i2c_master_module *i2c_master_instance = (struct i2c_master_module *)calloc(1, sizeof(struct i2c_master_module));
+	if(!i2c_master_instance)
+	{
+		err = SYS_ERR_OUT_OF_MEMORY;
+		return;
+	}
+	udata = (void *) i2c_master_instance;
 	unitNr = dev_nr;
-	//I2C_ConfigType  sI2C_Config = {0};
 
-    /* Initialize I2C module with interrupt mode */
-    //sI2C_Config.u16Slt = 0;
-    //sI2C_Config.u16F = 0xBC;  /* Baud rate at 100 kbit/sec, MULT = 4 , ICR=60*/
-    //sI2C_Config.sSetting.bMSTEn=1;
-    //sI2C_Config.sSetting.bIntEn = 0;
-    //sI2C_Config.sSetting.bI2CEn = 1;
+	/* Initialize config structure and software module. */
+	//! [init_conf]
+	struct i2c_master_config config_i2c_master;
+	config_i2c_master.baud_rate = cfg.speed;
+	i2c_master_get_config_defaults(&config_i2c_master);
+	//! [init_conf]
 
-    //I2C_Init(pI2C[dev_nr], &sI2C_Config);
+	/* Change buffer timeout to something longer. */
+	//! [conf_change]
+	config_i2c_master.buffer_timeout = 10000;
+	//! [conf_change]
+	/* Initialize and enable device with config. */
+	//! [init_module]
+	i2c_master_init(i2c_master_instance, hw, &config_i2c_master);
+	//! [init_module]
+
+	//! [enable_module]
+	i2c_master_enable(i2c_master_instance);
+	//! [enable_module]
 }
 /*#####################################################*/
 GI::Dev::I2c::~I2c()
@@ -93,20 +139,43 @@ SysErr GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 		unsigned int TransmitBytes, unsigned char *buff_receive,
 		unsigned int ReceiveBytes)
 {
-	TWI_t *pI2Cx = (TWI_t *)udata;
-	uint8_t u8ErrorStatus = 0;
+	enum status_code stat = STATUS_OK;
 	if (!noSendWriteOnRead)
 	{
+		struct i2c_master_packet packet = {
+			.address		= addr,
+			.data_length	= (unsigned short)TransmitBytes,
+			.data			= buff_send,
+			.ten_bit_address = false,
+			.high_speed      = false,
+			.hs_master_code  = 0x0,
+		};
+		if(!ReceiveBytes)
+			stat = i2c_master_write_packet_wait((struct i2c_master_module *)udata, &packet);
+		else
+			stat = i2c_master_write_packet_wait_no_stop((struct i2c_master_module *)udata, &packet);
 	}
-	if (!ReceiveBytes)
+	if (ReceiveBytes && stat == STATUS_OK)
 	{
-		 return (SysErr)u8ErrorStatus;
+		struct i2c_master_packet packet = {
+			.address		= addr,
+			.data_length	= (unsigned short)ReceiveBytes,
+			.data			= buff_receive,
+			.ten_bit_address = false,
+			.high_speed      = false,
+			.hs_master_code  = 0x0,
+		};
+		stat = i2c_master_read_packet_wait(((struct i2c_master_module *)udata), &packet);
 	}
-	else
+	switch (stat)
 	{
-		return (SysErr)u8ErrorStatus;
+	case STATUS_OK:
+		return SYS_ERR_OK;
+	case STATUS_BUSY:
+		return SYS_ERR_BUSY;
+	default:
+		return SYS_ERR_UNKNOWN;
 	}
-	return SYS_ERR_OK;
 }
 /*#####################################################*/
 SysErr GI::Dev::I2c::writeRead(unsigned char addr, unsigned char *buffSend,

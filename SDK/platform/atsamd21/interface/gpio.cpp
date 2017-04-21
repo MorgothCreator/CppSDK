@@ -6,19 +6,9 @@
  */
 #include <string.h>
 #include <api/gpio.h>
+#include <driver/gpio.h>
 
-unsigned char BIT_MASK_TABLE[] = {
-		0b00000001,
-		0b00000010,
-		0b00000100,
-		0b00001000,
-		0b00010000,
-		0b00100000,
-		0b01000000,
-		0b10000000
-};
-
-PORT_t *GPIO_BASE_PTRS[] =
+/*PORT_t *GPIO_BASE_PTRS[] =
 {
 		&PORTA
 #ifdef PORTB
@@ -69,7 +59,7 @@ PORT_t *GPIO_BASE_PTRS[] =
 #ifdef PORTR
 		,&PORTR
 #endif
-};
+};*/
 /*#####################################################*/
 GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin)
 {
@@ -100,21 +90,18 @@ SysErr GI::Dev::Gpio::setOut(unsigned int value)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
+	//PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
 	if (cfg.multiPin)
 	{
-		BaseAddr->OUT = (BaseAddr->OUT & ~(cfg.pin % 32))
-				| (value & (cfg.pin % 32));
+		//BaseAddr->OUT = (BaseAddr->OUT & ~(cfg.pin % 32))
+				//| (value & (cfg.pin % 32));
 	}
 	else
 	{
 		unsigned int state = value;
 		if (cfg.reverse)
 			state = (~state) & 0x01;
-		if (state)
-			BaseAddr->OUTSET |= 1 << (cfg.pin % 32);
-		else
-			BaseAddr->OUTCLR |= 1 << (cfg.pin % 32);
+		port_pin_set_output_level(cfg.pin, state);
 	}
 	return SYS_ERR_OK;
 }
@@ -123,22 +110,22 @@ signed int GI::Dev::Gpio::in()
 {
 	if (!this)
 		return -1;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
+	//PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
 	if (cfg.multiPin)
 	{
-		return BaseAddr->DIR & (cfg.pin % 32);
+		return false;//BaseAddr->DIR & (cfg.pin % 32);
 	}
 	else
 	{
 		if (cfg.reverse)
 		{
-			if(BaseAddr->IN & (cfg.pin % 32))
+			if(port_pin_get_input_level(cfg.pin))
 				return false;
 			else
 				return true;
 		}
 		else
-			return BaseAddr->IN & (cfg.pin % 32);
+			return port_pin_get_input_level(cfg.pin);
 	}
 }
 /*#####################################################*/
@@ -154,36 +141,30 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
-
-	/*if (cfg.multiPin == false)
-		GPIO_InitStructure.Pin = 1 << (cfg.pin % 32);
-	else
-		GPIO_InitStructure.Pin = (cfg.pin % 32);*/
-	volatile unsigned char *ctl_pin = &BaseAddr->PIN0CTRL;
-
+	struct port_config config_port_pin;
+	
 	switch (mode)
 	{
 	case CfgGpio::GPIO_IN_PULL_UP:
-		ctl_pin[cfg.pin % 8] = PORT_OPC_PULLUP_gc;
-		BaseAddr->DIRCLR = 1 << (cfg.pin % 8);
+		config_port_pin.direction  = PORT_PIN_DIR_INPUT;
+		config_port_pin.input_pull = PORT_PIN_PULL_UP;
 		break;
 	case CfgGpio::GPIO_IN_PULL_DOWN:
-		ctl_pin[cfg.pin % 8] = PORT_OPC_PULLDOWN_gc;
-		BaseAddr->DIRCLR = 1 << (cfg.pin % 8);
+		config_port_pin.direction  = PORT_PIN_DIR_INPUT;
+		config_port_pin.input_pull = PORT_PIN_PULL_DOWN;
 		break;
 	case CfgGpio::GPIO_IN_FLOATING:
-		ctl_pin[cfg.pin % 8] = PORT_OPC_TOTEM_gc;
-		BaseAddr->DIRCLR = 1 << (cfg.pin % 8);
+		config_port_pin.direction  = PORT_PIN_DIR_INPUT;
+		config_port_pin.input_pull = PORT_PIN_PULL_NONE;
 		break;
 	case CfgGpio::GPIO_OUT_PUSH_PULL:
-		ctl_pin[cfg.pin % 8] = PORT_OPC_TOTEM_gc;
-		BaseAddr->DIRSET = 1 << (cfg.pin % 8);
+		config_port_pin.direction  = PORT_PIN_DIR_OUTPUT_WTH_READBACK;
+		config_port_pin.input_pull = PORT_PIN_PULL_NONE;
 		break;
 	default:
 		return SYS_ERR_INVALID_COMMAND;
-
 	}
+	port_pin_set_config(cfg.pin, &config_port_pin);
 	return SYS_ERR_OK;
 }
 /*#####################################################*/

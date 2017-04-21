@@ -25,11 +25,9 @@
  */
 CfgGpio gpioCfg[] =
 {    /*pin-name     ,pin number                         ,reverse,mode                           , multipin, default state*/
-	{ "led-0"		,pin_mux_convert_to_pin(IOB, 24)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 0 mapped
-	{ "led-1"		,pin_mux_convert_to_pin(IOB, 25)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 1 mapped
-	{ "led-2"		,pin_mux_convert_to_pin(IOB,  7)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 2 mapped
-	{ "hbtn-0"		,pin_mux_convert_to_pin(IOB,  4)	,true	,CfgGpio::GPIO_IN_FLOATING		, false, 0 },// Pin 2 mapped
-	{ "hbtn-1"		,pin_mux_convert_to_pin(IOB,  5)	,true	,CfgGpio::GPIO_IN_FLOATING		, false, 0 },// Pin 2 mapped
+	{ "led-0"		,pin_mux_convert_to_pin(IOA, 17)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 0 mapped
+	{ "led-1"		,pin_mux_convert_to_pin(IOA,  6)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 1 mapped
+	//{ "hbtn-0"		,pin_mux_convert_to_pin(IOB,  4)	,true	,CfgGpio::GPIO_IN_FLOATING		, false, 0 },// Pin 2 mapped
 	{ ""			,0									,false	,CfgGpio::GPIO_IN_FLOATING		, false, 0 } // End of table
 };
 /*
@@ -106,10 +104,10 @@ CfgUart uartCfg[] =
 {
 //{ "uart-0", pin_mux_convert_to_pin(IOA, 9)	, pin_mux_convert_to_pin(IOA, 10)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 //{ "uart-1", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-{ "uart-2", pin_mux_convert_to_pin(IOD, 7)	, pin_mux_convert_to_pin(IOD, 6)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
+//{ "uart-2", pin_mux_convert_to_pin(IOD, 7)	, pin_mux_convert_to_pin(IOD, 6)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 //{ "uart-3", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 //{ "uart-4", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-//{ "uart-5", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
+{ "uart-5", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 //{ "uart-6", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
 //{ "uart-7", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC}
 //{ "usbcdc-0", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},

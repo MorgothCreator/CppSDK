@@ -11,11 +11,18 @@
 #include <api/spi.h>
 #include <interface/gpio.h>
 #include <driver/spi.h>
+#include <driver/gpio.h>
 #include <sys/core_init.h>
+
+#define CONF_SPI_TIMEOUT           10000
 
 extern CfgSpi spiCfg[];
 
-SPI_t* SPI_BASE_PTRS[] =
+#if (USE_DRIVER_SEMAPHORE == true)
+volatile bool spi_semaphore[SPI_INTERFACE_COUNT];
+#endif
+
+/*SPI_t* SPI_BASE_PTRS[] =
 {
 #ifdef SPIC
 		&SPIC,
@@ -29,7 +36,7 @@ SPI_t* SPI_BASE_PTRS[] =
 #ifdef SPIF
 		&SPIF,
 #endif
-		};
+		};*/
 
 GI::Dev::Spi::Spi(const char *path)
 {
@@ -69,13 +76,139 @@ GI::Dev::Spi::Spi(const char *path)
 		return;
 	}
 
+	struct spi_config config_spi_master;
+
+	//  [conf_defaults]
+	spi_get_config_defaults(&config_spi_master);
+	//! [conf_defaults]
+	//  [mux_setting]
+	config_spi_master.mux_setting = SPI_SIGNAL_MUX_SETTING_E;
+	//! [mux_setting]
+	/* Configure pad 1 as unused */
+	//  [ss]
+	config_spi_master.pinmux_pad1 = PINMUX_UNUSED;
+	//! [ss]
+	/* Configure pad 0 for data in */
+
+	Sercom *hw;
+	switch (_portNr)
+	{
+	case 0:
+		hw = SERCOM0;
+		//  [di]
+		config_spi_master.pinmux_pad0 = SERCOM0_PAD0_DEFAULT;
+		//! [di]
+		/* Configure pad 2 for data out */
+		//  [do]
+		config_spi_master.pinmux_pad2 = SERCOM0_PAD2_DEFAULT;
+		//! [do]
+		/* Configure pad 3 for SCK */
+		//  [sck]
+		config_spi_master.pinmux_pad3 = SERCOM0_PAD3_DEFAULT;
+		//! [sck]
+		break;
+	case 1:
+		hw = SERCOM1;
+		//  [di]
+		config_spi_master.pinmux_pad0 = SERCOM1_PAD0_DEFAULT;
+		//! [di]
+		/* Configure pad 2 for data out */
+		//  [do]
+		config_spi_master.pinmux_pad2 = SERCOM1_PAD2_DEFAULT;
+		//! [do]
+		/* Configure pad 3 for SCK */
+		//  [sck]
+		config_spi_master.pinmux_pad3 = SERCOM1_PAD3_DEFAULT;
+		//! [sck]
+		break;
+	case 2:
+		hw = SERCOM2;
+		//  [di]
+		config_spi_master.pinmux_pad0 = SERCOM2_PAD0_DEFAULT;
+		//! [di]
+		/* Configure pad 2 for data out */
+		//  [do]
+		config_spi_master.pinmux_pad2 = SERCOM2_PAD2_DEFAULT;
+		//! [do]
+		/* Configure pad 3 for SCK */
+		//  [sck]
+		config_spi_master.pinmux_pad3 = SERCOM2_PAD3_DEFAULT;
+		//! [sck]
+		break;
+	case 3:
+		hw = SERCOM3;
+		//  [di]
+		config_spi_master.pinmux_pad0 = SERCOM3_PAD0_DEFAULT;
+		//! [di]
+		/* Configure pad 2 for data out */
+		//  [do]
+		config_spi_master.pinmux_pad2 = SERCOM3_PAD2_DEFAULT;
+		//! [do]
+		/* Configure pad 3 for SCK */
+		//  [sck]
+		config_spi_master.pinmux_pad3 = SERCOM3_PAD3_DEFAULT;
+		//! [sck]
+		break;
+	case 4:
+		hw = SERCOM4;
+		//  [di]
+		config_spi_master.pinmux_pad0 = SERCOM4_PAD0_DEFAULT;
+		//! [di]
+		/* Configure pad 2 for data out */
+		//  [do]
+		config_spi_master.pinmux_pad2 = SERCOM4_PAD2_DEFAULT;
+		//! [do]
+		/* Configure pad 3 for SCK */
+		//  [sck]
+		config_spi_master.pinmux_pad3 = SERCOM4_PAD3_DEFAULT;
+		//! [sck]
+		break;
+	case 5:
+		hw = SERCOM5;
+		//  [di]
+		config_spi_master.pinmux_pad0 = SERCOM5_PAD0_DEFAULT;
+		//! [di]
+		/* Configure pad 2 for data out */
+		//  [do]
+		config_spi_master.pinmux_pad2 = SERCOM5_PAD2_DEFAULT;
+		//! [do]
+		/* Configure pad 3 for SCK */
+		//  [sck]
+		config_spi_master.pinmux_pad3 = SERCOM5_PAD3_DEFAULT;
+		//! [sck]
+		break;
+	default:
+		err = SYS_ERR_DEVICE_NOT_FOUND;
+		return;
+	}
+
 	memset(this, 0, sizeof(*this));
 	memcpy(&cfg, &spiCfg[item_nr], sizeof(CfgSpi));
+
+	struct spi_module *spi_master_instance = (struct spi_module *)calloc(1, sizeof(struct spi_module));
+	if(!spi_master_instance)
+	{
+		err = SYS_ERR_OUT_OF_MEMORY;
+		return;
+	}
+
 	unitNr = _portNr;
 	channel = _channel;
-	userData = (void *) SPI_BASE_PTRS[_portNr];
 
+	struct port_config config_port_pin;
+	config_port_pin.direction  = PORT_PIN_DIR_OUTPUT_WTH_READBACK;
+	config_port_pin.input_pull = PORT_PIN_PULL_NONE;
+	port_pin_set_config(cfg.cs, &config_port_pin);
+	port_pin_set_output_level(cfg.cs, 1);
+	
+	userData = (struct spi_module *)spi_master_instance;
+	//  [init]
+	spi_init(spi_master_instance, hw, &config_spi_master);
+	//! [init]
 
+	//  [enable]
+	spi_enable(spi_master_instance);
+	//! [enable]
 	/*SPI_Type *Addr[] = SPI_BASE_PTRS;
 	SPI_Type *pSPI = Addr[_portNr];
 	SPI_ConfigType pConfig;
@@ -123,15 +256,14 @@ int GI::Dev::Spi::assert()
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (spi_semaphore[property.unitNr])
+	while (spi_semaphore[unitNr])
 		;
 #endif
 	setSpeed(speed);
 #if (USE_DRIVER_SEMAPHORE == true)
-	spi_semaphore[property.unitNr] = true;
+	spi_semaphore[unitNr] = true;
 #endif
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-	BaseAddr->OUTCLR = BIT_MASK_TABLE[cfg.cs % 8];
+	port_pin_set_output_level(cfg.cs, 0);
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }
@@ -149,10 +281,9 @@ int GI::Dev::Spi::deassert()
 		err = SYS_ERR_INVALID_HANDLER;
 		return SYS_ERR_INVALID_HANDLER;
 	}
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-	BaseAddr->OUTSET = BIT_MASK_TABLE[cfg.cs % 8];
+	port_pin_set_output_level(cfg.cs, 1);
 #if (USE_DRIVER_SEMAPHORE == true)
-	spi_semaphore[property.unitNr] = false;
+	spi_semaphore[unitNr] = false;
 #endif
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
@@ -173,37 +304,17 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 #endif
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTCLR = BIT_MASK_TABLE[cfg.cs % 8];
-	}
+		port_pin_set_output_level(cfg.cs, 0);
+	}//((struct spi_module *)userData)
 	SysErr status = SYS_ERR_OK;
-	SPI_t *port = (SPI_t *) userData;
-	memset(buffRead, 0, lenRead);
+	if (spi_write_buffer_wait(((struct spi_module *)userData), buffWrite, lenWrite) != STATUS_OK)
+		status = SYS_ERR_UNKNOWN;
+	if (status == SYS_ERR_OK && spi_read_buffer_wait(((struct spi_module *)userData), buffRead, lenRead, 0xFF) != STATUS_OK)
+		status = SYS_ERR_UNKNOWN;
 
-	unsigned int cnt = 0;
-	unsigned char *tmp_buff_ptr = buffWrite;
-	//unsigned char tmp_read;
-	for(; cnt < lenWrite; cnt++)
-	{
-		/* Start transmission */
-		port->DATA = *tmp_buff_ptr++;
-		/* Wait for transmission complete */
-		while(!(port->STATUS & SPI_IF_bm)) { }
-		//tmp_read = port->DATA;
-	}
-	tmp_buff_ptr = buffRead;
-	for(cnt = 0; cnt < lenRead; cnt++)
-	{
-		/* Start transmission */
-		port->DATA = 0xFF;
-		/* Wait for transmission complete */
-		while(!(port->STATUS & SPI_IF_bm)) { }
-		*tmp_buff_ptr++ = port->DATA;
-	}
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTSET = BIT_MASK_TABLE[cfg.cs % 8];
+		port_pin_set_output_level(cfg.cs, 1);
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
@@ -224,26 +335,15 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 #endif
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTCLR = BIT_MASK_TABLE[cfg.cs % 8];
+		port_pin_set_output_level(cfg.cs, 0);
 	}
 	SysErr status = SYS_ERR_OK;
-	SPI_t *port = (SPI_t *) userData;
-	unsigned int cnt = 0;
-	unsigned char *tmp_buff_ptr = buff;
-	for(cnt = 0; cnt < len; cnt++)
-	{
-		/* Start transmission */
-		port->DATA = 0xFF;
-		/* Wait for transmission complete */
-		while(!(port->STATUS & SPI_IF_bm)) { }
-		*tmp_buff_ptr++ = port->DATA;
-	}
+	if (spi_read_buffer_wait(((struct spi_module *)userData), buff, len, 0xFF) != STATUS_OK)
+		status = SYS_ERR_UNKNOWN;
 
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTSET = BIT_MASK_TABLE[cfg.cs % 8];
+		port_pin_set_output_level(cfg.cs, 1);
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
@@ -266,27 +366,16 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 #endif
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTCLR = BIT_MASK_TABLE[cfg.cs % 8];
+		port_pin_set_output_level(cfg.cs, 0);
 	}
+	
 	SysErr status = SYS_ERR_OK;
-	SPI_t *port = (SPI_t *) userData;
-	unsigned int cnt = 0;
-	unsigned char *tmp_buff_ptr = buff;
-	//unsigned char tmp_read;
-	for(; cnt < len; cnt++)
-	{
-		/* Start transmission */
-		port->DATA = *tmp_buff_ptr++;
-		/* Wait for transmission complete */
-		while(!(port->STATUS & SPI_IF_bm)) { }
-		//tmp_read = port->DATA;
-	}
+	if (spi_write_buffer_wait(((struct spi_module *)userData), buff, len) != STATUS_OK)
+		status = SYS_ERR_UNKNOWN;
 
 	if (!DisableCsHandle)
 	{
-		PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
-		BaseAddr->OUTSET = BIT_MASK_TABLE[cfg.cs % 8];
+		port_pin_set_output_level(cfg.cs, 1);
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
@@ -303,12 +392,10 @@ SysErr GI::Dev::Spi::writeReadByte(unsigned char *byte)
 		err = SYS_ERR_INVALID_HANDLER;
 		return SYS_ERR_INVALID_HANDLER;
 	}
-	SPI_t *port = (SPI_t *) userData;
-	/* Start transmission */
-	port->DATA = *byte;
-	/* Wait for transmission complete */
-	while(!(port->STATUS & SPI_IF_bm)) { }
-	*byte = port->DATA;
+	unsigned short tmp = *byte;
+	if (spi_transceive_wait(((struct spi_module *)userData), tmp, &tmp) != STATUS_OK)
+		return SYS_ERR_UNKNOWN;
+	*byte = tmp;
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }
@@ -323,7 +410,7 @@ SysErr GI::Dev::Spi::setSpeed(unsigned long baud)
 #if (USE_DRIVER_SEMAPHORE == true)
 	while (spi_semaphore[unitNr]);
 #endif
-	SPI_t *port = (SPI_t *) userData;
+/*	SPI_t *port = (SPI_t *) userData;
 	//SPI_SetBaudRate(hspi, FCPU/2, cfg.speed);
 
 	u32 new_speed = 0;
@@ -344,7 +431,7 @@ SysErr GI::Dev::Spi::setSpeed(unsigned long baud)
 	else
 		new_speed = SPI_PRESCALER_DIV128_gc;
 
-	port->CTRL = (port->CTRL & ~(SPI_CLK2X_bm | SPI_PRESCALER_gm)) | new_speed;
+	port->CTRL = (port->CTRL & ~(SPI_CLK2X_bm | SPI_PRESCALER_gm)) | new_speed;*/
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }
