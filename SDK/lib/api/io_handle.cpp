@@ -462,7 +462,7 @@ SysErr GI::IO::ctl(GI::IO::ioCtl_e cmd, unsigned long *data)
 				return SYS_ERR_OK;
 		case IO_DEV_SPI:
 			if(((GI::Dev::Spi *)devHandler)->readBytes(msg[0].buff, msg[0].len) != (int)msg[0].len)
-			return SYS_ERR_UNKNOWN;
+				return SYS_ERR_UNKNOWN;
 		else
 			return SYS_ERR_OK;
 		//case IO_DEV_UART:
@@ -586,6 +586,22 @@ SysErr GI::IO::ctl(GI::IO::ioCtl_e cmd, unsigned long *data)
 		{
 		case IO_DEV_GPIO:
 			return ((GI::Dev::Gpio *)devHandler)->getIn(data);
+		}
+		return SYS_ERR_NOT_IMPLEMENTED;
+		break;
+	case IO_CTL_ASSERT:
+		switch((int)ioDevType)
+		{
+		case IO_DEV_SPI:
+			return (SysErr)((GI::Dev::Spi *)devHandler)->assert();
+		}
+		return SYS_ERR_NOT_IMPLEMENTED;
+		break;
+	case IO_CTL_DEASSERT:
+		switch((int)ioDevType)
+		{
+		case IO_DEV_SPI:
+			return (SysErr)((GI::Dev::Spi *)devHandler)->deassert();
 		}
 		return SYS_ERR_NOT_IMPLEMENTED;
 		break;

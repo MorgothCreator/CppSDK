@@ -82,6 +82,8 @@ public:
 		IO_CTL_GET_PBITS,/* Get parity bits. */
 		IO_CTL_SET,/* Set word. */
 		IO_CTL_GET,/* Get word. */
+		IO_CTL_ASSERT,/* Assert the CS pin on the unit. */
+		IO_CTL_DEASSERT,/* Deassert the CS pin on the unit. */
 	}ioCtl;
 
 	enum ioDevTypeMsg_e {
