@@ -22,7 +22,10 @@ void ili9341_WriteData(GI::IO *spi_ctrl, unsigned char RegValue)
 
 	/* Reset LCD control line(/CS) and Send data */
 	//ncs.write(false);
+	//unsigned long tmp;
+	//spi_ctrl->ctl(spi_ctrl->IO_CTL_ASSERT, &tmp);
 	spi_ctrl->write(&RegValue, 1);
+	//spi_ctrl->ctl(spi_ctrl->IO_CTL_DEASSERT, &tmp);
 
 	/* Deselect: Chip Select high */
 	//ncs.write(true);
@@ -41,7 +44,10 @@ void ili9341_WriteReg(GI::IO *spi_ctrl, unsigned char Reg)
 
 	/* Reset LCD control line(/CS) and Send command */
 	//ncs.write(false);
+	//unsigned long tmp;
+	//spi_ctrl->ctl(spi_ctrl->IO_CTL_ASSERT, &tmp);
 	spi_ctrl->write(&Reg, 1);
+	//spi_ctrl->ctl(spi_ctrl->IO_CTL_DEASSERT, &tmp);
 
 	/* Deselect: Chip Select high */
 	//ncs.write(true);
@@ -55,7 +61,6 @@ void ili9341_WriteReg(GI::IO *spi_ctrl, unsigned char Reg)
  */
 unsigned long ili9341_ReadData(GI::IO *spi_ctrl, unsigned char RegValue, unsigned char ReadSize)
 {
-	//GI::IO ncs = GI::IO((char *) "lcd_ncs");
 	GI::IO wrx = GI::IO((char *) "lcd_wrx");
 	//GI::IO rdx = GI::IO((char *) "lcd_rdx");
 	unsigned char readvalue = 0;
