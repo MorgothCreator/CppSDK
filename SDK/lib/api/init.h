@@ -38,6 +38,9 @@
 #include<app/lwip/tftpserver/tftpserver.h>
 #include<app/lwip/sntp/sntp.h>
 
+#include <device/ft5x06.h>
+#include <device/stmpe811.h>
+
 namespace GI {
 namespace Board{
 class Init{
@@ -59,9 +62,11 @@ public:
 #if (USBHMSC_INTERFACE_COUNT > 0)
 	GI::Dev::UsbHMsc *USBHMSC[USBHMSC_INTERFACE_COUNT];
 #endif
-#if (defined(SCREEN_ENABLE) && SCREEN_INTERFACE_COUNT > 0)
-	GI::Dev::Screen *SCREEN[SCREEN_INTERFACE_COUNT];
-    GI::Screen::Cursor *CAPTOUCH[1];
+#if (defined(SCREEN_CONFIG) && defined(USED_SCREEN_CONTROLLER) && SCREEN_INTERFACE_COUNT > 0)
+	GI::Dev::USED_SCREEN_CONTROLLER *SCREEN[SCREEN_INTERFACE_COUNT];
+#ifdef USED_TOUCHSCREEN
+	GI::Sensor::USED_TOUCHSCREEN *CAPTOUCH[1];
+#endif
 #endif
 #if (USE_LWIP == 1)
 	GI::Dev::Eth *LWIP[1];

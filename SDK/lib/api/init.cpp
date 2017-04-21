@@ -11,7 +11,6 @@
 #include <api/i2c.h>
 #include <api/uart.h>
 #include <api/lcd_def.h>
-#include <device/ft5x06.h>
 #include <api/uart.h>
 #include <api/spi.h>
 #include <api/i2c.h>
@@ -166,9 +165,12 @@ GI::Board::Init::Init()
     }
 #endif
     /*******************************************************************/
-#if (SCREEN_INTERFACE_COUNT > 0 && defined(SCREEN_ENABLE))
-    SCREEN[0] = new GI::Dev::IntScreen(&SCREEN_ENABLE, NULL);
-    CAPTOUCH[0] = new GI::Screen::Cursor(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
+#if (SCREEN_INTERFACE_COUNT > 0 && defined(SCREEN_CONFIG) && defined(USED_SCREEN_CONTROLLER))
+    SCREEN[0] = new GI::Dev::USED_SCREEN_CONTROLLER(&SCREEN_CONFIG, NULL);
+#ifdef USED_TOUCHSCREEN
+    CAPTOUCH[0] = new GI::Sensor::USED_TOUCHSCREEN(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
+    CAPTOUCH[0]->touchCalibrate();
+#endif
 #endif
 #if defined(STD_OUT_PATH)
     _stdout = new GI::Std((char *)STD_OUT_PATH);
