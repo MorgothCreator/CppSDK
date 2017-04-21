@@ -108,10 +108,8 @@ SysErr GI::Sensor::L3gd20::read(float *X, float *Y, float *Z)
 {
 	if (!this || !SPI)
 		return SYS_ERR_INVALID_HANDLER;
-	unsigned char tmpbuffer[6] =
-	{ 0 };
-	unsigned short RawData[3] =
-	{ 0 };
+	unsigned char tmpbuffer[6] = { 0 };
+	signed short RawData[3] = { 0 };
 	unsigned char tmpreg = 0;
 	float sensitivity = 0;
 	int i = 0;
@@ -125,7 +123,7 @@ SysErr GI::Sensor::L3gd20::read(float *X, float *Y, float *Z)
 	{
 		for (i = 0; i < 3; i++)
 		{
-			RawData[i] = (signed short) (((unsigned short) tmpbuffer[2 * i + 1]
+			RawData[i] = (signed short) (((unsigned short) tmpbuffer[(2 * i) + 1]
 					<< 8) + tmpbuffer[2 * i]);
 		}
 	}
@@ -135,7 +133,7 @@ SysErr GI::Sensor::L3gd20::read(float *X, float *Y, float *Z)
 		{
 			RawData[i] =
 					(signed short) (((unsigned short) tmpbuffer[2 * i] << 8)
-							+ tmpbuffer[2 * i + 1]);
+							+ tmpbuffer[(2 * i) + 1]);
 		}
 	}
 
@@ -154,9 +152,9 @@ SysErr GI::Sensor::L3gd20::read(float *X, float *Y, float *Z)
 		sensitivity = L3GD20_SENSITIVITY_2000DPS;
 		break;
 	}
-	*X = (float) (RawData[i] * sensitivity);
-	*Y = (float) (RawData[i] * sensitivity);
-	*Z = (float) (RawData[i] * sensitivity);
+	*X = (float) (RawData[0] * sensitivity);
+	*Y = (float) (RawData[1] * sensitivity);
+	*Z = (float) (RawData[2] * sensitivity);
 	return SYS_ERR_OK;
 }
 
