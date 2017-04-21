@@ -80,6 +80,7 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../../../SDK/lib/device/stmpe811.cpp \
 ../main.cpp \
 C:/GitHub/CppSDK/Common/main_app.cpp \
 C:/GitHub/CppSDK/SDK/lib/api/dev_request.cpp \
@@ -183,6 +184,7 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+lib/device/stmpe811.o \
 main.o \
 Common/main_app.o \
 lib/api/dev_request.o \
@@ -279,6 +281,7 @@ xmega/sys/core_init.o \
 xmega/sys/systime.o
 
 OBJS_AS_ARGS +=  \
+lib/device/stmpe811.o \
 main.o \
 Common/main_app.o \
 lib/api/dev_request.o \
@@ -375,6 +378,7 @@ xmega/sys/core_init.o \
 xmega/sys/systime.o
 
 C_DEPS +=  \
+lib/device/stmpe811.d \
 main.d \
 Common/main_app.d \
 lib/api/dev_request.d \
@@ -471,6 +475,7 @@ xmega/sys/core_init.d \
 xmega/sys/systime.d
 
 C_DEPS_AS_ARGS +=  \
+lib/device/stmpe811.d \
 main.d \
 Common/main_app.d \
 lib/api/dev_request.d \
@@ -768,6 +773,15 @@ LINKER_SCRIPT_DEP+=
 
 
 
+
+
+
+lib/device/%.o: ../../../SDK/lib/device/%.cpp
+	@echo Building file: $<
+	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -mcall-prologues -funsigned-char -funsigned-bitfields -DDEBUG -DXmega_E5_Xplained  -I"C:\GitHub\CppSDK\Common" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\SDK\platform\xmega" -I".."  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atxmega32e5 -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
 
 ./%.o: .././%.cpp
 	@echo Building file: $<

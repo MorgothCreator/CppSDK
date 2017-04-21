@@ -15,6 +15,10 @@
 
 extern CfgSpi spiCfg[];
 
+#if (USE_DRIVER_SEMAPHORE == true)
+volatile bool spi_semaphore[SPI_INTERFACE_COUNT];
+#endif
+
 SPI_t* SPI_BASE_PTRS[] =
 {
 #ifdef SPIC
@@ -131,12 +135,12 @@ int GI::Dev::Spi::assert()
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (spi_semaphore[property.unitNr])
+	while (spi_semaphore[unitNr])
 		;
 #endif
 	setSpeed(speed);
 #if (USE_DRIVER_SEMAPHORE == true)
-	spi_semaphore[property.unitNr] = true;
+	spi_semaphore[unitNr] = true;
 #endif
 	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
 	BaseAddr->OUTCLR = BIT_MASK_TABLE[cfg.cs % 8];
@@ -160,7 +164,7 @@ int GI::Dev::Spi::deassert()
 	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.cs >> 5];
 	BaseAddr->OUTSET = BIT_MASK_TABLE[cfg.cs % 8];
 #if (USE_DRIVER_SEMAPHORE == true)
-	spi_semaphore[property.unitNr] = false;
+	spi_semaphore[unitNr] = false;
 #endif
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
@@ -176,8 +180,11 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+#endif
+#if (USE_DRIVER_SEMAPHORE == true)
+	spi_semaphore[unitNr] = true;
 #endif
 	if (!DisableCsHandle)
 	{
@@ -227,8 +234,11 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+#endif
+#if (USE_DRIVER_SEMAPHORE == true)
+	spi_semaphore[unitNr] = true;
 #endif
 	if (!DisableCsHandle)
 	{
@@ -269,8 +279,11 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+#endif
+#if (USE_DRIVER_SEMAPHORE == true)
+	spi_semaphore[unitNr] = true;
 #endif
 	if (!DisableCsHandle)
 	{
