@@ -10,68 +10,6 @@
 #include <api/i2c.h>
 #include <api/gpio.h>
 
-
-#define LED1_PORT			IOJ
-#define LED1_PIN			13
-#define LED1_INVERSE		false
-
-#define LED2_PORT			IOJ
-#define LED2_PIN			5
-#define LED2_INVERSE		false
-
-/*#define LED3_PORT			IOD
- #define LED3_PIN			5
- #define LED3_INVERSE		true
-
- #define LED4_PORT			IOK
- #define LED4_PIN			3
- #define LED4_INVERSE		true*/
-
-#define LEDS_NR				2
-
-#define HARDBTN1_PORT		IOA
-#define HARDBTN1_PIN		0
-
-#define HARDBTNS_NR			1
-
-#define DEFAULT_UART_UNIT		0
-#define DEFAULT_UART_TX_PORT	IOA
-#define DEFAULT_UART_TX_PIN		9
-#define DEFAULT_UART_RX_PORT	IOA
-#define DEFAULT_UART_RX_PIN		10
-
-#define DEFAULT_I2C_UNIT		0
-#define DEFAULT_I2C_SCL_PORT	IOB
-#define DEFAULT_I2C_SCL_PIN		8
-#define DEFAULT_I2C_SDA_PORT	IOB
-#define DEFAULT_I2C_SDA_PIN		9
-
-#define AUDIO_LCD_I2C_UNIT		3
-#define AUDIO_LCD_I2C_SCL_PORT	IOD
-#define AUDIO_LCD_I2C_SCL_PIN	12
-#define AUDIO_LCD_I2C_SDA_PORT	IOB
-#define AUDIO_LCD_I2C_SDA_PIN	7
-
-#define SPI_EXTENSION_UNIT		1
-#define SPI_EXTENSION_SCK_PORT	IOA
-#define SPI_EXTENSION_SCK_PIN	12
-#define SPI_EXTENSION_MOSI_PORT	IOB
-#define SPI_EXTENSION_MOSI_PIN	15
-#define SPI_EXTENSION_MISO_PORT	IOB
-#define SPI_EXTENSION_MISO_PIN	14
-#define SPI_EXTENSION_CS1_PORT	IOA//SD_CD
-#define SPI_EXTENSION_CS1_PIN	11
-
-#define LCD_BACKLIGHT_PORT		IOI
-#define LCD_BACKLIGHT_PIN		14
-#define LCD_DISPLAY_RST_PORT	IOJ
-#define LCD_DISPLAY_RST_PIN		15
-#define LCD_TOUCH_INT_PORT		IOI
-#define LCD_TOUCH_INT_PIN		13
-
-#define SD_CD_PORT				IOI
-#define SD_CD_PIN				15
-
 /*
  * Processor choose
  */
@@ -122,7 +60,8 @@
  * Screen settings
  */
 
-#define SCREEN_ENABLE					lcd_OTM8009A_PORTRAIT
+#define SCREEN_CONFIG					lcd_OTM8009A_PORTRAIT
+#define USED_SCREEN_CONTROLLER			IntScreen
 #define USE_SCREEN_TYPE_DSI				1
 /*
  * !Screen settings
@@ -131,20 +70,10 @@
  * Touch screen settings
  */
 
-#define USE_CAP_TOUCHSCREEN				"touchirq"
+#define TOUCH_SCREEN_ENABLE				true
 #define CAP_TOUCHSCREEN_I2C_UNIT		"i2c-3"
-#define CAP_TOUCHSCREEN_IRQ_PIN			pin_mux_convert_to_pin(IOI, 13)
-/*
- * !Touch screen settings
- */
-
-/*
- * Touch screen settings
- */
-
-#define TOUCH_SCREEN_ENABLE				1
-#define TOUCH_SCREEN_TYPE_ANALOG		0
-#define TOUCH_SCREEN_TYPE_CAPACITIVE	1
+#define CAP_TOUCHSCREEN_IRQ_PIN			"touchirq"
+#define USED_TOUCHSCREEN				Ft5x06
 /*
  * !Touch screen settings
  */
@@ -158,35 +87,8 @@
 /* #define USE_USB_HS_IN_FS */
 
 /*
- * GPIO settings
+ * !USB settings
  */
-/*
- * !GPIO settings
- */
-
-/*
- * SPI settings
- */
-/*
- * !SPI settings
- */
-
-/*
- * I2C settings
- */
-/*
- * !I2C settings
- */
-
-/*
- * !UART settings
- */
-
-#define USED_DEBUG_UART_PORT_NR		0
-/*
- * UART settings
- */
-
 
 /*
  * Used fonts
@@ -194,17 +96,13 @@
 #define USE_FONT_CMSS14B
 //#define USE_ALL_FONTS
 /*
- * !UART settings
+ * !Used fonts
  */
 
-
-/*
- * Eth settings
- */
 /*
  * Eth general settings
  */
-#define LWIP_DEBUG_EN						0
+#define LWIP_DEBUG_EN						false
 #define MAX_DHCP_TRIES  					4
 
 /*Static IP ADDRESS: IP_ADDR0.IP_ADDR1.IP_ADDR2.IP_ADDR3 */
@@ -231,19 +129,8 @@
 /*
  * Eth http server settings
  */
-#define USE_RMII_INTERFACE					1
-#define LWIP_DEBUG_EN						0
-
-
-
-/*
- * Eth http server settings
- */
-
-/*
- * !Eth settings
- */
-
+#define USE_RMII_INTERFACE					true
+#define LWIP_DEBUG_EN						false
 
 /*
  * MmcSd settings
@@ -256,6 +143,15 @@
  * !MmcSd settings
  */
 
+/*
+ * Thread settings
+ */
+
+#define USE_DRIVER_SEMAPHORE			true
+
+/*
+ * !Thread settings
+ */
 
 
 

@@ -486,10 +486,18 @@ WCHAR chr /* Unicode character to be upper converted (BMP only) */
 	p = chr < 0x1000 ? cvt1 : cvt2;
 	for (;;)
 	{
+#if __AVR_XMEGA__
 		bc = pgm_read_word(p++); /* Get block base */
+#else
+		bc = *p++; /* Get block base */
+#endif
 		if (!bc || chr < bc)
 			break;
+#if __AVR_XMEGA__
 		nc = pgm_read_word(p++);
+#else
+		nc = *p++; /* Get block base */
+#endif
 		cmd = nc >> 8;
 		nc &= 0xFF; /* Get processing command and block size */
 		if (chr < bc + nc)
@@ -497,7 +505,11 @@ WCHAR chr /* Unicode character to be upper converted (BMP only) */
 			switch (cmd)
 			{
 			case 0:
+#if __AVR_XMEGA__
 				chr = pgm_read_word(&p[chr - bc]);
+#else
+				chr = p[chr - bc];
+#endif
 				break; /* Table conversion */
 			case 1:
 				chr -= (chr - bc) & 1;

@@ -199,8 +199,25 @@ GI::Dev::Spi::Spi(const char *path)
 	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.moSi >> 5],
 			&GPIO_InitStruct);
 
-	SpiHandle->Init.BaudRatePrescaler = (cfg.speed << 3)
-			& SPI_BAUDRATEPRESCALER_256;
+	u32 new_speed = 0;
+	if(cfg.speed > 25000000)
+		new_speed = 0;
+	else if(cfg.speed > 12500000)
+		new_speed = 1;
+	else if(cfg.speed > 6250000)
+		new_speed = 2;
+	else if(cfg.speed > 3125000)
+		new_speed = 3;
+	else if(cfg.speed > 1562500)
+		new_speed = 4;
+	else if(cfg.speed > 781250)
+		new_speed = 5;
+	else if(cfg.speed > 390625)
+		new_speed = 6;
+	else
+		new_speed = 7;
+
+	SpiHandle->Init.BaudRatePrescaler = (new_speed << 3) & SPI_BAUDRATEPRESCALER_256;
 	SpiHandle->Init.Direction = SPI_DIRECTION_2LINES;
 	SpiHandle->Init.CLKPhase = cfg.spiMode & 0x01;
 	SpiHandle->Init.CLKPolarity = cfg.spiMode & 0x02;
@@ -384,8 +401,11 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+#endif
+#if (USE_DRIVER_SEMAPHORE == true)
+	spi_semaphore[unitNr] = true;
 #endif
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
@@ -414,8 +434,11 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+#endif
+#if (USE_DRIVER_SEMAPHORE == true)
+	spi_semaphore[unitNr] = true;
 #endif
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
@@ -441,8 +464,11 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+#endif
+#if (USE_DRIVER_SEMAPHORE == true)
+	spi_semaphore[unitNr] = true;
 #endif
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
@@ -482,15 +508,32 @@ SysErr GI::Dev::Spi::setSpeed(unsigned long baud)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (spi_semaphore[unitNr])
-		;
+	while (spi_semaphore[unitNr]);
 #endif
+	unsigned int new_speed = 0;
+	if(baud > 25000000)
+		new_speed = 0;
+	else if(baud > 12500000)
+		new_speed = 1;
+	else if(baud > 6250000)
+		new_speed = 2;
+	else if(baud > 3125000)
+		new_speed = 3;
+	else if(baud > 1562500)
+		new_speed = 4;
+	else if(baud > 781250)
+		new_speed = 5;
+	else if(baud > 390625)
+		new_speed = 6;
+	else
+		new_speed = 7;
+
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	if ((hspi->Instance->CR1 & SPI_BAUDRATEPRESCALER_256)
-			!= (SPI_BAUDRATEPRESCALER_256 & (baud << 3)))
+			!= (SPI_BAUDRATEPRESCALER_256 & (new_speed << 3)))
 	{
 		hspi->Instance->CR1 &= ~SPI_BAUDRATEPRESCALER_256;
-		hspi->Instance->CR1 |= SPI_BAUDRATEPRESCALER_256 & (baud << 3);
+		hspi->Instance->CR1 |= SPI_BAUDRATEPRESCALER_256 & (new_speed << 3);
 	}
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;

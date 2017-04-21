@@ -47,7 +47,7 @@ extern PCD_HandleTypeDef _hpcd[];
 #endif
 
 /* TIM handler declared in "usbd_cdc_interface.c" file */
-extern TIM_HandleTypeDef USBCDCTimHandle;
+//extern TIM_HandleTypeDef USBCDCTimHandle;
 
 //extern void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 #ifdef LCD_TYPE_DSI

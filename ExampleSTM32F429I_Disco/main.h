@@ -13,9 +13,9 @@
 #define USE_I2C                         1
 #define USE_SPI                         1
 
-#define CONSOLE_UART_IN		            "usbcdc-0"
-#define CONSOLE_UART_OUT	            "usbcdc-0"
-#define CONSOLE_UART_ERR	            "usbcdc-0"
+#define CONSOLE_UART_IN		            "uart-0"
+#define CONSOLE_UART_OUT	            "uart-0"
+#define CONSOLE_UART_ERR	            "uart-0"
 
 #define USE_TERMINAL                    1
 
@@ -58,7 +58,7 @@
 #define _USE_BMP180						0
 #define _USE_MPL3115A2					0
 #define _USE_MPR121						0
-#define _USE_L3GD20						0
+#define _USE_L3GD20						1
 #define _USE_MS5611						0
 #define _USE_MHC5883					0
 #define _USE_ADXL345					0

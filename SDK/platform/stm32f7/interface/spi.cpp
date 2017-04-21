@@ -371,8 +371,11 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+#endif
+#if (USE_DRIVER_SEMAPHORE == true)
+	spi_semaphore[unitNr] = true;
 #endif
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
@@ -401,7 +404,11 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	while(spi_semaphore[unitNr]);
+	if (spi_semaphore[unitNr])
+		return SYS_ERR_BUSY;
+#endif
+#if (USE_DRIVER_SEMAPHORE == true)
+	spi_semaphore[unitNr] = true;
 #endif
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
@@ -427,7 +434,11 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	while(spi_semaphore[unitNr]);;
+	if (spi_semaphore[unitNr])
+		return SYS_ERR_BUSY;
+#endif
+#if (USE_DRIVER_SEMAPHORE == true)
+	spi_semaphore[unitNr] = true;
 #endif
 	if (!DisableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
@@ -498,4 +509,3 @@ SysErr GI::Dev::Spi::setSpeed(unsigned long baud)
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
-

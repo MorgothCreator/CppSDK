@@ -30,6 +30,7 @@
 #include "driver/stm32f4xx_hal.h"
 #include "driver/USBH/core/inc/usbh_core.h"
 #include "driver/stm32f4xx_hal_rcc.h"
+#include "driver/stm32f4xx_hal_gpio.h"
 #include "driver/stm32f4xx_hal_gpio_ex.h"
 
 #if defined(STM32F405xx)
@@ -75,6 +76,9 @@ HCD_HandleTypeDef hhcd;
 #define HOST_POWERSW_CLK_ENABLE()          __HAL_RCC_GPIOB_CLK_ENABLE()
 #define HOST_POWERSW_PORT                  GPIOB
 #define HOST_POWERSW_VBUS                  GPIO_PIN_2
+#define OTG_FS1_POWER_SWITCH_PORT      		GPIOB
+#define OTG_FS1_POWER_SWITCH_PIN       		GPIO_PIN_4
+
 
 /*******************************************************************************
                        HCD BSP Routines
@@ -439,12 +443,12 @@ USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
 	if(state == 0)
 	{
 		/* Configure Low Charge pump */
-		BSP_IO_WritePin(OTG_FS1_POWER_SWITCH_PIN, BSP_IO_PIN_RESET);
+		HAL_GPIO_WritePin(OTG_FS1_POWER_SWITCH_PORT, OTG_FS1_POWER_SWITCH_PIN, GPIO_PIN_RESET);
 	}
 	else
 	{
 		/* Drive High Charge pump */
-		BSP_IO_WritePin(OTG_FS1_POWER_SWITCH_PIN, BSP_IO_PIN_SET);
+		HAL_GPIO_WritePin(OTG_FS1_POWER_SWITCH_PORT, OTG_FS1_POWER_SWITCH_PIN, GPIO_PIN_SET);
 	}
 
 #endif
@@ -453,12 +457,12 @@ USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
 	if(state == 0)
 	{
 		/* Configure Low Charge pump */
-		BSP_IO_WritePin(OTG_FS2_POWER_SWITCH_PIN, BSP_IO_PIN_RESET);
+		HAL_GPIO_WritePin(OTG_FS2_POWER_SWITCH_PIN, GPIO_PIN_RESET);
 	}
 	else
 	{
 		/* Drive High Charge pump */
-		BSP_IO_WritePin(OTG_FS2_POWER_SWITCH_PIN, BSP_IO_PIN_SET);
+		HAL_GPIO_WritePin(OTG_FS2_POWER_SWITCH_PIN, GPIO_PIN_SET);
 	}
 #endif
 	HAL_Delay(200);

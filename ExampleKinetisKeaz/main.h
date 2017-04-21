@@ -67,8 +67,6 @@
 
 #define _USE_INT_ADC					0
 
-#define USE_DRIVER_SEMAPHORE			false
-
 #include <main_app.h>
 
 #endif /* MAIN_H_ */

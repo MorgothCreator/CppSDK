@@ -35,6 +35,7 @@
 #include "interface/LwIp/src/include/lwip/apps/fs.h"
 #include "lib/fs/fat/inc/ff.h"
 #include <string.h>
+#include <main.h>
 
 /*-----------------------------------------------------------------------------------*/
 err_t fs_open(fs_file *file, const char *name)

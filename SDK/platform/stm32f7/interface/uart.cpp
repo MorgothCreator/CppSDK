@@ -363,7 +363,7 @@ void GI::Dev::Uart::putChar(unsigned char byteTx)
 {
 #if (USE_DRIVER_SEMAPHORE == true)
 	while (uart_semaphore[unitNr]);
-	uart_semaphore[unitNr] = true;
+		uart_semaphore[unitNr] = true;
 #endif
 	if(isVirtual)
 		while(((GI::Dev::UsbDCdc *)udata)->tx(&byteTx, 1) != 1);
@@ -379,7 +379,7 @@ unsigned char GI::Dev::Uart::getChar()
 	unsigned char data = 0;
 #if (USE_DRIVER_SEMAPHORE == true)
 	while (uart_semaphore[unitNr]);
-	uart_semaphore[unitNr] = true;
+		uart_semaphore[unitNr] = true;
 #endif
 	if(isVirtual)
 		while(((GI::Dev::UsbDCdc *)udata)->rx(&data) == 0);
@@ -395,7 +395,7 @@ bool GI::Dev::Uart::putCharNb(unsigned char byteTx)
 {
 #if (USE_DRIVER_SEMAPHORE == true)
 	while (uart_semaphore[unitNr]);
-	uart_semaphore[unitNr] = true;
+		uart_semaphore[unitNr] = true;
 #endif
 	if(isVirtual)
 	{
@@ -428,9 +428,8 @@ signed short GI::Dev::Uart::getCharNb()
 {
 	signed short data = 0;
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (uart_semaphore[unitNr])
-		;
-	uart_semaphore[unitNr] = true;
+	while (uart_semaphore[unitNr]);
+		uart_semaphore[unitNr] = true;
 #endif
 	if(isVirtual)
 	{
