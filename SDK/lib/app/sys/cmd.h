@@ -11,6 +11,7 @@
 #include <api/io_handle.h>
 #include <include/global.h>
 #include <api/gpio.h>
+#include <lib/buffers/ring_buff.h>
 
 class Cmd
 {
@@ -18,6 +19,7 @@ public:
 	Cmd(char *inPath, char *outPath, char *errPath);
 	~Cmd();
 	SysErr idle();
+	SysErr parse(char data);
 	SysErr ls(int argc, char *argv[]);
 	SysErr cd(int argc, char *argv[]);
 	SysErr cat(int argc, char *argv[]);
@@ -38,6 +40,8 @@ private:
 	unsigned int hystoryPtr;
 	bool escape_received;
 	unsigned char escape_second_char;
+	GI::Buff::RingBuff *outFifo;
+	short charPopFromFifo;
 };
 
 #if __AVR_XMEGA__

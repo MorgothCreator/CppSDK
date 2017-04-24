@@ -86,7 +86,6 @@ const char *fs_err_table[] = {
 
 static GI::StringArray hystoryTable = GI::StringArray();
 
-
 Cmd::Cmd(char *inPath, char *outPath, char *errPath)
 {
 	memset(this, 0, sizeof(*this));
@@ -95,6 +94,8 @@ Cmd::Cmd(char *inPath, char *outPath, char *errPath)
 	this->errPath = new GI::IO(errPath);
 	path = new GI::String();
 	input = new GI::String();
+	outFifo = new GI::Buff::RingBuff(128, 1);
+	charPopFromFifo = -1;
 }
 
 Cmd::~Cmd()
@@ -104,124 +105,142 @@ Cmd::~Cmd()
 	delete errPath;
 	delete path;
 	delete input;
+	delete outFifo;
 }
 
 SysErr Cmd::idle()
 {
+	if(charPopFromFifo < 0)
+	{
+		unsigned char tmp_char = 0;
+		if(outFifo->pop(&tmp_char))
+			charPopFromFifo = tmp_char;
+	}
+	else
+	{
+		if(!outPath->write((char)charPopFromFifo))
+			charPopFromFifo = -1;
+	}
 	unsigned long tmp_term_char = 0;
 	while(inPath->read(&tmp_term_char) == SYS_ERR_OK)
 	{
-		if(tmp_term_char == 0x7F)
+		parse(tmp_term_char);
+	}
+	return SYS_ERR_OK;
+}
+
+SysErr Cmd::parse(char data)
+{
+	if(data == 0x7F)
+	{
+		unsigned int str_len;
+		for(str_len = 0; str_len < input->length; str_len++)
 		{
-			unsigned int str_len;
-			for(str_len = 0; str_len < input->length; str_len++)
-			{
-				outPath->write((char)0x7F);
-			}
-			input->append((char) tmp_term_char);
+			outPath->write((char)0x7F);
+		}
+		input->append((char) data);
+		outPath->write((unsigned char *)input->buff);
+	}
+	else if(data ==27)
+	{
+		escape_received = true;
+		return SYS_ERR_OK;
+	}
+	else if(escape_received && data ==91)
+	{
+		escape_second_char = data;
+		return SYS_ERR_OK;
+	}
+	else if(escape_received && escape_second_char == 91)
+	{
+		unsigned int cnt = 0;
+		for(; cnt < input->length; cnt++)
+			outPath->write((char)0x7F);
+		if(data == 65)
+		{
+			hystoryUp(input);
 			outPath->write((unsigned char *)input->buff);
 		}
-		else if(tmp_term_char ==27)
+		else if(data == 66)
 		{
-			escape_received = true;
-			return SYS_ERR_OK;
-		}
-		else if(escape_received && tmp_term_char ==91)
-		{
-			escape_second_char = tmp_term_char;
-			return SYS_ERR_OK;
-		}
-		else if(escape_received && escape_second_char == 91)
-		{
-			unsigned int cnt = 0;
-			for(; cnt < input->length; cnt++)
-				outPath->write((char)0x7F);
-			if(tmp_term_char == 65)
-			{
-				hystoryUp(input);
+			//if(hystoryPtr != 0)
+			//{
+				hystoryDn(input);
 				outPath->write((unsigned char *)input->buff);
-			}
-			else if(tmp_term_char == 66)
-			{
-				//if(hystoryPtr != 0)
-				//{
-					hystoryDn(input);
-					outPath->write((unsigned char *)input->buff);
-				//}
-			}
-			escape_received = false;
-			escape_second_char = 0;
-			return SYS_ERR_OK;
+			//}
 		}
-		else if(tmp_term_char != 0x0D)
+		escape_received = false;
+		escape_second_char = 0;
+		return SYS_ERR_OK;
+	}
+	else if(data != 0x0D)
+	{
+		input->append((char) data);
+		outFifo->push((unsigned char)data);
+		escape_received = false;
+		escape_second_char = 0;
+	}
+	else
+	{
+		outPath->write((unsigned char *)"\n\r");
+		GI::StringArray *result;
+		Sys::Util::strToCmd(input, &result);
+		//unsigned int cmd_cnt = 0;
+		GI::StringCharArray *char_string = new GI::StringCharArray(result, 1);
+		if(char_string)
 		{
-			input->append((char) tmp_term_char);
-			outPath->write((char)tmp_term_char);
-			escape_received = false;
-			escape_second_char = 0;
+#if __AVR_XMEGA__
+			if(!strcmp_P(result->array[0]->buff, PSTR("ls")))
+#else
+			if(!strcmp(result->array[0]->buff, "ls"))
+#endif
+			{
+				ls(char_string->itemsCount, (char **)char_string->array);
+			}
+			else
+#if __AVR_XMEGA__
+			if(!strcmp_P(result->array[0]->buff, PSTR("cd")))
+#else
+			if(!strcmp(result->array[0]->buff, "cd"))
+#endif
+			{
+				cd(char_string->itemsCount, (char **)char_string->array);
+			}
+			else
+#if __AVR_XMEGA__
+			if(!strcmp_P(result->array[0]->buff, PSTR("cat")))
+#else
+			if(!strcmp(result->array[0]->buff, "cat"))
+#endif
+			{
+				cat(char_string->itemsCount, (char **)char_string->array);
+			}
 		}
 		else
 		{
-			outPath->write((unsigned char *)"\n\r");
-			GI::StringArray *result;
-			Sys::Util::strToCmd(input, &result);
-			//unsigned int cmd_cnt = 0;
-			GI::StringCharArray *char_string = new GI::StringCharArray(result, 1);
-			if(char_string)
-			{
 #if __AVR_XMEGA__
-				if(!strcmp_P(result->array[0]->buff, PSTR("ls")))
-#else
-				if(!strcmp(result->array[0]->buff, "ls"))
-#endif
-				{
-					ls(char_string->itemsCount, (char **)char_string->array);
-				}
-				else
-#if __AVR_XMEGA__
-				if(!strcmp_P(result->array[0]->buff, PSTR("cd")))
-#else
-				if(!strcmp(result->array[0]->buff, "cd"))
-#endif
-				{
-					cd(char_string->itemsCount, (char **)char_string->array);
-				}
-				else
-#if __AVR_XMEGA__
-				if(!strcmp_P(result->array[0]->buff, PSTR("cat")))
-#else
-				if(!strcmp(result->array[0]->buff, "cat"))
-#endif
-				{
-					cat(char_string->itemsCount, (char **)char_string->array);
-				}
-			}
-			else
-			{
-#if __AVR_XMEGA__
-				char tmp[sizeof("Out of memory\n\r")];
-				strcpy_P(tmp, PSTR("Out of memory\n\r"));
-				errPath->write(tmp);
-#else
-				errPath->write((char *)"Out of memory\n\r");
-#endif
-			}
-			hystoryAdd(input);
-#if __AVR_XMEGA__
-			char tmp[sizeof("GI@")];
-			strcpy_P(tmp, PSTR("GI@"));
+			char tmp[sizeof("Out of memory\n\r")];
+			strcpy_P(tmp, PSTR("Out of memory\n\r"));
 			errPath->write(tmp);
 #else
-			outPath->write((unsigned char *)"GI@");
+			errPath->write((char *)"Out of memory\n\r");
 #endif
-			outPath->write((unsigned char *)path->buff);
-			outPath->write((unsigned char *)": ");
-			delete result;
-			delete char_string;
-			input->clear();
-			escape_received = false;
-			escape_second_char = 0;
 		}
+		hystoryAdd(input);
+#if __AVR_XMEGA__
+		char tmp[sizeof("GI@")];
+		strcpy_P(tmp, PSTR("GI@"));
+		errPath->write(tmp);
+#else
+		outPath->write((unsigned char *)"\n\rGI@");
+#endif
+		outPath->write((unsigned char *)path->buff);
+		outPath->write((unsigned char *)": ");
+		delete result;
+		delete char_string;
+		input->clear();
+		escape_received = false;
+		escape_second_char = 0;
 	}
 	return SYS_ERR_OK;
 }
