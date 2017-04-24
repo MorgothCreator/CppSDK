@@ -145,6 +145,9 @@ void GI::Screen::Gfx::CheckBox::idle(tControlCommandData* control_comand)
 {
 	if(this == NULL)
 		return;
+	tControlCommandData _control_comand_;
+	if(!control_comand)
+		control_comand = &_control_comand_;
 	/* Verify if position on size has been modified */
 	GI::Screen::Gfx::Window *parentWindowHandle = (GI::Screen::Gfx::Window*)Internals.parentWindowHandler;
 	if(control_comand->Comand != Control_Nop)

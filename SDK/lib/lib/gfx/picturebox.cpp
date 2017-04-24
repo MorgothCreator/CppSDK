@@ -94,6 +94,9 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 {
 	if(this == NULL)
 		return;
+	tControlCommandData _control_comand_;
+	if(!control_comand)
+		control_comand = &_control_comand_;
 	GI::Screen::Gfx::Window *parentWindowHandler = (GI::Screen::Gfx::Window*)Internals.parentWindowHandler;
 	if(control_comand->Comand != Control_Nop)
 	{
