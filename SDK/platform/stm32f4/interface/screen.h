@@ -260,6 +260,31 @@ public:
 		deinit();
 #endif
 	}
+	static void _setOn(void *driverHandlerPtr);
+	static void _setOff(void *driverHandlerPtr);
+	static SysErr _setBacklight(void *driverHandlerPtr, unsigned char value);
+	static bool _copyScreen(void *driverHandlerPtr, void *pDisplayFrom, bool put_cursor,
+			signed int X, signed int Y, unsigned int color);
+	static void _cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start,
+			signed int x_len, signed int y_len);
+	static void _drawRectangle(void *driverHandlerPtr, signed int x_start, signed int y_start,
+			signed int x_len, signed int y_len, bool fill, unsigned int color);
+	static void _drawPixel(void *driverHandlerPtr, signed int X, signed int Y, unsigned int color);
+	static void _copyRectangle16Bit(void *driverHandlerPtr, unsigned short *rgb_buffer,
+			unsigned int x1, unsigned int y1, unsigned int width,
+			unsigned int height);
+	static void _copyRectangle24Bit(void *driverHandlerPtr, unsigned char *rgb_buffer,
+			unsigned long x1, unsigned long y1, unsigned long width,
+			unsigned long height);
+	static void _copyRectangle32Bit(void *driverHandlerPtr, unsigned char *rgb_buffer,
+			unsigned int x1, unsigned int y1, unsigned int width,
+			unsigned int height);
+	static void _drawHLine(void *driverHandlerPtr, signed int X1, signed int X2,
+			signed int Y, unsigned char width, unsigned int color);
+	static void _drawVLine(void *driverHandlerPtr, signed int Y1, signed int Y2,
+			signed int X, unsigned char width, unsigned int color);
+	static void _clear(void *driverHandlerPtr, unsigned int color);
+	GI::Dev::Gpio* backlight;
 };
 }
 }

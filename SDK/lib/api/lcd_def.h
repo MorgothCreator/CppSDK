@@ -155,37 +155,73 @@ public:
 	void *UserData;
 	tRectangle sClipRegion;
 	int err;
-	void setOn();
-	void setOff();
-	int setBacklight(unsigned char value);
-	bool copyScreen(void *pDisplayFrom, bool put_cursor,
+
+    bool (*setOrientation_Ptr)(void *driverHandlerPtr, LCD_ORIENTATION orientation);
+	void (*setOn_Ptr)(void *driverHandlerPtr);
+	void (*setOff_Ptr)(void *driverHandlerPtr);
+	SysErr (*setBacklight_Ptr)(void *driverHandlerPtr, unsigned char value);
+	bool (*copyScreen_Ptr)(void *driverHandlerPtr, void *pDisplayFrom, bool put_cursor,
+				signed int X, signed int Y, unsigned int color);
+	void (*cacheClean_Ptr)(void *driverHandlerPtr, signed int x_start, signed int y_start,
+				signed int x_len, signed int y_len);
+	void (*drawRectangle_Ptr)(void *driverHandlerPtr, signed int x_start, signed int y_start,
+				signed int x_len, signed int y_len, bool fill, unsigned int color);
+	void (*drawPixel_Ptr)(void *driverHandlerPtr, signed int X, signed int Y, unsigned int color);
+	void (*copyRectangle16Bit_Ptr)(void *driverHandlerPtr, unsigned short *rgb_buffer,
+				unsigned int x1, unsigned int y1, unsigned int width,
+				unsigned int height);
+	void (*copyRectangle24Bit_Ptr)(void *driverHandlerPtr, unsigned char *rgb_buffer,
+				unsigned long x1, unsigned long y1, unsigned long width,
+				unsigned long height);
+	void (*copyRectangle32Bit_Ptr)(void *driverHandlerPtr, unsigned char *rgb_buffer,
+				unsigned int x1, unsigned int y1, unsigned int width,
+				unsigned int height);
+	void (*drawHLine_Ptr)(void *driverHandlerPtr, signed int X1, signed int X2,
+				signed int Y, unsigned char width, unsigned int color);
+	void (*drawVLine_Ptr)(void *driverHandlerPtr, signed int Y1, signed int Y2,
+				signed int X, unsigned char width, unsigned int color);
+	void (*clear_Ptr)(void *driverHandlerPtr, unsigned int color);
+
+	void (*drawTouchPoint_Ptr)(void *driverHandlerPtr, signed int X, signed int Y, unsigned int color);
+	void (*drawCircle_Ptr)(void *driverHandlerPtr, signed int x, signed int y, signed int _radius, unsigned char fill, unsigned int color);
+	void (*drawLine_Ptr)(void *driverHandlerPtr, signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color);
+	void (*drawElipse_Ptr)(void *driverHandlerPtr, signed int xc,signed int yc,signed int _rx,signed int _ry, unsigned char Fill, unsigned int color);
+	void (*drawTriangle_Ptr)(void *driverHandlerPtr, signed int  Ax,signed int  Ay,signed int  Bx,signed int  By,signed int  Cx,signed int  Cy, unsigned char Fill, unsigned int color);
+
+
+	SysErr setOrientation(LCD_ORIENTATION orientation);
+	SysErr setOn();
+	SysErr setOff();
+	SysErr setBacklight(unsigned char value);
+	SysErr copyScreen(void *pDisplayFrom, bool put_cursor,
 			signed int X, signed int Y, unsigned int color);
-	void cacheClean(signed int x_start, signed int y_start,
+	SysErr cacheClean(signed int x_start, signed int y_start,
 			signed int x_len, signed int y_len);
-	void drawRectangle(signed int x_start, signed int y_start,
+	SysErr drawRectangle(signed int x_start, signed int y_start,
 			signed int x_len, signed int y_len, bool fill, unsigned int color);
-	void drawPixel(signed int X, signed int Y, unsigned int color);
-	void copyRectangle16Bit(unsigned short *rgb_buffer,
+	SysErr drawPixel(signed int X, signed int Y, unsigned int color);
+	SysErr copyRectangle16Bit(unsigned short *rgb_buffer,
 			unsigned int x1, unsigned int y1, unsigned int width,
 			unsigned int height);
-	void copyRectangle24Bit(unsigned char *rgb_buffer,
+	SysErr copyRectangle24Bit(unsigned char *rgb_buffer,
 			unsigned long x1, unsigned long y1, unsigned long width,
 			unsigned long height);
-	void copyRectangle32Bit(unsigned char *rgb_buffer,
+	SysErr copyRectangle32Bit(unsigned char *rgb_buffer,
 			unsigned int x1, unsigned int y1, unsigned int width,
 			unsigned int height);
-	void drawHLine(signed int X1, signed int X2,
+	SysErr drawHLine(signed int X1, signed int X2,
 			signed int Y, unsigned char width, unsigned int color);
-	void drawVLine(signed int Y1, signed int Y2,
+	SysErr drawVLine(signed int Y1, signed int Y2,
 			signed int X, unsigned char width, unsigned int color);
-	void clear(unsigned int color);
+	SysErr clear(unsigned int color);
 
-	void drawTouchPoint(signed int X, signed int Y, unsigned int color);
-	void drawCircle(signed int x, signed int y, signed int _radius, unsigned char fill, unsigned int color);
-	void drawLine(signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color);
-	void drawElipse(signed int xc,signed int yc,signed int _rx,signed int _ry, unsigned char Fill, unsigned int color);
-	void drawTriangle(signed int  Ax,signed int  Ay,signed int  Bx,signed int  By,signed int  Cx,signed int  Cy, unsigned char Fill, unsigned int color);
+	SysErr drawTouchPoint(signed int X, signed int Y, unsigned int color);
+	SysErr drawCircle(signed int x, signed int y, signed int _radius, unsigned char fill, unsigned int color);
+	SysErr drawLine(signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color);
+	SysErr drawElipse(signed int xc,signed int yc,signed int _rx,signed int _ry, unsigned char Fill, unsigned int color);
+	SysErr drawTriangle(signed int  Ax,signed int  Ay,signed int  Bx,signed int  By,signed int  Cx,signed int  Cy, unsigned char Fill, unsigned int color);
 	GI::Dev::Gpio* backlight;
+	void *driverHandler_Ptr;
 
 private:
 };

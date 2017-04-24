@@ -914,9 +914,20 @@ static void LL_FillBuffer(uint32_t LayerIndex, void *pDst, uint32_t xSize,
 
 void GI::Dev::IntScreen::init(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
 {
+    memset(this, 0, sizeof(*this));
 	this->backlight = backlight;
 	LcdTimings = timings;
-	//screen_open(LcdStruct);
+
+	setOn_Ptr = &GI::Dev::IntScreen::_setOn;
+	setOff_Ptr = &GI::Dev::IntScreen::_setOff;
+	setBacklight_Ptr = &GI::Dev::IntScreen::_setBacklight;
+    cacheClean_Ptr = &GI::Dev::IntScreen::_cacheClean;
+    drawPixel_Ptr = &GI::Dev::IntScreen::_drawPixel;
+    drawRectangle_Ptr = &GI::Dev::IntScreen::_drawRectangle;
+    drawHLine_Ptr = &GI::Dev::IntScreen::_drawHLine;
+    drawVLine_Ptr = &GI::Dev::IntScreen::_drawVLine;
+    clear_Ptr = &GI::Dev::IntScreen::_clear;
+    driverHandler_Ptr = (void *)this;
 	if (BSP_LCD_InitEx((void *) this) == LCD_OK)
 	{
 		clear(0xFFFF0F0F);
@@ -936,9 +947,10 @@ void GI::Dev::IntScreen::deinit()
 
 }
 /**********************************************/
-void GI::Dev::Screen::setOn()
+void GI::Dev::IntScreen::_setOn(void *driverHandlerPtr)
 {
-	err = SYS_ERR_NOT_IMPLEMENTED;
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
+	driverHandler->err = SYS_ERR_NOT_IMPLEMENTED;
 	/* Send Display on DCS command to display */
 	/*HAL_DSI_ShortWrite(&(hdsi_eval),
 	 hdsivideo_handle.VirtualChannelID,
@@ -947,9 +959,10 @@ void GI::Dev::Screen::setOn()
 	 0x00);*/
 }
 /**********************************************/
-void GI::Dev::Screen::setOff()
+void GI::Dev::IntScreen::_setOff(void *driverHandlerPtr)
 {
-	err = SYS_ERR_NOT_IMPLEMENTED;
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
+	driverHandler->err = SYS_ERR_NOT_IMPLEMENTED;
 	/* Send Display off DCS Command to display */
 	/*HAL_DSI_ShortWrite(&(hdsi_eval),
 	 hdsivideo_handle.VirtualChannelID,
@@ -958,25 +971,27 @@ void GI::Dev::Screen::setOff()
 	 0x00);*/
 }
 //#######################################################################################
-int GI::Dev::Screen::setBacklight(unsigned char value)
+SysErr GI::Dev::IntScreen::_setBacklight(void *driverHandlerPtr, unsigned char value)
 {
-	err = SYS_ERR_OK;
-	if (backlight)
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
+	driverHandler->err = SYS_ERR_OK;
+	if (driverHandler->backlight)
 	{
 		if (value)
-			backlight->setOut(1);
+			driverHandler->backlight->setOut(1);
 		else
-			backlight->setOut(0);
+			driverHandler->backlight->setOut(0);
 		return SYS_ERR_OK;
 	}
-	err = SYS_ERR_NOT_INITIALIZED;
+	driverHandler->err = SYS_ERR_NOT_INITIALIZED;
 	return SYS_ERR_NOT_INITIALIZED;
 }
 //#######################################################################################
-bool GI::Dev::Screen::copyScreen(void *_pDisplayFrom, bool put_cursor,
+bool GI::Dev::IntScreen::_copyScreen(void *driverHandlerPtr, void *_pDisplayFrom, bool put_cursor,
 		signed int X, signed int Y, unsigned int color)
 {
-	GI::Dev::Screen *pDisplayTo = this;
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
+	GI::Dev::Screen *pDisplayTo = driverHandler;
 	GI::Dev::Screen *pDisplayFrom = (GI::Dev::Screen *) _pDisplayFrom;
 	if (pDisplayTo->LcdTimings->X != pDisplayFrom->LcdTimings->X
 			|| pDisplayTo->LcdTimings->Y != pDisplayFrom->LcdTimings->Y)
@@ -1001,90 +1016,92 @@ bool GI::Dev::Screen::copyScreen(void *_pDisplayFrom, bool put_cursor,
 		{
 			signed int cnt_x = X;
 			for (; cnt_x < X + 2; cnt_x++)
-				drawPixel(cnt_x, LineCnt, color);
+				driverHandler->drawPixel(cnt_x, LineCnt, color);
 		}
 	}
 	return true;
 }
 //#######################################################################################
-void GI::Dev::Screen::cacheClean(signed int x_start, signed int y_start,
+void GI::Dev::IntScreen::_cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start,
 		signed int x_len, signed int y_len)
 {
-	//tDisplay *pDisplay = (tDisplay *)_pDisplay;
-
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
 }
 //#######################################################################################
-void GI::Dev::Screen::drawRectangle(signed int x_start, signed int y_start,
+void GI::Dev::IntScreen::_drawRectangle(void *driverHandlerPtr, signed int x_start, signed int y_start,
 		signed int x_len, signed int y_len, bool fill, unsigned int color)
 {
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
 	signed int x_end = x_start + x_len, y_end = y_start + y_len;
-	if (x_start >= sClipRegion.sXMax || y_start >= sClipRegion.sYMax
-			|| x_end < sClipRegion.sXMin || y_end < sClipRegion.sYMin)
+	if (x_start >= driverHandler->sClipRegion.sXMax || y_start >= driverHandler->sClipRegion.sYMax
+			|| x_end < driverHandler->sClipRegion.sXMin || y_end < driverHandler->sClipRegion.sYMin)
 		return;
 	register signed int LineCnt = y_start;
 	//volatile unsigned int* ScreenBuff = (volatile unsigned int *)LCD_FB_START_ADDRESS;
 	unsigned int _color = color | 0xFF000000;
 	if (fill)
 	{
-		if (LineCnt < sClipRegion.sYMin)
-			LineCnt = sClipRegion.sYMin;
+		if (LineCnt < driverHandler->sClipRegion.sYMin)
+			LineCnt = driverHandler->sClipRegion.sYMin;
 		signed int _x_start = x_start;
-		if (_x_start < sClipRegion.sXMin)
-			_x_start = sClipRegion.sXMin;
+		if (_x_start < driverHandler->sClipRegion.sXMin)
+			_x_start = driverHandler->sClipRegion.sXMin;
 		register signed int _x_end = x_end;
-		if (_x_end > sClipRegion.sXMax)
-			_x_end = sClipRegion.sXMax;
+		if (_x_end > driverHandler->sClipRegion.sXMax)
+			_x_end = driverHandler->sClipRegion.sXMax;
 		register signed int _y_end = y_end;
-		if (_y_end > sClipRegion.sYMax)
-			_y_end = sClipRegion.sYMax;
+		if (_y_end > driverHandler->sClipRegion.sYMax)
+			_y_end = driverHandler->sClipRegion.sYMax;
 		uint32_t Xaddress = 0;
 		Xaddress = (LtdcHandler.LayerCfg[0].FBStartAdress)
-				+ 4 * (LcdTimings->X * LineCnt + _x_start);
+				+ 4 * (driverHandler->LcdTimings->X * LineCnt + _x_start);
 		/* Fill the rectangle */
 		LL_FillBuffer(0, (uint32_t *) Xaddress, _x_end - _x_start,
-				_y_end - LineCnt, LcdTimings->X - (_x_end - _x_start), _color);
+				_y_end - LineCnt, driverHandler->LcdTimings->X - (_x_end - _x_start), _color);
 		return;
 	}
 
-	drawHLine(x_start, x_len - 1, y_start, 1, color);
-	drawHLine(x_start, x_len, (y_start + y_len) - 1, 1, color);
-	drawVLine(y_start, y_len - 1, x_start, 1, color);
-	drawVLine(y_start, x_len, (x_start + x_len) - 1, 1, color);
+	driverHandler->drawHLine(x_start, x_len - 1, y_start, 1, color);
+	driverHandler->drawHLine(x_start, x_len, (y_start + y_len) - 1, 1, color);
+	driverHandler->drawVLine(y_start, y_len - 1, x_start, 1, color);
+	driverHandler->drawVLine(y_start, x_len, (x_start + x_len) - 1, 1, color);
 	return;
 }
 //#######################################################################################
-void GI::Dev::Screen::drawPixel(signed int X, signed int Y, unsigned int color)
+void GI::Dev::IntScreen::_drawPixel(void *driverHandlerPtr, signed int X, signed int Y, unsigned int color)
 {
-	if (X >= sClipRegion.sXMin && Y >= sClipRegion.sYMin
-			&& X < sClipRegion.sXMax && Y < sClipRegion.sYMax)
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
+	if (X >= driverHandler->sClipRegion.sXMin && Y >= driverHandler->sClipRegion.sYMin
+			&& X < driverHandler->sClipRegion.sXMax && Y < driverHandler->sClipRegion.sYMax)
 	{
 		uint32_t Xaddress = 0;
 		Xaddress = (LtdcHandler.LayerCfg[0].FBStartAdress)
-				+ 4 * (LcdTimings->X * Y + X);
+				+ 4 * (driverHandler->LcdTimings->X * Y + X);
 		/* Fill the rectangle */
-		LL_FillBuffer(0, (uint32_t *) Xaddress, 1, 1, LcdTimings->X - 1,
+		LL_FillBuffer(0, (uint32_t *) Xaddress, 1, 1, driverHandler->LcdTimings->X - 1,
 				color | 0xFF000000);
 	}
 }
 //#######################################################################################
-void GI::Dev::Screen::copyRectangle16Bit(unsigned short *rgb_buffer,
+void GI::Dev::IntScreen::_copyRectangle16Bit(void *driverHandlerPtr, unsigned short *rgb_buffer,
 		unsigned int x1, unsigned int y1, unsigned int width,
 		unsigned int height)
 {
 	//tDisplay *pDisplay = (tDisplay *)_pDisplay;
 }
 //#######################################################################################
-void GI::Dev::Screen::copyRectangle24Bit(unsigned char *rgb_buffer,
+void GI::Dev::IntScreen::_copyRectangle24Bit(void *driverHandlerPtr, unsigned char *rgb_buffer,
 		unsigned long x1, unsigned long y1, unsigned long width,
 		unsigned long height)
 {
-	//tDisplay *pDisplay = (tDisplay *)_pDisplay;
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
 }
 //#######################################################################################
-void GI::Dev::Screen::copyRectangle32Bit(unsigned char *rgb_buffer,
+void GI::Dev::IntScreen::_copyRectangle32Bit(void *driverHandlerPtr, unsigned char *rgb_buffer,
 		unsigned int x1, unsigned int y1, unsigned int width,
 		unsigned int height)
 {
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
 
 	/*//tWindow *ParentWindow = (tWindow*)settings->Internals.ParentWindow;
 	 //tDisplay *pDisplay = settings->Internals.pDisplay;
@@ -1140,13 +1157,13 @@ void GI::Dev::Screen::copyRectangle32Bit(unsigned char *rgb_buffer,
 	 else
 	 Y_Start_Src_Buff = (~Y_Start_Src_Buff) + 1;*/
 
-	uint32_t destination = (uint32_t) ((volatile unsigned int *) LCD_FB_START_ADDRESS) + (((y1 * LcdTimings->X) + x1) * 4);
+	uint32_t destination = (uint32_t) ((volatile unsigned int *) LCD_FB_START_ADDRESS) + (((y1 * driverHandler->LcdTimings->X) + x1) * 4);
 	uint32_t source = (uint32_t) rgb_buffer;
 
 	/*##-1- Configure the DMA2D Mode, Color Mode and output offset #############*/
 	Dma2dHandle.Init.Mode = DMA2D_M2M;
 	Dma2dHandle.Init.ColorMode = DMA2D_ARGB8888;
-	Dma2dHandle.Init.OutputOffset = (LcdTimings->X - width) * 2;
+	Dma2dHandle.Init.OutputOffset = (driverHandler->LcdTimings->X - width) * 2;
 
 	/*##-2- DMA2D Callbacks Configuration ######################################*/
 	Dma2dHandle.XferCpltCallback = NULL;
@@ -1173,25 +1190,26 @@ void GI::Dev::Screen::copyRectangle32Bit(unsigned char *rgb_buffer,
 	}
 }
 //#######################################################################################
-void GI::Dev::Screen::drawHLine(signed int X1, signed int X2, signed int Y,
+void GI::Dev::IntScreen::_drawHLine(void *driverHandlerPtr, signed int X1, signed int X2, signed int Y,
 		unsigned char width, unsigned int color)
 {
-	if (width == 1 && (Y < sClipRegion.sYMin || Y >= sClipRegion.sYMax))
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
+	if (width == 1 && (Y < driverHandler->sClipRegion.sYMin || Y >= driverHandler->sClipRegion.sYMax))
 		return;
 	register int X1_Tmp = X1, X2_Tmp = X1 + X2;
-	if (X1_Tmp <= (int) sClipRegion.sXMin)
-		X1_Tmp = (int) sClipRegion.sXMin;
-	if (X1_Tmp >= (int) sClipRegion.sXMax)
-		X1_Tmp = (int) sClipRegion.sXMax;
-	if (X2_Tmp <= (int) sClipRegion.sXMin)
-		X2_Tmp = (int) sClipRegion.sXMin;
-	if (X2_Tmp >= (int) sClipRegion.sXMax)
-		X2_Tmp = (int) sClipRegion.sXMax;
+	if (X1_Tmp <= (int) driverHandler->sClipRegion.sXMin)
+		X1_Tmp = (int) driverHandler->sClipRegion.sXMin;
+	if (X1_Tmp >= (int) driverHandler->sClipRegion.sXMax)
+		X1_Tmp = (int) driverHandler->sClipRegion.sXMax;
+	if (X2_Tmp <= (int) driverHandler->sClipRegion.sXMin)
+		X2_Tmp = (int) driverHandler->sClipRegion.sXMin;
+	if (X2_Tmp >= (int) driverHandler->sClipRegion.sXMax)
+		X2_Tmp = (int) driverHandler->sClipRegion.sXMax;
 	Y -= (width >> 1);
-	if (Y < (int) sClipRegion.sYMin)
-		Y = (int) sClipRegion.sYMin;
-	if (Y >= (int) sClipRegion.sYMax)
-		Y = (int) sClipRegion.sYMax;
+	if (Y < (int) driverHandler->sClipRegion.sYMin)
+		Y = (int) driverHandler->sClipRegion.sYMin;
+	if (Y >= (int) driverHandler->sClipRegion.sYMax)
+		Y = (int) driverHandler->sClipRegion.sYMax;
 #ifdef USE_16_BIT_COLOR_DEPTH
 	unsigned int _color = color;
 #else
@@ -1199,32 +1217,33 @@ void GI::Dev::Screen::drawHLine(signed int X1, signed int X2, signed int Y,
 #endif
 	uint32_t Xaddress = 0;
 	Xaddress = (LtdcHandler.LayerCfg[0].FBStartAdress)
-			+ 4 * (LcdTimings->X * Y + X1_Tmp);
+			+ 4 * (driverHandler->LcdTimings->X * Y + X1_Tmp);
 	/* Fill the rectangle */
 	LL_FillBuffer(0, (uint32_t *) Xaddress, X2_Tmp - X1_Tmp, width,
-			LcdTimings->X - (X2_Tmp - X1_Tmp), _color);
+			driverHandler->LcdTimings->X - (X2_Tmp - X1_Tmp), _color);
 
 }
 //#######################################################################################
-void GI::Dev::Screen::drawVLine(signed int Y1, signed int Y2, signed int X,
+void GI::Dev::IntScreen::_drawVLine(void *driverHandlerPtr, signed int Y1, signed int Y2, signed int X,
 		unsigned char width, unsigned int color)
 {
-	if (width == 1 && (X < sClipRegion.sXMin || X >= sClipRegion.sXMax))
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
+	if (width == 1 && (X < driverHandler->sClipRegion.sXMin || X >= driverHandler->sClipRegion.sXMax))
 		return;
 	register int Y1_Tmp = Y1, Y2_Tmp = Y1 + Y2;
 	X -= (width >> 1);
-	if (X <= (int) sClipRegion.sXMin)
-		X = (int) sClipRegion.sXMin;
-	if (X >= (int) sClipRegion.sXMax)
-		X = (int) sClipRegion.sXMax;
-	if (Y1_Tmp <= (int) sClipRegion.sYMin)
-		Y1_Tmp = (int) sClipRegion.sYMin;
-	if (Y1_Tmp >= (int) sClipRegion.sYMax)
-		Y1_Tmp = (int) sClipRegion.sYMax;
-	if (Y2_Tmp <= (int) sClipRegion.sYMin)
-		Y2_Tmp = (int) sClipRegion.sYMin;
-	if (Y2_Tmp >= (int) sClipRegion.sYMax)
-		Y2_Tmp = (int) sClipRegion.sYMax;
+	if (X <= (int) driverHandler->sClipRegion.sXMin)
+		X = (int) driverHandler->sClipRegion.sXMin;
+	if (X >= (int) driverHandler->sClipRegion.sXMax)
+		X = (int) driverHandler->sClipRegion.sXMax;
+	if (Y1_Tmp <= (int) driverHandler->sClipRegion.sYMin)
+		Y1_Tmp = (int) driverHandler->sClipRegion.sYMin;
+	if (Y1_Tmp >= (int) driverHandler->sClipRegion.sYMax)
+		Y1_Tmp = (int) driverHandler->sClipRegion.sYMax;
+	if (Y2_Tmp <= (int) driverHandler->sClipRegion.sYMin)
+		Y2_Tmp = (int) driverHandler->sClipRegion.sYMin;
+	if (Y2_Tmp >= (int) driverHandler->sClipRegion.sYMax)
+		Y2_Tmp = (int) driverHandler->sClipRegion.sYMax;
 #ifdef USE_16_BIT_COLOR_DEPTH
 	unsigned int _color = color;
 #else
@@ -1232,435 +1251,17 @@ void GI::Dev::Screen::drawVLine(signed int Y1, signed int Y2, signed int X,
 #endif
 	uint32_t Xaddress = 0;
 	Xaddress = (LtdcHandler.LayerCfg[0].FBStartAdress)
-			+ 4 * (LcdTimings->X * Y1_Tmp + X);
+			+ 4 * (driverHandler->LcdTimings->X * Y1_Tmp + X);
 	/* Fill the rectangle */
 	LL_FillBuffer(0, (uint32_t *) Xaddress, width, Y2_Tmp - Y1_Tmp,
-			LcdTimings->X - (width), _color);
+			driverHandler->LcdTimings->X - (width), _color);
 
 }
 //#######################################################################################
-void GI::Dev::Screen::clear(unsigned int color)
+void GI::Dev::IntScreen::_clear(void *driverHandlerPtr, unsigned int color)
 {
-	drawRectangle(0, 0, LcdTimings->X, LcdTimings->Y, true, color);
-}
-//#######################################################################################
-void GI::Dev::Screen::drawTouchPoint(signed int X, signed int Y,
-		unsigned int color)
-{
-	drawHLine(X - 7, 6, Y, 1, color);
-	drawHLine(X + 2, 6, Y, 1, color);
-	drawVLine(Y - 7, 6, X, 1, color);
-	drawVLine(Y + 2, 6, X, 1, color);
-}
-//#######################################################################################
-//void put_pixel(void *pDisplay, signed int X, signed int Y, unsigned int color);
-void GI::Dev::Screen::drawCircle(signed int x, signed int y, signed int _radius,
-		unsigned char fill, unsigned int color)
-{
-	signed int radius = _radius;
-	if (radius < 0)
-		radius = ~radius;
-	signed int a, b, P;
-
-	a = 0;
-	b = radius;
-	P = 1 - radius;
-	signed int Tmp1;
-	signed int Tmp2;
-	signed int Tmp3;
-	signed int Tmp4;
-	signed int Tmp5;
-	signed int Tmp6;
-	signed int Tmp7;
-	signed int Tmp8;
-	signed int _Tmp5 = 5, _Tmp7 = 0;
-
-	do
-	{
-		Tmp1 = x + a;
-		Tmp2 = x - a;
-		Tmp3 = x + b;
-		Tmp4 = x - b;
-		Tmp5 = y + a;
-		Tmp6 = y - a;
-		Tmp7 = y + b;
-		Tmp8 = y - b;
-		if (fill)
-		{
-
-			if (_Tmp7 != Tmp7)
-			{
-				drawHLine(Tmp2, Tmp1, Tmp7, 1, color);
-				drawHLine(Tmp2, Tmp1, Tmp8, 1, color);
-			}
-			if (_Tmp5 != Tmp5)
-			{
-				drawHLine(Tmp4, Tmp3, Tmp5, 1, color);
-				drawHLine(Tmp4, Tmp3, Tmp6, 1, color);
-			}
-			_Tmp5 = Tmp5;
-			_Tmp7 = Tmp7;
-		}
-		else
-		{
-			drawPixel(Tmp1, Tmp7, color);
-			drawPixel(Tmp3, Tmp5, color);
-			drawPixel(Tmp2, Tmp7, color);
-			drawPixel(Tmp4, Tmp5, color);
-			drawPixel(Tmp3, Tmp6, color);
-			drawPixel(Tmp1, Tmp8, color);
-			drawPixel(Tmp2, Tmp8, color);
-			drawPixel(Tmp4, Tmp6, color);
-		}
-
-		if (P < 0)
-			P += 3 + 2 * a++;
-		else
-			P += 5 + 2 * (a++ - b--);
-	} while (a <= b);
-}
-//#######################################################################################
-void GI::Dev::Screen::drawLine(signed int X1, signed int Y1, signed int X2,
-		signed int Y2, unsigned char width, unsigned int color)
-{
-	/*if(X1 > X2)
-	 {
-	 int Tmp = X1;
-	 X1 = X2;
-	 X2 = Tmp;
-	 }
-	 if(Y1 > Y2)
-	 {
-	 int Tmp = Y1;
-	 Y1 = Y2;
-	 Y2 = Tmp;
-	 }*/
-	if (width == 1)
-	{
-		signed int CurrentX, CurrentY, Xinc, Yinc, Dx, Dy, TwoDx, TwoDy,
-				TwoDxAccumulatedError, TwoDyAccumulatedError;
-		Dx = (X2 - X1);
-		Dy = (Y2 - Y1);
-		TwoDx = Dx + Dx;
-		TwoDy = Dy + Dy;
-		CurrentX = X1;
-		CurrentY = Y1;
-		Xinc = 1;
-		Yinc = 1;
-		if (Dx < 0)
-		{
-			Xinc = -1;
-			Dx = -Dx;
-			TwoDx = -TwoDx;
-		}
-		if (Dy < 0)
-		{
-			Yinc = -1;
-			Dy = -Dy;
-			TwoDy = -TwoDy;
-		}
-		drawPixel(X1, Y1, color);
-		if ((Dx != 0) || (Dy != 0))
-		{
-			if (Dy <= Dx)
-			{
-				TwoDxAccumulatedError = 0;
-				do
-				{
-					CurrentX += Xinc;
-					TwoDxAccumulatedError += TwoDy;
-					if (TwoDxAccumulatedError > Dx)
-					{
-						CurrentY += Yinc;
-						TwoDxAccumulatedError -= TwoDx;
-					}
-					drawPixel(CurrentX, CurrentY, color);
-				} while (CurrentX != X2);
-			}
-			else
-			{
-				TwoDyAccumulatedError = 0;
-				do
-				{
-					CurrentY += Yinc;
-					TwoDyAccumulatedError += TwoDx;
-					if (TwoDyAccumulatedError > Dy)
-					{
-						CurrentX += Xinc;
-						TwoDyAccumulatedError -= TwoDy;
-					}
-					drawPixel(CurrentX, CurrentY, color);
-				} while (CurrentY != Y2);
-			}
-		}
-	}
-	else
-	{
-		signed int half_width;
-		signed int dy, dx;
-		signed int addx = 1, addy = 1, j;
-		signed int P, diff;
-		signed int c1, c2;
-
-		int i = 0;
-		dx = X2 - X1;
-		dy = Y2 - Y1;
-
-		half_width = width / 2;
-		c1 = -(dx * X1 + dy * Y1);
-		c2 = -(dx * X2 + dy * Y2);
-
-		if (X1 > X2)
-		{
-			signed int temp;
-			temp = c1;
-			c1 = c2;
-			c2 = temp;
-			addx = -1;
-		}
-		if (Y1 > Y2)
-		{
-			signed int temp;
-			temp = c1;
-			c1 = c2;
-			c2 = temp;
-			addy = -1;
-		}
-
-		if (dx >= dy)
-		{
-			P = 2 * dy - dx;
-			diff = P - dx;
-
-			for (i = 0; i <= dx; ++i)
-			{
-#ifdef Use_FastDrawBar
-				LcdStruct->lcd_func.screen_draw_vertical_line(pContext,Y1+ (-half_width), Y1+ (half_width+width%2), X1, 1);
-#else
-				for (j = -half_width; j < half_width + width % 2; ++j)
-				{
-					signed int temp;
-
-					temp = dx * X1 + dy * (Y1 + j); // Use more RAM to increase speed
-					if (temp + c1 >= 0 && temp + c2 <= 0)
-						drawPixel(X1, Y1 + j, color);
-				}
-#endif
-				if (P < 0)
-				{
-					P += 2 * dy;
-					X1 += addx;
-				}
-				else
-				{
-					P += diff;
-					X1 += addx;
-					Y1 += addy;
-				}
-			}
-		}
-		else
-		{
-			P = 2 * dx - dy;
-			diff = P - dy;
-
-			for (i = 0; i <= dy; ++i)
-			{
-				if (P < 0)
-				{
-					P += 2 * dx;
-					Y1 += addy;
-				}
-				else
-				{
-					P += diff;
-					X1 += addx;
-					Y1 += addy;
-				}
-#ifdef Use_FastDrawBar
-				LcdStruct->lcd_func.put_horizontal_line(pContext,(X1+(-half_width)), (X1+(half_width+width%2)), Y1, 1);
-#else
-				for (j = -half_width; j < half_width + width % 2; ++j)
-				{
-					signed int temp;
-
-					temp = dx * X1 + dy * (Y1 + j); // Use more RAM to increase speed
-					if (temp + c1 >= 0 && temp + c2 <= 0)
-						drawPixel(X1 + j, Y1, color);
-				}
-#endif
-			}
-		}
-	}
-}
-//#######################################################################################
-static void elipseplot(GI::Dev::Screen *pDisplay, signed int xc, signed int yc,
-		signed int x, signed int y, unsigned char Fill, unsigned int color)
-{
-	int Tmp1 = xc + x;
-	int Tmp2 = xc - x;
-	int Tmp3 = yc + y;
-	int Tmp4 = yc - y;
-
-	if (Fill)
-	{
-		pDisplay->drawHLine(Tmp2, Tmp1, Tmp3, 1, color);
-		pDisplay->drawHLine(Tmp2, Tmp1, Tmp4, 1, color);
-	}
-	else
-	{
-		pDisplay->drawPixel((unsigned int) (Tmp1), (unsigned int) (Tmp3),
-				color);
-		pDisplay->drawPixel((unsigned int) (Tmp2), (unsigned int) (Tmp3),
-				color);
-		pDisplay->drawPixel((unsigned int) (Tmp1), (unsigned int) (Tmp4),
-				color);
-		pDisplay->drawPixel((unsigned int) (Tmp2), (unsigned int) (Tmp4),
-				color);
-	}
-}
-//----------------------------------------------------------------------------------------
-void GI::Dev::Screen::drawElipse(signed int xc, signed int yc, signed int _rx,
-		signed int _ry, unsigned char Fill, unsigned int color)
-{
-	signed int rx = _rx;
-	if (rx < 0)
-		rx = 0xFFFFFFFF - rx;
-	signed int ry = _ry;
-	if (ry < 0)
-		ry = 0xFFFFFFFF - ry;
-	int rx2 = rx * rx;
-	int ry2 = ry * ry;
-	int tory2 = 2 * ry2;
-	int torx2 = 2 * rx2;
-	int p;
-	int x = 0;
-	int y = ry;
-	int py = torx2 * y;
-	int px = 0;
-	elipseplot(this, xc, yc, x, y, Fill, color);
-	p = /*round(*/ry2 - (rx2 * ry) + (0.25 * rx2)/*)*/;
-	while (px < py)
-	{
-		x++;
-		px += tory2;
-		if (p < 0)
-			p += ry2 + px;
-		else
-		{
-			y--;
-			py -= torx2;
-			p += ry2 + px - py;
-		}
-		elipseplot(this, xc, yc, x, y, Fill, color);
-	}
-	p = /*round(*/ry2 * (x + 0.5) * (x + 0.5) + rx2 * (y - 1) * (y - 1)
-			- rx2 * ry2/*)*/;
-	while (y > 0)
-	{
-		y--;
-		py -= torx2;
-		if (p > 0)
-			p += rx2 - py;
-		else
-		{
-			x++;
-			px += tory2;
-			p += rx2 - py + px;
-		}
-		elipseplot(this, xc, yc, x, y, Fill, color);
-	}
-}
-//#######################################################################################
-/*
- *  the coordinates of vertices are (A.x,A.y), (B.x,B.y), (C.x,C.y); we assume that A.y<=B.y<=C.y (you should sort them first)
- * dx1,dx2,dx3 are deltas used in interpolation
- * horizline draws horizontal segment with coordinates (S.x,Y), (E.x,Y)
- * S.x, E.x are left and right x-coordinates of the segment we have to draw
- * S=A means that S.x=A.x; S.y=A.y;
- */
-
-static void triangle_swap_nibble(signed int* a, signed int *b)
-{
-	signed int t = *a;
-	*a = *b;
-	*b = t;
-}
-
-void GI::Dev::Screen::drawTriangle(signed int Ax, signed int Ay, signed int Bx,
-		signed int By, signed int Cx, signed int Cy, unsigned char Fill,
-		unsigned int color)
-{
-	//tDisplay* LcdStruct = (tDisplay *) pDisplay;
-	signed long dx1, dx2, dx3;
-	signed long Sx, Ex;
-	signed int Sy, Ey;
-
-	if (Ay > By)
-	{
-		triangle_swap_nibble(&Ay, &By);
-		triangle_swap_nibble(&Ax, &Bx);
-	}
-	if (Ay > Cy)
-	{
-		triangle_swap_nibble(&Ay, &Cy);
-		triangle_swap_nibble(&Ax, &Cx);
-	}
-	if (By > Cy)
-	{
-		triangle_swap_nibble(&By, &Cy);
-		triangle_swap_nibble(&Bx, &Cx);
-	}
-	if (By - Ay > 0)
-		dx1 = ((signed long) (Bx - Ax) << 16) / (By - Ay);
-	else
-		dx1 = 0;
-	if (Cy - Ay > 0)
-		dx2 = ((signed long) (Cx - Ax) << 16) / (Cy - Ay);
-	else
-		dx2 = 0;
-	if (Cy - By > 0)
-		dx3 = ((signed long) (Cx - Bx) << 16) / (Cy - By);
-	else
-		dx3 = 0;
-
-	Ex = Sx = (signed long) Ax << 16;
-	Ey = Sy = Ay;
-
-	if (dx1 > dx2)
-	{
-		while (Sy <= By)
-		{
-			drawLine(Sx >> 16, Sy++, Ex >> 16, Ey++, 1, color);
-			Sx += dx2;
-			Ex += dx1;
-		}
-		Ex = (signed long) Bx << 16;
-		Ey = By;
-		while (Sy <= Cy)
-		{
-			drawLine(Sx >> 16, Sy++, Ex >> 16, Ey++, 1, color);
-			Sx += dx2;
-			Ex += dx3;
-		}
-	}
-	else
-	{
-		while (Sy <= By)
-		{
-			drawLine(Sx >> 16, Sy++, Ex >> 16, Ey++, 1, color);
-			Sx += dx1;
-			Ex += dx2;
-		}
-		Sx = (signed long) Bx << 16;
-		Sy = By;
-		while (Sy <= Cy)
-		{
-			drawLine(Sx >> 16, Sy++, Ex >> 16, Ey++, 1, color);
-			Sx += dx3;
-			Ex += dx2;
-		}
-	}
+	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
+	driverHandler->drawRectangle(0, 0, driverHandler->LcdTimings->X, driverHandler->LcdTimings->Y, true, color);
 }
 //#######################################################################################
 

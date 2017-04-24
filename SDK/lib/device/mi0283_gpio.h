@@ -5,10 +5,12 @@
 #ifndef LIB_DEVICE_MI0283_GPIO_H_
 #define LIB_DEVICE_MI0283_GPIO_H_
 
-#include <api/io_handle.h>
+#include <api/dev_request.h>
+#include <api/lcd_def.h>
+#include <api/gpio.h>
 
 static const unsigned char MI0283_screen_setup_data[]
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
                                                     PROGMEM
 #endif
                                                     =
@@ -64,20 +66,38 @@ static const unsigned char MI0283_screen_setup_data[]
 /*#####################################################*/
 
 namespace GI {
-namespace Device {
-class Mi0283Gpio {
+namespace Dev {
+class Mi0283Gpio : public Screen {
 public:
-    Mi0283Gpio(char *dev_name);
+    Mi0283Gpio(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight);
     ~Mi0283Gpio();
 
     bool initialized;
+    void reset();
+    static bool _setOrientation(void *driverHandlerPtr, LCD_ORIENTATION orientation);
+    static SysErr _setBacklight(void *driverHandlerPtr, unsigned char value);
+    static void _cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start, signed int x_len, signed int y_len);
+    static void _drawPixel(void *driverHandlerPtr, signed int X_Coordonate, signed int Y_Coordonate, unsigned int Color16);
+    static void _drawRectangle(void *driverHandlerPtr, signed int x_start, signed int y_start, signed int x_len, signed int y_len, bool fill, unsigned int color);
+    static void _drawHLine(void *driverHandlerPtr, signed int X1, signed int X2, signed int Y, unsigned char width, unsigned int color);
+    static void _drawVLine(void *driverHandlerPtr, signed int Y1, signed int Y2, signed int X, unsigned char width, unsigned int color);
+    static void _clear(void *driverHandlerPtr, unsigned int color);
+
+    void wrCmd(unsigned char cmd);
+    void wrData(unsigned char data);
+    void setArea(signed int x0, signed int y0, signed int x1, signed int y1);
+    void setCursor(signed int x, signed int y);
+    void sendPixels(unsigned long PixelsNumber, unsigned long color);
+
+    GI::Dev::Gpio *DATA;
+    GI::Dev::Gpio *RESET;
+    GI::Dev::Gpio *RS;
+    GI::Dev::Gpio *CS;
+    GI::Dev::Gpio *WRITE;
+    GI::Dev::Gpio *READ;
 private:
-    GI::IO *LCD_BACKLIGHT;
-    GI::IO *LCD_DISPLAY_RST;
-    GI::IO *LCD_DISPLAY_RS;
-    GI::IO *LCD_DISPLAY_CS;
-    GI::IO *LCD_DISPLAY_WR;
-    GI::IO *LCD_DISPLAY_RD;
+
+
 };
 }
 }
