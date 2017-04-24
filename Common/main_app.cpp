@@ -7,6 +7,7 @@
 #include <api/init.h>
 #include <stdio.h>
 #include <api/io_handle.h>
+#include <api/dev_request.h>
 
 
 #if (_USE_SCREEN == 1)
@@ -44,6 +45,15 @@
 #if (_USE_SCREEN == 1)
 GI::Screen::Gfx::Window *MainWindow = NULL;
 GI::Screen::Gfx::TextBox *SensorResultTextboxGlobal;
+#endif
+
+#if (USE_UART == 1 && USE_TERMINAL == 1)
+Cmd *term_cmd;
+
+void cmdCharRecCallback(char data)
+{
+	term_cmd->parse(data);
+}
 #endif
 
 void main_app(void)
@@ -213,7 +223,10 @@ void main_app(void)
 #endif
 
 #if (USE_UART == 1 && USE_TERMINAL == 1)
-	Cmd term = Cmd((char *)CONSOLE_UART_IN, (char *)CONSOLE_UART_OUT, (char *)CONSOLE_UART_ERR);
+	term_cmd = new Cmd((char *)CONSOLE_UART_IN, (char *)CONSOLE_UART_OUT, (char *)CONSOLE_UART_ERR);
+	//GI::Dev::Uart *uartDev;
+	//GI::Dev::DevRequest::request((char *)CONSOLE_UART_IN, &uartDev);
+	//uartDev->charReceive_Callback = cmdCharRecCallback;
 #endif
 	/*GI::Sys::Clock::changeCoreClk(25000000);
 	unsigned long baud = 1200;
@@ -229,7 +242,7 @@ void main_app(void)
 		//GI::Sys::Clock::sleep();
 		dev.idle();
 #if (USE_UART == 1 && USE_TERMINAL == 1)
-		term.idle();
+		term_cmd->idle();
 #endif
 #if (USE_LWIP == 1)
 		if(old_state_ip_assigned == false && dev.LWIP[0]->ipAssigned == true)
@@ -265,7 +278,11 @@ void main_app(void)
 		if(timer_touch.tick())
 		{
 #if (_USE_SCREEN == 1)
+#ifdef USED_TOUCHSCREEN
 			MainWindow->idle(dev.CAPTOUCH[0]->idle());
+#else
+			MainWindow->idle(NULL);
+#endif
 #endif
 #if (_USE_PASSWORD_PROTECTION == 1)
 			if(pass->idle())
