@@ -92,6 +92,7 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../../../SDK/lib/api/lcd.cpp \
 ../../../SDK/platform/atsamd21/driver/i2c_master.c \
 ../../../SDK/platform/atsamd21/driver/rtc_count.c \
 ../../../SDK/platform/atsamd21/driver/rtc_count_interrupt.c \
@@ -214,6 +215,7 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+lib/api/lcd.o \
 atsamd21/driver/i2c_master.o \
 atsamd21/driver/rtc_count.o \
 atsamd21/driver/rtc_count_interrupt.o \
@@ -329,6 +331,7 @@ atsamd21/sys/core_init.o \
 atsamd21/sys/systime.o
 
 OBJS_AS_ARGS +=  \
+lib/api/lcd.o \
 atsamd21/driver/i2c_master.o \
 atsamd21/driver/rtc_count.o \
 atsamd21/driver/rtc_count_interrupt.o \
@@ -444,6 +447,7 @@ atsamd21/sys/core_init.o \
 atsamd21/sys/systime.o
 
 C_DEPS +=  \
+lib/api/lcd.d \
 atsamd21/driver/i2c_master.d \
 atsamd21/driver/rtc_count.d \
 atsamd21/driver/rtc_count_interrupt.d \
@@ -559,6 +563,7 @@ atsamd21/sys/core_init.d \
 atsamd21/sys/systime.d
 
 C_DEPS_AS_ARGS +=  \
+lib/api/lcd.d \
 atsamd21/driver/i2c_master.d \
 atsamd21/driver/rtc_count.d \
 atsamd21/driver/rtc_count_interrupt.d \
@@ -914,6 +919,15 @@ LINKER_SCRIPT_DEP+=  \
 
 
 
+
+
+
+lib/api/%.o: ../../../SDK/lib/api/%.cpp
+	@echo Building file: $<
+	@echo Invoking: ARM/GNU C Compiler : 4.8.4
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\ARM GCC\Native\4.8.1443\arm-gnu-toolchain\bin\arm-none-eabi-g++.exe$(QUOTE) -mthumb -D__SAMD21G18A__ -DDEBUG -DFeatherAdaloggerM0 -DSAMD21 -D__SAMD21J18A__ -DUSART_CALLBACK_MODE=true  -I"C:\Program Files (x86)\Atmel\Atmel Toolchain\ARM GCC\Native\4.8.1443\arm-gnu-toolchain\bin\..\..\CMSIS_Atmel\Device\ATMEL\samd21\include" -I"C:\Program Files (x86)\Atmel\Atmel Toolchain\ARM GCC\Native\4.8.1443\arm-gnu-toolchain\bin\..\..\CMSIS_Atmel" -I"C:\Program Files (x86)\Atmel\Atmel Toolchain\ARM GCC\Native\4.8.1443\arm-gnu-toolchain\bin\..\..\CMSIS_Atmel\CMSIS\Include" -I"C:\Program Files (x86)\Atmel\Atmel Toolchain\ARM GCC\Native\4.8.1443\arm-gnu-toolchain\bin\..\..\CMSIS_Atmel\Device\ATMEL" -I"C:\GitHub\CppSDK\SDK\platform\atsamd21" -I"C:\GitHub\CppSDK\SDK\lib" -I"C:\GitHub\CppSDK\Common" -I".."  -O1 -fdata-sections -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -mlong-calls -g3 -Wall -mcpu=cortex-m0plus -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
 
 atsamd21/driver/%.o: ../../../SDK/platform/atsamd21/driver/%.c
 	@echo Building file: $<

@@ -205,6 +205,14 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\SDK\lib\api\init_def.h">
+      <SubType>compile</SubType>
+      <Link>lib\api\init_def.h</Link>
+    </Compile>
+    <Compile Include="..\..\SDK\lib\api\lcd.cpp">
+      <SubType>compile</SubType>
+      <Link>lib\api\lcd.cpp</Link>
+    </Compile>
     <Compile Include="..\..\SDK\platform\atsamd21\driver\i2c_common.h">
       <SubType>compile</SubType>
       <Link>atsamd21\driver\i2c_common.h</Link>
