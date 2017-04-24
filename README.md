@@ -399,7 +399,7 @@ int main(void)
 		 */
 		if(timer_touch.tick())
 		{
-			MainWindow->idle(dev.CAPTOUCH[0]->idle());
+			MainWindow->idle(dev.CURSORCTRL[0]->idle());
 			/*
 			 * The idle function of 'pass' window will be called by parent window, 
 			 *	but the idle function on 'pass' controll need to be call by user 
