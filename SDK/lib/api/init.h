@@ -67,7 +67,7 @@ public:
 #if (defined(SCREEN_CONFIG) && defined(USED_SCREEN_CONTROLLER))
 	GI::Dev::Screen *SCREEN[SCREEN_INTERFACE_COUNT];
 #ifdef USED_TOUCHSCREEN
-	GI::Sensor::USED_TOUCHSCREEN *CAPTOUCH[1];
+	GI::Sensor::USED_TOUCHSCREEN *CURSORCTRL[1];
 #endif
 #endif
 #if (USE_LWIP == 1)

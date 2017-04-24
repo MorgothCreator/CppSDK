@@ -279,7 +279,7 @@ void main_app(void)
 		{
 #if (_USE_SCREEN == 1)
 #ifdef USED_TOUCHSCREEN
-			MainWindow->idle(dev.CAPTOUCH[0]->idle());
+			MainWindow->idle(dev.CURSORCTRL[0]->idle());
 #else
 			MainWindow->idle(NULL);
 #endif

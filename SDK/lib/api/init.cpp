@@ -62,8 +62,8 @@ GI::Board::Init::Init()
 #if (defined(SCREEN_CONFIG) && defined(USED_SCREEN_CONTROLLER))
     SCREEN[0] = new GI::Dev::USED_SCREEN_CONTROLLER(&SCREEN_CONFIG, NULL);
 #ifdef USED_TOUCHSCREEN
-    CAPTOUCH[0] = new GI::Sensor::USED_TOUCHSCREEN(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
-    CAPTOUCH[0]->touchCalibrate();
+    CURSORCTRL[0] = new GI::Sensor::USED_TOUCHSCREEN(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
+    CURSORCTRL[0]->touchCalibrate();
 #endif
 #endif
 #if defined(STD_OUT_PATH)
