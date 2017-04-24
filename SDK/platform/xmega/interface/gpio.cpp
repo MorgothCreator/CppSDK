@@ -104,22 +104,20 @@ PORT_t *GPIO_BASE_PTRS[] =
 #endif
 };
 /*#####################################################*/
-GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin)
+GI::Dev::Gpio::Gpio(ioSettings *cfg)
 {
 	memset(this, 0, sizeof(*this));
-	cfg.pin = pin;
-	cfg.gpioMode = mode;
-	cfg.multiPin = multiPin;
-	setMode(mode);
-	setOut(cfg.defValue);
-}
-
-GI::Dev::Gpio::Gpio(CfgGpio *gpioPin)
-{
-	memset(this, 0, sizeof(*this));
-	memcpy(&this->cfg, gpioPin, sizeof(CfgGpio));
-	setMode(cfg.gpioMode);
-	setOut(cfg.defValue);
+	if(cfg->info.ioType != ioSettings::info_s::ioType_GPIO)
+		return;
+	this->cfg = cfg;
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	if(!int_cfg->multiPin)
+	{
+		setMode(int_cfg->gpioMode);
+		setOut(int_cfg->defValue);
+	}
+	pinNr = int_cfg->pin % 8;
+	baseAddr = (void *)GPIO_BASE_PTRS[int_cfg->pin >> 5];
 }
 
 /*#####################################################*/
@@ -132,21 +130,22 @@ SysErr GI::Dev::Gpio::setOut(unsigned int value)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
-	if (cfg.multiPin)
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
+	if (int_cfg->multiPin)
 	{
-		BaseAddr->OUT = (BaseAddr->OUT & ~(cfg.pin % 8))
-				| (value & (cfg.pin % 8));
+		BaseAddr->OUT = (BaseAddr->OUT & ~(int_cfg->pin % 8))
+				| (value & (int_cfg->pin % 8));
 	}
 	else
 	{
 		unsigned int state = value;
-		if (cfg.reverse)
+		if (int_cfg->reverse)
 			state = (~state) & 0x01;
 		if (state)
-			BaseAddr->OUTSET = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
+			BaseAddr->OUTSET = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
 		else
-			BaseAddr->OUTCLR = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
+			BaseAddr->OUTCLR = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
 	}
 	return SYS_ERR_OK;
 }
@@ -155,22 +154,23 @@ signed int GI::Dev::Gpio::in()
 {
 	if (!this)
 		return -1;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
-	if (cfg.multiPin)
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
+	if (int_cfg->multiPin)
 	{
-		return BaseAddr->IN & (cfg.pin % 8);
+		return BaseAddr->IN & (int_cfg->pin % 8);
 	}
 	else
 	{
-		if (cfg.reverse)
+		if (int_cfg->reverse)
 		{
-			if(BaseAddr->IN & pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]))
+			if(BaseAddr->IN & pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]))
 				return false;
 			else
 				return true;
 		}
 		else
-			return BaseAddr->IN & pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
+			return BaseAddr->IN & pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
 	}
 }
 /*#####################################################*/
@@ -186,35 +186,75 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[cfg.pin >> 5];
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
 
-	/*if (cfg.multiPin == false)
-		GPIO_InitStructure.Pin = 1 << (cfg.pin % 32);
-	else
-		GPIO_InitStructure.Pin = (cfg.pin % 32);*/
+	if(int_cfg->multiPin)
+		return SYS_ERR_INVALID_COMMAND;
 	volatile unsigned char *ctl_pin = &BaseAddr->PIN0CTRL;
 
 	switch (mode)
 	{
 	case CfgGpio::GPIO_IN_PULL_UP:
-		ctl_pin[cfg.pin % 8] = PORT_OPC_PULLUP_gc;
-		BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
+		ctl_pin[int_cfg->pin % 8] = PORT_OPC_PULLUP_gc;
+		BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
 		break;
 	case CfgGpio::GPIO_IN_PULL_DOWN:
-		ctl_pin[cfg.pin % 8] = PORT_OPC_PULLDOWN_gc;
-		BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
+		ctl_pin[int_cfg->pin % 8] = PORT_OPC_PULLDOWN_gc;
+		BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
 		break;
 	case CfgGpio::GPIO_IN_FLOATING:
-		ctl_pin[cfg.pin % 8] = PORT_OPC_TOTEM_gc;
-		BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
+		ctl_pin[int_cfg->pin % 8] = PORT_OPC_TOTEM_gc;
+		BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
 		break;
 	case CfgGpio::GPIO_OUT_PUSH_PULL:
-		ctl_pin[cfg.pin % 8] = PORT_OPC_TOTEM_gc;
-		BaseAddr->DIRSET = pgm_read_byte(&BIT_MASK_TABLE[cfg.pin % 8]);
+		ctl_pin[int_cfg->pin % 8] = PORT_OPC_TOTEM_gc;
+		BaseAddr->DIRSET = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
 		break;
 	default:
 		return SYS_ERR_INVALID_COMMAND;
 
+	}
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Gpio::setModeMultipin(CfgGpio::gpioMode_e mode, unsigned int mask)
+{
+	if (!this)
+		return SYS_ERR_INVALID_HANDLER;
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	if(!int_cfg->multiPin)
+		return SYS_ERR_INVALID_COMMAND;
+	PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
+
+	volatile unsigned char *ctl_pin = &BaseAddr->PIN0CTRL;
+	unsigned int cnt_pins = 0;
+	for(; cnt_pins < 8; cnt_pins++)
+	{
+		if(mask & BIT_MASK_TABLE[cnt_pins])
+		{
+			switch (mode)
+			{
+			case CfgGpio::GPIO_IN_PULL_UP:
+				ctl_pin[cnt_pins] = PORT_OPC_PULLUP_gc;
+				BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
+				break;
+			case CfgGpio::GPIO_IN_PULL_DOWN:
+				ctl_pin[cnt_pins] = PORT_OPC_PULLDOWN_gc;
+				BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
+				break;
+			case CfgGpio::GPIO_IN_FLOATING:
+				ctl_pin[cnt_pins] = PORT_OPC_TOTEM_gc;
+				BaseAddr->DIRCLR = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
+				break;
+			case CfgGpio::GPIO_OUT_PUSH_PULL:
+				ctl_pin[cnt_pins] = PORT_OPC_TOTEM_gc;
+				BaseAddr->DIRSET = pgm_read_byte(&BIT_MASK_TABLE[int_cfg->pin % 8]);
+				break;
+			default:
+				return SYS_ERR_INVALID_COMMAND;
+			}
+		}
 	}
 	return SYS_ERR_OK;
 }

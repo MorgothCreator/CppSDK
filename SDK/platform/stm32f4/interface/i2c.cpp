@@ -13,6 +13,7 @@
 
 #include <interface/i2c.h>
 #include "api/init.h"
+#include <api/i2c.h>
 
 #define TIMING_CLEAR_MASK   ((uint32_t)0xF0FFFFFFU)  /*!<  I2C TIMING clear register Mask */
 #define I2C_TIMEOUT_ADDR    ((uint32_t)10000U)       /*!< 10 s  */
@@ -40,8 +41,6 @@ volatile bool twi_semaphore[TWI_INTERFACE_COUNT];
 #endif
 
 extern GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[];
-
-extern CfgI2c i2cCfg[];
 
 I2C_TypeDef *sEE_I2C[4] =
 {
@@ -141,28 +140,18 @@ void TWI_SendStop(I2C_HandleTypeDef *hi2c)
  * @param  None
  * @retval None
  */
-GI::Dev::I2c::I2c(const char *path)
+GI::Dev::I2c::I2c(ioSettings *cfg)
 {
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(i2cCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(i2cCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
-
-	if(strncmp(path, (char *)"i2c-", sizeof("i2c-") - 1))
+	memset(this, 0, sizeof(*this));
+	if(cfg->info.ioType != ioSettings::info_s::ioType_I2C)
+		return;
+	if(strncmp(cfg->info.name, (char *)"i2c-", sizeof("i2c-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
 	unsigned int dev_nr = 0;
-	if(sscanf(path + (sizeof("i2c-") - 1), "%u", &dev_nr) != 1)
+	if(sscanf(cfg->info.name + (sizeof("i2c-") - 1), "%u", &dev_nr) != 1)
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
@@ -173,9 +162,6 @@ GI::Dev::I2c::I2c(const char *path)
 		return;
 	}
 
-	memset(this, 0, sizeof(*this));
-	memcpy(&cfg, &i2cCfg[item_nr], sizeof(CfgI2c));
-
 	I2C_HandleTypeDef *I2cHandle = (I2C_HandleTypeDef *) calloc(1, sizeof(I2C_HandleTypeDef));
 	if (!I2cHandle)
 		return;
@@ -183,6 +169,8 @@ GI::Dev::I2c::I2c(const char *path)
 	udata = (void *) I2cHandle;
 	I2cHandle->Instance = sEE_I2C[dev_nr];
 	unitNr = dev_nr;
+	this->cfg = cfg;
+	CfgI2c *int_cfg = (CfgI2c *)cfg->cfg;
 
 	GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -230,12 +218,12 @@ GI::Dev::I2c::I2c(const char *path)
 	GPIO_InitStructure.Mode = GPIO_MODE_AF_OD;
 	GPIO_InitStructure.Pull = GPIO_PULLUP;
 
-	GPIO_InitStructure.Pin = 1 << (cfg.scl % 32);
-	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[cfg.scl >> 5],
+	GPIO_InitStructure.Pin = 1 << (int_cfg->scl % 32);
+	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[int_cfg->scl >> 5],
 			&GPIO_InitStructure);
 
-	GPIO_InitStructure.Pin = 1 << (cfg.sda % 32);
-	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[cfg.sda >> 5],
+	GPIO_InitStructure.Pin = 1 << (int_cfg->sda % 32);
+	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[int_cfg->sda >> 5],
 			&GPIO_InitStructure);
 
 	/*##-1- Configure the I2C peripheral #######################################*/
@@ -294,11 +282,12 @@ GI::Dev::I2c::~I2c()
 		break;
 #endif
 	}
-	HAL_GPIO_DeInit(GET_GPIO_PORT_BASE_ADDR[cfg.scl >> 5],
-			(1 << (cfg.scl % 32)));
+	CfgI2c *int_cfg = (CfgI2c *)cfg->cfg;
+	HAL_GPIO_DeInit(GET_GPIO_PORT_BASE_ADDR[int_cfg->scl >> 5],
+			(1 << (int_cfg->scl % 32)));
 
-	HAL_GPIO_DeInit(GET_GPIO_PORT_BASE_ADDR[cfg.sda >> 5],
-			(1 << (cfg.sda % 32)));
+	HAL_GPIO_DeInit(GET_GPIO_PORT_BASE_ADDR[int_cfg->sda >> 5],
+			(1 << (int_cfg->sda % 32)));
 	if (udata)
 		free(udata);
 }

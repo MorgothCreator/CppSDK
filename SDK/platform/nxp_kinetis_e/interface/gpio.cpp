@@ -7,25 +7,20 @@
 #include <string.h>
 #include <api/gpio.h>
 #include <driver/gpio.h>
+#include "gpio.h"
 
 /*#####################################################*/
-GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin)
+GI::Dev::Gpio::Gpio(ioSettings *cfg)
 {
 	memset(this, 0, sizeof(*this));
-	cfg.pin = pin;
-	cfg.gpioMode = mode;
-	cfg.multiPin = multiPin;
-	setMode(mode);
-	setOut(cfg.defValue);
+	if(cfg->info.ioType != ioSettings::info_s::ioType_GPIO)
+		return;
+	this->cfg = cfg;
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	setMode(int_cfg->gpioMode);
+	setOut(int_cfg->defValue);
 }
 
-GI::Dev::Gpio::Gpio(CfgGpio *gpioPin)
-{
-	memset(this, 0, sizeof(*this));
-	memcpy(&this->cfg, gpioPin, sizeof(CfgGpio));
-	setMode(cfg.gpioMode);
-	setOut(cfg.defValue);
-}
 
 /*#####################################################*/
 GI::Dev::Gpio::~Gpio()
@@ -38,22 +33,23 @@ SysErr GI::Dev::Gpio::setOut(unsigned int value)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
 	GPIO_Type *Addr[] = GPIO_BASE_PTRS;
-	GPIO_Type *BaseAddr = Addr[cfg.pin >> 5];
-	if (cfg.multiPin)
+	GPIO_Type *BaseAddr = Addr[int_cfg->pin >> 5];
+	if (int_cfg->multiPin)
 	{
-		BaseAddr->PDDR = (BaseAddr->PDDR & ~(cfg.pin % 32))
-				| (value & (cfg.pin % 32));
+		BaseAddr->PDDR = (BaseAddr->PDDR & ~(int_cfg->pin % 32))
+				| (value & (int_cfg->pin % 32));
 	}
 	else
 	{
 		unsigned int state = value;
-		if (cfg.reverse)
+		if (int_cfg->reverse)
 			state = (~state) & 0x01;
 		if (state)
-			BaseAddr->PSOR |= 1 << (cfg.pin % 32);
+			BaseAddr->PSOR |= 1 << (int_cfg->pin % 32);
 		else
-			BaseAddr->PCOR |= 1 << (cfg.pin % 32);
+			BaseAddr->PCOR |= 1 << (int_cfg->pin % 32);
 	}
 	return SYS_ERR_OK;
 }
@@ -62,23 +58,24 @@ signed int GI::Dev::Gpio::in()
 {
 	if (!this)
 		return -1;
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
 	GPIO_Type *Addr[] = GPIO_BASE_PTRS;
-	GPIO_Type *BaseAddr = Addr[cfg.pin >> 5];
-	if (cfg.multiPin)
+	GPIO_Type *BaseAddr = Addr[int_cfg->pin >> 5];
+	if (int_cfg->multiPin)
 	{
-		return BaseAddr->PDIR & (cfg.pin % 32);
+		return BaseAddr->PDIR & (int_cfg->pin % 32);
 	}
 	else
 	{
-		if (cfg.reverse)
+		if (int_cfg->reverse)
 		{
-			if(READ_INPUT(BaseAddr, cfg.pin % 32))
+			if(READ_INPUT(BaseAddr, int_cfg->pin % 32))
 				return false;
 			else
 				return true;
 		}
 		else
-			return READ_INPUT(BaseAddr, cfg.pin % 32);
+			return READ_INPUT(BaseAddr, int_cfg->pin % 32);
 	}
 }
 /*#####################################################*/
@@ -94,8 +91,9 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
 	GPIO_Type *Addr[] = GPIO_BASE_PTRS;
-	GPIO_Type *BaseAddr = Addr[cfg.pin >> 5];
+	GPIO_Type *BaseAddr = Addr[int_cfg->pin >> 5];
 
 	/*if (cfg.multiPin == false)
 		GPIO_InitStructure.Pin = 1 << (cfg.pin % 32);
@@ -103,44 +101,44 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 		GPIO_InitStructure.Pin = (cfg.pin % 32);*/
 	if(mode == CfgGpio::GPIO_IN_PULL_UP)
 	{
-		switch(cfg.pin >> 5)
+		switch(int_cfg->pin >> 5)
 		{
 		case 0:
-			PORT_PUE0 |= 1 << (cfg.pin % 32);
+			PORT_PUE0 |= 1 << (int_cfg->pin % 32);
 			break;
 		case 1:
-			PORT_PUE1 |= 1 << (cfg.pin % 32);
+			PORT_PUE1 |= 1 << (int_cfg->pin % 32);
 			break;
 		case 2:
-			PORT_PUE2 |= 1 << (cfg.pin % 32);
+			PORT_PUE2 |= 1 << (int_cfg->pin % 32);
 			break;
 		}
 	}
 	else
 	{
-		switch(cfg.pin >> 5)
+		switch(int_cfg->pin >> 5)
 		{
 		case 0:
-			PORT_PUE0 &= ~(1 << (cfg.pin % 32));
+			PORT_PUE0 &= ~(1 << (int_cfg->pin % 32));
 			break;
 		case 1:
-			PORT_PUE1 &= ~(1 << (cfg.pin % 32));
+			PORT_PUE1 &= ~(1 << (int_cfg->pin % 32));
 			break;
 		case 2:
-			PORT_PUE2 &= ~(1 << (cfg.pin % 32));
+			PORT_PUE2 &= ~(1 << (int_cfg->pin % 32));
 			break;
 		}
 	}
 	switch (mode)
 	{
 	case CfgGpio::GPIO_IN_FLOATING:
-		ENABLE_INPUT(BaseAddr, cfg.pin % 32);
-		CONFIG_PIN_AS_GPIO(BaseAddr, cfg.pin % 32, INPUT);
+		ENABLE_INPUT(BaseAddr, int_cfg->pin % 32);
+		CONFIG_PIN_AS_GPIO(BaseAddr, int_cfg->pin % 32, INPUT);
 
 		break;
 	case CfgGpio::GPIO_OUT_PUSH_PULL:
-		CONFIG_PIN_AS_GPIO(BaseAddr, cfg.pin % 32, OUTPUT);
-		ENABLE_INPUT(BaseAddr, cfg.pin % 32);
+		CONFIG_PIN_AS_GPIO(BaseAddr, int_cfg->pin % 32, OUTPUT);
+		ENABLE_INPUT(BaseAddr, int_cfg->pin % 32);
 		break;
 	default:
 		return SYS_ERR_INVALID_COMMAND;

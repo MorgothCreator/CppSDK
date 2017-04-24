@@ -17,13 +17,12 @@ typedef struct
 	unsigned int scl;
 	unsigned int sda;
 	unsigned long speed;
-	enum i2cMode{
+	enum i2cMode_e{
 		i2cMode0,
 		i2cMode1,
 		i2cMode2,
-		i2cMode3,
+		i2cMode3
 	}i2cMode;
-
 } CfgI2c;
 /*#####################################################*/
 /*#####################################################*/
@@ -34,7 +33,7 @@ namespace Dev
 class I2c
 {
 public:
-	I2c(const char *path);
+	I2c(ioSettings *cfg);
 	~I2c();
 	SysErr writeRead(unsigned char addr, unsigned char *buffSend,
 			unsigned int lenSend, unsigned char *buffReceive,
@@ -54,7 +53,7 @@ public:
 	unsigned int bytesToRead;
 	unsigned long BusyTimeOut;
 	bool noSendWriteOnRead;
-	CfgI2c cfg;
+	ioSettings *cfg;
 	void *udata;
 	SysErr err;
 private:

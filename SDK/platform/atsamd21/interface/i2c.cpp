@@ -17,50 +17,24 @@ extern CfgI2c i2cCfg[];
 volatile bool twi_semaphore[TWI_INTERFACE_COUNT];
 #endif
 
-/*TWI_t* I2C_BASE_PTRS[] =
-{
-#ifdef TWIC
-		&TWIC,
-#endif
-#ifdef TWID
-		&TWID,
-#endif
-#ifdef TWIE
-		&TWIE,
-#endif
-#ifdef TWIF
-		&TWIF,
-#endif
-		};*/
-
 //#####################################################
 /**
  * @brief  Initializes peripherals used by the I2C EEPROM driver.
  * @param  None
  * @retval None
  */
-GI::Dev::I2c::I2c(const char *path)
+GI::Dev::I2c::I2c(ioSettings *cfg)
 {
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(i2cCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(i2cCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
-
-	if(strncmp(path, (char *)"i2c-", sizeof("i2c-") - 1))
+	memset(this, 0, sizeof(*this));
+	if(cfg->info.ioType != ioSettings::info_s::ioType_I2C)
+		return;
+	if(strncmp(cfg->info.name, (char *)"i2c-", sizeof("i2c-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
 	unsigned int dev_nr = 0;
-	if(sscanf(path + (sizeof("i2c-") - 1), "%u", &dev_nr) != 1)
+	if(sscanf(cfg->info.name + (sizeof("i2c-") - 1), "%u", &dev_nr) != 1)
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
@@ -97,9 +71,6 @@ GI::Dev::I2c::I2c(const char *path)
 		return;
 	}
 
-	memset(this, 0, sizeof(*this));
-	memcpy(&cfg, &i2cCfg[item_nr], sizeof(CfgI2c));
-
 	struct i2c_master_module *i2c_master_instance = (struct i2c_master_module *)calloc(1, sizeof(struct i2c_master_module));
 	if(!i2c_master_instance)
 	{
@@ -108,11 +79,13 @@ GI::Dev::I2c::I2c(const char *path)
 	}
 	udata = (void *) i2c_master_instance;
 	unitNr = dev_nr;
+	this->cfg = cfg;
+	CfgI2c *int_cfg = (CfgI2c *)cfg->cfg;
 
 	/* Initialize config structure and software module. */
 	//! [init_conf]
 	struct i2c_master_config config_i2c_master;
-	config_i2c_master.baud_rate = cfg.speed;
+	config_i2c_master.baud_rate = int_cfg->speed;
 	i2c_master_get_config_defaults(&config_i2c_master);
 	//! [init_conf]
 

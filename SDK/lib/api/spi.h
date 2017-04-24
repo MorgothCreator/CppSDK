@@ -33,7 +33,7 @@ namespace Dev
 class Spi
 {
 public:
-	Spi(const char *path);
+	Spi(ioSettings *cfg);
 	~Spi();
 	int ioctl(charDev *fp, int command, void *param);
 	int assert();
@@ -45,7 +45,7 @@ public:
 	SysErr writeReadByte(unsigned char *byte);
 	SysErr setSpeed(unsigned long baud);
 	SysErr err;
-	CfgSpi cfg;
+	ioSettings *cfg;
 private:
 	unsigned char oldCsSelect;
 	unsigned char unitNr;

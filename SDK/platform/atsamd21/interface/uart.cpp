@@ -17,59 +17,21 @@ volatile bool uart_semaphore[UART_INTERFACE_COUNT];
 #endif
 extern unsigned long FCPU;
 
-/*USART_t* UART_BASE_PTRS[] =
-{
-#ifdef USARTC0
-		&USARTC0,
-#endif
-#ifdef USARTC1
-		&USARTC1,
-#endif
-#ifdef USARTD0
-		&USARTD0,
-#endif
-#ifdef USARTD1
-		&USARTD1,
-#endif
-#ifdef USARTE0
-		&USARTE0,
-#endif
-#ifdef USARTE1
-		&USARTE1,
-#endif
-#ifdef USARTF0
-		&USARTF0,
-#endif
-#ifdef USARTF1
-		&USARTF1
-#endif
-		};*/
-
 /*#####################################################*/
-GI::Dev::Uart::Uart(const char *path)
+GI::Dev::Uart::Uart(ioSettings *cfg)
 {
 	memset(this, 0, sizeof(*this));
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(uartCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(uartCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
+	if(cfg->info.ioType != ioSettings::info_s::ioType_UART)
+		return;
 
-	if(strncmp(path, (char *)"uart-", sizeof("uart-") - 1) && strncmp(path, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
+	if(strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1) && strncmp(cfg->info.name, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
-	if(!strncmp(path, (char *)"uart-", sizeof("uart-") - 1))
+	if(!strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1))
 	{
-		unsigned char dev_nr = path[sizeof("uart-") - 1] - '0';
+		unsigned char dev_nr = cfg->info.name[sizeof("uart-") - 1] - '0';
 		if(dev_nr >= UART_INTERFACE_COUNT)
 		{
 			err = SYS_ERR_INVALID_PATH;
@@ -124,9 +86,6 @@ GI::Dev::Uart::Uart(const char *path)
 		return;
 	}
 
-	memset(this, 0, sizeof(*this));
-	memcpy(&cfg, &uartCfg[item_nr], sizeof(CfgUart));
-	
 	struct usart_module *uart_module = (struct usart_module *)calloc(1, sizeof(struct usart_module));
 	if(!uart_module)
 	{
@@ -134,27 +93,30 @@ GI::Dev::Uart::Uart(const char *path)
 		return;
 	}
 	
+	this->cfg = cfg;
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+
 	udata = (void *)uart_module;
 	usart_conf.mux_setting = USART_RX_1_TX_0_XCK_1;
 	usart_conf.pinmux_pad2 = PINMUX_UNUSED;
 	usart_conf.pinmux_pad3 = PINMUX_UNUSED;
-	usart_conf.baudrate    = cfg.speed;
+	usart_conf.baudrate    = int_cfg->speed;
 
-	if( cfg.parity == CfgUart::PAR_EVEN)
+	if( int_cfg->parity == CfgUart::PAR_EVEN)
 		usart_conf.parity = USART_PARITY_EVEN;
-	else if( cfg.parity == CfgUart::PAR_ODD)
+	else if( int_cfg->parity == CfgUart::PAR_ODD)
 		usart_conf.parity = USART_PARITY_ODD;
 
-	if(cfg.wordLen == CfgUart::WORD_LEN_5)
+	if(int_cfg->wordLen == CfgUart::WORD_LEN_5)
 		usart_conf.character_size = USART_CHARACTER_SIZE_5BIT;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_6)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_6)
 		usart_conf.character_size = USART_CHARACTER_SIZE_6BIT;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_7)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_7)
 		usart_conf.character_size = USART_CHARACTER_SIZE_7BIT;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_9)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_9)
 		usart_conf.character_size = USART_CHARACTER_SIZE_9BIT;
 
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		usart_conf.stopbits = USART_STOPBITS_2;
 
 	usart_init(uart_module, hw, &usart_conf);
@@ -185,7 +147,7 @@ SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
 		return SYS_ERR_INVALID_HANDLER;
 	/*USART_t *UartHandle = (UART_Type *) udata;
 
-	if(cfg.wordLen == CfgUart::WORD_LEN_8)
+	if(int_cfg->wordLen == CfgUart::WORD_LEN_8)
 		UART_Set8BitMode(UartHandle);
 	else
 		UART_Set9BitMode(UartHandle);*/
@@ -197,7 +159,7 @@ SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
 	/*USART_t *UartHandle = (UART_Type *) udata;
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		UART_Set2StopBit(UartHandle);
 	else
 		UART_Set1StopBit(UartHandle);*/
@@ -209,7 +171,7 @@ SysErr GI::Dev::Uart::setParBits(CfgUart::parity_e pBits)
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
 	/*USART_t *UartHandle = (UART_Type *) udata;
-	if(cfg.stopBits == CfgUart::STOP_BITS_ONE)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_ONE)
 		UartHandle->BDH &= ~UART_BDH_SBNS_MASK;
 	else
 		UartHandle->BDH |= UART_BDH_SBNS_MASK;*/

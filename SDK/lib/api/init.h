@@ -10,6 +10,8 @@
 #include <api/cursor_ctl_def.h>
 #include "sys/core_init.h"
 
+#include "api/gpio.h"
+
 #include "api/i2c.h"
 
 #include "api/spi.h"
@@ -23,6 +25,7 @@
 #include "interface/usbh_msc_def.h"
 
 #include "interface/screen.h"
+#include <device/mi0283_gpio.h>
 #include "interface/screen_def.h"
 
 #if (USE_LWIP == 1)
@@ -41,6 +44,7 @@
 #include <device/ft5x06.h>
 #include <device/stmpe811.h>
 
+
 namespace GI {
 namespace Board{
 class Init{
@@ -48,22 +52,20 @@ public:
 	Init();
 	~Init();
 	void idle();
+	void ioTableInit();
 	friend GI::Std;
 	GI::Std *_stdout;
 	GI::Std *_stdin;
 	GI::Std *_stderr;
-	GI::Dev::Gpio **GPIO;
-	GI::Dev::I2c **I2C;
-	GI::Dev::Spi **SPI;
-	GI::Dev::Uart **UART;
+	ioSettings **ioTable;
 #if (MMCSD_INTERFACE_COUNT > 0)
 	GI::Dev::MmcSd *MMCSD[SCREEN_INTERFACE_COUNT];
 #endif
 #if (USBHMSC_INTERFACE_COUNT > 0)
 	GI::Dev::UsbHMsc *USBHMSC[USBHMSC_INTERFACE_COUNT];
 #endif
-#if (defined(SCREEN_CONFIG) && defined(USED_SCREEN_CONTROLLER) && SCREEN_INTERFACE_COUNT > 0)
-	GI::Dev::USED_SCREEN_CONTROLLER *SCREEN[SCREEN_INTERFACE_COUNT];
+#if (defined(SCREEN_CONFIG) && defined(USED_SCREEN_CONTROLLER))
+	GI::Dev::Screen *SCREEN[SCREEN_INTERFACE_COUNT];
 #ifdef USED_TOUCHSCREEN
 	GI::Sensor::USED_TOUCHSCREEN *CAPTOUCH[1];
 #endif

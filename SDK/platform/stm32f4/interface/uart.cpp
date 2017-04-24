@@ -12,16 +12,14 @@
 #include "driver/stm32f4xx_hal_rcc.h"
 
 #include <interface/uart.h>
-#include "api/init.h"
 #include "usb_def.h"
+#include <api/uart.h>
 
 #if (USE_DRIVER_SEMAPHORE == true)
 volatile bool uart_semaphore[UART_INTERFACE_COUNT];
 #endif
 
 extern GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[];
-
-extern CfgUart uartCfg[];
 
 USART_TypeDef* COM_USART[] =
 {
@@ -51,49 +49,37 @@ USART_TypeDef* COM_USART[] =
 #endif
 		};
 
+void *uartConstructPtrs[8];
 /*#####################################################*/
-GI::Dev::Uart::Uart(const char *path)
+GI::Dev::Uart::Uart(ioSettings *cfg)
 {
 	memset(this, 0, sizeof(*this));
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(uartCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(uartCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
+	if(cfg->info.ioType != ioSettings::info_s::ioType_UART)
+		return;
 
-	if(strncmp(path, (char *)"uart-", sizeof("uart-") - 1) && strncmp(path, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
+	if(strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1) && strncmp(cfg->info.name, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
-	if(!strncmp(path, (char *)"uart-", sizeof("uart-") - 1))
+	if(!strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1))
 	{
-		unsigned char dev_nr = path[sizeof("uart-") - 1] - '0';
+		unsigned char dev_nr = cfg->info.name[sizeof("uart-") - 1] - '0';
 		if(dev_nr >= UART_INTERFACE_COUNT)
 		{
 			err = SYS_ERR_INVALID_PATH;
 			return;
 		}
-		memset(this, 0, sizeof(*this));
-		memcpy(&cfg, &uartCfg[item_nr], sizeof(CfgUart));
 		unitNr = dev_nr;
 	}
-	else 	if(!strncmp(path, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
+	else 	if(!strncmp(cfg->info.name, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
 	{
-		unsigned char dev_nr = path[sizeof("usbcdc-") - 1] - '0';
+		unsigned char dev_nr = cfg->info.name[sizeof("usbcdc-") - 1] - '0';
 		if(dev_nr >= USB_INTERFACE_COUNT)
 		{
 			err = SYS_ERR_INVALID_PATH;
 			return;
 		}
-		memset(this, 0, sizeof(*this));
 		unitNr = dev_nr;
 		udata = (void *) new GI::Dev::UsbDCdc(unitNr);
 		isVirtual = true;
@@ -104,6 +90,8 @@ GI::Dev::Uart::Uart(const char *path)
 		err = SYS_ERR_INVALID_PARAM;
 		return;
 	}
+	this->cfg = cfg;
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
 	GPIO_InitTypeDef GPIO_InitStruct;
 
 	/*##-1- Enable peripherals and GPIO Clocks #################################*/
@@ -168,7 +156,7 @@ GI::Dev::Uart::Uart(const char *path)
 
 	/*##-2- Configure peripheral GPIO ##########################################*/
 	/* UART TX GPIO pin configuration  */
-	GPIO_InitStruct.Pin = 1 << (cfg.tx % 32);
+	GPIO_InitStruct.Pin = 1 << (int_cfg->tx % 32);
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
@@ -189,12 +177,12 @@ GI::Dev::Uart::Uart(const char *path)
 	default:
 		return;
 	}
-	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[cfg.tx >> 5],
+	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[int_cfg->tx >> 5],
 			&GPIO_InitStruct);
 
 	/* UART RX GPIO pin configuration  */
-	GPIO_InitStruct.Pin = 1 << (cfg.rx % 32);
-	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[cfg.rx >> 5],
+	GPIO_InitStruct.Pin = 1 << (int_cfg->rx % 32);
+	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[int_cfg->rx >> 5],
 			&GPIO_InitStruct);
 
 	udata = calloc(1, sizeof(UART_HandleTypeDef));
@@ -202,19 +190,19 @@ GI::Dev::Uart::Uart(const char *path)
 		return;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Instance = COM_USART[unitNr];
-	UartHandle->Init.BaudRate = cfg.speed;
+	UartHandle->Init.BaudRate = int_cfg->speed;
 	UartHandle->Init.WordLength = UART_WORDLENGTH_8B;
-	switch((unsigned char)cfg.wordLen)
+	switch((unsigned char)int_cfg->wordLen)
 	{
 	case CfgUart::WORD_LEN_9:
 		UartHandle->Init.WordLength = UART_WORDLENGTH_9B;
 		break;
 	}
 	UartHandle->Init.StopBits = UART_STOPBITS_1;
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		UartHandle->Init.StopBits = UART_STOPBITS_2;
 	UartHandle->Init.Parity = UART_PARITY_NONE;
-	switch((unsigned char)cfg.parity)
+	switch((unsigned char)int_cfg->parity)
 	{
 	case CfgUart::PAR_ODD:
 		UartHandle->Init.Parity = UART_PARITY_ODD;
@@ -228,6 +216,60 @@ GI::Dev::Uart::Uart(const char *path)
 	UartHandle->Init.OverSampling = UART_OVERSAMPLING_16;
 
 	HAL_UART_Init(UartHandle);
+    __HAL_UART_ENABLE_IT(UartHandle, UART_IT_RXNE);
+	uartConstructPtrs[unitNr] = (void *)this;
+	switch(unitNr)
+	{
+#ifdef __HAL_RCC_USART1_CLK_ENABLE
+	case 0:
+		HAL_NVIC_SetPriority((IRQn_Type)USART1_IRQn, 5, 0);
+		HAL_NVIC_EnableIRQ((IRQn_Type)USART1_IRQn);
+		break;
+#endif
+#ifdef __HAL_RCC_USART2_CLK_ENABLE
+	case 1:
+		HAL_NVIC_SetPriority((IRQn_Type)USART2_IRQn, 5, 0);
+		HAL_NVIC_EnableIRQ((IRQn_Type)USART2_IRQn);
+		break;
+#endif
+#ifdef __HAL_RCC_USART3_CLK_ENABLE
+	case 2:
+		HAL_NVIC_SetPriority((IRQn_Type)USART3_IRQn, 11, 0);
+		HAL_NVIC_EnableIRQ((IRQn_Type)USART3_IRQn);
+		break;
+#endif
+#ifdef __HAL_RCC_UART4_CLK_ENABLE
+	case 3:
+		HAL_NVIC_SetPriority((IRQn_Type)UART4_IRQn, 5, 0);
+		HAL_NVIC_EnableIRQ((IRQn_Type)UART4_IRQn);
+		break;
+#endif
+#ifdef __HAL_RCC_UART5_CLK_ENABLE
+	case 4:
+		HAL_NVIC_SetPriority((IRQn_Type)UART5_IRQn, 5, 0);
+		HAL_NVIC_EnableIRQ((IRQn_Type)UART5_IRQn);
+		break;
+#endif
+#ifdef __HAL_RCC_USART6_CLK_ENABLE
+	case 5:
+		HAL_NVIC_SetPriority((IRQn_Type)USART6_IRQn, 5, 0);
+		HAL_NVIC_EnableIRQ((IRQn_Type)USART6_IRQn);
+		break;
+#endif
+#ifdef __HAL_RCC_UART7_CLK_ENABLE
+	case 6:
+		HAL_NVIC_SetPriority((IRQn_Type)UART7_IRQn, 5, 0);
+		HAL_NVIC_EnableIRQ((IRQn_Type)UART7_IRQn);
+		break;
+#endif
+#ifdef __HAL_RCC_UART8_CLK_ENABLE
+	case 7:
+		HAL_NVIC_SetPriority((IRQn_Type)UART8_IRQn, 5, 0);
+		HAL_NVIC_EnableIRQ((IRQn_Type)UART8_IRQn);
+		break;
+#endif
+	}
+
 }
 /*#####################################################*/
 GI::Dev::Uart::~Uart()
@@ -235,6 +277,7 @@ GI::Dev::Uart::~Uart()
 	HAL_UART_DeInit((UART_HandleTypeDef*) udata);
 	if (udata)
 		free(udata);
+	uartConstructPtrs[unitNr] = NULL;
 	return;
 }
 /*#####################################################*/
@@ -254,8 +297,9 @@ SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
 		return SYS_ERR_INVALID_HANDLER;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Init.WordLength = UART_WORDLENGTH_8B;
-	cfg.wordLen = wLen;
-	switch((unsigned char)cfg.wordLen)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	int_cfg->wordLen = wLen;
+	switch((unsigned char)int_cfg->wordLen)
 	{
 #ifdef UART_WORDLENGTH_7B
 	case CfgUart::WORD_LEN_7:
@@ -276,8 +320,9 @@ SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
 		return SYS_ERR_INVALID_HANDLER;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Init.StopBits = UART_STOPBITS_1;
-	cfg.stopBits = sBits;
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	int_cfg->stopBits = sBits;
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		UartHandle->Init.StopBits = UART_STOPBITS_2;
 	UART_SetConfig(UartHandle);
 	return SYS_ERR_OK;
@@ -289,7 +334,8 @@ SysErr GI::Dev::Uart::setParBits(CfgUart::parity_e pBits)
 		return SYS_ERR_INVALID_HANDLER;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Init.Parity = UART_PARITY_NONE;
-	switch((unsigned char)cfg.parity)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	switch((unsigned char)int_cfg->parity)
 	{
 	case CfgUart::PAR_ODD:
 		UartHandle->Init.Parity = UART_PARITY_ODD;
@@ -376,7 +422,14 @@ void GI::Dev::Uart::putChar(unsigned char byteTx)
 		while(((GI::Dev::UsbDCdc *)udata)->tx(&byteTx, 1) != 1);
 	}
 	else
+	{
+		if(__HAL_UART_GET_FLAG(((UART_HandleTypeDef *) udata), UART_FLAG_ORE))
+		{
+			volatile char tmp = ((UART_HandleTypeDef *) udata)->Instance->SR;
+			//tmp = ((UART_HandleTypeDef *) udata)->Instance->DR;
+		}
 		HAL_UART_Transmit((UART_HandleTypeDef*) udata, &byteTx, 1, 10);
+	}
 #if (USE_DRIVER_SEMAPHORE == true)
 	uart_semaphore[unitNr] = false;
 #endif
@@ -459,6 +512,11 @@ signed short GI::Dev::Uart::getCharNb()
 	}
 	else
 	{
+		if(__HAL_UART_GET_FLAG(((UART_HandleTypeDef *) udata), UART_FLAG_ORE))
+		{
+			volatile char tmp = ((UART_HandleTypeDef *) udata)->Instance->SR;
+			//tmp = ((UART_HandleTypeDef *) udata)->Instance->DR;
+		}
 		HAL_StatusTypeDef status = HAL_UART_Receive((UART_HandleTypeDef *) udata, (unsigned char *) &data, 1, 2);
 		if (status == HAL_TIMEOUT || status == HAL_BUSY || status == HAL_ERROR)
 		{
@@ -575,3 +633,92 @@ int GI::Dev::Uart::write(char *data, unsigned int len)
 	return len_cnt;
 }
 /*#####################################################*/
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+/**
+  * @brief  This function handles UART interrupt request.
+  * @param  None
+  * @retval None
+  * @Note   This function is redefined in "main.h" and related to DMA stream
+  *         used for USART data transmission
+  */
+#ifdef __HAL_RCC_USART1_CLK_ENABLE
+void USART1_IRQHandler(void)
+{
+	GI::Dev::Uart * construct = ((GI::Dev::Uart *)uartConstructPtrs[0]);
+	if(construct->charReceive_Callback)
+		construct->charReceive_Callback(((UART_HandleTypeDef *)construct->udata)->Instance->DR);
+}
+#endif
+
+#ifdef __HAL_RCC_USART2_CLK_ENABLE
+void USART2_IRQHandler(void)
+{
+	GI::Dev::Uart * construct = ((GI::Dev::Uart *)uartConstructPtrs[1]);
+	if(construct->charReceive_Callback)
+		construct->charReceive_Callback(((UART_HandleTypeDef *)construct->udata)->Instance->DR);
+}
+#endif
+
+#ifdef __HAL_RCC_USART3_CLK_ENABLE
+void USART3_IRQHandler(void)
+{
+	GI::Dev::Uart * construct = ((GI::Dev::Uart *)uartConstructPtrs[2]);
+	if(construct->charReceive_Callback)
+		construct->charReceive_Callback(((UART_HandleTypeDef *)construct->udata)->Instance->DR);
+	else
+		char tmp = ((UART_HandleTypeDef *)construct->udata)->Instance->DR;
+}
+#endif
+
+#ifdef __HAL_RCC_UART4_CLK_ENABLE
+void UART4_IRQHandler(void)
+{
+	GI::Dev::Uart * construct = ((GI::Dev::Uart *)uartConstructPtrs[3]);
+	if(construct->charReceive_Callback)
+		construct->charReceive_Callback(((UART_HandleTypeDef *)construct->udata)->Instance->DR);
+}
+#endif
+
+#ifdef __HAL_RCC_UART5_CLK_ENABLE
+void UART5_IRQHandler(void)
+{
+	GI::Dev::Uart * construct = ((GI::Dev::Uart *)uartConstructPtrs[4]);
+	if(construct->charReceive_Callback)
+		construct->charReceive_Callback(((UART_HandleTypeDef *)construct->udata)->Instance->DR);
+}
+#endif
+
+#ifdef __HAL_RCC_USART6_CLK_ENABLE
+void USART6_IRQHandler(void)
+{
+	GI::Dev::Uart * construct = ((GI::Dev::Uart *)uartConstructPtrs[5]);
+	if(construct->charReceive_Callback)
+		construct->charReceive_Callback(((UART_HandleTypeDef *)construct->udata)->Instance->DR);
+}
+#endif
+
+#ifdef __HAL_RCC_UART7_CLK_ENABLE
+void UART7_IRQHandler(void)
+{
+	GI::Dev::Uart * construct = ((GI::Dev::Uart *)uartConstructPtrs[6]);
+	if(construct->charReceive_Callback)
+		construct->charReceive_Callback(((UART_HandleTypeDef *)construct->udata)->Instance->DR);
+}
+#endif
+
+#ifdef __HAL_RCC_UART8_CLK_ENABLE
+void UART8_IRQHandler(void)
+{
+	GI::Dev::Uart * construct = ((GI::Dev::Uart *)uartConstructPtrs[7]);
+	if(construct->charReceive_Callback)
+		construct->charReceive_Callback(((UART_HandleTypeDef *)construct->udata)->Instance->DR);
+}
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+

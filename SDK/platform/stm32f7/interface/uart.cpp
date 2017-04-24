@@ -10,14 +10,11 @@
 #include "driver/stm32f7xx_hal_uart.h"
 #include "driver/stm32f7xx_hal_rcc.h"
 #include <interface/uart.h>
-#include <api/init.h>
 #include <api/gpio.h>
 #include <lib/string.h>
 #include <lib/gfx/string.h>
 #include "usbd_cdc.h"
 #include "usb_def.h"
-
-extern CfgUart uartCfg[];
 
 #if (USE_DRIVER_SEMAPHORE == true)
 volatile bool uart_semaphore[UART_INTERFACE_COUNT];
@@ -54,41 +51,31 @@ USART_TypeDef* COM_USART[] =
 		};
 
 /*#####################################################*/
-GI::Dev::Uart::Uart(const char *path)
+GI::Dev::Uart::Uart(ioSettings *cfg)
 {
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(uartCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(uartCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
+	memset(this, 0, sizeof(*this));
+	if(cfg->info.ioType != ioSettings::info_s::ioType_UART)
+		return;
 
-	if(strncmp(path, (char *)"uart-", sizeof("uart-") - 1) && strncmp(path, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
+	if(strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1) && strncmp(cfg->info.name, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
-	if(!strncmp(path, (char *)"uart-", sizeof("uart-") - 1))
+	if(!strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1))
 	{
-		unsigned char dev_nr = path[sizeof("uart-") - 1] - '0';
+		unsigned char dev_nr = cfg->info.name[sizeof("uart-") - 1] - '0';
 		if(dev_nr >= UART_INTERFACE_COUNT)
 		{
 			err = SYS_ERR_INVALID_PATH;
 			return;
 		}
 		memset(this, 0, sizeof(*this));
-		memcpy(&cfg, &uartCfg[item_nr], sizeof(CfgUart));
 		unitNr = dev_nr;
 	}
-	else 	if(!strncmp(path, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
+	else 	if(!strncmp(cfg->info.name, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
 	{
-		unsigned char dev_nr = path[sizeof("usbcdc-") - 1] - '0';
+		unsigned char dev_nr = cfg->info.name[sizeof("usbcdc-") - 1] - '0';
 		if(dev_nr >= USB_INTERFACE_COUNT)
 		{
 			err = SYS_ERR_INVALID_PATH;
@@ -100,6 +87,8 @@ GI::Dev::Uart::Uart(const char *path)
 		isVirtual = true;
 		return;
 	}
+	this->cfg = cfg;
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
 	GPIO_InitTypeDef GPIO_InitStruct;
 
 	switch (unitNr)
@@ -157,7 +146,7 @@ GI::Dev::Uart::Uart(const char *path)
 
 	/*##-2- Configure peripheral GPIO ##########################################*/
 	/* UART TX GPIO pin configuration  */
-	GPIO_InitStruct.Pin = 1 << (cfg.tx % 32);
+	GPIO_InitStruct.Pin = 1 << (int_cfg->tx % 32);
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
@@ -178,12 +167,12 @@ GI::Dev::Uart::Uart(const char *path)
 	default:
 		return;
 	}
-	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[cfg.tx >> 5],
+	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[int_cfg->tx >> 5],
 			&GPIO_InitStruct);
 
 	/* UART RX GPIO pin configuration  */
-	GPIO_InitStruct.Pin = 1 << (cfg.rx % 32);
-	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[cfg.rx >> 5],
+	GPIO_InitStruct.Pin = 1 << (int_cfg->rx % 32);
+	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[int_cfg->rx >> 5],
 			&GPIO_InitStruct);
 
 	udata = calloc(1, sizeof(UART_HandleTypeDef));
@@ -191,9 +180,9 @@ GI::Dev::Uart::Uart(const char *path)
 		return;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Instance = COM_USART[unitNr];
-	UartHandle->Init.BaudRate = cfg.speed;
+	UartHandle->Init.BaudRate = int_cfg->speed;
 	UartHandle->Init.WordLength = UART_WORDLENGTH_8B;
-	switch((unsigned char)cfg.wordLen)
+	switch((unsigned char)int_cfg->wordLen)
 	{
 	case CfgUart::WORD_LEN_7:
 		UartHandle->Init.WordLength = UART_WORDLENGTH_7B;
@@ -203,10 +192,10 @@ GI::Dev::Uart::Uart(const char *path)
 		break;
 	}
 	UartHandle->Init.StopBits = UART_STOPBITS_1;
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		UartHandle->Init.StopBits = UART_STOPBITS_2;
 	UartHandle->Init.Parity = UART_PARITY_NONE;
-	switch((unsigned char)cfg.parity)
+	switch((unsigned char)int_cfg->parity)
 	{
 	case CfgUart::PAR_ODD:
 		UartHandle->Init.Parity = UART_PARITY_ODD;
@@ -254,7 +243,8 @@ SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
 		return SYS_ERR_INVALID_HANDLER;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Init.WordLength = UART_WORDLENGTH_8B;
-	switch((unsigned char)cfg.wordLen)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	switch((unsigned char)int_cfg->wordLen)
 	{
 	case CfgUart::WORD_LEN_7:
 		UartHandle->Init.WordLength = UART_WORDLENGTH_7B;
@@ -273,7 +263,8 @@ SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
 		return SYS_ERR_INVALID_HANDLER;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Init.StopBits = UART_STOPBITS_1;
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		UartHandle->Init.StopBits = UART_STOPBITS_2;
 	UART_SetConfig(UartHandle);
 	return SYS_ERR_OK;
@@ -285,7 +276,8 @@ SysErr GI::Dev::Uart::setParBits(CfgUart::parity_e pBits)
 		return SYS_ERR_INVALID_HANDLER;
 	UART_HandleTypeDef *UartHandle = (UART_HandleTypeDef *) udata;
 	UartHandle->Init.Parity = UART_PARITY_NONE;
-	switch((unsigned char)cfg.parity)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	switch((unsigned char)int_cfg->parity)
 	{
 	case CfgUart::PAR_ODD:
 		UartHandle->Init.Parity = UART_PARITY_ODD;

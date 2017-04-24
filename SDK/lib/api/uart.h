@@ -13,6 +13,7 @@
 #include <lib/gfx/string.h>
 #include <lib/string.h>
 #include <api/std.h>
+#include <api/init_def.h>
 /*#####################################################*/
 typedef struct
 {
@@ -72,7 +73,7 @@ namespace Dev
 class Uart
 {
 public:
-	Uart(const char *path);
+	Uart(ioSettings *cfg);
 	~Uart();
 	void putChar(unsigned char byteTx);
 	unsigned char getChar();
@@ -95,7 +96,10 @@ public:
 	SysErr getStopBits(CfgUart::stopBits_e *sBits);
 	SysErr getParBits(CfgUart::parity_e *pBits);
 	SysErr err;
-	CfgUart cfg;
+	ioSettings *cfg;
+
+	void (*charReceive_Callback)(char data);
+	void *udata;
 private:
 	/*int vsnprintf (char *str, size_t count, const char *fmt, va_list args);
 	void dopr (char *buffer, size_t maxlen, const char *format, va_list args);
@@ -107,8 +111,6 @@ private:
 	bool isVirtual;
 	unsigned char unitNr;
 	unsigned int BaseAddr;
-	void *udata;
-
 };
 }
 }

@@ -15,120 +15,29 @@
 #include <api/i2c.h>
 #include <api/uart.h>
 
-/*
- * Screen settings
- */
+ioSetCfgGpio(led_0, 	"led-0",	pin_mux_convert_to_pin(IOD,  4),CfgGpio::GPIO_OUT_PUSH_PULL, 	false, true, 0);
+ioSetCfgGpio(led_1, 	"led-1",	pin_mux_convert_to_pin(IOD,  5),CfgGpio::GPIO_OUT_PUSH_PULL, 	false, true, 0);
+ioSetCfgGpio(hbtn_0, 	"hbtn-0",	pin_mux_convert_to_pin(IOD,  0),CfgGpio::GPIO_IN_FLOATING, 		false, true, 0);
+ioSetCfgGpio(hbtn_1, 	"hbtn-1",	pin_mux_convert_to_pin(IOD,  2),CfgGpio::GPIO_IN_FLOATING, 		false, true, 0);
 
-/*
- * !Screen settings
- */
+ioSetCfgUart(uart_3, "uart-3", pin_mux_convert_to_pin(IOA, 1)	, pin_mux_convert_to_pin(IOA, 1)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC);
 
+//ioSetCfgI2c(i2c_0, "i2c-0", pin_mux_convert_to_pin(IOB, 8), pin_mux_convert_to_pin(IOB, 9), CfgI2c::i2cMode0, 100000);
 
-/*
- * GPIO settings
- */
-#define gpioCfgFlash(order, name, pin, reverse, mode, multipin, defaultState)\
-	const CfgGpio order[] PROGMEM = {name, pin, reverse, mode, multipin, defaultState}
+//ioSetCfgSpi(spi_0_0, "spi-0.0", pin_mux_convert_to_pin(IOA,  5), pin_mux_convert_to_pin(IOB,  5), pin_mux_convert_to_pin(IOB,  4), pin_mux_convert_to_pin(IOA, 15), CfgSpi::spiMode0, 500000, false);
 
-gpioCfgFlash(gpioCfgFlash0, "led-0"		,pin_mux_convert_to_pin(IOD,  4)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0);
-gpioCfgFlash(gpioCfgFlash1, "led-1"		,pin_mux_convert_to_pin(IOD,  5)	,true	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0);
-gpioCfgFlash(gpioCfgFlash2, "hbtn-0"	,pin_mux_convert_to_pin(IOD,  0)	,true	,CfgGpio::GPIO_IN_PULL_UP		, false, 0);
-gpioCfgFlash(gpioCfgFlash3, "hbtn-1"	,pin_mux_convert_to_pin(IOD,  2)	,true	,CfgGpio::GPIO_IN_PULL_UP		, false, 0);
-gpioCfgFlash(gpioCfgFlashL, ""			,0									,false	,CfgGpio::GPIO_IN_FLOATING		, false, 0);
+ioSetCfgEnd(ioTableEnd);
 
-const CfgGpio *gpioCfg[] =
-{    /*pin-name     ,pin number                         ,reverse,mode                           , multipin, default state*/
-	gpioCfgFlash0,// Pin 0 mapped
-	gpioCfgFlash1,// Pin 1 mapped
-	gpioCfgFlash2,// Pin 2 mapped
-	gpioCfgFlash3,// Pin 2 mapped
-	gpioCfgFlashL // End of table
+ioSettings *ioSetCfg[] = {
+	&led_0,
+	&led_1,
+	&hbtn_0,
+	&hbtn_1,
+	&uart_3,
+	//&i2c_0,
+	//&spi_0_0,
+	&ioTableEnd,
+	(ioSettings *)-1/* This is an artifice to force linker to put this structure ito .data section, to be secure that this will be initiated before the call of init() function. */
 };
-/*
- * !GPIO settings
- */
-
-
-/*
- * SPI settings
- */
-CfgSpi spiCfg[] =
-{/*name      ,sck                             , mosi                           , miso                           , cs,                            ,speed    ,mode             ,lsb first*/
-//{ "spi-0.0", 0, 0, 0, 0, },
-//{ "spi-0.1", 0, 0, 0, 0, },
-//{ "spi-0.2", 0, 0, 0, 0, },
-//{ "spi-0.3", 0, 0, 0, 0, },
-//{ "spi-1.0", pin_mux_convert_to_pin(IOA,  5), pin_mux_convert_to_pin(IOB,  5), pin_mux_convert_to_pin(IOB,  4), pin_mux_convert_to_pin(IOA, 15), 25000000, CfgSpi::spiMode0, false},
-//{ "spi-1.1"	, pin_mux_convert_to_pin(IOA, 12), pin_mux_convert_to_pin(IOB, 15), pin_mux_convert_to_pin(IOB, 14), 0, 25000000, CfgSpi::spiMode0, false},
-//{ "spi-1.2"	, pin_mux_convert_to_pin(IOA, 12), pin_mux_convert_to_pin(IOB, 15), pin_mux_convert_to_pin(IOB, 14), 0, 25000000, CfgSpi::spiMode0, false},
-//{ "spi-1.3"	, pin_mux_convert_to_pin(IOA, 12), pin_mux_convert_to_pin(IOB, 15), pin_mux_convert_to_pin(IOB, 14), 0, 25000000, CfgSpi::spiMode0, false},
-//{ "spi-2.0", 0, 0, 0, 0, },
-//{ "spi-2.1", 0, 0, 0, 0, },
-//{ "spi-2.2", 0, 0, 0, 0, },
-//{ "spi-2.3", 0, 0, 0, 0, },
-//{ "spi-3.0", 0, 0, 0, 0, },
-//{ "spi-3.1", 0, 0, 0, 0, },
-//{ "spi-3.2", 0, 0, 0, 0, },
-//{ "spi-3.3", 0, 0, 0, 0, },
-//{ "spi-4.0", 0, 0, 0, 0, },
-//{ "spi-4.1", 0, 0, 0, 0, },
-//{ "spi-4.2", 0, 0, 0, 0, },
-//{ "spi-4.3", 0, 0, 0, 0, },
-//{ "spi-5.0", 0, 0, 0, 0, },
-//{ "spi-5.1", 0, 0, 0, 0, },
-//{ "spi-5.2", 0, 0, 0, 0, },
-//{ "spi-5.3", 0, 0, 0, 0, },
-//{ "spi-6.0", 0, 0, 0, 0, },
-//{ "spi-6.1", 0, 0, 0, 0, },
-//{ "spi-6.2", 0, 0, 0, 0, },
-//{ "spi-6.3", 0, 0, 0, 0, },
-//{ "spi-7.0", 0, 0, 0, 0, },
-//{ "spi-7.1", 0, 0, 0, 0, },
-//{ "spi-7.2", 0, 0, 0, 0, },
-//{ "spi-7.3", 0, 0, 0, 0, }
-{ "", 0, 0, 0, 0, }// End of table
-};
-/*
- * !SPI settings
- */
-
-/*
- * I2C settings
- */
-CfgI2c i2cCfg[] =
-{
-//{ "i2c-0", pin_mux_convert_to_pin(IOB, 8), pin_mux_convert_to_pin(IOB, 9), 100000, },
-//{ "i2c-1", 0, 0, },
-//{ "i2c-2", pin_mux_convert_to_pin(IOH, 4), pin_mux_convert_to_pin(IOH, 5), 100000, },
-//{ "i2c-3", pin_mux_convert_to_pin(IOD, 12), pin_mux_convert_to_pin(IOB, 7), },
-//{ "i2c-4", 0, 0, },
-//{ "i2c-5", 0, 0, },
-//{ "i2c-6", 0, 0, },
-//{ "i2c-7", 0, 0, }
-{ "", 0, 0, }// End of table
-};
-/*
- * !I2C settings
- */
-
-/*
- * !UART settings
- */
-CfgUart uartCfg[] =
-{
-//{ "uart-0", pin_mux_convert_to_pin(IOA, 9)	, pin_mux_convert_to_pin(IOA, 10)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-//{ "uart-1", pin_mux_convert_to_pin(IOA, 1)	, pin_mux_convert_to_pin(IOA, 1)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},//Pin sharing for RX/Tx indicate the anable of Rx and Tx.
-//{ "uart-2", pin_mux_convert_to_pin(IOD, 7)	, pin_mux_convert_to_pin(IOD, 6)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-{ "uart-3", pin_mux_convert_to_pin(IOA, 1)	, pin_mux_convert_to_pin(IOA, 1)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},//Pin sharing for RX/Tx indicate the anable of Rx and Tx.
-//{ "uart-4", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-//{ "uart-5", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-//{ "uart-6", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-//{ "uart-7", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC}
-//{ "usbcdc-0", pin_mux_convert_to_pin(IOA, 0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-{ "", 0	, 0	, 0	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC}// End of table
-};
-/*
- * UART settings
- */
 
 #endif/*!FRDM_KEAZ*/

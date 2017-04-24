@@ -4,168 +4,62 @@
 #if __AVR_XMEGA__
 #include <avr/pgmspace.h>
 #endif
-#include <main.h>
 #include <board.h>
+#include <main.h>
 #include <stdio.h>
-#include "init.h"
-#include <api/i2c.h>
-#include <api/uart.h>
 #include <api/lcd_def.h>
 #include <api/uart.h>
 #include <api/spi.h>
 #include <api/i2c.h>
 #include <api/gpio.h>
 #include <api/init.h>
+#include <api/init_def.h>
 #include <lib/operators.h>
 
-#if (USE_GPIO == 1)
-#if __AVR_XMEGA__
-extern const CfgGpio *gpioCfg[];
-#else
-extern CfgGpio gpioCfg[];
-#endif
-#endif
-
-#if (USE_SPI == 1)
-extern CfgSpi spiCfg[];
-#endif
-
-#if (USE_I2C == 1)
-extern CfgI2c i2cCfg[];
-#endif
-
-#if (USE_UART == 1)
-extern CfgUart uartCfg[];
-#endif
+extern ioSettings *ioSetCfg[];
 
 GI::Sys::Clock coreClk = GI::Sys::Clock();
 GI::Board::Init dev = GI::Board::Init();
-#if (defined(SCREEN_ENABLE) && SCREEN_INTERFACE_COUNT > 0)
-GI::Dev::IntScreen *screen;
-#endif
 
 GI::Board::Init::Init()
 {
     memset(this, 0, sizeof(*this));
-    unsigned int dev_cnt = 0;
-    unsigned int table_len = 0;
-    /*******************************************************************/
-#if (USE_GPIO == 1)
-    /*
-     * Scan to get the pin table items number.
-     */
-    for (table_len = 0; table_len < 512; table_len++)
-    {
-#if __AVR_XMEGA__
-		if (pgm_read_byte(&gpioCfg[table_len]->name[0]) == 0)
+/*******************************************************************/
+    unsigned int io_cnt = 0;
+    for(; io_cnt < 1024; io_cnt++)
+	{
+		ioSettings *io_item = ioSetCfg[io_cnt];
+		if(io_item->cfg)
+		{
+			switch((unsigned int)io_item->info.ioType)
+			{
+#if (USE_GPIO == true)
+			case ioSettings::info_s::ioType_GPIO:
+				io_item->ioConstruct = (void *)new GI::Dev::Gpio(io_item);
+				break;
+#endif
+#if (USE_UART == true)
+			case ioSettings::info_s::ioType_UART:
+				io_item->ioConstruct = (void *)new GI::Dev::Uart(io_item);
+				break;
+#endif
+#if (USE_I2C == true)
+			case ioSettings::info_s::ioType_I2C:
+				io_item->ioConstruct = (void *)new GI::Dev::I2c(io_item);
+				break;
+#endif
+#if (USE_SPI == true)
+			case ioSettings::info_s::ioType_SPI:
+				io_item->ioConstruct = (void *)new GI::Dev::Spi(io_item);
+				break;
+#endif
+			}
+		}
+		else
 			break;
-#else
-        if (gpioCfg[table_len].name[0] == 0)
-            break;
-#endif
-    }
-    /*
-     * Allocate memory to store pins handlers pointers.
-     */
-    GPIO = (GI::Dev::Gpio **) calloc(1, (table_len + 1) * sizeof(GI::Dev::Gpio *));
-    /*
-     * Allocate create and initialize pins.
-     */
-    for (dev_cnt = 0; dev_cnt < table_len; dev_cnt++)
-    {
-#if __AVR_XMEGA__
-        if (pgm_read_byte(&gpioCfg[dev_cnt]->name[0]) != 0)
-#else
-        if (gpioCfg[dev_cnt].name[0] != 0)
-#endif
-        {
-#if __AVR_XMEGA__
-			CfgGpio tmp;
-			memcpy_P(&tmp, gpioCfg[dev_cnt], sizeof(CfgGpio));
-            GPIO[dev_cnt] = new GI::Dev::Gpio(&tmp);
-#else
-            GPIO[dev_cnt] = new GI::Dev::Gpio(&gpioCfg[dev_cnt]);
-#endif
-        }
-    }
-#endif
-    /*******************************************************************/
-#if (USE_UART == 1)
-    /*
-     * Scan to get the uarts table items number.
-     */
-    for (table_len = 0; table_len < 512; table_len++)
-    {
-        if (uartCfg[table_len].name[0] == 0)
-            break;
-    }
-    /*
-     * Allocate memory to store uarts handlers pointers.
-     */
-    UART = (GI::Dev::Uart **) calloc(1, (table_len + 1) * sizeof(GI::Dev::Uart *));
-    /*
-     * Allocate create and initialize uarts.
-     */
-    for (dev_cnt = 0; dev_cnt < table_len; dev_cnt++)
-    {
-        if (uartCfg[dev_cnt].name[0] != 0)
-        {
-            UART[dev_cnt] = new GI::Dev::Uart(uartCfg[dev_cnt].name);
-        }
-    }
-#endif
-    /*******************************************************************/
-#if (USE_I2C == 1)
-    /*
-     * Scan to get the i2c table items number.
-     */
-    for (table_len = 0; table_len < 512; table_len++)
-    {
-        if (i2cCfg[table_len].name[0] == 0)
-            break;
-    }
-    /*
-     * Allocate memory to store i2c handlers pointers.
-     */
-    I2C = (GI::Dev::I2c **) calloc(1, (table_len + 1) * sizeof(GI::Dev::I2c *));
-    /*
-     * Allocate create and initialize i2c.
-     */
-    for (dev_cnt = 0; dev_cnt < table_len; dev_cnt++)
-    {
-        if (i2cCfg[dev_cnt].name[0] != 0)
-        {
-            I2C[dev_cnt] = new GI::Dev::I2c(i2cCfg[dev_cnt].name);
-        }
-    }
-#endif
-    /*******************************************************************/
-#if (USE_SPI == 1)
-    /*
-     * Scan to get the spi table items number.
-     */
-    for (table_len = 0; table_len < 512; table_len++)
-    {
-        if (spiCfg[table_len].name[0] == 0)
-            break;
-    }
-    /*
-     * Allocate memory to store spi handlers pointers.
-     */
-    SPI = (GI::Dev::Spi **) calloc(1, (table_len + 1) * sizeof(GI::Dev::Spi *));
-    /*
-     * Allocate create and initialize spi.
-     */
-    for (dev_cnt = 0; dev_cnt < table_len; dev_cnt++)
-    {
-        if (spiCfg[dev_cnt].name[0] != 0)
-        {
-            SPI[dev_cnt] = new GI::Dev::Spi(spiCfg[dev_cnt].name);
-        }
-    }
-#endif
-    /*******************************************************************/
-#if (SCREEN_INTERFACE_COUNT > 0 && defined(SCREEN_CONFIG) && defined(USED_SCREEN_CONTROLLER))
+	}
+/*******************************************************************/
+#if (defined(SCREEN_CONFIG) && defined(USED_SCREEN_CONTROLLER))
     SCREEN[0] = new GI::Dev::USED_SCREEN_CONTROLLER(&SCREEN_CONFIG, NULL);
 #ifdef USED_TOUCHSCREEN
     CAPTOUCH[0] = new GI::Sensor::USED_TOUCHSCREEN(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
@@ -216,4 +110,5 @@ void GI::Board::Init::idle()
     LWIP[0]->idle(0);
 #endif
 }
+
 

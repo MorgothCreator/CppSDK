@@ -62,30 +62,20 @@ USART_t* UART_BASE_PTRS[] =
 		};
 
 /*#####################################################*/
-GI::Dev::Uart::Uart(const char *path)
+GI::Dev::Uart::Uart(ioSettings *cfg)
 {
 	memset(this, 0, sizeof(*this));
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(uartCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(uartCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
+	if(cfg->info.ioType != ioSettings::info_s::ioType_UART)
+	return;
 
-	if(strncmp(path, (char *)"uart-", sizeof("uart-") - 1) && strncmp(path, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
+	if(strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
-	if(!strncmp(path, (char *)"uart-", sizeof("uart-") - 1))
+	if(!strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1))
 	{
-		unsigned char dev_nr = path[sizeof("uart-") - 1] - '0';
+		unsigned char dev_nr = cfg->info.name[sizeof("uart-") - 1] - '0';
 		if(dev_nr >= UART_INTERFACE_COUNT)
 		{
 			err = SYS_ERR_INVALID_PATH;
@@ -99,7 +89,9 @@ GI::Dev::Uart::Uart(const char *path)
 		err = SYS_ERR_INVALID_PARAM;
 		return;
 	}
-	memcpy(&cfg, &uartCfg[item_nr], sizeof(CfgUart));
+
+	this->cfg = cfg;
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
 
 #if defined(__AVR_ATxmega8E5__) || defined(__AVR_ATxmega16E5__) || defined(__AVR_ATxmega32E5__)
 	switch(unitNr)
@@ -107,14 +99,14 @@ GI::Dev::Uart::Uart(const char *path)
 	case 0:
 		PORTC.REMAP &= ~PORT_USART0_bm;
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 		{
 			PORTC.DIRSET = 1<<1;
 			PORTC.OUTSET = 1<<1;
@@ -129,14 +121,14 @@ GI::Dev::Uart::Uart(const char *path)
 	case 1:
 		PORTC.REMAP |= PORT_USART0_bm;
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 		{
 			PORTC.DIRSET = 1<<5;
 			PORTC.OUTSET = 1<<5;
@@ -151,14 +143,14 @@ GI::Dev::Uart::Uart(const char *path)
 	case 2:
 		PORTD.REMAP &= ~PORT_USART0_bm;
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 		{
 			PORTD.DIRSET = 1<<1;
 			PORTD.OUTSET = 1<<1;
@@ -173,14 +165,14 @@ GI::Dev::Uart::Uart(const char *path)
 	case 3:
 		PORTD.REMAP |= PORT_USART0_bm;
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 		{
 			PORTD.DIRSET = 1<<5;
 			PORTD.OUTSET = 1<<5;
@@ -202,11 +194,11 @@ GI::Dev::Uart::Uart(const char *path)
 #ifdef USARTC0
 	case 0:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
 		{
@@ -223,11 +215,11 @@ GI::Dev::Uart::Uart(const char *path)
 #ifdef USARTC1
 	case 1:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
 		{
@@ -244,11 +236,11 @@ GI::Dev::Uart::Uart(const char *path)
 #ifdef USARTD0
 	case 2:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
 		{
@@ -265,11 +257,11 @@ GI::Dev::Uart::Uart(const char *path)
 #ifdef USARTD1
 	case 3:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
 		{
@@ -286,11 +278,11 @@ GI::Dev::Uart::Uart(const char *path)
 #ifdef USARTE0
 	case 0:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
 		{
@@ -307,11 +299,11 @@ GI::Dev::Uart::Uart(const char *path)
 #ifdef USARTE1
 	case 1:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
 		{
@@ -328,11 +320,11 @@ GI::Dev::Uart::Uart(const char *path)
 #ifdef USARTF0
 	case 2:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
 		{
@@ -349,11 +341,11 @@ GI::Dev::Uart::Uart(const char *path)
 #ifdef USARTF1
 	case 3:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC || cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SYNC)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC)
 #elif UART_HAVE_MODE_SPI == 1
-		if(cfg.uartMode == CfgUart::uartMode_e::MODE_SPI)
+		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #endif
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 || UART_HAVE_MODE_SPI == 1
 		{
@@ -371,54 +363,54 @@ GI::Dev::Uart::Uart(const char *path)
 		return;
 	}
 #endif
-	unsigned int ubrr = ((FCPU / 8) / cfg.speed) -1;
+	unsigned int ubrr = ((FCPU / 8) / int_cfg->speed) -1;
 	((USART_t*)udata)->BAUDCTRLA = (unsigned char)ubrr;
 	((USART_t*)udata)->BAUDCTRLB = (unsigned char)((ubrr>>8) & 0x0F);
 	unsigned char tmp = 0;
-	if(cfg.wordLen == CfgUart::WORD_LEN_5)
+	if(int_cfg->wordLen == CfgUart::WORD_LEN_5)
 		tmp = USART_CHSIZE_5BIT_gc;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_6)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_6)
 		tmp = USART_CHSIZE_6BIT_gc;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_7)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_7)
 		tmp = USART_CHSIZE_7BIT_gc;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_8)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_8)
 		tmp = USART_CHSIZE_8BIT_gc;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_9)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_9)
 		tmp = USART_CHSIZE_9BIT_gc;
 	else
 		tmp = USART_CHSIZE_8BIT_gc;
 		
-	if(cfg.parity == CfgUart::PAR_EVEN)
+	if(int_cfg->parity == CfgUart::PAR_EVEN)
 		tmp |= USART_PMODE_EVEN_gc;
-	else if(cfg.parity == CfgUart::PAR_ODD)
+	else if(int_cfg->parity == CfgUart::PAR_ODD)
 		tmp |= USART_PMODE_ODD_gc;
 		
 #if UART_HAVE_MODE_SYNCHRONOUS == 1
-	if(cfg.uartMode == CfgUart::MODE_SYNC)
+	if(int_cfg->uartMode == CfgUart::MODE_SYNC)
 	{
 		tmp |= USART_CMODE_SYNCHRONOUS_gc;
 	}
 #endif
 #if UART_HAVE_MODE_SPI == 1
-	if(cfg.uartMode == CfgUart::MODE_SPI)
+	if(int_cfg->uartMode == CfgUart::MODE_SPI)
 	{
 		tmp |= USART_CMODE_MSPI_gc;
 	}
 #endif
 #if UART_HAVE_MODE_IR == 1
-	if(cfg.uartMode == CfgUart::MODE_IR)
+	if(int_cfg->uartMode == CfgUart::MODE_IR)
 	{
 		tmp |= USART_CMODE_IRDA_gc;
 	}
 #endif
 
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		tmp |= USART_SBMODE_bm;
 	((USART_t*)udata)->CTRLC = tmp;
 	tmp = USART_CLK2X_bm;
-	if(cfg.rx)
+	if(int_cfg->rx)
 		tmp |= USART_RXEN_bm;
-	if(cfg.tx)
+	if(int_cfg->tx)
 		tmp |= USART_TXEN_bm;
 	((USART_t*)udata)->CTRLB = tmp;
 }
@@ -433,7 +425,8 @@ SysErr GI::Dev::Uart::setSpeed(unsigned long baudRate)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	unsigned int ubrr = ((FCPU / 8) / cfg.speed) -1;
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	unsigned int ubrr = ((FCPU / 8) / int_cfg->speed) -1;
 	((USART_t*)udata)->BAUDCTRLA = (unsigned char)ubrr;
 	((USART_t*)udata)->BAUDCTRLB = (unsigned char)((ubrr>>8) & 0x0F);
 	return SYS_ERR_OK;
@@ -444,15 +437,16 @@ SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
 	unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_CHSIZE_gm;
-	if(cfg.wordLen == CfgUart::WORD_LEN_5)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	if(int_cfg->wordLen == CfgUart::WORD_LEN_5)
 		tmp = USART_CHSIZE_5BIT_gc;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_6)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_6)
 		tmp = USART_CHSIZE_6BIT_gc;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_7)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_7)
 		tmp = USART_CHSIZE_7BIT_gc;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_8)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_8)
 		tmp = USART_CHSIZE_8BIT_gc;
-	else if(cfg.wordLen == CfgUart::WORD_LEN_9)
+	else if(int_cfg->wordLen == CfgUart::WORD_LEN_9)
 		tmp = USART_CHSIZE_9BIT_gc;
 	else
 		tmp = USART_CHSIZE_8BIT_gc;
@@ -465,7 +459,8 @@ SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
 	unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_SBMODE_bm;
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		tmp |= USART_SBMODE_bm;
 	((USART_t*)udata)->CTRLC = tmp;
 	return SYS_ERR_OK;
@@ -476,9 +471,10 @@ SysErr GI::Dev::Uart::setParBits(CfgUart::parity_e pBits)
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
 	unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_PMODE_gm;
-	if(cfg.parity == CfgUart::PAR_EVEN)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	if(int_cfg->parity == CfgUart::PAR_EVEN)
 		tmp |= USART_PMODE_EVEN_gc;
-	else if(cfg.parity == CfgUart::PAR_ODD)
+	else if(int_cfg->parity == CfgUart::PAR_ODD)
 		tmp |= USART_PMODE_ODD_gc;
 	((USART_t*)udata)->CTRLC = tmp;
 	return SYS_ERR_OK;
@@ -497,15 +493,16 @@ SysErr GI::Dev::Uart::getWordLen(CfgUart::wordLen_e *wLen)
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
 	unsigned char tmp = ((USART_t*)udata)->CTRLC & USART_CHSIZE_gm;
-	if(cfg.wordLen == USART_CHSIZE_5BIT_gc)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	if(int_cfg->wordLen == USART_CHSIZE_5BIT_gc)
 		*wLen = CfgUart::WORD_LEN_5;
-	else if(cfg.wordLen == USART_CHSIZE_6BIT_gc)
+	else if(int_cfg->wordLen == USART_CHSIZE_6BIT_gc)
 		*wLen = CfgUart::WORD_LEN_6;
-	else if(cfg.wordLen == USART_CHSIZE_7BIT_gc)
+	else if(int_cfg->wordLen == USART_CHSIZE_7BIT_gc)
 		*wLen = CfgUart::WORD_LEN_7;
-	else if(cfg.wordLen == USART_CHSIZE_8BIT_gc)
+	else if(int_cfg->wordLen == USART_CHSIZE_8BIT_gc)
 		*wLen = CfgUart::WORD_LEN_8;
-	else if(cfg.wordLen == USART_CHSIZE_9BIT_gc)
+	else if(int_cfg->wordLen == USART_CHSIZE_9BIT_gc)
 		*wLen = CfgUart::WORD_LEN_9;
 	else
 		*wLen = CfgUart::WORD_LEN_8;
@@ -517,7 +514,8 @@ SysErr GI::Dev::Uart::getStopBits(CfgUart::stopBits_e *sBits)
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
 	unsigned char tmp = ((USART_t*)udata)->CTRLC & USART_SBMODE_bm;
-	if(cfg.stopBits == USART_SBMODE_bm)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	if(int_cfg->stopBits == USART_SBMODE_bm)
 		*sBits = CfgUart::STOP_BITS_TWO;
 	else
 		*sBits = CfgUart::STOP_BITS_ONE;
@@ -529,11 +527,12 @@ SysErr GI::Dev::Uart::getParBits(CfgUart::parity_e *pBits)
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
 	unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_PMODE_gm;
-	if(cfg.parity == USART_PMODE_EVEN_gc)
+	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	if(int_cfg->parity == USART_PMODE_EVEN_gc)
 		*pBits = CfgUart::PAR_EVEN;
-	else if(cfg.parity == USART_PMODE_ODD_gc)
+	else if(int_cfg->parity == USART_PMODE_ODD_gc)
 		*pBits = CfgUart::PAR_ODD;
-	else if(cfg.parity == USART_PMODE_DISABLED_gc)
+	else if(int_cfg->parity == USART_PMODE_DISABLED_gc)
 		*pBits = CfgUart::PAR_NONE;
 	else
 		*pBits = CfgUart::PAR_NONE;

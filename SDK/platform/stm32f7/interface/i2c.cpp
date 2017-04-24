@@ -4,14 +4,12 @@
 /*#####################################################*/
 #include <interface/i2c.h>
 #include "driver/stm32f7xx_hal_gpio.h"
-#include "api/init.h"
+#include "api/spi.h"
 #include "driver/stm32f7xx_hal.h"
 #include "driver/stm32f7xx_hal_i2c.h"
 #include "driver/stm32f7xx_hal_i2c_ex.h"
 #include "driver/stm32f7xx_hal_rcc.h"
 #include <include/global.h>
-
-extern CfgI2c i2cCfg[];
 
 #define TIMING_CLEAR_MASK   ((uint32_t)0xF0FFFFFFU)  /*!<  I2C TIMING clear register Mask */
 #define I2C_TIMEOUT_ADDR    ((uint32_t)10000U)       /*!< 10 s  */
@@ -125,28 +123,18 @@ void sEE_ExitCriticalSection_UserCallback(void)
  * @param  None
  * @retval None
  */
-GI::Dev::I2c::I2c(const char *path)
+GI::Dev::I2c::I2c(ioSettings *cfg)
 {
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(i2cCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(i2cCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
-
-	if(strncmp(path, (char *)"i2c-", sizeof("i2c-") - 1))
+	memset(this, 0, sizeof(*this));
+	if(cfg->info.ioType != ioSettings::info_s::ioType_I2C)
+		return;
+	if(strncmp(cfg->info.name, (char *)"i2c-", sizeof("i2c-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
 	unsigned int dev_nr = 0;
-	if(sscanf(path + (sizeof("i2c-") - 1), "%u", &dev_nr) != 1)
+	if(sscanf(cfg->info.name + (sizeof("i2c-") - 1), "%u", &dev_nr) != 1)
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
@@ -157,16 +145,9 @@ GI::Dev::I2c::I2c(const char *path)
 		return;
 	}
 
-	memset(this, 0, sizeof(*this));
-	memcpy(&cfg, &i2cCfg[item_nr], sizeof(CfgI2c));
-	/*char _destPath[32];
-	unsigned int _portNr = 0;
-	int _nr_of_items = sscanf(busFileName, "%s%u", _destPath, &_portNr);
-	if (_nr_of_items != 2)
-	{
-		err = SYS_ERR_INVALID_COMMAND;
-		return;
-	}*/
+	this->cfg = cfg;
+	CfgI2c *int_cfg = (CfgI2c *)cfg->cfg;
+
 	I2C_HandleTypeDef *I2cHandle = (I2C_HandleTypeDef *) calloc(1,
 			sizeof(I2C_HandleTypeDef));
 	if (!I2cHandle)
@@ -223,24 +204,24 @@ GI::Dev::I2c::I2c(const char *path)
 	GPIO_InitStructure.Pull = GPIO_PULLUP;
 
 	if ((unsigned int) I2cHandle->Instance == I2C4_BASE
-			&& (cfg.scl >> 5) == IOB && (cfg.scl % 32) == 8)
+			&& (int_cfg->scl >> 5) == IOB && (int_cfg->scl % 32) == 8)
 		GPIO_InitStructure.Alternate = GPIO_AF1_I2C4;
 
-	GPIO_InitStructure.Pin = 1 << (cfg.scl % 32);
-	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[cfg.scl >> 5],
+	GPIO_InitStructure.Pin = 1 << (int_cfg->scl % 32);
+	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[int_cfg->scl >> 5],
 			&GPIO_InitStructure);
 
 	GPIO_InitStructure.Alternate = GPIO_AF4_I2C1;
 	if ((unsigned int) I2cHandle->Instance == I2C4_BASE
-			&& (cfg.sda >> 5) == IOB && (cfg.sda % 32) == 7)
+			&& (int_cfg->sda >> 5) == IOB && (int_cfg->sda % 32) == 7)
 		GPIO_InitStructure.Alternate = GPIO_AF11_I2C4;
 	else if ((unsigned int) I2cHandle->Instance == I2C4_BASE
-			&& (cfg.sda >> 5) == IOB && (cfg.sda % 32) == 9)
+			&& (int_cfg->sda >> 5) == IOB && (int_cfg->sda % 32) == 9)
 		GPIO_InitStructure.Alternate = GPIO_AF1_I2C4;
 	/*!< Configure sEE_I2C pins: SDA */
 	//GPIO_InitStructure.Mode = GPIO_OType_OD;
-	GPIO_InitStructure.Pin = 1 << (cfg.sda % 32);
-	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[cfg.sda >> 5],
+	GPIO_InitStructure.Pin = 1 << (int_cfg->sda % 32);
+	HAL_GPIO_Init(GET_GPIO_PORT_BASE_ADDR[int_cfg->sda >> 5],
 			&GPIO_InitStructure);
 
 	/*##-1- Configure the I2C peripheral #######################################*/
@@ -299,11 +280,12 @@ GI::Dev::I2c::~I2c()
 		break;
 #endif
 	}
-	HAL_GPIO_DeInit(GET_GPIO_PORT_BASE_ADDR[cfg.scl >> 5],
-			(1 << (cfg.scl % 32)));
+	CfgI2c *int_cfg = (CfgI2c *)cfg->cfg;
+	HAL_GPIO_DeInit(GET_GPIO_PORT_BASE_ADDR[int_cfg->scl >> 5],
+			(1 << (int_cfg->scl % 32)));
 
-	HAL_GPIO_DeInit(GET_GPIO_PORT_BASE_ADDR[cfg.sda >> 5],
-			(1 << (cfg.sda % 32)));
+	HAL_GPIO_DeInit(GET_GPIO_PORT_BASE_ADDR[int_cfg->sda >> 5],
+			(1 << (int_cfg->sda % 32)));
 	if (udata)
 		free(udata);
 }

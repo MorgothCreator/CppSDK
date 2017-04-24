@@ -15,8 +15,6 @@
 #include "driver/stm32f4xx_hal_gpio.h"
 #include "api/init.h"
 
-extern CfgGpio gpioCfg[];
-
 GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[] =
 {
 GPIOA
@@ -55,101 +53,29 @@ GPIOA
 #endif
 };
 
-#if 0
-void _gpio_init(/*gpio_port_enum GpioModuleNr*/)
+/*#####################################################*/
+GI::Dev::Gpio::Gpio(ioSettings *cfg)
 {
-	switch (GpioModuleNr)
-	{
-#ifdef __HAL_RCC_GPIOA_CLK_ENABLE
-		case 0:
-		__HAL_RCC_GPIOA_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOB_CLK_ENABLE
-		case 1:
-		__HAL_RCC_GPIOB_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOC_CLK_ENABLE
-		case 2:
-		__HAL_RCC_GPIOC_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOD_CLK_ENABLE
-		case 3:
-		__HAL_RCC_GPIOD_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOE_CLK_ENABLE
-		case 4:
-		__HAL_RCC_GPIOE_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOF_CLK_ENABLE
-		case 5:
-		__HAL_RCC_GPIOF_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOG_CLK_ENABLE
-		case 6:
-		__HAL_RCC_GPIOG_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOH_CLK_ENABLE
-		case 7:
-		__HAL_RCC_GPIOH_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOI_CLK_ENABLE
-		case 8:
-		__HAL_RCC_GPIOI_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOJ_CLK_ENABLE
-		case 9:
-		__HAL_RCC_GPIOJ_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOK_CLK_ENABLE
-		case 10:
-		__HAL_RCC_GPIOK_CLK_ENABLE();
-		break;
-#endif
-#ifdef __HAL_RCC_GPIOL_CLK_ENABLE
-		case 11:
-		__HAL_RCC_GPIOK_CLL_ENABLE();
-		break;
-#endif
-		default:
+	memset(this, 0, sizeof(*this));
+	if(cfg->info.ioType != ioSettings::info_s::ioType_GPIO)
 		return;
+	this->cfg = cfg;
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	if(!int_cfg->multiPin)
+	{
+		setMode(int_cfg->gpioMode);
+		setOut(int_cfg->defValue);
 	}
-}
-#endif
-/*#####################################################*/
-/*#####################################################*/
-GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin)
-{
-	memset(this, 0, sizeof(*this));
-	cfg.pin = pin;
-	cfg.gpioMode = mode;
-	cfg.multiPin = multiPin;
-	setMode(mode);
-	setOut(cfg.defValue);
-}
-
-GI::Dev::Gpio::Gpio(CfgGpio *gpioPin)
-{
-	memset(this, 0, sizeof(*this));
-	memcpy(&this->cfg, gpioPin, sizeof(CfgGpio));
-	setMode(cfg.gpioMode);
-	//setOut(cfg.defValue);
+	pinNr = int_cfg->pin % 32;
+	baseAddr = (void *)GET_GPIO_PORT_BASE_ADDR[int_cfg->pin >> 5];
 }
 
 /*#####################################################*/
 GI::Dev::Gpio::~Gpio()
 {
-	HAL_GPIO_DeInit((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.pin >> 5],
-			(unsigned int) (1 << (cfg.pin % 32)));
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	HAL_GPIO_DeInit((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->pin >> 5],
+			(unsigned int) (1 << (int_cfg->pin % 32)));
 }
 /*#####################################################*/
 /*#####################################################*/
@@ -157,21 +83,22 @@ SysErr GI::Dev::Gpio::setOut(unsigned int value)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
-	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[cfg.pin >> 5];
-	if (cfg.multiPin)
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[int_cfg->pin >> 5];
+	if (int_cfg->multiPin)
 	{
-		BaseAddr->ODR = (BaseAddr->ODR & ~(cfg.pin % 32))
-				| (value & (cfg.pin % 32));
+		BaseAddr->ODR = (BaseAddr->ODR & ~multiPinMask)
+				| (value & multiPinMask);
 	}
 	else
 	{
 		unsigned int state = value;
-		if (cfg.reverse)
+		if (int_cfg->reverse)
 			state = (~state) & 0x01;
 		if (state)
-			BaseAddr->BSRR |= 1 << (cfg.pin % 32);
+			BaseAddr->BSRR |= 1 << (int_cfg->pin % 32);
 		else
-			BaseAddr->BSRR |= 1 << ((cfg.pin % 32) + 16);
+			BaseAddr->BSRR |= 1 << ((int_cfg->pin % 32) + 16);
 	}
 	return SYS_ERR_OK;
 }
@@ -180,22 +107,23 @@ signed int GI::Dev::Gpio::in()
 {
 	if (!this)
 		return -1;
-	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[cfg.pin >> 5];
-	if (cfg.multiPin)
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[int_cfg->pin >> 5];
+	if (int_cfg->multiPin)
 	{
-		return BaseAddr->IDR & (cfg.pin % 32);
+		return BaseAddr->IDR & multiPinMask;
 	}
 	else
 	{
-		if (cfg.reverse)
+		if (int_cfg->reverse)
 		{
-			if(HAL_GPIO_ReadPin(BaseAddr, (unsigned short)(1 << (cfg.pin % 32))))
+			if(HAL_GPIO_ReadPin(BaseAddr, (unsigned short)(1 << (int_cfg->pin % 32))))
 				return false;
 			else
 				return true;
 		}
 		else
-			return HAL_GPIO_ReadPin(BaseAddr, (unsigned short)(1 << (cfg.pin % 32)));
+			return HAL_GPIO_ReadPin(BaseAddr, (unsigned short)(1 << (int_cfg->pin % 32)));
 	}
 }
 /*#####################################################*/
@@ -211,13 +139,16 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
-	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[cfg.pin >> 5];
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	if(int_cfg->multiPin)
+		return SYS_ERR_INVALID_COMMAND;
+	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[int_cfg->pin >> 5];
 
 	GPIO_InitTypeDef GPIO_InitStructure;
-	if (cfg.multiPin == false)
-		GPIO_InitStructure.Pin = 1 << (cfg.pin % 32);
+	if (int_cfg->multiPin == false)
+		GPIO_InitStructure.Pin = 1 << (int_cfg->pin % 32);
 	else
-		GPIO_InitStructure.Pin = (cfg.pin % 32);
+		return SYS_ERR_NOT_IMPLEMENTED;;
 	switch (mode)
 	{
 	case CfgGpio::GPIO_AIN:
@@ -250,6 +181,54 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 	}
 	GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 	HAL_GPIO_Init((GPIO_TypeDef *) BaseAddr, &GPIO_InitStructure);
+	return SYS_ERR_OK;
+}
+/*#####################################################*/
+SysErr GI::Dev::Gpio::setModeMultipin(CfgGpio::gpioMode_e mode, unsigned int mask)
+{
+	if (!this)
+		return SYS_ERR_INVALID_HANDLER;
+	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[int_cfg->pin >> 5];
+
+	GPIO_InitTypeDef GPIO_InitStructure;
+	if (int_cfg->multiPin == false)
+		return SYS_ERR_NOT_IMPLEMENTED;
+	else
+		GPIO_InitStructure.Pin = mask;
+	switch (mode)
+	{
+	case CfgGpio::GPIO_AIN:
+		GPIO_InitStructure.Mode = GPIO_MODE_ANALOG;
+		GPIO_InitStructure.Pull = GPIO_NOPULL;
+		break;
+	case CfgGpio::GPIO_IN_FLOATING:
+		GPIO_InitStructure.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStructure.Pull = GPIO_NOPULL;
+		break;
+	case CfgGpio::GPIO_IN_PULL_DOWN:
+		GPIO_InitStructure.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStructure.Pull = GPIO_PULLDOWN;
+		break;
+	case CfgGpio::GPIO_IN_PULL_UP:
+		GPIO_InitStructure.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStructure.Pull = GPIO_PULLUP;
+		break;
+	case CfgGpio::GPIO_OUT_OPEN_DRAIN:
+		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_OD;
+		//GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+		break;
+	case CfgGpio::GPIO_OUT_PUSH_PULL:
+		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+		//GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+		break;
+	default:
+		return SYS_ERR_INVALID_COMMAND;
+
+	}
+	GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+	HAL_GPIO_Init((GPIO_TypeDef *) BaseAddr, &GPIO_InitStructure);
+	multiPinMask = mask;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/

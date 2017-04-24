@@ -17,12 +17,11 @@
 
 #include <interface/spi.h>
 #include "api/init.h"
+#include <api/spi.h>
 
 #if (USE_DRIVER_SEMAPHORE == true)
 volatile bool spi_semaphore[SPI_INTERFACE_COUNT];
 #endif
-
-extern CfgSpi spiCfg[];
 
 extern GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[];
 
@@ -58,31 +57,21 @@ SPI_TypeDef* _SPI_[] =
  * @param hspi: SPI handle pointer
  * @retval None
  */
-GI::Dev::Spi::Spi(const char *path)
+GI::Dev::Spi::Spi(ioSettings *cfg)
 {
 	memset(this, 0, sizeof(*this));
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(spiCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(spiCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
+	if(cfg->info.ioType != ioSettings::info_s::ioType_SPI)
+		return;
 
-	if(strncmp(path, (char *)"spi-", sizeof("spi-") - 1))
+	if(strncmp(cfg->info.name, (char *)"spi-", sizeof("spi-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
 	unsigned int _portNr = (unsigned int)-1;
 	unsigned int _channel = (unsigned int)-1;
-	char *port = strchr(path, '-');
-	char *chan = strchr(path, '.');
+	char *port = strchr(cfg->info.name, '-');
+	char *chan = strchr(cfg->info.name, '.');
 	if(!port || !chan)
 	{
 		err = SYS_ERR_INVALID_PATH;
@@ -96,10 +85,10 @@ GI::Dev::Spi::Spi(const char *path)
 		return;
 	}
 
-	memset(this, 0, sizeof(*this));
 	unitNr = _portNr;
 	channel = _channel;
-	memcpy(&cfg, &spiCfg[item_nr], sizeof(CfgSpi));
+	this->cfg = cfg;
+	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 
 	userData = calloc(1, sizeof(SPI_HandleTypeDef));
 	if (!userData)
@@ -185,42 +174,42 @@ GI::Dev::Spi::Spi(const char *path)
 		return;
 	}
 
-	GPIO_InitStruct.Pin = 1 << (cfg.sck % 32);
-	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.sck >> 5],
+	GPIO_InitStruct.Pin = 1 << (int_cfg->sck % 32);
+	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->sck >> 5],
 			&GPIO_InitStruct);
 
 	/* SPI MISO GPIO pin configuration  */
-	GPIO_InitStruct.Pin = 1 << (cfg.miSo % 32);
-	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.miSo >> 5],
+	GPIO_InitStruct.Pin = 1 << (int_cfg->miSo % 32);
+	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->miSo >> 5],
 			&GPIO_InitStruct);
 
 	/* SPI MOSI GPIO pin configuration  */
-	GPIO_InitStruct.Pin = 1 << (cfg.moSi % 32);
-	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.moSi >> 5],
+	GPIO_InitStruct.Pin = 1 << (int_cfg->moSi % 32);
+	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->moSi >> 5],
 			&GPIO_InitStruct);
 
 	u32 new_speed = 0;
-	if(cfg.speed > 25000000)
+	if(int_cfg->speed > 25000000)
 		new_speed = 0;
-	else if(cfg.speed > 12500000)
+	else if(int_cfg->speed > 12500000)
 		new_speed = 1;
-	else if(cfg.speed > 6250000)
+	else if(int_cfg->speed > 6250000)
 		new_speed = 2;
-	else if(cfg.speed > 3125000)
+	else if(int_cfg->speed > 3125000)
 		new_speed = 3;
-	else if(cfg.speed > 1562500)
+	else if(int_cfg->speed > 1562500)
 		new_speed = 4;
-	else if(cfg.speed > 781250)
+	else if(int_cfg->speed > 781250)
 		new_speed = 5;
-	else if(cfg.speed > 390625)
+	else if(int_cfg->speed > 390625)
 		new_speed = 6;
 	else
 		new_speed = 7;
 
 	SpiHandle->Init.BaudRatePrescaler = (new_speed << 3) & SPI_BAUDRATEPRESCALER_256;
 	SpiHandle->Init.Direction = SPI_DIRECTION_2LINES;
-	SpiHandle->Init.CLKPhase = cfg.spiMode & 0x01;
-	SpiHandle->Init.CLKPolarity = cfg.spiMode & 0x02;
+	SpiHandle->Init.CLKPhase = int_cfg->spiMode & 0x01;
+	SpiHandle->Init.CLKPolarity = int_cfg->spiMode & 0x02;
 	SpiHandle->Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
 	SpiHandle->Init.CRCPolynomial = 7;
 	SpiHandle->Init.DataSize = SPI_DATASIZE_8BIT;
@@ -242,10 +231,10 @@ GI::Dev::Spi::Spi(const char *path)
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Pin = 1 << (cfg.cs % 32);
-	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
+	GPIO_InitStruct.Pin = 1 << (int_cfg->cs % 32);
+	HAL_GPIO_Init((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5],
 			&GPIO_InitStruct);
-	HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);	//OldCsSelect = -1;
+	HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_SET);	//OldCsSelect = -1;
 	err = SYS_ERR_OK;
 	return;
 }
@@ -322,23 +311,24 @@ GI::Dev::Spi::~Spi()
 #endif
 	}
 
+	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 	/*##-2- Disable peripherals and GPIO Clocks ################################*/
 	/* Configure SPI SCK as alternate function  */
 	HAL_GPIO_DeInit(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.sck >> 5],
-			(unsigned long) (1 << (cfg.sck % 32)));
+			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->sck >> 5],
+			(unsigned long) (1 << (int_cfg->sck % 32)));
 	/* Configure SPI MISO as alternate function  */
 	HAL_GPIO_DeInit(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.miSo >> 5],
-			(unsigned long) (1 << (cfg.miSo % 32)));
+			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->miSo >> 5],
+			(unsigned long) (1 << (int_cfg->miSo % 32)));
 	/* Configure SPI MOSI as alternate function  */
 	HAL_GPIO_DeInit(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.moSi >> 5],
-			(unsigned long) (1 << (cfg.moSi % 32)));
+			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->moSi >> 5],
+			(unsigned long) (1 << (int_cfg->moSi % 32)));
 
 	HAL_GPIO_DeInit(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
-			(unsigned long) (1 << (cfg.cs % 32)));
+			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5],
+			(unsigned long) (1 << (int_cfg->cs % 32)));
 	HAL_SPI_DeInit(SpiHandle);
 	if (!userData)
 		free(userData);
@@ -362,9 +352,10 @@ int GI::Dev::Spi::assert()
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = true;
 #endif
+	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 	HAL_GPIO_WritePin(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
-			(unsigned short) (1 << cfg.cs % 32), GPIO_PIN_RESET);
+			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5],
+			(unsigned short) (1 << int_cfg->cs % 32), GPIO_PIN_RESET);
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }
@@ -382,9 +373,10 @@ int GI::Dev::Spi::deassert()
 		err = SYS_ERR_INVALID_HANDLER;
 		return SYS_ERR_INVALID_HANDLER;
 	}
+	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 	HAL_GPIO_WritePin(
-			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5],
-			(unsigned short) (1 << cfg.cs % 32), GPIO_PIN_SET);
+			(GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5],
+			(unsigned short) (1 << int_cfg->cs % 32), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
@@ -403,12 +395,11 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 #if (USE_DRIVER_SEMAPHORE == true)
 	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
-#endif
-#if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = true;
 #endif
+	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 	if (!DisableCsHandle)
-		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_RESET);
 	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	memset(buffRead, 0xFF, lenRead);
@@ -419,7 +410,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		status = SYS_ERR_UNKNOWN;
 
 	if (!DisableCsHandle)
-		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
@@ -436,18 +427,17 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 #if (USE_DRIVER_SEMAPHORE == true)
 	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
-#endif
-#if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = true;
 #endif
+	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 	if (!DisableCsHandle)
-		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_RESET);
 	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	if (HAL_SPI_Receive(hspi, buff, len, 10) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
 	if (!DisableCsHandle)
-		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
@@ -466,19 +456,18 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 #if (USE_DRIVER_SEMAPHORE == true)
 	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
-#endif
-#if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = true;
 #endif
+	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 	if (!DisableCsHandle)
-		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_RESET);
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_RESET);
 	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	if (HAL_SPI_Transmit(hspi, buff, len, 10) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
 
 	if (!DisableCsHandle)
-		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[cfg.cs >> 5], (unsigned short) (1 << (cfg.cs % 32)), GPIO_PIN_SET);
+		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif

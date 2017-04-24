@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <interface/gpio.h>
 #include <include/global.h>
+#include <api/init_def.h>
 /*#####################################################*/
 //#define GPIO_DIR_OUTPUT						0
 //#define GPIO_DIR_INPUT						1
@@ -79,7 +80,7 @@ typedef struct
 #endif
 	}gpioMode;
 	bool multiPin;
-	u32 defValue;
+	unsigned int defValue;
 } CfgGpio;
 /*#####################################################*/
 namespace GI
@@ -89,18 +90,21 @@ namespace Dev
 class Gpio
 {
 public:
-	Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin);
-	Gpio(CfgGpio *gpioPin);
+	Gpio(ioSettings *cfg);
 	~Gpio();
 	SysErr setOut(unsigned int value);
 	signed int in();
 	SysErr getIn(unsigned long *value);
 	SysErr setMode(CfgGpio::gpioMode_e mode);
+	SysErr setModeMultipin(CfgGpio::gpioMode_e mode, unsigned int mask);
 	bool getState();
 	void idle();
 	SysErr err;
 
-	CfgGpio cfg;
+	ioSettings *cfg;
+	void *baseAddr;
+	unsigned char pinNr;
+	unsigned char multiPinMask;;
 
 	bool lastState;
 	struct
