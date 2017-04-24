@@ -382,7 +382,7 @@ int main(void)
 	 * Put a second window inside current window, a password protection window.
 	 *
 	 * The parrent window will be MainWindow, the name will be pass, 
-	 *	the x space between buttons wil be 2 pixels, the y space between buttons will be 2 pixels*/
+	 *	the x space between buttons wil be 2 pixels, the y space between buttons will be 2 pixels.
 	 */
 	newWindowPasswordNumeric(MainWindow, pass, 2, 2);
 	
