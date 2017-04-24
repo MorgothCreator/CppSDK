@@ -13,9 +13,9 @@
 #define USE_I2C                         1
 #define USE_SPI                         1
 
-#define CONSOLE_UART_IN		            "uart-5"
-#define CONSOLE_UART_OUT	            "uart-5"
-#define CONSOLE_UART_ERR	            "uart-5"
+#define CONSOLE_UART_IN		            "uart-2"
+#define CONSOLE_UART_OUT	            "uart-2"
+#define CONSOLE_UART_ERR	            "uart-2"
 
 #define USE_TERMINAL                    1
 

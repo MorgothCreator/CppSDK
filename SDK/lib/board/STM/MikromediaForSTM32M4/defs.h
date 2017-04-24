@@ -3,8 +3,8 @@
 
 #if defined(MikromediaForSTM32M4)
 
-#include "../MikromediaForSTM32M4/ffconf.h"
-#include "../MikromediaForSTM32M4/lwipopts.h"
+#include "ffconf.h"
+#include "lwipopts.h"
 #include <api/lcd_def.h>
 
 /*
@@ -39,10 +39,10 @@
  * If HSE_VALUE value is 0 the reference clock will be the HSI_VALUE.
  */
 
-#define HSE_VALUE						((uint32_t)8000000)	/*!< Value of the External oscillator in Hz*/
+#define HSE_VALUE						((uint32_t)0000000)	/*!< Value of the External oscillator in Hz*/
 #define LSE_VALUE  						((uint32_t)32768)		/*!< Value of the External Low Speed oscillator in Hz */
 #define EXTERNAL_CLOCK_VALUE    		((uint32_t)0000000)	/*!< Value of the External clock in Hz*/
-#define CORE_CLOCK_DEFAULT				((uint32_t)180000000)	/*!< Value of the Processor default clock in Hz*/
+#define CORE_CLOCK_DEFAULT				((uint32_t)168000000)	/*!< Value of the Processor default clock in Hz*/
 #define USE_EXT_RAM						false
 /*
  * Processor clock selection.
@@ -63,8 +63,8 @@
  * Screen settings
  */
 
-//#define SCREEN_CONFIG						lcd_ILI9341_PORTRAIT
-//#define USED_SCREEN_CONTROLLER			IntScreen
+#define SCREEN_CONFIG					lcd_MI0283_PORTRAIT
+#define USED_SCREEN_CONTROLLER			Mi0283Gpio
 /*
  * !Screen settings
  */
@@ -75,7 +75,7 @@
 #define TOUCH_SCREEN_ENABLE				true
 #define CAP_TOUCHSCREEN_I2C_UNIT		"i2c-0"
 #define CAP_TOUCHSCREEN_IRQ_PIN			"touchirq"
-//#define USED_TOUCHSCREEN				Stmpe811
+//#define USED_TOUCHSCREEN				Mi0283Gpio
 
 /*
  * !Touch screen settings
