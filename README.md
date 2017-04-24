@@ -19,6 +19,8 @@ For different platforms I use different IDE's to develop this SDK, see descripti
 
 -For NXP Kinetis E I use <a href="http://www.nxp.com/products/software-and-tools/hardware-development-tools/freedom-development-boards/kinetis-design-studio-integrated-development-environment-ide:KDS_IDE">Kinetis Design Studio IDE</a>, I extend the development on kinetis E series because is one of the 32bit cortex platform that can work on 5V power voltage, this has the advantage of high noise immunity and is designed for high reliable industrial applications.
 
+-For Atmel devices I use <a href="http://atmel.com">AtmelStudio 6.2 IDE</a>
+
 -For TI CC13xx I use <a href="http://processors.wiki.ti.com/index.php/Download_CCS">Code Composer Studio IDE</a>
 
 At this moment include next features:
@@ -59,30 +61,52 @@ At this moment include next features:
 		Board:
 			FRDM-KEAZ128Q80 configuration files.
 		Drivers:
-			I2C.
+			I2C(NOT TESTED).
 			UART.
-			SPI.
+			SPI(NOT TESTED).
 			GPIO.
       
  	CC13xx (Code Compose Studio):
 		Board:
 			SmartRF06 configuration files.
 		Drivers:
-			I2C.
+			I2C(NOT TESTED).
 			UART.
-			SPI.
+			SPI(NOT TESTED).
+			GPIO.
+      
+ 	ATxmega E5 (Atmel studio):
+		Board:
+			Xmega_E5_Xplained.
+		Drivers:
+			I2C(NOT TESTED).
+			UART.
+			SPI(NOT TESTED).
+			GPIO.
+      
+ 	ATSAMD21 (Atmel studio):
+		Board:
+			FeatherAdaloggerM0.
+		Drivers:
+			I2C(NOT TESTED).
+			UART.
+			SPI(NOT TESTED).
 			GPIO.
       
 > On all platforms will be ready to work with next list of sensors:
 
-* FT5x06 capacitive touch screen using I2C interface
-* Lepton FLIR sensor using SPI interface.
-* HIH613x humidity and temperature sensor using I2C interface.
-* MPU60x0 and MPU9x50 accelerometer, giroscope and temperature sensor using I2C interface.
 * AK8975 magnetometer sensor using I2C interface.
 * BMP180 pressure, altimeter and temperature sensor using I2C interface.
-* MPL3115a2 pressure altimeter and temperature sensor using I2C interface.
+* FT5x06 capacitive touch screen using I2C interface
+* HIH613x humidity and temperature sensor using I2C interface.
 * ILI9341 TFT display controller using SPI interface.
+* L3GD20 Gyroscope using SPI interface.
+* Lepton FLIR sensor using SPI interface.
+* MI0283 color LCD display controller using GPIO interface.
+* MPL3115a2 pressure altimeter and temperature sensor using I2C interface.
+* MPR121 capacitive touch controller using I2C interface.
+* MPU60x0 and MPU9x50 accelerometer, giroscope and temperature sensor using I2C interface.
+* STMPE811 resistive touchscreen controller using I2C interface.
 
 > On several platforms will be disponible next interfaces:
 
@@ -405,3 +429,5 @@ int main(void)
 	}
 }
 ```
+
+More detalied example you can see <a href="https://github.com/MorgothCreator/CppSDK/tree/master/Common">here</a>, it is a common application thet work on all platforms.
