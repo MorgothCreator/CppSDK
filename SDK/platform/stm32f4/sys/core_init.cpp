@@ -267,8 +267,8 @@ void GI::Sys::Clock::setClk(unsigned long fCpu)
 	memset(&RCC_ClkInitStruct, 0, sizeof(RCC_ClkInitTypeDef));
 	memset(&RCC_OscInitStruct, 0, sizeof(RCC_OscInitTypeDef));
 	memset(&PeriphClkInitStruct, 0, sizeof(RCC_PeriphCLKInitTypeDef));
-	SystemClock_Config(HSI_VALUE, HSE_VALUE, fCpu);
 	HAL_Init();
+	SystemClock_Config(HSI_VALUE, HSE_VALUE, fCpu);
 #if (defined(STM32F469xx) || defined(STM32F479xx)) && defined(STM32F469I_DISCO) && (USE_EXT_RAM == 1)
 	sdram = new sdRam_Stm32469IDisco();
 #elif defined(STM32F429xx) && defined(STM32F429I_DISCO) && (USE_EXT_RAM == 1)
