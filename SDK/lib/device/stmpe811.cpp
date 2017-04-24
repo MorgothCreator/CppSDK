@@ -838,7 +838,7 @@ SysErr GI::Sensor::Stmpe811::ioClearIt(unsigned char ioPin)
 	return write(STMPE811_REG_IO_FE, ioPin);
 }
 
-bool GI::Sensor::Stmpe811::readTouch(signed short *x, signed short *y, bool applyScale)
+SysErr GI::Sensor::Stmpe811::readTouch(signed short *x, signed short *y, bool applyScale)
 {
 	SysErr err;
 	unsigned char st;
@@ -928,12 +928,16 @@ void GI::Sensor::Stmpe811::touchCalibrate()
 	pDisplay->cacheClean(0, 0, pDisplay->LcdTimings->X,
 			pDisplay->LcdTimings->Y);
 
-	while (!readTouch(&TouchX, &TouchY, false)) {
+	readTouch(&TouchX, &TouchY, false);
+	while (!isTsPress) {
+		readTouch(&TouchX, &TouchY, false);
 		GI::Sys::Timer::delay(STMPE811_TIME);
 	}
 	LcdTouch_L_Calibration_Value = (double) TouchX;
 	LcdTouch_U_Calibration_Value = (double) TouchY;
-	while (readTouch(&TouchX, &TouchY, false)) {
+	readTouch(&TouchX, &TouchY, false);
+	while (isTsPress) {
+		readTouch(&TouchX, &TouchY, false);
 		GI::Sys::Timer::delay(STMPE811_TIME);
 	}
 	pDisplay->drawRectangle(0, 0, pDisplay->LcdTimings->X,
@@ -950,13 +954,17 @@ void GI::Sensor::Stmpe811::touchCalibrate()
 	pDisplay->cacheClean(0, 0, pDisplay->LcdTimings->X,
 			pDisplay->LcdTimings->Y);
 
-	while (!readTouch(&TouchX, &TouchY, false)) {
+	readTouch(&TouchX, &TouchY, false);
+	while (!isTsPress) {
+		readTouch(&TouchX, &TouchY, false);
 		GI::Sys::Timer::delay(STMPE811_TIME);
 	}
 
 	LcdTouch_R_Calibration_Value = (double) TouchX;
 	LcdTouch_U_Calibration_Value += (double) TouchY;
-	while (readTouch(&TouchX, &TouchY, false)) {
+	readTouch(&TouchX, &TouchY, false);
+	while (isTsPress) {
+		readTouch(&TouchX, &TouchY, false);
 		GI::Sys::Timer::delay(STMPE811_TIME);
 	}
 	pDisplay->drawRectangle(0, 0, pDisplay->LcdTimings->X,
@@ -974,13 +982,17 @@ void GI::Sensor::Stmpe811::touchCalibrate()
 	pDisplay->cacheClean(0, 0, pDisplay->LcdTimings->X,
 			pDisplay->LcdTimings->Y);
 
-	while (!readTouch(&TouchX, &TouchY, false)) {
+	readTouch(&TouchX, &TouchY, false);
+	while (!isTsPress) {
+		readTouch(&TouchX, &TouchY, false);
 		GI::Sys::Timer::delay(STMPE811_TIME);
 	}
 
 	LcdTouch_R_Calibration_Value += (double) TouchX;
 	LcdTouch_D_Calibration_Value = (double) TouchY;
-	while (readTouch(&TouchX, &TouchY, false)) {
+	readTouch(&TouchX, &TouchY, false);
+	while (isTsPress) {
+		readTouch(&TouchX, &TouchY, false);
 		GI::Sys::Timer::delay(STMPE811_TIME);
 	}
 	pDisplay->drawRectangle(0, 0, pDisplay->LcdTimings->X,
@@ -996,13 +1008,17 @@ void GI::Sensor::Stmpe811::touchCalibrate()
 	pDisplay->cacheClean(0, 0, pDisplay->LcdTimings->X,
 			pDisplay->LcdTimings->Y);
 
-	while (!readTouch(&TouchX, &TouchY, false)) {
+	readTouch(&TouchX, &TouchY, false);
+	while (!isTsPress) {
+		readTouch(&TouchX, &TouchY, false);
 		GI::Sys::Timer::delay(STMPE811_TIME);
 	}
 
 	LcdTouch_L_Calibration_Value += (double) TouchX;
 	LcdTouch_D_Calibration_Value += (double) TouchY;
-	while (readTouch(&TouchX, &TouchY, false)) {
+	readTouch(&TouchX, &TouchY, false);
+	while (isTsPress) {
+		readTouch(&TouchX, &TouchY, false);
 		GI::Sys::Timer::delay(STMPE811_TIME);
 	}
 	pDisplay->drawRectangle(0, 0, pDisplay->LcdTimings->X,

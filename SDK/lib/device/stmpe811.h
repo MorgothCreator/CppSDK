@@ -283,7 +283,7 @@ public:
 private:
 	SysErr readX(unsigned short *x);
 	SysErr readY(unsigned short *y);
-	bool readTouch(signed short *x, signed short *y, bool applyScale);
+	SysErr readTouch(signed short *x, signed short *y, bool applyScale);
 	bool isTsPress;
 	bool intIsPressed;
 };
