@@ -42,7 +42,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
 
-#define SCREEN_INTERFACE_COUNT	1
+#define SCREEN_INTERFACE_COUNT	0
 
 #endif /* __LCD_H */
 
