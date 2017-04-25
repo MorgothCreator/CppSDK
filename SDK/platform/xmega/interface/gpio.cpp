@@ -123,7 +123,7 @@ GI::Dev::Gpio::Gpio(ioSettings *cfg)
 /*#####################################################*/
 GI::Dev::Gpio::~Gpio()
 {
-	setMode(CfgGpio::GPIO_IN_FLOATING);
+	setMode(CfgGpio::GPIO_IN_FLOATING, multiPinMask);
 }
 /*#####################################################*/
 SysErr GI::Dev::Gpio::setOut(unsigned int value)
@@ -191,8 +191,9 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 
 	if(int_cfg->multiPin)
 		return SYS_ERR_INVALID_COMMAND;
+	multiPinMask = 1 << (int_cfg->pin % 8);
+	
 	volatile unsigned char *ctl_pin = &BaseAddr->PIN0CTRL;
-
 	switch (mode)
 	{
 	case CfgGpio::GPIO_IN_PULL_UP:
@@ -218,7 +219,7 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
-SysErr GI::Dev::Gpio::setModeMultipin(CfgGpio::gpioMode_e mode, unsigned int mask)
+SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode, unsigned int mask)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
@@ -226,6 +227,7 @@ SysErr GI::Dev::Gpio::setModeMultipin(CfgGpio::gpioMode_e mode, unsigned int mas
 	if(!int_cfg->multiPin)
 		return SYS_ERR_INVALID_COMMAND;
 	PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
+    multiPinMask = mask;
 
 	volatile unsigned char *ctl_pin = &BaseAddr->PIN0CTRL;
 	unsigned int cnt_pins = 0;

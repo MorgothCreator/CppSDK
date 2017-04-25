@@ -48,17 +48,8 @@ GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[] =
 		,GPIOL
 #endif
 };
-/*#####################################################*/
-/*GI::Dev::Gpio::Gpio(unsigned int pin, CfgGpio::gpioMode_e mode, bool multiPin)
-{
-	memset(this, 0, sizeof(*this));
-	int_cfg->pin = pin;
-	int_cfg->gpioMode = mode;
-	int_cfg->multiPin = multiPin;
-	setMode(mode);
-	setOut(int_cfg->defValue);
-}*/
 
+/*#####################################################*/
 GI::Dev::Gpio::Gpio(ioSettings *cfg)
 {
 	memset(this, 0, sizeof(*this));
@@ -74,7 +65,6 @@ GI::Dev::Gpio::Gpio(ioSettings *cfg)
 	pinNr = int_cfg->pin % 32;
 	baseAddr = (void *)GET_GPIO_PORT_BASE_ADDR[int_cfg->pin >> 5];
 }
-
 /*#####################################################*/
 GI::Dev::Gpio::~Gpio()
 {
@@ -145,13 +135,13 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
 	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
+	if(int_cfg->multiPin)
+		return SYS_ERR_INVALID_COMMAND;
 	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[int_cfg->pin >> 5];
 
 	GPIO_InitTypeDef GPIO_InitStructure;
-	if (int_cfg->multiPin == false)
-		GPIO_InitStructure.Pin = 1 << (int_cfg->pin % 32);
-	else
-		return SYS_ERR_NOT_IMPLEMENTED;;
+	multiPinMask = 1 << (int_cfg->pin % 32);
+	GPIO_InitStructure.Pin = multiPinMask;
 	switch (mode)
 	{
 	case CfgGpio::GPIO_AIN:
@@ -172,9 +162,11 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 		break;
 	case CfgGpio::GPIO_OUT_OPEN_DRAIN:
 		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_OD;
+		GPIO_InitStructure.Pull = GPIO_NOPULL;
 		break;
 	case CfgGpio::GPIO_OUT_PUSH_PULL:
 		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStructure.Pull = GPIO_NOPULL;
 		break;
 	default:
 		return SYS_ERR_INVALID_COMMAND;
@@ -185,7 +177,7 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
-SysErr GI::Dev::Gpio::setModeMultipin(CfgGpio::gpioMode_e mode, unsigned int mask)
+SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode, unsigned int mask)
 {
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
@@ -193,10 +185,10 @@ SysErr GI::Dev::Gpio::setModeMultipin(CfgGpio::gpioMode_e mode, unsigned int mas
 	GPIO_TypeDef *BaseAddr = GET_GPIO_PORT_BASE_ADDR[int_cfg->pin >> 5];
 
 	GPIO_InitTypeDef GPIO_InitStructure;
-	if (int_cfg->multiPin == false)
+	if (!int_cfg->multiPin)
 		return SYS_ERR_NOT_IMPLEMENTED;
-	else
-		GPIO_InitStructure.Pin = mask;
+	GPIO_InitStructure.Pin = mask;
+    multiPinMask = mask;
 	switch (mode)
 	{
 	case CfgGpio::GPIO_AIN:
@@ -217,11 +209,11 @@ SysErr GI::Dev::Gpio::setModeMultipin(CfgGpio::gpioMode_e mode, unsigned int mas
 		break;
 	case CfgGpio::GPIO_OUT_OPEN_DRAIN:
 		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_OD;
-		//GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+		GPIO_InitStructure.Pull = GPIO_NOPULL;
 		break;
 	case CfgGpio::GPIO_OUT_PUSH_PULL:
 		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-		//GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+		GPIO_InitStructure.Pull = GPIO_NOPULL;
 		break;
 	default:
 		return SYS_ERR_INVALID_COMMAND;

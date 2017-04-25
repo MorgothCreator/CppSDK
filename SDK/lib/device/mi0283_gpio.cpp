@@ -20,7 +20,7 @@ GI::Dev::Mi0283Gpio::Mi0283Gpio(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
     {
         return;
     }
-    DATA->setModeMultipin(CfgGpio::GPIO_OUT_PUSH_PULL, 0x000000FF);
+    DATA->setMode(CfgGpio::GPIO_OUT_PUSH_PULL, 0x000000FF);
     LcdTimings = timings;
     reset();
     GI::Dev::Mi0283Gpio::_setOrientation(this, LcdTimings->orientation);
