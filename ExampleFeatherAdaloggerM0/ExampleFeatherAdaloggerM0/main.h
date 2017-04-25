@@ -12,6 +12,15 @@
 #define USE_UART                        true
 #define USE_I2C                         false
 #define USE_SPI                         false
+#define USE_SCREEN                      false
+
+#define CALIBRATE_TOUCH_ON_STARTUP		false
+
+#if USE_SPI
+#define USE_MMCSD_SPI                   false
+#define USED_MMCSD_SPI_UNIT             "spi-0.0"
+#endif
+
 
 #define CONSOLE_UART_IN		            "uart-5"
 #define CONSOLE_UART_OUT	            "uart-5"
