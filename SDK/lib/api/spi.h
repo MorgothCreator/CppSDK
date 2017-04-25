@@ -46,6 +46,7 @@ public:
 	SysErr setSpeed(unsigned long baud);
 	SysErr err;
 	ioSettings *cfg;
+    bool disableCsHandle;
 private:
 	unsigned char oldCsSelect;
 	unsigned char unitNr;
@@ -56,7 +57,6 @@ private:
 	volatile unsigned char Priority;
 	volatile unsigned char Mode;
 	volatile unsigned int BytesCnt;
-	bool DisableCsHandle;
 	bool cPol;bool cPha;
 	bool lsbFirst;
 	unsigned char wordSize;

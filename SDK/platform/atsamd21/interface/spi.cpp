@@ -277,7 +277,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		return SYS_ERR_BUSY;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		port_pin_set_output_level(int_cfg->cs, 0);
 	}//((struct spi_module *)userData)
@@ -287,7 +287,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 	if (status == SYS_ERR_OK && spi_read_buffer_wait(((struct spi_module *)userData), buffRead, lenRead, 0xFF) != STATUS_OK)
 		status = SYS_ERR_UNKNOWN;
 
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		port_pin_set_output_level(int_cfg->cs, 1);
 	}
@@ -309,7 +309,7 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_BUSY;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		port_pin_set_output_level(int_cfg->cs, 0);
 	}
@@ -317,7 +317,7 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 	if (spi_read_buffer_wait(((struct spi_module *)userData), buff, len, 0xFF) != STATUS_OK)
 		status = SYS_ERR_UNKNOWN;
 
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		port_pin_set_output_level(int_cfg->cs, 1);
 	}
@@ -341,7 +341,7 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_BUSY;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		port_pin_set_output_level(int_cfg->cs, 0);
 	}
@@ -350,7 +350,7 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 	if (spi_write_buffer_wait(((struct spi_module *)userData), buff, len) != STATUS_OK)
 		status = SYS_ERR_UNKNOWN;
 
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		port_pin_set_output_level(int_cfg->cs, 1);
 	}

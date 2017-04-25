@@ -176,7 +176,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 	spi_semaphore[unitNr] = true;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->cs >> 5];
 		BaseAddr->OUTCLR = BIT_MASK_TABLE[int_cfg->cs % 8];
@@ -205,7 +205,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		while(!(port->STATUS & SPI_IF_bm)) { }
 		*tmp_buff_ptr++ = port->DATA;
 	}
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->cs >> 5];
 		BaseAddr->OUTSET = BIT_MASK_TABLE[int_cfg->cs % 8];
@@ -229,7 +229,7 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 	spi_semaphore[unitNr] = true;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->cs >> 5];
 		BaseAddr->OUTCLR = BIT_MASK_TABLE[int_cfg->cs % 8];
@@ -247,7 +247,7 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 		*tmp_buff_ptr++ = port->DATA;
 	}
 
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->cs >> 5];
 		BaseAddr->OUTSET = BIT_MASK_TABLE[int_cfg->cs % 8];
@@ -273,7 +273,7 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 	spi_semaphore[unitNr] = true;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->cs >> 5];
 		BaseAddr->OUTCLR = BIT_MASK_TABLE[int_cfg->cs % 8];
@@ -292,7 +292,7 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 		//tmp_read = port->DATA;
 	}
 
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->cs >> 5];
 		BaseAddr->OUTSET = BIT_MASK_TABLE[int_cfg->cs % 8];

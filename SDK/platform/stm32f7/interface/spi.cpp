@@ -369,7 +369,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 	spi_semaphore[unitNr] = true;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_RESET);
 	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
@@ -380,7 +380,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 	if (HAL_SPI_Receive(hspi, buffRead, lenRead, 10) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
 
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
@@ -403,13 +403,13 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 	spi_semaphore[unitNr] = true;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_RESET);
 	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	if (HAL_SPI_Receive(hspi, buff, len, 100) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
@@ -434,14 +434,14 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 	spi_semaphore[unitNr] = true;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_RESET);
 	SysErr status = SYS_ERR_OK;
 	SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *) userData;
 	if (HAL_SPI_Transmit(hspi, buff, len, 10) != HAL_OK)
 		status = SYS_ERR_UNKNOWN;
 
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 		HAL_GPIO_WritePin((GPIO_TypeDef *) GET_GPIO_PORT_BASE_ADDR[int_cfg->cs >> 5], (unsigned short) (1 << (int_cfg->cs % 32)), GPIO_PIN_SET);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;

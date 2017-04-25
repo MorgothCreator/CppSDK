@@ -96,7 +96,7 @@ public:
 	signed int in();
 	SysErr getIn(unsigned long *value);
 	SysErr setMode(CfgGpio::gpioMode_e mode);
-	SysErr setModeMultipin(CfgGpio::gpioMode_e mode, unsigned int mask);
+	SysErr setMode(CfgGpio::gpioMode_e mode, unsigned int mask);
 	bool getState();
 	void idle();
 	SysErr err;
@@ -104,7 +104,7 @@ public:
 	ioSettings *cfg;
 	void *baseAddr;
 	unsigned char pinNr;
-	unsigned char multiPinMask;;
+	unsigned int multiPinMask;;
 
 	bool lastState;
 	struct

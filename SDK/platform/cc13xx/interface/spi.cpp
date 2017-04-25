@@ -30,31 +30,21 @@ extern CfgSpi spiCfg[];
  * @param hspi: SPI handle pointer
  * @retval None
  */
-GI::Dev::Spi::Spi(const char *path)
+GI::Dev::Spi::Spi(ioSettings *cfg)
 {
-	memset(this, 0, sizeof(*this));
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(spiCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(spiCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
+    memset(this, 0, sizeof(*this));
+    if(cfg->info.ioType != ioSettings::info_s::ioType_SPI)
+        return;
 
-	if(strncmp(path, (char *)"spi-", sizeof("spi-") - 1))
+	if(strncmp(cfg->info.name, (char *)"spi-", sizeof("spi-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
 	unsigned int _portNr = (unsigned int)-1;
 	unsigned int _channel = (unsigned int)-1;
-	char *port = strchr(path, '-');
-	char *chan = strchr(path, '.');
+	char *port = strchr(cfg->info.name, '-');
+	char *chan = strchr(cfg->info.name, '.');
 	if(!port || !chan)
 	{
 		err = SYS_ERR_INVALID_PATH;
@@ -68,37 +58,37 @@ GI::Dev::Spi::Spi(const char *path)
 		return;
 	}
 
-	memset(this, 0, sizeof(*this));
 	unitNr = _portNr;
 	channel = _channel;
-	memcpy(&cfg, &spiCfg[item_nr], sizeof(CfgSpi));
+    this->cfg = cfg;
+    CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 
 	switch(_portNr)
 	{
 	case 0:
 		SSIDisable(SSI0_BASE);
-		IOCPortConfigureSet((cfg.sck % 32), IOC_PORT_MCU_SSI0_CLK, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (cfg.sck % 32));
-		IOCPortConfigureSet((cfg.miSo % 32), IOC_PORT_MCU_SSI0_RX, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_ENABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.miSo % 32));
-		IOCPortConfigureSet((cfg.moSi % 32), IOC_PORT_MCU_SSI0_TX, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (cfg.moSi % 32));
-		IOCPortConfigureSet((cfg.cs % 32), IOC_PORT_MCU_SSI0_FSS, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (cfg.cs % 32));
-		SSIConfigSetExpClk(SSI0_BASE, CoreFreq, SSI_FRF_MOTO_MODE_3, cfg.spiMode, cfg.speed, 8);
+		IOCPortConfigureSet((int_cfg->sck % 32), IOC_PORT_MCU_SSI0_CLK, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (int_cfg->sck % 32));
+		IOCPortConfigureSet((int_cfg->miSo % 32), IOC_PORT_MCU_SSI0_RX, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_ENABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->miSo % 32));
+		IOCPortConfigureSet((int_cfg->moSi % 32), IOC_PORT_MCU_SSI0_TX, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (int_cfg->moSi % 32));
+		IOCPortConfigureSet((int_cfg->cs % 32), IOC_PORT_MCU_SSI0_FSS, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (int_cfg->cs % 32));
+		SSIConfigSetExpClk(SSI0_BASE, CoreFreq, SSI_FRF_MOTO_MODE_3, int_cfg->spiMode, int_cfg->speed, 8);
 		userData = (void *)SSI0_BASE;
 		break;
 	case 1:
 		SSIDisable(SSI1_BASE);
-		IOCPortConfigureSet((cfg.sck % 32), IOC_PORT_MCU_SSI1_CLK, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (cfg.sck % 32));
-		IOCPortConfigureSet((cfg.miSo % 32), IOC_PORT_MCU_SSI1_RX, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_ENABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.miSo % 32));
-		IOCPortConfigureSet((cfg.moSi % 32), IOC_PORT_MCU_SSI1_TX, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (cfg.moSi % 32));
-		IOCPortConfigureSet((cfg.cs % 32), IOC_PORT_MCU_SSI1_FSS, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (cfg.cs % 32));
-		SSIConfigSetExpClk(SSI1_BASE, CoreFreq, SSI_FRF_MOTO_MODE_3, cfg.spiMode, cfg.speed, 8);
+		IOCPortConfigureSet((int_cfg->sck % 32), IOC_PORT_MCU_SSI1_CLK, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (int_cfg->sck % 32));
+		IOCPortConfigureSet((int_cfg->miSo % 32), IOC_PORT_MCU_SSI1_RX, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_ENABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->miSo % 32));
+		IOCPortConfigureSet((int_cfg->moSi % 32), IOC_PORT_MCU_SSI1_TX, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (int_cfg->moSi % 32));
+		IOCPortConfigureSet((int_cfg->cs % 32), IOC_PORT_MCU_SSI1_FSS, IOC_CURRENT_8MA | IOC_STRENGTH_MAX | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (int_cfg->cs % 32));
+		SSIConfigSetExpClk(SSI1_BASE, CoreFreq, SSI_FRF_MOTO_MODE_3, int_cfg->spiMode, int_cfg->speed, 8);
 		userData = (void *)SSI1_BASE;
 		break;
 	default:
@@ -123,29 +113,30 @@ GI::Dev::Spi::~Spi()
 		return;
 	}
 	SSIDisable((unsigned int)userData);
+    CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 	switch(unitNr)
 	{
 	case 0:
-		IOCPortConfigureSet((cfg.sck % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.sck % 32));
-		IOCPortConfigureSet((cfg.miSo % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.miSo % 32));
-		IOCPortConfigureSet((cfg.moSi % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.moSi % 32));
-		IOCPortConfigureSet((cfg.cs % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.cs % 32));
-		SSIConfigSetExpClk(SSI0_BASE, CoreFreq, SSI_FRF_MOTO_MODE_0, cfg.spiMode, cfg.speed, 8);
+		IOCPortConfigureSet((int_cfg->sck % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->sck % 32));
+		IOCPortConfigureSet((int_cfg->miSo % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->miSo % 32));
+		IOCPortConfigureSet((int_cfg->moSi % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->moSi % 32));
+		IOCPortConfigureSet((int_cfg->cs % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->cs % 32));
+		SSIConfigSetExpClk(SSI0_BASE, CoreFreq, SSI_FRF_MOTO_MODE_0, int_cfg->spiMode, int_cfg->speed, 8);
 		break;
 	case 1:
-		IOCPortConfigureSet((cfg.sck % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.sck % 32));
-		IOCPortConfigureSet((cfg.miSo % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.miSo % 32));
-		IOCPortConfigureSet((cfg.moSi % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.moSi % 32));
-		IOCPortConfigureSet((cfg.cs % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.cs % 32));
-		SSIConfigSetExpClk(SSI1_BASE, CoreFreq, SSI_FRF_MOTO_MODE_0, cfg.spiMode, cfg.speed, 8);
+		IOCPortConfigureSet((int_cfg->sck % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->sck % 32));
+		IOCPortConfigureSet((int_cfg->miSo % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->miSo % 32));
+		IOCPortConfigureSet((int_cfg->moSi % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->moSi % 32));
+		IOCPortConfigureSet((int_cfg->cs % 32), IOC_PORT_GPIO, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+		HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->cs % 32));
+		SSIConfigSetExpClk(SSI1_BASE, CoreFreq, SSI_FRF_MOTO_MODE_0, int_cfg->spiMode, int_cfg->speed, 8);
 		break;
 	}
 }
@@ -166,7 +157,8 @@ int GI::Dev::Spi::assert()
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = true;
 #endif
-	HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = 1 << (cfg.cs % 32);
+    CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
+	HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = 1 << (int_cfg->cs % 32);
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;
 }
@@ -184,7 +176,8 @@ int GI::Dev::Spi::deassert()
 		err = SYS_ERR_INVALID_HANDLER;
 		return SYS_ERR_INVALID_HANDLER;
 	}
-	HWREG(GPIO_BASE + GPIO_O_DOUTSET31_0) = 1 << (cfg.cs % 32);
+    CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
+	HWREG(GPIO_BASE + GPIO_O_DOUTSET31_0) = 1 << (int_cfg->cs % 32);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
@@ -203,9 +196,11 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 #if (USE_DRIVER_SEMAPHORE == true)
 	if (!spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+    spi_semaphore[unitNr] = true;
 #endif
-	if (!DisableCsHandle)
-		HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = 1 << (cfg.cs % 32);
+    CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
+	if (!disableCsHandle)
+		HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = 1 << (int_cfg->cs % 32);
 	SysErr status = SYS_ERR_OK;
 	unsigned int transfer_cnt = 0;
 	for(; transfer_cnt < lenWrite; transfer_cnt++) {
@@ -219,8 +214,8 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		buffRead[transfer_cnt] = pui32Data;
 	}
 
-	if (!DisableCsHandle)
-		HWREG(GPIO_BASE + GPIO_O_DOUTSET31_0) = 1 << (cfg.cs % 32);
+	if (!disableCsHandle)
+		HWREG(GPIO_BASE + GPIO_O_DOUTSET31_0) = 1 << (int_cfg->cs % 32);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
@@ -237,9 +232,11 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 #if (USE_DRIVER_SEMAPHORE == true)
 	if (!spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+    spi_semaphore[unitNr] = true;
 #endif
-	if (!DisableCsHandle)
-		HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = 1 << (cfg.cs % 32);
+    CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
+	if (!disableCsHandle)
+		HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = 1 << (int_cfg->cs % 32);
 	SysErr status = SYS_ERR_OK;
 	unsigned int transfer_cnt = 0;
 	for(; transfer_cnt < len; transfer_cnt++) {
@@ -248,8 +245,8 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 		SSIDataGet((unsigned int)userData, &pui32Data);
 		buff[transfer_cnt] = pui32Data;
 	}
-	if (!DisableCsHandle)
-		HWREG(GPIO_BASE + GPIO_O_DOUTSET31_0) = 1 << (cfg.cs % 32);
+	if (!disableCsHandle)
+		HWREG(GPIO_BASE + GPIO_O_DOUTSET31_0) = 1 << (int_cfg->cs % 32);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
@@ -268,17 +265,19 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 #if (USE_DRIVER_SEMAPHORE == true)
 	if (!spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
+    spi_semaphore[unitNr] = true;
 #endif
-	if (!DisableCsHandle)
-		HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = 1 << (cfg.cs % 32);
+    CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
+	if (!disableCsHandle)
+		HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = 1 << (int_cfg->cs % 32);
 	SysErr status = SYS_ERR_OK;
 	unsigned int transfer_cnt = 0;
 	for(; transfer_cnt < len; transfer_cnt++) {
 		SSIDataPut((unsigned int)userData, buff[transfer_cnt]);
 	}
 
-	if (!DisableCsHandle)
-		HWREG(GPIO_BASE + GPIO_O_DOUTSET31_0) = 1 << (cfg.cs % 32);
+	if (!disableCsHandle)
+		HWREG(GPIO_BASE + GPIO_O_DOUTSET31_0) = 1 << (int_cfg->cs % 32);
 #if (USE_DRIVER_SEMAPHORE == true)
 	spi_semaphore[unitNr] = false;
 #endif
@@ -312,8 +311,9 @@ SysErr GI::Dev::Spi::setSpeed(unsigned long baud)
 	while (spi_semaphore[unitNr])
 		;
 #endif
+    CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
 	SSIDisable((unsigned int)userData);
-	SSIConfigSetExpClk((unsigned int)userData, CoreFreq, SSI_FRF_MOTO_MODE_0, cfg.spiMode, cfg.speed, 8);
+	SSIConfigSetExpClk((unsigned int)userData, CoreFreq, SSI_FRF_MOTO_MODE_0, int_cfg->spiMode, int_cfg->speed, 8);
 	SSIEnable((unsigned int)userData);
 	err = SYS_ERR_OK;
 	return SYS_ERR_OK;

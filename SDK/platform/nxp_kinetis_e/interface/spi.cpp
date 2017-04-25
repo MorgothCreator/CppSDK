@@ -146,7 +146,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		return SYS_ERR_BUSY;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
 		GPIO_Type *BaseAddr = GpioAddr[int_cfg->cs >> 5];
@@ -159,7 +159,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		status = SYS_ERR_UNKNOWN;
 	if (SPI_TransferWait(hspi, buffRead, buffRead, lenRead) != SPI_ERR_SUCCESS)
 		status = SYS_ERR_UNKNOWN;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
 		GPIO_Type *BaseAddr = GpioAddr[int_cfg->cs >> 5];
@@ -183,7 +183,7 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_BUSY;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
 		GPIO_Type *BaseAddr = GpioAddr[int_cfg->cs >> 5];
@@ -193,7 +193,7 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 	SPI_Type *hspi = (SPI_Type *) userData;
 	if (SPI_TransferWait(hspi, buff, buff, len) != SPI_ERR_SUCCESS)
 		status = SYS_ERR_UNKNOWN;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
 		GPIO_Type *BaseAddr = GpioAddr[int_cfg->cs >> 5];
@@ -219,7 +219,7 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_BUSY;
 #endif
 	CfgSpi *int_cfg = (CfgSpi *)cfg->cfg;
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
 		GPIO_Type *BaseAddr = GpioAddr[int_cfg->cs >> 5];
@@ -230,7 +230,7 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 	if (SPI_TransferWait(hspi, buff, buff, len) != SPI_ERR_SUCCESS)
 		status = SYS_ERR_UNKNOWN;
 
-	if (!DisableCsHandle)
+	if (!disableCsHandle)
 	{
 		GPIO_Type *GpioAddr[] = GPIO_BASE_PTRS;
 		GPIO_Type *BaseAddr = GpioAddr[int_cfg->cs >> 5];
