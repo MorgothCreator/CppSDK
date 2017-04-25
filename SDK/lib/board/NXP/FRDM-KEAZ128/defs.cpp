@@ -20,9 +20,9 @@ ioSetCfgGpio(hbtn_1, 	"hbtn-1",	pin_mux_convert_to_pin(IOB,  5),CfgGpio::GPIO_IN
 
 ioSetCfgUart(uart_2, "uart-2", pin_mux_convert_to_pin(IOD, 7)	, pin_mux_convert_to_pin(IOD, 6)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC);
 
-ioSetCfgI2c(i2c_0, "i2c-0", pin_mux_convert_to_pin(IOB, 8), pin_mux_convert_to_pin(IOB, 9), CfgI2c::i2cMode0, 100000);
+//ioSetCfgI2c(i2c_0, "i2c-0", pin_mux_convert_to_pin(IOB, 8), pin_mux_convert_to_pin(IOB, 9), CfgI2c::i2cMode0, 100000);
 
-ioSetCfgSpi(spi_0_0, "spi-0.0", pin_mux_convert_to_pin(IOA,  5), pin_mux_convert_to_pin(IOB,  5), pin_mux_convert_to_pin(IOB,  4), pin_mux_convert_to_pin(IOA, 15), CfgSpi::spiMode0, 500000, false);
+//ioSetCfgSpi(spi_0_0, "spi-0.0", pin_mux_convert_to_pin(IOA,  5), pin_mux_convert_to_pin(IOB,  5), pin_mux_convert_to_pin(IOB,  4), pin_mux_convert_to_pin(IOA, 15), CfgSpi::spiMode0, 500000, false);
 
 ioSetCfgEnd(ioTableEnd);
 
@@ -33,8 +33,8 @@ ioSettings *ioSetCfg[] = {
 		&hbtn_0,
 		&hbtn_1,
 		&uart_2,
-		&i2c_0,
-		&spi_0_0,
+		//&i2c_0,
+		//&spi_0_0,
 		&ioTableEnd,
 		(ioSettings *)-1/* This is an artifice to force linker to put this structure ito .data section, to be secure that this will be initiated before the call of init() function. */
 };
