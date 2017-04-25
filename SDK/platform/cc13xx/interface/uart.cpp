@@ -21,37 +21,25 @@ volatile bool uart_semaphore[UART_INTERFACE_COUNT];
 extern CfgUart uartCfg[];
 
 /*#####################################################*/
-GI::Dev::Uart::Uart(const char *path)
+GI::Dev::Uart::Uart(ioSettings *cfg)
 {
-	memset(this, 0, sizeof(*this));
-	unsigned int item_nr = 0;
-	while(1)
-	{
-		if(uartCfg[item_nr].name == NULL)
-		{
-			err = SYS_ERR_INVALID_PATH;
-			return;
-		}
-		if(!strcmp(uartCfg[item_nr].name, path))
-			break;
-		item_nr++;
-	}
+    memset(this, 0, sizeof(*this));
+    if(cfg->info.ioType != ioSettings::info_s::ioType_UART)
+        return;
 
-	if(strncmp(path, (char *)"uart-", sizeof("uart-") - 1) && strncmp(path, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
+	if(strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1) && strncmp(cfg->info.name, (char *)"usbcdc-", sizeof("usbcdc-") - 1))
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
-	if(!strncmp(path, (char *)"uart-", sizeof("uart-") - 1))
+	if(!strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1))
 	{
-		unsigned char dev_nr = path[sizeof("uart-") - 1] - '0';
+		unsigned char dev_nr = cfg->info.name[sizeof("uart-") - 1] - '0';
 		if(dev_nr >= UART_INTERFACE_COUNT)
 		{
 			err = SYS_ERR_INVALID_PATH;
 			return;
 		}
-		memset(this, 0, sizeof(*this));
-		memcpy(&cfg, &uartCfg[item_nr], sizeof(CfgUart));
 		unitNr = dev_nr;
 	}
 	else
@@ -60,13 +48,16 @@ GI::Dev::Uart::Uart(const char *path)
 		return;
 	}
 
-	IOCPortConfigureSet((cfg.tx % 32), IOC_PORT_MCU_UART0_TX, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
-	HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (cfg.tx % 32));
-	IOCPortConfigureSet((cfg.rx % 32), IOC_PORT_MCU_UART0_RX, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_ENABLE);
-	HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (cfg.rx % 32));
+    this->cfg = cfg;
+    CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+
+    IOCPortConfigureSet((int_cfg->tx % 32), IOC_PORT_MCU_UART0_TX, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_DISABLE);
+	HWREG(GPIO_BASE + GPIO_O_DOE31_0) |= (1 << (int_cfg->tx % 32));
+	IOCPortConfigureSet((int_cfg->rx % 32), IOC_PORT_MCU_UART0_RX, IOC_CURRENT_2MA | IOC_STRENGTH_AUTO | IOC_NO_IOPULL | IOC_SLEW_DISABLE | IOC_HYST_DISABLE | IOC_NO_EDGE | IOC_INT_DISABLE | IOC_IOMODE_NORMAL | IOC_NO_WAKE_UP | IOC_INPUT_ENABLE);
+	HWREG(GPIO_BASE + GPIO_O_DOE31_0) &= ~(1 << (int_cfg->rx % 32));
 
 	unsigned long config = 0;
-	switch((unsigned char)cfg.wordLen)
+	switch((unsigned char)int_cfg->wordLen)
 	{
 	case CfgUart::WORD_LEN_5:
 		config = UART_CONFIG_WLEN_5;
@@ -81,10 +72,10 @@ GI::Dev::Uart::Uart(const char *path)
 		config = UART_CONFIG_WLEN_8;
 		break;
 	}
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		config |= UART_CONFIG_STOP_TWO;
 
-	switch((unsigned char)cfg.parity)
+	switch((unsigned char)int_cfg->parity)
 	{
 	case CfgUart::PAR_ODD:
 		config |= UART_CONFIG_PAR_ODD;
@@ -104,7 +95,7 @@ GI::Dev::Uart::Uart(const char *path)
 	}
 
 
-	UARTConfigSetExpClk(UART0_BASE, CoreFreq, cfg.speed, config);
+	UARTConfigSetExpClk(UART0_BASE, CoreFreq, int_cfg->speed, config);
 	//UARTParityModeSet(UART0_BASE, UART_CONFIG_PAR_NONE);
 	UARTEnable(UART0_BASE);
 	udata = (void *)UART0_BASE;
@@ -120,9 +111,10 @@ SysErr GI::Dev::Uart::setSpeed(unsigned long baudRate)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	cfg.speed = baudRate;
+    CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	int_cfg->speed = baudRate;
 	unsigned long config = 0;
-	switch((unsigned char)cfg.wordLen)
+	switch((unsigned char)int_cfg->wordLen)
 	{
 	case CfgUart::WORD_LEN_5:
 		config = UART_CONFIG_WLEN_5;
@@ -137,10 +129,10 @@ SysErr GI::Dev::Uart::setSpeed(unsigned long baudRate)
 		config = UART_CONFIG_WLEN_8;
 		break;
 	}
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		config |= UART_CONFIG_STOP_TWO;
 
-	switch((unsigned char)cfg.parity)
+	switch((unsigned char)int_cfg->parity)
 	{
 	case CfgUart::PAR_ODD:
 		config |= UART_CONFIG_PAR_ODD;
@@ -159,7 +151,7 @@ SysErr GI::Dev::Uart::setSpeed(unsigned long baudRate)
 		break;
 	}
 
-	UARTConfigSetExpClk(UART0_BASE, CoreFreq, cfg.speed, config);
+	UARTConfigSetExpClk(UART0_BASE, CoreFreq, int_cfg->speed, config);
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -167,9 +159,10 @@ SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	cfg.wordLen = wLen;
+    CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	int_cfg->wordLen = wLen;
 	unsigned long config = 0;
-	switch((unsigned char)cfg.wordLen)
+	switch((unsigned char)int_cfg->wordLen)
 	{
 	case CfgUart::WORD_LEN_5:
 		config = UART_CONFIG_WLEN_5;
@@ -184,10 +177,10 @@ SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
 		config = UART_CONFIG_WLEN_8;
 		break;
 	}
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		config |= UART_CONFIG_STOP_TWO;
 
-	switch((unsigned char)cfg.parity)
+	switch((unsigned char)int_cfg->parity)
 	{
 	case CfgUart::PAR_ODD:
 		config |= UART_CONFIG_PAR_ODD;
@@ -206,7 +199,7 @@ SysErr GI::Dev::Uart::setWordLen(CfgUart::wordLen_e wLen)
 		break;
 	}
 
-	UARTConfigSetExpClk(UART0_BASE, CoreFreq, cfg.speed, config);
+	UARTConfigSetExpClk(UART0_BASE, CoreFreq, int_cfg->speed, config);
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -214,9 +207,10 @@ SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	cfg.stopBits = sBits;
+    CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	int_cfg->stopBits = sBits;
 	unsigned long config = 0;
-	switch((unsigned char)cfg.wordLen)
+	switch((unsigned char)int_cfg->wordLen)
 	{
 	case CfgUart::WORD_LEN_5:
 		config = UART_CONFIG_WLEN_5;
@@ -231,10 +225,10 @@ SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
 		config = UART_CONFIG_WLEN_8;
 		break;
 	}
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		config |= UART_CONFIG_STOP_TWO;
 
-	switch((unsigned char)cfg.parity)
+	switch((unsigned char)int_cfg->parity)
 	{
 	case CfgUart::PAR_ODD:
 		config |= UART_CONFIG_PAR_ODD;
@@ -253,7 +247,7 @@ SysErr GI::Dev::Uart::setStopBits(CfgUart::stopBits_e sBits)
 		break;
 	}
 
-	UARTConfigSetExpClk(UART0_BASE, CoreFreq, cfg.speed, config);
+	UARTConfigSetExpClk(UART0_BASE, CoreFreq, int_cfg->speed, config);
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -261,9 +255,10 @@ SysErr GI::Dev::Uart::setParBits(CfgUart::parity_e pBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	cfg.parity = pBits;
+    CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	int_cfg->parity = pBits;
 	unsigned long config = 0;
-	switch((unsigned char)cfg.wordLen)
+	switch((unsigned char)int_cfg->wordLen)
 	{
 	case CfgUart::WORD_LEN_5:
 		config = UART_CONFIG_WLEN_5;
@@ -278,10 +273,10 @@ SysErr GI::Dev::Uart::setParBits(CfgUart::parity_e pBits)
 		config = UART_CONFIG_WLEN_8;
 		break;
 	}
-	if(cfg.stopBits == CfgUart::STOP_BITS_TWO)
+	if(int_cfg->stopBits == CfgUart::STOP_BITS_TWO)
 		config |= UART_CONFIG_STOP_TWO;
 
-	switch((unsigned char)cfg.parity)
+	switch((unsigned char)int_cfg->parity)
 	{
 	case CfgUart::PAR_ODD:
 		config |= UART_CONFIG_PAR_ODD;
@@ -300,7 +295,7 @@ SysErr GI::Dev::Uart::setParBits(CfgUart::parity_e pBits)
 		break;
 	}
 
-	UARTConfigSetExpClk(UART0_BASE, CoreFreq, cfg.speed, config);
+	UARTConfigSetExpClk(UART0_BASE, CoreFreq, int_cfg->speed, config);
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -308,7 +303,8 @@ SysErr GI::Dev::Uart::getSpeed(unsigned long *baudRate)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	*baudRate = cfg.speed;
+    CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	*baudRate = int_cfg->speed;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -316,7 +312,8 @@ SysErr GI::Dev::Uart::getWordLen(CfgUart::wordLen_e *wLen)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	*wLen = cfg.wordLen;
+    CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	*wLen = int_cfg->wordLen;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -324,7 +321,8 @@ SysErr GI::Dev::Uart::getStopBits(CfgUart::stopBits_e *sBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	*sBits = cfg.stopBits;
+    CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	*sBits = int_cfg->stopBits;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -332,7 +330,8 @@ SysErr GI::Dev::Uart::getParBits(CfgUart::parity_e *pBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	*pBits = cfg.parity;
+    CfgUart *int_cfg = (CfgUart *)cfg->cfg;
+	*pBits = int_cfg->parity;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
