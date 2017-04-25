@@ -46,9 +46,6 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 SEARCH_DIR(.)
 
-/* Highest address of the user mode stack */
-_estack = 0x20008000;    /* end of RAM */
-
 /* Memory Spaces Definitions */
 MEMORY
 {
@@ -56,8 +53,12 @@ MEMORY
   ram      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000
 }
 
+/*. Highest address of the stack. Used in startup file .*/
+_estack = ORIGIN(ram) + LENGTH(ram); /*end of SRAM .*/
+
 /* The stack size used by the application. NOTE: you need to adjust according to your application. */
-STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : DEFINED(__stack_size__) ? __stack_size__ : 0x100;
+STACK_SIZE = 0;
+/*DEFINED(STACK_SIZE) ? STACK_SIZE : DEFINED(__stack_size__) ? __stack_size__ : 0x100;*/
 
 /* Section Definitions */
 SECTIONS

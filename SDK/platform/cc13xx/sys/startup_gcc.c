@@ -261,7 +261,7 @@ ResetISR(void)
           "        it      lt\n"
           "        strlt   r2, [r0], #4\n"
           "        blt     zero_loop\n"
-          "         bl __libc_init_array");
+          "        bl __libc_init_array");
    //
    // Call the application's entry point.
    //

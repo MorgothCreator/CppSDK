@@ -12,12 +12,16 @@
 #define USE_UART                        true
 #define USE_I2C                         true
 #define USE_SPI                         true
+#if USE_SPI
+#define USE_MMCSD_SPI                   true
+#define USED_MMCSD_SPI_UNIT             "spi-4.1"
+#endif
 
 #define CONSOLE_UART_IN		            "uart-0"
 #define CONSOLE_UART_OUT	            "uart-0"
 #define CONSOLE_UART_ERR	            "uart-0"
 
-#define USE_TERMINAL                    true
+#define USE_TERMINAL                    false
 
 #define USE_DHCP						false
 
