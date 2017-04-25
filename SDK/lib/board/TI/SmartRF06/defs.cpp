@@ -11,77 +11,61 @@
 #include <api/i2c.h>
 #include <api/uart.h>
 
-/*
- * Screen settings
- */
+/* IO initialization table */
+ioSetCfgGpio(led_0,     "led-0",    pin_mux_convert_to_pin(IOA, 25),CfgGpio::GPIO_OUT_PUSH_PULL,    false, false, 0);
+ioSetCfgGpio(led_1,     "led-1",    pin_mux_convert_to_pin(IOA, 27),CfgGpio::GPIO_OUT_PUSH_PULL,    false, false, 0);
+ioSetCfgGpio(led_2,     "led-2",    pin_mux_convert_to_pin(IOA,  7),CfgGpio::GPIO_OUT_PUSH_PULL,    false, false, 0);
+ioSetCfgGpio(led_3,     "led-3",    pin_mux_convert_to_pin(IOA,  6),CfgGpio::GPIO_OUT_PUSH_PULL,    false, false, 0);
+ioSetCfgGpio(hbtn_0,    "hbtn-0",   pin_mux_convert_to_pin(IOA, 19),CfgGpio::GPIO_IN_PULL_UP,       false, false, 0);
+ioSetCfgGpio(hbtn_1,    "hbtn-1",   pin_mux_convert_to_pin(IOA, 12),CfgGpio::GPIO_IN_PULL_UP,       false, false, 0);
+ioSetCfgGpio(hbtn_2,    "hbtn-2",   pin_mux_convert_to_pin(IOA, 15),CfgGpio::GPIO_IN_PULL_UP,       false, false, 0);
+ioSetCfgGpio(hbtn_3,    "hbtn-3",   pin_mux_convert_to_pin(IOA, 18),CfgGpio::GPIO_IN_PULL_UP,       false, false, 0);
+ioSetCfgGpio(hbtn_4,    "hbtn-4",   pin_mux_convert_to_pin(IOA, 11),CfgGpio::GPIO_IN_PULL_UP,       false, false, 0);
 
-/*
- * !Screen settings
- */
+ioSetCfgGpio(lv33_en,   "lv33-en",  pin_mux_convert_to_pin(IOA, 13),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 0);
+ioSetCfgGpio(acc_pwr,   "acc-pwr",  pin_mux_convert_to_pin(IOA, 20),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 0);
+ioSetCfgGpio(accint_1,  "accint-1", pin_mux_convert_to_pin(IOA, 28),CfgGpio::GPIO_IN_PULL_UP,      false, false, 0);
+ioSetCfgGpio(accint_2,  "accint-2", pin_mux_convert_to_pin(IOA, 29),CfgGpio::GPIO_IN_PULL_UP,      false, false, 0);
+ioSetCfgGpio(als_pwr,   "als-pwr",  pin_mux_convert_to_pin(IOA, 26),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 0);
+ioSetCfgGpio(als_out,   "als-out",  pin_mux_convert_to_pin(IOA, 23),CfgGpio::GPIO_IN_FLOATING,     false, false, 0);
+ioSetCfgGpio(lcd_rst,   "lcd-rst",  pin_mux_convert_to_pin(IOA,  5),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 1);
+ioSetCfgGpio(lcd_mode,  "lcd-mode", pin_mux_convert_to_pin(IOA,  4),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 0);
 
+ioSetCfgUart(uart_0,    "uart-0",   pin_mux_convert_to_pin(IOA,  3) , pin_mux_convert_to_pin(IOA, 2)    , 115200    , CfgUart::WORD_LEN_8   , CfgUart::STOP_BITS_ONE    , CfgUart::PAR_NONE , CfgUart::MODE_ASYNC);
 
-/*
- * GPIO settings
- */
-CfgGpio gpioCfg[] =
-{/*sck, mosi, miso, cs*/
-	{ "led-0"		,pin_mux_convert_to_pin(IOA, 25)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 0 mapped
-	{ "led-1"		,pin_mux_convert_to_pin(IOA, 27)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 1 mapped
-	{ "led-2"		,pin_mux_convert_to_pin(IOA,  7)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 1 mapped
-	{ "led-3"		,pin_mux_convert_to_pin(IOA,  6)	,false	,CfgGpio::GPIO_OUT_PUSH_PULL	, false, 0 },// Pin 1 mapped
-	{ "hbtn-1"		,pin_mux_convert_to_pin(IOA, 19)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 0 },// Pin 2 mapped
-	{ "hbtn-2"		,pin_mux_convert_to_pin(IOA, 12)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 0 },// Pin 2 mapped
-	{ "hbtn-3"		,pin_mux_convert_to_pin(IOA, 15)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 0 },// Pin 2 mapped
-	{ "hbtn-4"		,pin_mux_convert_to_pin(IOA, 18)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 0 },// Pin 2 mapped
-	{ "hbtn-5"		,pin_mux_convert_to_pin(IOA, 11)	,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 0 },// Pin 2 mapped
-	{ ""			,0									,false	,CfgGpio::GPIO_IN_PULL_UP		, false, 0 }// End of table
+//ioSetCfgI2c(i2c_0,      "i2c-0",    pin_mux_convert_to_pin(IOA,  8) , pin_mux_convert_to_pin(IOC, 9), CfgI2c::i2cMode0, 100000);
+
+ioSetCfgSpi(spi_4_0,    "spi-4.0",  pin_mux_convert_to_pin(IOA, 10) , pin_mux_convert_to_pin(IOA, 9), pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOA,14), CfgSpi::spiMode0, 500000, false);//LCD
+ioSetCfgSpi(spi_4_1,    "spi-4.1",  pin_mux_convert_to_pin(IOA, 10) , pin_mux_convert_to_pin(IOA, 9), pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOA,30), CfgSpi::spiMode0,2500000, false);//uSD
+ioSetCfgSpi(spi_4_2,    "spi-4.2",  pin_mux_convert_to_pin(IOA, 10) , pin_mux_convert_to_pin(IOA, 9), pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOA,24), CfgSpi::spiMode0, 500000, false);//Accelerometer
+
+ioSetCfgEnd(ioTableEnd);
+
+ioSettings *ioSetCfg[] = {
+        &led_0,
+        &led_1,
+        &led_2,
+        &led_3,
+        &hbtn_0,
+        &hbtn_1,
+        &hbtn_2,
+        &hbtn_3,
+        &hbtn_4,
+        &lv33_en,
+        &acc_pwr,
+        &accint_1,
+        &accint_2,
+        &als_pwr,
+        &als_out,
+        &lcd_rst,
+        &lcd_mode,
+        &uart_0,
+        //&i2c_0,
+        &spi_4_0,
+        &spi_4_1,
+        &spi_4_2,
+        &ioTableEnd,
+        (ioSettings *)-1/* This is an artifice to force linker to put this structure ito .data section, to be secure that this will be initiated before the call of init() function. */
 };
-/*
- * !GPIO settings
- */
-
-
-/*
- * SPI settings
- */
-CfgSpi spiCfg[] =
-{/*name,sck, mosi, miso, cs*/
-//{ "spi-0.0", pin_mux_convert_to_pin(IOA, 10), pin_mux_convert_to_pin(IOA,  9), pin_mux_convert_to_pin(IOA,  8), pin_mux_convert_to_pin(IOA, 30), 5000000, CfgSpi::spiMode0, false},
-{ "", 0, 0, 0, 0, }// End of table
-};
-/*
- * !SPI settings
- */
-
-/*
- * I2C settings
- */
-CfgI2c i2cCfg[] =
-{
-//{ "i2c-0", pin_mux_convert_to_pin(IOB, 8), pin_mux_convert_to_pin(IOB, 9), 100000, },
-//{ "i2c-1", 0, 0, },
-//{ "i2c-2", pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOC, 9), 100000, },
-//{ "i2c-3", pin_mux_convert_to_pin(IOD, 12), pin_mux_convert_to_pin(IOB, 7), },
-//{ "i2c-4", 0, 0, },
-//{ "i2c-5", 0, 0, },
-//{ "i2c-6", 0, 0, },
-//{ "i2c-7", 0, 0, }
-{ "", 0, 0, }// End of table
-};
-/*
- * !I2C settings
- */
-
-/*
- * !UART settings
- */
-CfgUart uartCfg[] =
-{
-{ "uart-0", pin_mux_convert_to_pin(IOA, 3)	, pin_mux_convert_to_pin(IOA, 2)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC},
-{ "", 0	, 0	, 0	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC}// End of table
-};
-/*
- * UART settings
- */
 
 #endif/*!STM32F769I_DISCO*/
