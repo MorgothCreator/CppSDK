@@ -17,6 +17,8 @@ typedef struct {
             ioType_SCREEN,
             ioType_TOUCH,
             ioType_CAM,
+            ioType_MMCSD,
+            ioType_MMCSD_SPI,
         }ioType;
         char name[12];
     } info;
@@ -88,6 +90,19 @@ typedef struct {
 		ioSettings::info_s::ioType_SPI,\
 		name,\
 		(void *)&cfgName##_spiCfg,\
+		NULL\
+}
+
+#define ioSetCfgScreen(cfgName, name, timings, screenNr)\
+	CfgLcd cfgName##_lcdCfg = {\
+		name,\
+		timings,\
+		screenNr\
+	};\
+	ioSettings cfgName = {\
+		ioSettings::info_s::ioType_SCREEN,\
+		name,\
+		(void *)&cfgName##_lcdCfg,\
 		NULL\
 }
 

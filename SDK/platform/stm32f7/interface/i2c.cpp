@@ -799,8 +799,7 @@ int GI::Dev::I2c::writeBytes(unsigned char addr, unsigned char *buff, unsigned i
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
 #if (USE_DRIVER_SEMAPHORE == true)
-	while (twi_semaphore[unitNr])
-		;
+	while (twi_semaphore[unitNr]);
 	twi_semaphore[unitNr] = true;
 #endif
 	SysErr result = WR(addr << 1, buff, len, NULL, 0);

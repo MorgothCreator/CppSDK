@@ -59,10 +59,13 @@ GI::Board::Init::Init()
 			break;
 	}
 /*******************************************************************/
-#if (defined(SCREEN_CONFIG) && defined(USED_SCREEN_CONTROLLER))
-    SCREEN[0] = new GI::Dev::USED_SCREEN_CONTROLLER(&SCREEN_CONFIG, NULL);
-#ifdef USED_TOUCHSCREEN
-    CURSORCTRL[0] = new GI::Sensor::USED_TOUCHSCREEN(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
+/*
+ * Register drivers.
+ */
+#if (defined(SCREEN_CONFIG_1) && defined(USED_SCREEN_CONTROLLER_1))
+    SCREEN[0] = new GI::Dev::USED_SCREEN_CONTROLLER_1(&SCREEN_CONFIG_1, NULL);
+#ifdef USED_TOUCHSCREEN_1
+    CURSORCTRL[0] = new GI::Sensor::USED_TOUCHSCREEN_1(SCREEN[0], (char *)CAP_TOUCHSCREEN_I2C_UNIT, (char *)CAP_TOUCHSCREEN_IRQ_PIN);
     CURSORCTRL[0]->touchCalibrate();
 #endif
 #endif

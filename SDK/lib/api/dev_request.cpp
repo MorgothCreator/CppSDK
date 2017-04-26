@@ -83,3 +83,41 @@ SysErr GI::Dev::DevRequest::request(char *path, GI::Dev::Uart **device)
 	*device = (GI::Dev::Uart *)ioSetCfg[dev_nr]->ioConstruct;
 	return SYS_ERR_OK;
 }
+
+SysErr GI::Dev::DevRequest::request(char *path, GI::Dev::Screen **device)
+{
+	unsigned int dev_nr = 0;
+	while(1)
+	{
+		ioSettings *io_item = ioSetCfg[dev_nr];
+		if(!io_item || !io_item->cfg)
+		{
+			*device = NULL;
+			return SYS_ERR_INVALID_PATH;
+		}
+		if(io_item->info.ioType == ioSettings::info_s::ioType_SCREEN && !strcmp(io_item->info.name, path))
+			break;
+		dev_nr++;
+	}
+	*device = (GI::Dev::Screen *)ioSetCfg[dev_nr]->ioConstruct;
+	return SYS_ERR_OK;
+}
+
+SysErr GI::Dev::DevRequest::request(char *path, GI::Sensor::Cursor **device)
+{
+	unsigned int dev_nr = 0;
+	while(1)
+	{
+		ioSettings *io_item = ioSetCfg[dev_nr];
+		if(!io_item || !io_item->cfg)
+		{
+			*device = NULL;
+			return SYS_ERR_INVALID_PATH;
+		}
+		if(io_item->info.ioType == ioSettings::info_s::ioType_TOUCH && !strcmp(io_item->info.name, path))
+			break;
+		dev_nr++;
+	}
+	*device = (GI::Sensor::Cursor *)ioSetCfg[dev_nr]->ioConstruct;
+	return SYS_ERR_OK;
+}

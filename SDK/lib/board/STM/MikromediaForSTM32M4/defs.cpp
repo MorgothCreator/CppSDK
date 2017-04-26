@@ -11,6 +11,7 @@
 #include <api/spi.h>
 #include <api/i2c.h>
 #include <api/uart.h>
+#include <api/lcd_def.h>
 
 /* IO initialization table */
 ioSetCfgGpio(mi0283_dat,"mi0283-dat",	pin_mux_convert_to_pin(IOE,  0),CfgGpio::GPIO_OUT_PUSH_PULL, 	true,  false, 1);
@@ -31,6 +32,7 @@ ioSetCfgSpi(spi_2_1, 	"spi-2.1", 		pin_mux_convert_to_pin(IOC, 10)	, pin_mux_con
 ioSetCfgSpi(spi_2_2, 	"spi-2.2", 		pin_mux_convert_to_pin(IOC, 10)	, pin_mux_convert_to_pin(IOC,11), pin_mux_convert_to_pin(IOC,12), pin_mux_convert_to_pin(IOC, 8), CfgSpi::spiMode0, 5000000, false);//VS1053 CS
 ioSetCfgSpi(spi_2_3, 	"spi-2.3", 		pin_mux_convert_to_pin(IOC, 10)	, pin_mux_convert_to_pin(IOC,11), pin_mux_convert_to_pin(IOC,12), pin_mux_convert_to_pin(IOC, 9), CfgSpi::spiMode0, 5000000, false);//VS1053 DCS
 //ioSetCfgGpio(led_0, 	"led-0"		,	pin_mux_convert_to_pin(IOE,  9),CfgGpio::GPIO_OUT_PUSH_PULL, 	false, false, 1);
+//ioSetCfgScreen(screen_0, "screen-0", &lcd_MI0283_PORTRAIT, 0);
 ioSetCfgEnd(ioTableEnd);
 
 ioSettings *ioSetCfg[] = {

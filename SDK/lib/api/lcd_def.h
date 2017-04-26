@@ -141,6 +141,12 @@ typedef struct StringProperties_s
 	signed int CharHeight_Pixels;
 } StringProperties_t;
 /*#####################################################*/
+typedef struct {
+	char name[12];
+	LCD_TIMINGS *timings;
+	unsigned int screenNr;
+}CfgLcd;
+/*#####################################################*/
 namespace GI
 {
 namespace Dev {
