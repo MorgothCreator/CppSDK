@@ -12,6 +12,14 @@
 #define USE_UART                        true
 #define USE_I2C                         true
 #define USE_SPI                         true
+#define USE_SCREEN                      true
+
+#define CALIBRATE_TOUCH_ON_STARTUP		true
+
+#if USE_SPI
+#define USE_MMCSD_SPI                   false
+#define USED_MMCSD_SPI_UNIT             "spi-0.0"
+#endif
 
 #define CONSOLE_UART_IN		            "uart-0"
 #define CONSOLE_UART_OUT	            "uart-0"
@@ -20,12 +28,10 @@
 #define USE_TERMINAL                    true
 
 #define USE_DHCP						false
+
 #define USE_LWIP						false
+
 #define USE_TFTP						false
-
-#define USE_DHCP						false
-
-#define USE_LWIP						false
 
 #define USE_LWIP_HTTPD_SERVER			false
 /* HTTP settings */

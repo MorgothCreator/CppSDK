@@ -10,7 +10,7 @@
 #include <api/dev_request.h>
 
 
-#if (_USE_SCREEN == 1)
+#if (USE_SCREEN == true)
 #include "lib/gfx/window.h"
 #include "lib/gfx/PasswordWindowNumeric.h"
 #endif
@@ -42,7 +42,7 @@
 
 #include <app/lwip/http_client/http_client.h>
 
-#if (_USE_SCREEN == 1)
+#if (USE_SCREEN == true)
 GI::Screen::Gfx::Window *MainWindow = NULL;
 GI::Screen::Gfx::TextBox *SensorResultTextboxGlobal;
 #endif
@@ -83,7 +83,7 @@ void main_app(void)
 #endif
 
 
-#if (_USE_SCREEN == 1)
+#if (USE_SCREEN == true)
 	/*
 	 * Create one parent window.
 	 */
@@ -181,7 +181,7 @@ void main_app(void)
 #if(_USE_PASSWORD_PROTECTION == 1)
     newWindowPasswordNumeric(MainWindow, pass, 2, 2);
 #endif
-#endif/*!(_USE_SCREEN == 1)*/
+#endif/*!(USE_SCREEN == 1)*/
     /*
      * Put on parent window caption the IP of ETH interface.
      */
@@ -277,8 +277,8 @@ void main_app(void)
 		 */
 		if(timer_touch.tick())
 		{
-#if (_USE_SCREEN == 1)
-#ifdef USED_TOUCHSCREEN
+#if (USE_SCREEN == true)
+#ifdef USED_TOUCHSCREEN_1
 			MainWindow->idle(dev.CURSORCTRL[0]->idle());
 #else
 			MainWindow->idle(NULL);

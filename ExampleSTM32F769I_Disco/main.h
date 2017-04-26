@@ -9,6 +9,10 @@
 #define USE_UART                        true
 #define USE_I2C                         true
 #define USE_SPI                         true
+#define USE_SCREEN                      true
+
+#define CALIBRATE_TOUCH_ON_STARTUP		false
+
 #if USE_SPI
 #define USE_MMCSD_SPI                   false
 #define USED_MMCSD_SPI_UNIT             "spi-0.0"
@@ -20,9 +24,11 @@
 
 #define USE_TERMINAL                    true
 
+#define USE_LWIP						true
+
 #define USE_DHCP						true
 
-#define USE_LWIP						true
+#define USE_TFTP						false
 
 #define USE_LWIP_HTTPD_SERVER			true
 /* HTTP settings */
@@ -47,8 +53,6 @@
 #define SNTP_UPDATE_DELAY 				90000 /* SNTP update every 90 seconds */
 
 #define _USE_PASSWORD_PROTECTION		false
-
-#define _USE_SCREEN						true
 
 #define _USE_MPU60x0_9150				false
 #define _USE_HIH613x					false

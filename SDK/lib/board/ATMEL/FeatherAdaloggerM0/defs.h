@@ -60,8 +60,9 @@
  * Screen settings
  */
 
-//#define SCREEN_CONFIG						lcd_ILI9341_PORTRAIT
-//#define USED_SCREEN_CONTROLLER			IntScreen
+#define SCREENS_COUNT					0
+//#define SCREEN_CONFIG_1				lcd_ILI9341_PORTRAIT
+//#define USED_SCREEN_CONTROLLER_1		IntScreen
 
 /*
  * !Screen settings
@@ -74,6 +75,7 @@
 #define CAP_TOUCHSCREEN_I2C_UNIT		"i2c-0"
 #define CAP_TOUCHSCREEN_IRQ_PIN			"touchirq"
 //#define USED_TOUCHSCREEN				Stmpe811
+
 /*
  * !Touch screen settings
  */

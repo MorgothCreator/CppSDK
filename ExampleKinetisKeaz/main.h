@@ -12,20 +12,27 @@
 #define USE_UART                        true
 #define USE_I2C                         false
 #define USE_SPI                         false
+#define USE_SCREEN                      false
 
-#define CONSOLE_UART_IN		            "uart-2"
-#define CONSOLE_UART_OUT	            "uart-2"
-#define CONSOLE_UART_ERR	            "uart-2"
+#define CALIBRATE_TOUCH_ON_STARTUP		false
+
 #if USE_SPI
 #define USE_MMCSD_SPI                   false
 #define USED_MMCSD_SPI_UNIT             "spi-0.0"
 #endif
 
+
+#define CONSOLE_UART_IN		            "uart-2"
+#define CONSOLE_UART_OUT	            "uart-2"
+#define CONSOLE_UART_ERR	            "uart-2"
+
 #define USE_TERMINAL                    false
+
+#define USE_LWIP						false
 
 #define USE_DHCP						false
 
-#define USE_LWIP						false
+#define USE_TFTP						false
 
 #define USE_LWIP_HTTPD_SERVER			false
 /* HTTP settings */
@@ -50,8 +57,6 @@
 #define SNTP_UPDATE_DELAY 				90000 /* SNTP update every 90 seconds */
 
 #define _USE_PASSWORD_PROTECTION		false
-
-#define _USE_SCREEN						false
 
 #define _USE_MPU60x0_9150				false
 #define _USE_HIH613x					false

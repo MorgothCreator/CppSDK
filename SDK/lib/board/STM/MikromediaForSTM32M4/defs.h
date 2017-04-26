@@ -63,8 +63,9 @@
  * Screen settings
  */
 
-#define SCREEN_CONFIG					lcd_MI0283_PORTRAIT
-#define USED_SCREEN_CONTROLLER			Mi0283Gpio
+#define SCREENS_COUNT					1
+#define SCREEN_CONFIG_1					lcd_MI0283_PORTRAIT
+#define USED_SCREEN_CONTROLLER_1		Mi0283Gpio
 /*
  * !Screen settings
  */
@@ -75,7 +76,7 @@
 #define TOUCH_SCREEN_ENABLE				true
 #define CAP_TOUCHSCREEN_I2C_UNIT		"i2c-0"
 #define CAP_TOUCHSCREEN_IRQ_PIN			"touchirq"
-//#define USED_TOUCHSCREEN				Mi0283Gpio
+//#define USED_TOUCHSCREEN_1			Mi0283Gpio
 
 /*
  * !Touch screen settings

@@ -60,8 +60,9 @@
  * Screen settings
  */
 
-#define SCREEN_CONFIG					lcd_OTM8009A_PORTRAIT
-#define USED_SCREEN_CONTROLLER			IntScreen
+#define SCREENS_COUNT					1
+#define SCREEN_CONFIG_1					lcd_OTM8009A_PORTRAIT
+#define USED_SCREEN_CONTROLLER_1		IntScreen
 #define USE_SCREEN_TYPE_DSI				1
 /*
  * !Screen settings
@@ -73,7 +74,8 @@
 #define TOUCH_SCREEN_ENABLE				true
 #define CAP_TOUCHSCREEN_I2C_UNIT		"i2c-3"
 #define CAP_TOUCHSCREEN_IRQ_PIN			"touchirq"
-#define USED_TOUCHSCREEN				Ft5x06
+#define USED_TOUCHSCREEN_1				Ft5x06
+
 /*
  * !Touch screen settings
  */
