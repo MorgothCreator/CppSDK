@@ -412,14 +412,14 @@ void GI::Dev::Mi0283Gpio::_drawRectangle(void *driverHandlerPtr, signed int x_st
 			_x_start = driverHandler->sClipRegion.sXMin;
 		if(y_start >= driverHandler->sClipRegion.sYMin)
 		{
-			driverHandler->setArea(_x_start, y_start, _x_end, y_start);
+			driverHandler->setArea(_x_start, y_start, _x_end - 1, y_start);
 			driverHandler->wrCmd(0x2C);
 			driverHandler->sendPixels((_x_end - _x_start) + 1, color);
 		}
 
 		if(y_end <= driverHandler->sClipRegion.sYMax)
 		{
-			driverHandler->setArea(_x_start, y_end - 1, _x_end, y_end - 1);
+			driverHandler->setArea(_x_start, y_end - 1, _x_end - 1, y_end - 1);
 			driverHandler->wrCmd(0x2C);
 			driverHandler->sendPixels((_x_end - _x_start) + 1, color);
 		}
@@ -432,14 +432,14 @@ void GI::Dev::Mi0283Gpio::_drawRectangle(void *driverHandlerPtr, signed int x_st
 			_y_start = driverHandler->sClipRegion.sYMin;
 		if(x_start >= driverHandler->sClipRegion.sXMin)
 		{
-			driverHandler->setArea(x_start,_y_start, x_start, y_end);
+			driverHandler->setArea(x_start,_y_start, x_start, y_end - 1);
 			driverHandler->wrCmd(0x2C);
 			driverHandler->sendPixels((y_end - _y_start) + 1, color);
 		}
 
 		if(x_end <= driverHandler->sClipRegion.sXMax)
 		{
-			driverHandler->setArea(x_end - 1,_y_start, x_end - 1, y_end);
+			driverHandler->setArea(x_end - 1,_y_start, x_end - 1, y_end - 1);
 			driverHandler->wrCmd(0x2C);
 			driverHandler->sendPixels((y_end - _y_start) + 1, color);
 		}
