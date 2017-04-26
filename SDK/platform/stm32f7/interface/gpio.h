@@ -13,6 +13,8 @@
 #define HAVE_GPIO_IN_PULL_UP
 #define HAVE_GPIO_OUT_OPEN_DRAIN
 #define HAVE_GPIO_OUT_PUSH_PULL
+
+#define GPIO_OPTIMIZED_FUNCTIONS true
 /*#####################################################*/
 //extern GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[];
 /*#####################################################*/

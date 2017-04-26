@@ -56,12 +56,12 @@
 #ifndef __STM32F4xx_H
 #define __STM32F4xx_H
 
-#include <board.h>
 
 #ifdef __cplusplus
  extern "C" {
 #endif /* __cplusplus */
    
+#include <board.h>
 /** @addtogroup Library_configuration_section
   * @{
   */

@@ -12,7 +12,6 @@
 #include "driver/stm32f4xx_hal_gpio.h"
 #include "driver/stm32f4xx_hal_rcc.h"
 #include "sys/system_stm32f4xx.h"
-#include "driver/stm32f4xx_hal_gpio.h"
 #include "api/init.h"
 
 GPIO_TypeDef *GET_GPIO_PORT_BASE_ADDR[] =
@@ -100,6 +99,19 @@ SysErr GI::Dev::Gpio::setOut(unsigned int value)
 			BaseAddr->BSRR |= 1 << ((int_cfg->pin % 32) + 16);
 	}
 	return SYS_ERR_OK;
+}
+
+void GI::Dev::Gpio::setOut(void *baseAddr, unsigned int mask, unsigned int pin_mask)
+{
+	((GPIO_TypeDef*)baseAddr)->ODR = (((GPIO_TypeDef*)baseAddr)->ODR & ~mask) | ((pin_mask) & mask);
+}
+
+void GI::Dev::Gpio::setOut(void *baseAddr, unsigned int pin, bool value)
+{
+	if(value)
+		((GPIO_TypeDef*)baseAddr)->ODR |= 1 << (pin);
+	else
+		((GPIO_TypeDef*)baseAddr)->ODR &= ~(1 << (pin));
 }
 /*#####################################################*/
 signed int GI::Dev::Gpio::in()

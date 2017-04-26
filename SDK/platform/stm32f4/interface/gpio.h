@@ -18,6 +18,8 @@
 #define HAVE_GPIO_IN_PULL_UP
 #define HAVE_GPIO_OUT_OPEN_DRAIN
 #define HAVE_GPIO_OUT_PUSH_PULL
+
+#define GPIO_OPTIMIZED_FUNCTIONS true
 /*#####################################################*/
 #define _GPIO_FAST_SET_PIN(base_addr, pin)\
 		((GPIO_TypeDef*)base_addr)->ODR |= 1 << (pin)

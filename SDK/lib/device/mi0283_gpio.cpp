@@ -4,7 +4,7 @@
 
 #include "mi0283_gpio.h"
 #include <api/dev_request.h>
-#include <interface/gpio.h>
+#include <api/gpio.h>
 #include <sys/core_init.h>
 
 GI::Dev::Mi0283Gpio::Mi0283Gpio(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
@@ -55,9 +55,18 @@ void GI::Dev::Mi0283Gpio::wrCmd(unsigned char cmd)
 
 void GI::Dev::Mi0283Gpio::wrData(unsigned char data)
 {
+#if GPIO_OPTIMIZED_FUNCTIONS == true
+	void *GPIORW = WRITE->baseAddr;
+	void *GPIODAT = DATA->baseAddr;
+	unsigned char PINRW = WRITE->pinNr;
+	DATA->setOut(GPIODAT, DATA->multiPinMask, (unsigned int)data);
+	WRITE->setOut(GPIORW, PINRW, false);
+	WRITE->setOut(GPIORW, PINRW, true);
+#else
 	DATA->setOut(data);
 	WRITE->setOut(0);
 	WRITE->setOut(1);
+#endif
 }
 
 
@@ -312,12 +321,24 @@ void GI::Dev::Mi0283Gpio::sendPixels(unsigned long PixelsNumber, unsigned long c
 	//unsigned long cnt = 0;
 	while(PixelsNumber--)
 	{
+#if GPIO_OPTIMIZED_FUNCTIONS == true
+		void *GPIORW = WRITE->baseAddr;
+		void *GPIODAT = DATA->baseAddr;
+		unsigned char PINRW = WRITE->pinNr;
+		DATA->setOut(GPIODAT, DATA->multiPinMask, (unsigned int)_color >> 8);
+		WRITE->setOut(GPIORW, PINRW, false);
+		WRITE->setOut(GPIORW, PINRW, true);
+		DATA->setOut(GPIODAT, DATA->multiPinMask, (unsigned int)_color);
+		WRITE->setOut(GPIORW, PINRW, false);
+		WRITE->setOut(GPIORW, PINRW, true);
+#else
 		DATA->setOut(_color >> 8);
 		WRITE->setOut(0);
 		WRITE->setOut(1);
 		DATA->setOut(_color);
 		WRITE->setOut(0);
 		WRITE->setOut(1);
+#endif
 	}
  	CS->setOut(1);
 }
@@ -362,7 +383,8 @@ void GI::Dev::Mi0283Gpio::_drawRectangle(void *driverHandlerPtr, signed int x_st
 {
 	GI::Dev::Mi0283Gpio *driverHandler = (GI::Dev::Mi0283Gpio *)driverHandlerPtr;
 	signed int x_end = x_start + x_len ,y_end = y_start + y_len;
-	if(x_start >= driverHandler->sClipRegion.sXMax || y_start >= driverHandler->sClipRegion.sYMax || x_end < driverHandler->sClipRegion.sXMin || y_end < driverHandler->sClipRegion.sYMin) return;
+	if(x_start >= driverHandler->sClipRegion.sXMax || y_start >= driverHandler->sClipRegion.sYMax || x_end < driverHandler->sClipRegion.sXMin || y_end < driverHandler->sClipRegion.sYMin)
+		return;
 	register signed int LineCnt = y_start;
 	if(fill)
 	{
@@ -384,8 +406,10 @@ void GI::Dev::Mi0283Gpio::_drawRectangle(void *driverHandlerPtr, signed int x_st
 	{
 		register int _x_end = x_end;
 		int _x_start = x_start;
-		if(_x_end >= driverHandler->sClipRegion.sXMax) _x_end = driverHandler->sClipRegion.sXMax;
-		if(_x_start < driverHandler->sClipRegion.sXMin) _x_start = driverHandler->sClipRegion.sXMin;
+		if(_x_end >= driverHandler->sClipRegion.sXMax)
+			_x_end = driverHandler->sClipRegion.sXMax;
+		if(_x_start < driverHandler->sClipRegion.sXMin)
+			_x_start = driverHandler->sClipRegion.sXMin;
 		if(y_start >= driverHandler->sClipRegion.sYMin)
 		{
 			driverHandler->setArea(_x_start, y_start, _x_end, y_start);
@@ -401,9 +425,11 @@ void GI::Dev::Mi0283Gpio::_drawRectangle(void *driverHandlerPtr, signed int x_st
 		}
 
 		int _y_end = y_end;
-		if(_y_end >= driverHandler->sClipRegion.sYMax) _y_end = driverHandler->sClipRegion.sYMax;
+		if(_y_end >= driverHandler->sClipRegion.sYMax)
+			_y_end = driverHandler->sClipRegion.sYMax;
 		int _y_start = y_start;
-		if(_y_start < driverHandler->sClipRegion.sYMin) _y_start = driverHandler->sClipRegion.sYMin;
+		if(_y_start < driverHandler->sClipRegion.sYMin)
+			_y_start = driverHandler->sClipRegion.sYMin;
 		if(x_start >= driverHandler->sClipRegion.sXMin)
 		{
 			driverHandler->setArea(x_start,_y_start, x_start, y_end);
@@ -426,12 +452,18 @@ void GI::Dev::Mi0283Gpio::_drawHLine(void *driverHandlerPtr, signed int X1, sign
 	if(width == 1 && (Y < driverHandler->sClipRegion.sYMin || Y >= driverHandler->sClipRegion.sYMax))
 		return;
 	register int X1_Tmp = X1, X2_Tmp = X1 + X2;
-	if(X1_Tmp <= (int)driverHandler->sClipRegion.sXMin) X1_Tmp = (int)driverHandler->sClipRegion.sXMin;
-	if(X1_Tmp >= (int)driverHandler->sClipRegion.sXMax) X1_Tmp = (int)driverHandler->sClipRegion.sXMax;
-	if(X2_Tmp <= (int)driverHandler->sClipRegion.sXMin) X2_Tmp = (int)driverHandler->sClipRegion.sXMin;
-	if(X2_Tmp >= (int)driverHandler->sClipRegion.sXMax) X2_Tmp = (int)driverHandler->sClipRegion.sXMax;
-	if(Y < (int)driverHandler->sClipRegion.sYMin) Y = (int)driverHandler->sClipRegion.sYMin;
-	if(Y >= (int)driverHandler->sClipRegion.sYMax) Y = (int)driverHandler->sClipRegion.sYMax;
+	if(X1_Tmp <= (int)driverHandler->sClipRegion.sXMin)
+		X1_Tmp = (int)driverHandler->sClipRegion.sXMin;
+	if(X1_Tmp >= (int)driverHandler->sClipRegion.sXMax)
+		X1_Tmp = (int)driverHandler->sClipRegion.sXMax;
+	if(X2_Tmp <= (int)driverHandler->sClipRegion.sXMin)
+		X2_Tmp = (int)driverHandler->sClipRegion.sXMin;
+	if(X2_Tmp >= (int)driverHandler->sClipRegion.sXMax)
+		X2_Tmp = (int)driverHandler->sClipRegion.sXMax;
+	if(Y < (int)driverHandler->sClipRegion.sYMin)
+		Y = (int)driverHandler->sClipRegion.sYMin;
+	if(Y >= (int)driverHandler->sClipRegion.sYMax)
+		Y = (int)driverHandler->sClipRegion.sYMax;
 	int Half_width1 = (width>>1);
 	int Half_width2 = width-Half_width1;
 
@@ -450,12 +482,18 @@ void GI::Dev::Mi0283Gpio::_drawVLine(void *driverHandlerPtr, signed int Y1, sign
 	if(width == 1 && (X < driverHandler->sClipRegion.sXMin || X >= driverHandler->sClipRegion.sXMax))
 		return;
 	register int Y1_Tmp = Y1, Y2_Tmp = Y1 + Y2;
-	if(X <= (int)driverHandler->sClipRegion.sXMin) X = (int)driverHandler->sClipRegion.sXMin;
-	if(X >= (int)driverHandler->sClipRegion.sXMax) X = (int)driverHandler->sClipRegion.sXMax;
-	if(Y1_Tmp <= (int)driverHandler->sClipRegion.sYMin) Y1_Tmp = (int)driverHandler->sClipRegion.sYMin;
-	if(Y1_Tmp >= (int)driverHandler->sClipRegion.sYMax) Y1_Tmp = (int)driverHandler->sClipRegion.sYMax;
-	if(Y2_Tmp <= (int)driverHandler->sClipRegion.sYMin) Y2_Tmp = (int)driverHandler->sClipRegion.sYMin;
-	if(Y2_Tmp >= (int)driverHandler->sClipRegion.sYMax) Y2_Tmp = (int)driverHandler->sClipRegion.sYMax;
+	if(X <= (int)driverHandler->sClipRegion.sXMin)
+		X = (int)driverHandler->sClipRegion.sXMin;
+	if(X >= (int)driverHandler->sClipRegion.sXMax)
+		X = (int)driverHandler->sClipRegion.sXMax;
+	if(Y1_Tmp <= (int)driverHandler->sClipRegion.sYMin)
+		Y1_Tmp = (int)driverHandler->sClipRegion.sYMin;
+	if(Y1_Tmp >= (int)driverHandler->sClipRegion.sYMax)
+		Y1_Tmp = (int)driverHandler->sClipRegion.sYMax;
+	if(Y2_Tmp <= (int)driverHandler->sClipRegion.sYMin)
+		Y2_Tmp = (int)driverHandler->sClipRegion.sYMin;
+	if(Y2_Tmp >= (int)driverHandler->sClipRegion.sYMax)
+		Y2_Tmp = (int)driverHandler->sClipRegion.sYMax;
 	int Half_width1 = (width>>1);
 	int Half_width2 = width - Half_width1;
 	if(Y2_Tmp - Y1_Tmp > 0)

@@ -93,6 +93,8 @@ public:
 	Gpio(ioSettings *cfg);
 	~Gpio();
 	SysErr setOut(unsigned int value);
+	void setOut(void *base_addr, unsigned int mask, unsigned int pin_mask);
+	void setOut(void *base_addr, unsigned int pin, bool value);
 	signed int in();
 	SysErr getIn(unsigned long *value);
 	SysErr setMode(CfgGpio::gpioMode_e mode);
