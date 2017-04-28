@@ -81,7 +81,7 @@ At this moment include next features:
 		Drivers:
 			I2C(NOT TESTED).
 			UART.
-			SPI(NOT TESTED).
+			SPI.
 			GPIO.
       
  	ATSAMD21 (Atmel studio):
