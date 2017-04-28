@@ -9,8 +9,9 @@
 #include <api/gpio.h>
 #include <api/i2c.h>
 #include <lib/gfx/resource/fonts.h>
+#include <lib/string.h>
 /**********************************************/
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 #define read_data_byte(addr) pgm_read_byte(&addr)
 #define read_data_word(addr) pgm_read_word(&addr)
 #else
@@ -56,6 +57,11 @@ typedef struct
 	LCD_ORIENTATION orientation;
 } LCD_TIMINGS;
 //*****************************************************************************
+extern LCD_TIMINGS lcd_UG2832HSWEG04_LANDSCAPE;
+extern LCD_TIMINGS lcd_UG2832HSWEG04_LANDSCAPE_FLIP;
+extern LCD_TIMINGS lcd_UG2832HSWEG04_PORTRAIT;
+extern LCD_TIMINGS lcd_UG2832HSWEG04_PORTRAIT_FLIP;
+
 extern LCD_TIMINGS lcd_ILI9341_PORTRAIT;
 extern LCD_TIMINGS lcd_ILI9341_LANDSCAPE;
 
@@ -188,11 +194,14 @@ public:
 				signed int X, unsigned char width, unsigned int color);
 	void (*clear_Ptr)(void *driverHandlerPtr, unsigned int color);
 
+	void (*setLuminosity_Ptr)(void *driverHandlerPtr, unsigned char luminosity);
+
 	void (*drawTouchPoint_Ptr)(void *driverHandlerPtr, signed int X, signed int Y, unsigned int color);
 	void (*drawCircle_Ptr)(void *driverHandlerPtr, signed int x, signed int y, signed int _radius, unsigned char fill, unsigned int color);
 	void (*drawLine_Ptr)(void *driverHandlerPtr, signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color);
 	void (*drawElipse_Ptr)(void *driverHandlerPtr, signed int xc,signed int yc,signed int _rx,signed int _ry, unsigned char Fill, unsigned int color);
 	void (*drawTriangle_Ptr)(void *driverHandlerPtr, signed int  Ax,signed int  Ay,signed int  Bx,signed int  By,signed int  Cx,signed int  Cy, unsigned char Fill, unsigned int color);
+    void (*refresh_Ptr)(void *driverHandlerPtr);
 
 
 	SysErr setOrientation(LCD_ORIENTATION orientation);
@@ -220,12 +229,16 @@ public:
 	SysErr drawVLine(signed int Y1, signed int Y2,
 			signed int X, unsigned char width, unsigned int color);
 	SysErr clear(unsigned int color);
+	SysErr setLuminosity(unsigned char luminosity);
 
 	SysErr drawTouchPoint(signed int X, signed int Y, unsigned int color);
 	SysErr drawCircle(signed int x, signed int y, signed int _radius, unsigned char fill, unsigned int color);
 	SysErr drawLine(signed int X1, signed int Y1, signed int X2, signed int Y2, unsigned char width, unsigned int color);
 	SysErr drawElipse(signed int xc,signed int yc,signed int _rx,signed int _ry, unsigned char Fill, unsigned int color);
 	SysErr drawTriangle(signed int  Ax,signed int  Ay,signed int  Bx,signed int  By,signed int  Cx,signed int  Cy, unsigned char Fill, unsigned int color);
+	int drawString(GI::String *string, signed int X, signed int Y, tRectangle *box, bool WordWrap, unsigned int foreColor, unsigned int color);
+	int drawString(char *string, signed int X, signed int Y, tRectangle *box, bool WordWrap, unsigned int foreColor, unsigned int color);
+    SysErr refresh();
 	GI::Dev::Gpio* backlight;
 	void *driverHandler_Ptr;
 
@@ -334,7 +347,7 @@ typedef struct
 //
 //*****************************************************************************
 #define COLOR_CONVERSION_32_TO_16(COLOR_32) \
-		(unsigned short)((((COLOR_32 >> 19) & 0x1F) << 11) | (((COLOR_32 >> 10) & 0x3F) << 5) | ((COLOR_32 >> 3) & 0x1F))
+		(unsigned short)(((((unsigned long)COLOR_32 >> 19) & 0x1F) << 11) | (((COLOR_32 >> 10) & 0x3F) << 5) | ((COLOR_32 >> 3) & 0x1F))
 
 #if (__SIZEOF_INT__ == 2)
 #define ClrAliceBlue            COLOR_CONVERSION_32_TO_16(0x00F0F8FF)

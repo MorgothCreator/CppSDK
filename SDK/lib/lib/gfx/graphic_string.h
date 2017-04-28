@@ -11,7 +11,7 @@
 /*#####################################################*/
 //char *gfx_change_str(String_t *dest, String_t *src);
 //bool put_roll_string(GScreen::Window *pDisplay, graphic_strings_t *StringsStruct);
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA___
 bool put_roll_string_P(tDisplay *pDisplay, graphic_strings_t *StringsStruct);
 #endif
 /*#####################################################*/

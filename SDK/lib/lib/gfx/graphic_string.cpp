@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "graphic_string.h"
-#include "../../api/lcd_def.h"
+#include <api/lcd_def.h>
 #include "util.h"
 #include "../../api/timer.h"
 #include "controls_definition.h"
@@ -81,7 +81,7 @@ bool _put_roll_string(GScreen::Window *pDisplay, graphic_strings_t *StringsStruc
 }
 #endif
 //#######################################################################################
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA___
 bool put_roll_string(tDisplay *pDisplay, graphic_strings_t *StringsStruct)
 {
 	bool Return = false;

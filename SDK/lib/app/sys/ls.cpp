@@ -2,7 +2,7 @@
  * app/sys/ls.cpp
  */
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 #include <avr/pgmspace.h>
 #endif
 #include "cmd.h"

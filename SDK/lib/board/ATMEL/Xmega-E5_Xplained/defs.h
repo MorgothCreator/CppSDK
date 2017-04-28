@@ -60,9 +60,10 @@
  * Screen settings
  */
 
-#define SCREENS_COUNT					0
-//#define SCREEN_CONFIG_1				lcd_ILI9341_PORTRAIT
-//#define USED_SCREEN_CONTROLLER_1		IntScreen
+#define SCREENS_COUNT					1
+#define SCREEN_CONFIG_1					lcd_UG2832HSWEG04_LANDSCAPE_FLIP
+#define USED_SCREEN_CONTROLLER_1		Ug2832hsweg04
+#define OTHER_SCREEN_1_PARAMS			("spi-0.0")
 
 /*
  * !Screen settings
@@ -140,17 +141,6 @@
 /*
  * !MmcSd settings
  */
-
-/*
- * Thread settings
- */
-
-#define USE_DRIVER_SEMAPHORE			true
-
-/*
- * !Thread settings
- */
-
 
 /*#####################################################*/
 #ifdef USE_VISUAL_STUDIO

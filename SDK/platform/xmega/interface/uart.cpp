@@ -492,9 +492,9 @@ SysErr GI::Dev::Uart::getWordLen(CfgUart::wordLen_e *wLen)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	unsigned char tmp = ((USART_t*)udata)->CTRLC & USART_CHSIZE_gm;
+	//unsigned char tmp = ((USART_t*)udata)->CTRLC & USART_CHSIZE_gm;
 	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
-	if(int_cfg->wordLen == USART_CHSIZE_5BIT_gc)
+	/*if(int_cfg->wordLen == USART_CHSIZE_5BIT_gc)
 		*wLen = CfgUart::WORD_LEN_5;
 	else if(int_cfg->wordLen == USART_CHSIZE_6BIT_gc)
 		*wLen = CfgUart::WORD_LEN_6;
@@ -505,7 +505,8 @@ SysErr GI::Dev::Uart::getWordLen(CfgUart::wordLen_e *wLen)
 	else if(int_cfg->wordLen == USART_CHSIZE_9BIT_gc)
 		*wLen = CfgUart::WORD_LEN_9;
 	else
-		*wLen = CfgUart::WORD_LEN_8;
+		*wLen = CfgUart::WORD_LEN_8;*/
+	*wLen = int_cfg->wordLen;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/
@@ -513,7 +514,7 @@ SysErr GI::Dev::Uart::getStopBits(CfgUart::stopBits_e *sBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	unsigned char tmp = ((USART_t*)udata)->CTRLC & USART_SBMODE_bm;
+	//unsigned char tmp = ((USART_t*)udata)->CTRLC & USART_SBMODE_bm;
 	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
 	if(int_cfg->stopBits == USART_SBMODE_bm)
 		*sBits = CfgUart::STOP_BITS_TWO;
@@ -526,16 +527,17 @@ SysErr GI::Dev::Uart::getParBits(CfgUart::parity_e *pBits)
 {
 	if(!this || !udata)
 		return SYS_ERR_INVALID_HANDLER;
-	unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_PMODE_gm;
+	//unsigned char tmp = ((USART_t*)udata)->CTRLC & ~USART_PMODE_gm;
 	CfgUart *int_cfg = (CfgUart *)cfg->cfg;
-	if(int_cfg->parity == USART_PMODE_EVEN_gc)
+	/*if(int_cfg->parity == USART_PMODE_EVEN_gc)
 		*pBits = CfgUart::PAR_EVEN;
 	else if(int_cfg->parity == USART_PMODE_ODD_gc)
 		*pBits = CfgUart::PAR_ODD;
 	else if(int_cfg->parity == USART_PMODE_DISABLED_gc)
 		*pBits = CfgUart::PAR_NONE;
 	else
-		*pBits = CfgUart::PAR_NONE;
+		*pBits = CfgUart::PAR_NONE;*/
+	*pBits = int_cfg->parity;
 	return SYS_ERR_OK;
 }
 /*#####################################################*/

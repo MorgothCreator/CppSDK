@@ -1,7 +1,7 @@
 /*
  * app/sys/cd.cpp
  */
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 #include <avr/pgmspace.h>
 #endif
 #include <lib/fs/fat.h>

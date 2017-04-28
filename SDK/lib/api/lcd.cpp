@@ -4,6 +4,7 @@
 
 #include "lcd_def.h"
 #include <include/global.h>
+#include <lib/gfx/gfxdef.h>
 //#######################################################################################
 SysErr GI::Dev::Screen::setOrientation(LCD_ORIENTATION orientation)
 {
@@ -142,6 +143,15 @@ SysErr GI::Dev::Screen::clear(unsigned int color)
 	return SYS_ERR_OK;
 }
 //#######################################################################################
+SysErr GI::Dev::Screen::setLuminosity(unsigned char luminosity)
+{
+	if(setLuminosity_Ptr)
+		setLuminosity_Ptr(driverHandler_Ptr, luminosity);
+	else
+		return SYS_ERR_NOT_IMPLEMENTED;
+	return SYS_ERR_OK;
+}
+//#######################################################################################
 SysErr GI::Dev::Screen::drawTouchPoint(signed int X, signed int Y, unsigned int color)
 {
 	if(drawTouchPoint_Ptr)
@@ -196,13 +206,13 @@ SysErr GI::Dev::Screen::drawCircle(signed int x, signed int y, signed int _radiu
 
 			if (_Tmp7 != Tmp7)
 			{
-				drawHLine(Tmp2, Tmp1, Tmp7, 1, color);
-				drawHLine(Tmp2, Tmp1, Tmp8, 1, color);
+				drawHLine(Tmp2, Tmp1 - Tmp2, Tmp7, 1, color);
+				drawHLine(Tmp2, Tmp1 - Tmp2, Tmp8, 1, color);
 			}
 			if (_Tmp5 != Tmp5)
 			{
-				drawHLine(Tmp4, Tmp3, Tmp5, 1, color);
-				drawHLine(Tmp4, Tmp3, Tmp6, 1, color);
+				drawHLine(Tmp4, Tmp3 - Tmp4, Tmp5, 1, color);
+				drawHLine(Tmp4, Tmp3 - Tmp4, Tmp6, 1, color);
 			}
 			_Tmp5 = Tmp5;
 			_Tmp7 = Tmp7;
@@ -224,6 +234,7 @@ SysErr GI::Dev::Screen::drawCircle(signed int x, signed int y, signed int _radiu
 		else
 			P += 5 + 2 * (a++ - b--);
 	} while (a <= b);
+	refresh();
 	return SYS_ERR_OK;
 }
 //#######################################################################################
@@ -346,7 +357,7 @@ SysErr GI::Dev::Screen::drawLine(signed int X1, signed int Y1, signed int X2, si
 			for (i = 0; i <= dx; ++i)
 			{
 #ifdef Use_FastDrawBar
-				LcdStruct->lcd_func.screen_draw_vertical_line(pContext,Y1+ (-half_width), Y1+ (half_width+width%2), X1, 1);
+				lcd_func.screen_draw_vertical_line(pContext,Y1+ (-half_width), Y1+ (half_width+width%2), X1, 1);
 #else
 				for (j = -half_width; j < half_width + width % 2; ++j)
 				{
@@ -389,7 +400,7 @@ SysErr GI::Dev::Screen::drawLine(signed int X1, signed int Y1, signed int X2, si
 					Y1 += addy;
 				}
 #ifdef Use_FastDrawBar
-				LcdStruct->lcd_func.put_horizontal_line(pContext,(X1+(-half_width)), (X1+(half_width+width%2)), Y1, 1);
+				lcd_func.put_horizontal_line(pContext,(X1+(-half_width)), (X1+(half_width+width%2)), Y1, 1);
 #else
 				for (j = -half_width; j < half_width + width % 2; ++j)
 				{
@@ -403,6 +414,7 @@ SysErr GI::Dev::Screen::drawLine(signed int X1, signed int Y1, signed int X2, si
 			}
 		}
 	}
+	refresh();
 	return SYS_ERR_OK;
 }
 
@@ -417,8 +429,8 @@ static void elipseplot(GI::Dev::Screen *pDisplay, signed int xc, signed int yc,
 
 	if (Fill)
 	{
-		pDisplay->drawHLine(Tmp2, Tmp1, Tmp3, 1, color);
-		pDisplay->drawHLine(Tmp2, Tmp1, Tmp4, 1, color);
+		pDisplay->drawHLine(Tmp2, Tmp1 - Tmp2, Tmp3, 1, color);
+		pDisplay->drawHLine(Tmp2, Tmp1 - Tmp2, Tmp4, 1, color);
 	}
 	else
 	{
@@ -487,6 +499,7 @@ SysErr GI::Dev::Screen::drawElipse(signed int xc,signed int yc,signed int _rx,si
 		}
 		elipseplot(this, xc, yc, x, y, Fill, color);
 	}
+	refresh();
 	return SYS_ERR_OK;
 }
 
@@ -582,8 +595,179 @@ SysErr GI::Dev::Screen::drawTriangle(signed int  Ax,signed int  Ay,signed int  B
 			Ex += dx2;
 		}
 	}
+	refresh();
 	return SYS_ERR_OK;
+}
+//#######################################################################################
+#ifdef __AVR_XMEGA__
+#include <avr/pgmspace.h>
+extern const gfx_u8 CharTable6x8[];
+#else
+extern const gfx_u8 CharTable6x8[];
+#endif
+int GI::Dev::Screen::drawString(GI::String *string, signed int X, signed int Y, tRectangle *box, bool WordWrap, unsigned int foreColor, unsigned int color)
+{
+	drawString(string->buff, X, Y, box, WordWrap, foreColor, color);
 }
 
 
+int GI::Dev::Screen::drawString(char *string, signed int X, signed int Y, tRectangle *box, bool wordWrap, unsigned int foreColor, unsigned int color)
+{
+	tRectangle int_box;
+	if(box)
+	{
+		int_box.sXMin = 0;
+		int_box.sXMax = LcdTimings->X;
+		int_box.sYMin = 0;
+		int_box.sYMax = LcdTimings->Y;
+		box = &int_box;
+	}
+	char *pcString = string;
+	bool WordWrap = wordWrap;
+	int lLength = -1;
+	//gfx_s32 _SelStart = properties->_SelStart;
+	//gfx_s32 _SelLen = properties->_SelLen;
 
+	gfx_s8 chWidth = 0;
+	gfx_s8 chHeight = 0;
+	gfx_s32 CharPtr;
+	gfx_s8 Tmp = 0;
+	bool CompactWriting = true;
+	gfx_s32 Cursor_X = X;
+	gfx_s32 Cursor_Y = Y;
+	bool ulVisible = true;
+	gfx_s32 CharCnt = 0;
+	bool ulOpaque = false;
+#ifdef __AVR_XMEGA__
+	chWidth = pgm_read_byte(&CharTable6x8[2]);
+	chHeight = pgm_read_byte(&CharTable6x8[3]);
+#else
+	chWidth = CharTable6x8[2];
+	chHeight = CharTable6x8[3];
+#endif
+	do
+	{
+		gfx_u8 Char = *pcString;
+		if (lLength >= 0 && CharCnt > lLength)
+		{
+			refresh();
+			return CharCnt - 1;
+		}
+		if (Char == 0)
+		{
+			refresh();
+			return CharCnt - 1;
+		}
+#ifdef __AVR_XMEGA__
+		CharPtr = ((Char - pgm_read_byte(&CharTable6x8[4])) * chWidth) + pgm_read_byte(&CharTable6x8[0]);
+		if(Char < pgm_read_byte(&CharTable6x8[4]) || Char > pgm_read_byte(&CharTable6x8[5]))
+#else
+		CharPtr = ((Char - CharTable6x8[4]) * chWidth) + CharTable6x8[0];
+		if (Char < CharTable6x8[4] || Char > CharTable6x8[5])
+#endif
+		{
+			//chWidth_Tmp = chWidth;
+			chWidth = 0;
+		}
+		else
+		{
+			gfx_u8 Temp;
+			/* if CompactWriting is true search the character for free cols from right to left and clear them */
+			if (CompactWriting)
+			{
+				for (Tmp = 1; Tmp < chWidth; Tmp++)
+				{
+#ifdef __AVR_XMEGA__
+					Temp = pgm_read_byte(&CharTable6x8[Tmp + CharPtr]);
+#else
+					Temp = CharTable6x8[Tmp + CharPtr];
+#endif
+					if (Temp == 0)
+						break;
+				}
+				Tmp++;
+			}
+			else
+			{
+				Tmp = chWidth;
+			}
+			if (Cursor_X + Tmp >= sClipRegion.sXMin
+					&& Cursor_X < sClipRegion.sXMax + Tmp
+					&& Cursor_Y + chHeight >= sClipRegion.sYMin
+					&& Cursor_Y < sClipRegion.sYMax + chHeight)
+			{
+				if (ulVisible)
+				{
+					gfx_s32 XX = 0;
+					gfx_s32 YY = 0;
+					for (XX = 0; XX < Tmp; XX++)
+					{
+#ifdef __AVR_XMEGA__
+						Temp = pgm_read_byte(&CharTable6x8[XX + CharPtr]);
+#else
+						Temp = CharTable6x8[XX + CharPtr];
+#endif
+						for (YY = 0; YY < chHeight; YY++)
+						{
+							if (Temp & 0x1)
+							{
+								drawPixel(XX + Cursor_X,
+										YY + Cursor_Y, color);
+							}
+							else
+							{
+								if (ulOpaque)
+									drawPixel(XX + Cursor_X,
+											YY + Cursor_Y, foreColor);
+							}
+							Temp = Temp >> 1;
+						}
+					}
+				}
+			}
+		}
+		//if(Tmp < chWidth) Tmp++;
+		switch (Char)
+		{
+		case '\r':
+			Cursor_X = X;
+			pcString++;
+			break;
+		case '\n':
+			Cursor_Y += chHeight;
+			pcString++;
+			break;
+			//case 9:
+			//case 11:
+			////signed short TabCursor = (ScreenStruct->Cursor_X/((chWidth_Tmp>>1)*4)*(chWidth_Tmp>>1))*4;
+			//Tmp = (((Cursor_X/(chWidth_Tmp<<2))*(chWidth_Tmp<<2))-Cursor_X) + (chWidth_Tmp<<2);
+		default:
+			Cursor_X += Tmp;
+			/*if((ScreenStruct->Cursor_X + chWidth > ScreenStruct->Width) && ScreenStruct->WorldWrap == True)
+			 {
+			 ScreenStruct->CharWidth = Tmp;
+			 ScreenStruct->CharHeight = chHeight;
+			 return EOF;
+			 }*/
+			if ((Cursor_X + chWidth > sClipRegion.sXMax)
+					&& WordWrap == true)
+			{
+				Cursor_Y += chHeight;
+				Cursor_X = X;
+			}
+			pcString++;
+		}
+		CharCnt++;
+	} while (1);
+	refresh();
+}
+//#######################################################################################
+SysErr GI::Dev::Screen::refresh()
+{
+	if(refresh_Ptr)
+		refresh_Ptr(driverHandler_Ptr);
+	else
+		return SYS_ERR_NOT_IMPLEMENTED;
+	return SYS_ERR_OK;
+}
+//#######################################################################################

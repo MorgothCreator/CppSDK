@@ -4,7 +4,7 @@
 
 #include "util.h"
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 #include <avr/pgmspace.h>
 #define read_data_byte(addr) pgm_read_byte(&addr)
 #define read_data_word(addr) pgm_read_word(&addr)

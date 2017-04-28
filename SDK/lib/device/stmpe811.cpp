@@ -873,7 +873,7 @@ SysErr GI::Sensor::Stmpe811::readTouch(signed short *x, signed short *y, bool ap
 				return err;
 
 			/* Calculate positions values */
-			uldataXYZ = (dataXYZ[0] << 24) | (dataXYZ[1] << 16)
+			uldataXYZ = ((unsigned long)dataXYZ[0] << 24) | ((unsigned long)dataXYZ[1] << 16)
 					| (dataXYZ[2] << 8) | (dataXYZ[3] << 0);
 			*x = (uldataXYZ >> 20) & 0x00000FFF;
 			*y = (uldataXYZ >> 8) & 0x00000FFF;

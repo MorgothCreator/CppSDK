@@ -10,7 +10,7 @@
 #include "mpr121.h"
 #include <api/dev_request.h>
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 static const mpr121_setup mpr121_set[] PROGMEM = {
 #else
 static const mpr121_setup mpr121_set[] = {
@@ -75,7 +75,7 @@ GI::Sensor::Mpr121::Mpr121(char *i2cPath, char *irqPath, unsigned char icNr)
 	unsigned int cnt = 0;
 	for (; cnt < sizeof(mpr121_set) / sizeof(mpr121_setup); cnt++)
 	{
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 		if(write(pgm_read_byte(&mpr121_set[cnt].addr) , pgm_read_byte(&mpr121_set[cnt].data)))
 		{
 			I2C = NULL;

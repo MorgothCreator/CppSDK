@@ -72,7 +72,6 @@ public:
     Mi0283Gpio(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight);
     ~Mi0283Gpio();
 
-    bool initialized;
     void reset();
     static bool _setOrientation(void *driverHandlerPtr, LCD_ORIENTATION orientation);
     static SysErr _setBacklight(void *driverHandlerPtr, unsigned char value);

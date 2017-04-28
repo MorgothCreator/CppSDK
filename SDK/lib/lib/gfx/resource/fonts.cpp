@@ -22,7 +22,7 @@
 // This is part of revision 6288 of the Stellaris Graphics Library.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 #include <avr/pgmspace.h>
 #endif
 #include <board.h>
@@ -35,7 +35,7 @@
 //*****************************************************************************
 #if defined(USE_FONT_CM12) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCm12Data[1375]  PROGMEM =
 #else
 static const unsigned char g_pucCm12Data[1375] =
@@ -162,7 +162,7 @@ static const unsigned char g_pucCm12Data[1375] =
 // The font definition for the 12 point Cm font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCm12 PROGMEM =
 #else
 const tFont g_sFontCm12 =
@@ -232,7 +232,7 @@ const tFont g_sFontCm12 =
 //*****************************************************************************
 #if defined(USE_FONT_CM12B) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCm12bData[1328]  PROGMEM =
 #else
 const unsigned char g_pucCm12bData[1328] =
@@ -355,7 +355,7 @@ const unsigned char g_pucCm12bData[1328] =
 // The font definition for the 12 point Cm bold font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCm12b PROGMEM =
 #else
 const tFont g_sFontCm12b =
@@ -424,7 +424,7 @@ const tFont g_sFontCm12b =
 //*****************************************************************************
 #if defined(USE_FONT_CM12I) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCm12iData[1396]  PROGMEM =
 #else
 static const unsigned char g_pucCm12iData[1396] =
@@ -553,7 +553,7 @@ static const unsigned char g_pucCm12iData[1396] =
 // The font definition for the 12 point Cm italic font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCm12i PROGMEM =
 #else
 const tFont g_sFontCm12i =
@@ -621,7 +621,7 @@ const tFont g_sFontCm12i =
 //*****************************************************************************
 #if defined(USE_FONT_CM14) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCm14Data[1626]  PROGMEM =
 #else
 static const unsigned char g_pucCm14Data[1626] =
@@ -770,7 +770,7 @@ static const unsigned char g_pucCm14Data[1626] =
 // The font definition for the 14 point Cm font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCm14 PROGMEM =
 #else
 const tFont g_sFontCm14 =
@@ -838,7 +838,7 @@ const tFont g_sFontCm14 =
 //*****************************************************************************
 #if defined(USE_FONT_CM14B) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCm14bData[1566]  PROGMEM =
 #else
 static const unsigned char g_pucCm14bData[1566] =
@@ -982,7 +982,7 @@ static const unsigned char g_pucCm14bData[1566] =
 // The font definition for the 14 point Cm bold font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCm14b PROGMEM =
 #else
 const tFont g_sFontCm14b =
@@ -1050,7 +1050,7 @@ const tFont g_sFontCm14b =
 //*****************************************************************************
 #if defined(USE_FONT_CM14I) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCm14iData[1665]  PROGMEM =
 #else
 static const unsigned char g_pucCm14iData[1665] =
@@ -1202,7 +1202,7 @@ static const unsigned char g_pucCm14iData[1665] =
 // The font definition for the 14 point Cm italic font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCm14i PROGMEM =
 #else
 const tFont g_sFontCm14i =
@@ -21649,7 +21649,7 @@ const tFont g_sFontCm48i =
 //*****************************************************************************
 #if defined(USE_FONT_CMSC12) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmsc12Data[1434]  PROGMEM =
 #else
 static const unsigned char g_pucCmsc12Data[1434] =
@@ -21782,7 +21782,7 @@ static const unsigned char g_pucCmsc12Data[1434] =
 // The font definition for the 12 point Cmsc font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmsc12 PROGMEM =
 #else
 const tFont g_sFontCmsc12 =
@@ -21850,7 +21850,7 @@ const tFont g_sFontCmsc12 =
 //*****************************************************************************
 #if defined(USE_FONT_CMSC14) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmsc14Data[1648]  PROGMEM =
 #else
 static const unsigned char g_pucCmsc14Data[1648] =
@@ -22001,7 +22001,7 @@ static const unsigned char g_pucCmsc14Data[1648] =
 // The font definition for the 14 point Cmsc font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmsc14 PROGMEM =
 #else
 const tFont g_sFontCmsc14 =
@@ -29053,7 +29053,7 @@ const tFont g_sFontCmsc48 =
 //*****************************************************************************
 #if defined(USE_FONT_CMSS12) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmss12Data[1300]  PROGMEM =
 #else
 static const unsigned char g_pucCmss12Data[1300] =
@@ -29175,7 +29175,7 @@ static const unsigned char g_pucCmss12Data[1300] =
 // The font definition for the 12 point Cmss font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmss12 PROGMEM =
 #else
 const tFont g_sFontCmss12 =
@@ -29243,7 +29243,7 @@ const tFont g_sFontCmss12 =
 //*****************************************************************************
 #if defined(USE_FONT_CMSS12B) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmss12bData[1479]  PROGMEM =
 #else
 static const unsigned char g_pucCmss12bData[1479] =
@@ -29380,7 +29380,7 @@ static const unsigned char g_pucCmss12bData[1479] =
 // The font definition for the 12 point Cmss bold font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmss12b PROGMEM =
 #else
 const tFont g_sFontCmss12b =
@@ -29448,7 +29448,7 @@ const tFont g_sFontCmss12b =
 //*****************************************************************************
 #if defined(USE_FONT_CMSS12I) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmss12iData[1332]  PROGMEM =
 #else
 static const unsigned char g_pucCmss12iData[1332] =
@@ -29571,7 +29571,7 @@ static const unsigned char g_pucCmss12iData[1332] =
 // The font definition for the 12 point Cmss italic font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmss12i PROGMEM =
 #else
 const tFont g_sFontCmss12i =
@@ -29639,7 +29639,7 @@ const tFont g_sFontCmss12i =
 //*****************************************************************************
 #if defined(USE_FONT_CMSS14) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmss14Data[1545]  PROGMEM =
 #else
 static const unsigned char g_pucCmss14Data[1545] =
@@ -29781,7 +29781,7 @@ static const unsigned char g_pucCmss14Data[1545] =
 // The font definition for the 14 point Cmss font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmss14 PROGMEM =
 #else
 const tFont g_sFontCmss14 =
@@ -29849,7 +29849,7 @@ const tFont g_sFontCmss14 =
 //*****************************************************************************
 #if defined(USE_FONT_CMSS14B) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmss14bData[1503]  PROGMEM =
 #else
 static const unsigned char g_pucCmss14bData[1503] =
@@ -29988,7 +29988,7 @@ static const unsigned char g_pucCmss14bData[1503] =
 // The font definition for the 14 point Cmss bold font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmss14b PROGMEM =
 #else
 const tFont g_sFontCmss14b =
@@ -30056,7 +30056,7 @@ const tFont g_sFontCmss14b =
 //*****************************************************************************
 #if defined(USE_FONT_CMSS14I) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmss14iData[1586]  PROGMEM =
 #else
 static const unsigned char g_pucCmss14iData[1586] =
@@ -30202,7 +30202,7 @@ static const unsigned char g_pucCmss14iData[1586] =
 // The font definition for the 14 point Cmss italic font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmss14i PROGMEM =
 #else
 const tFont g_sFontCmss14i =
@@ -49137,7 +49137,7 @@ const tFont g_sFontCmss48i =
 //*****************************************************************************
 #if defined(USE_FONT_CMTT12) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmtt12Data[1313]  PROGMEM =
 #else
 static const unsigned char g_pucCmtt12Data[1313] =
@@ -49260,7 +49260,7 @@ static const unsigned char g_pucCmtt12Data[1313] =
 // The font definition for the 12 point Cmtt font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmtt12 PROGMEM =
 #else
 const tFont g_sFontCmtt12 =
@@ -49328,7 +49328,7 @@ const tFont g_sFontCmtt12 =
 //*****************************************************************************
 #if defined(USE_FONT_CMTT14) || defined(USE_ALL_FONTS)
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const unsigned char g_pucCmtt14Data[1557]  PROGMEM =
 #else
 static const unsigned char g_pucCmtt14Data[1557] =
@@ -49471,7 +49471,7 @@ static const unsigned char g_pucCmtt14Data[1557] =
 // The font definition for the 14 point Cmtt font.
 //
 //*****************************************************************************
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const tFont g_sFontCmtt14 PROGMEM =
 #else
 const tFont g_sFontCmtt14 =

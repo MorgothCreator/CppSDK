@@ -5,7 +5,7 @@
 #ifndef CONTROLS_DEFINITION_H_
 #define CONTROLS_DEFINITION_H_
 /*#####################################################*/
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 #include <avr/pgmspace.h>
 #endif
 #include <stdbool.h>

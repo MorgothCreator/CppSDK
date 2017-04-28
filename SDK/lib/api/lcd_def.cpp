@@ -4,7 +4,95 @@
 
 #include <api/lcd_def.h>
 /*
- * OTM8009A LCD timings
+ * SSD1603 LCD timings
+ */
+LCD_TIMINGS lcd_UG2832HSWEG04_LANDSCAPE =
+{
+/*X size*/128,
+/*Y size*/32,
+/*ref clk*/0,
+/*pll M*/0,
+/*pll N*/0,
+/*pll M2*/0,
+/*raster clk*/0,
+/*palete len*/0,
+/*bus size*/0,
+/*hsw*/0,
+/*hfp*/0,
+/*hbp*/0,
+/*vsw*/0,
+/*vfp*/0,
+/*vbp*/0,
+/*LCD_ORIENTATION*/LCD_ORIENTATION_LANDSCAPE, };
+
+/*
+ * SSD1603 LCD timings
+ */
+LCD_TIMINGS lcd_UG2832HSWEG04_LANDSCAPE_FLIP =
+{
+/*X size*/128,
+/*Y size*/32,
+/*ref clk*/0,
+/*pll M*/0,
+/*pll N*/0,
+/*pll M2*/0,
+/*raster clk*/0,
+/*palete len*/0,
+/*bus size*/0,
+/*hsw*/0,
+/*hfp*/0,
+/*hbp*/0,
+/*vsw*/0,
+/*vfp*/0,
+/*vbp*/0,
+/*LCD_ORIENTATION*/LCD_ORIENTATION_LANDSCAPE_FLIP, };
+
+/*
+ * SSD1603 LCD timings
+ */
+LCD_TIMINGS lcd_UG2832HSWEG04_PORTRAIT =
+{
+/*X size*/32,
+/*Y size*/128,
+/*ref clk*/0,
+/*pll M*/0,
+/*pll N*/0,
+/*pll M2*/0,
+/*raster clk*/0,
+/*palete len*/0,
+/*bus size*/0,
+/*hsw*/0,
+/*hfp*/0,
+/*hbp*/0,
+/*vsw*/0,
+/*vfp*/0,
+/*vbp*/0,
+/*LCD_ORIENTATION*/LCD_ORIENTATION_PORTRAIT, };
+
+/*
+ * SSD1603 LCD timings
+ */
+LCD_TIMINGS lcd_UG2832HSWEG04_PORTRAIT_FLIP =
+{
+/*X size*/32,
+/*Y size*/128,
+/*ref clk*/0,
+/*pll M*/0,
+/*pll N*/0,
+/*pll M2*/0,
+/*raster clk*/0,
+/*palete len*/0,
+/*bus size*/0,
+/*hsw*/0,
+/*hfp*/0,
+/*hbp*/0,
+/*vsw*/0,
+/*vfp*/0,
+/*vbp*/0,
+/*LCD_ORIENTATION*/LCD_ORIENTATION_PORTRAIT_FLIP, };
+
+/*
+ * ILI9341 LCD timings
  */
 LCD_TIMINGS lcd_ILI9341_PORTRAIT =
 {
@@ -26,7 +114,7 @@ LCD_TIMINGS lcd_ILI9341_PORTRAIT =
 /*LCD_ORIENTATION*/LCD_ORIENTATION_PORTRAIT, };
 
 /*
- * OTM8009A LCD timings
+ * ILI9341 LCD timings
  */
 LCD_TIMINGS lcd_ILI9341_LANDSCAPE =
 {

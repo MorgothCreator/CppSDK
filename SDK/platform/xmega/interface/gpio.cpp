@@ -23,7 +23,7 @@ PORT_t *GPIO_BASE_PTRS[] =
 {
 		&PORTA
 #ifdef PORTB
-		, PORTB
+		, &PORTB
 #else
 		, NULL
 #endif
@@ -97,6 +97,11 @@ PORT_t *GPIO_BASE_PTRS[] =
 #else
 		, NULL
 #endif
+#ifdef PORTQ
+		,&PORTQ
+#else
+		, NULL
+#endif
 #ifdef PORTR
 		,&PORTR
 #else
@@ -131,7 +136,7 @@ SysErr GI::Dev::Gpio::setOut(unsigned int value)
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
 	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
+	volatile PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
 	if (int_cfg->multiPin)
 	{
 		BaseAddr->OUT = (BaseAddr->OUT & ~(int_cfg->pin % 8))
@@ -155,7 +160,7 @@ signed int GI::Dev::Gpio::in()
 	if (!this)
 		return -1;
 	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
+	volatile PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
 	if (int_cfg->multiPin)
 	{
 		return BaseAddr->IN & (int_cfg->pin % 8);
@@ -187,7 +192,7 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode)
 	if (!this)
 		return SYS_ERR_INVALID_HANDLER;
 	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
+	volatile PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
 
 	if(int_cfg->multiPin)
 		return SYS_ERR_INVALID_COMMAND;
@@ -226,7 +231,7 @@ SysErr GI::Dev::Gpio::setMode(CfgGpio::gpioMode_e mode, unsigned int mask)
 	CfgGpio *int_cfg = (CfgGpio *)cfg->cfg;
 	if(!int_cfg->multiPin)
 		return SYS_ERR_INVALID_COMMAND;
-	PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
+	volatile PORT_t *BaseAddr = GPIO_BASE_PTRS[int_cfg->pin >> 5];
     multiPinMask = mask;
 
 	volatile unsigned char *ctl_pin = &BaseAddr->PIN0CTRL;

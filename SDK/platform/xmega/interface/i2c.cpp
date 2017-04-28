@@ -71,7 +71,7 @@ GI::Dev::I2c::I2c(ioSettings *cfg)
 	unitNr = dev_nr;
 
 	this->cfg = cfg;
-	CfgI2c *int_cfg = (CfgI2c *)cfg->cfg;
+	//CfgI2c *int_cfg = (CfgI2c *)cfg->cfg;
 	//I2C_ConfigType  sI2C_Config = {0};
 
     /* Initialize I2C module with interrupt mode */
@@ -93,7 +93,7 @@ SysErr GI::Dev::I2c::WR(unsigned char addr, unsigned char *buff_send,
 		unsigned int TransmitBytes, unsigned char *buff_receive,
 		unsigned int ReceiveBytes)
 {
-	TWI_t *pI2Cx = (TWI_t *)udata;
+	//TWI_t *pI2Cx = (TWI_t *)udata;
 	uint8_t u8ErrorStatus = 0;
 	if (!noSendWriteOnRead)
 	{

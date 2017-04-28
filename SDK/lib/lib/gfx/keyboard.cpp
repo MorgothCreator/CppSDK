@@ -12,7 +12,7 @@
 #include "graphic_string.h"
 #include "controls_definition.h"
 //#######################################################################################
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const gfx_u32 kbd_qwerty_keys_little_return[]  PROGMEM =
 #else
 static const gfx_u32 kbd_qwerty_keys_little_return[] =
@@ -23,7 +23,7 @@ static const gfx_u32 kbd_qwerty_keys_little_return[] =
 		0            ,'z','x','c','v','b','n','m',32      ,kbd_qwerty_left,kbd_qwerty_dn,kbd_qwerty_right
 };
 //#######################################################################################
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const gfx_u32 kbd_qwerty_keys_big_return[]  PROGMEM =
 #else
 static const gfx_u32 kbd_qwerty_keys_big_return[] =
@@ -34,7 +34,7 @@ static const gfx_u32 kbd_qwerty_keys_big_return[] =
 		0              ,'Z','X','C','V','B','N','M',32     ,kbd_qwerty_left,kbd_qwerty_dn,kbd_qwerty_right
 };
 //#######################################################################################
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const gfx_u32 kbd_qwerty_keys_numeric_return[]  PROGMEM =
 #else
 static const gfx_u32 kbd_qwerty_keys_numeric_return[] =
@@ -45,7 +45,7 @@ static const gfx_u32 kbd_qwerty_keys_numeric_return[] =
 		0              ,0  ,'&',0  ,47 ,92 ,34 ,96 ,32     ,kbd_qwerty_left,kbd_qwerty_dn,kbd_qwerty_right
 };
 //#######################################################################################
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const gfx_u8 kbd_qwerty_keys_little[][6]  PROGMEM =
 #else
 static const gfx_u8 kbd_qwerty_keys_little[][6] =
@@ -56,7 +56,7 @@ static const gfx_u8 kbd_qwerty_keys_little[][6] =
 		"^"   ,"z","x","c","v","b","n","m","space" ,"Lef","Dn","Rig"
 };
 //#######################################################################################
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const gfx_u8 kbd_qwerty_keys_big[][6]  PROGMEM =
 #else
 static const gfx_u8 kbd_qwerty_keys_big[][6] =
@@ -67,7 +67,7 @@ static const gfx_u8 kbd_qwerty_keys_big[][6] =
 		"^"   ,"Z","X","C","V","B","N","M","space" ,"Lef","Dn","Rig"
 };
 //#######################################################################################
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 const gfx_u8 kbd_qwerty_keys_numeric[][6]  PROGMEM =
 #else
 static const gfx_u8 kbd_qwerty_keys_numeric[][6] =

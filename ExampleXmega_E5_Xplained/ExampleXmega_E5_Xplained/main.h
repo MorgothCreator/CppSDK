@@ -11,10 +11,13 @@
 #define USE_GPIO                        true
 #define USE_UART                        true
 #define USE_I2C                         false
-#define USE_SPI                         false
-#define USE_SCREEN                      false
+#define USE_SPI                         true
+#define USE_SCREEN                      true
 
 #define CALIBRATE_TOUCH_ON_STARTUP		false
+
+#define USE_SCREEN_GUI					false
+#define _USE_PASSWORD_PROTECTION		false
 
 #if USE_SPI
 #define USE_MMCSD_SPI                   false
@@ -52,8 +55,6 @@
 #define USE_SNTP						false
 #define SNTP_SERVER_ADDRESS 			"82.197.164.46" /* google */
 #define SNTP_UPDATE_DELAY 				90000 /* SNTP update every 90 seconds */
-
-#define _USE_PASSWORD_PROTECTION		false
 
 #define _USE_MPU60x0_9150				false
 #define _USE_HIH613x					false

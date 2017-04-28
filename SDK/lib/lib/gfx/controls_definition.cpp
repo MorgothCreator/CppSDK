@@ -2,7 +2,7 @@
  *  lib/gfx/controls_definition.cpp
  */
 
-#ifdef FLASH_DEVICE
+#ifdef __AVR_XMEGA__
 #include <avr/pgmspace.h>
 #endif
 #include "controls_definition.h"
