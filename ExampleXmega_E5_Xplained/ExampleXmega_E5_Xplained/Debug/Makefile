@@ -81,8 +81,8 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../../../SDK/lib/api/lcd.cpp \
+../../../SDK/lib/device/ssd1306.cpp \
 ../../../SDK/lib/device/stmpe811.cpp \
-../../../SDK/lib/device/ug2832hsweg04.cpp \
 ../main.cpp \
 C:/GitHub/CppSDK/Common/main_app.cpp \
 C:/GitHub/CppSDK/SDK/lib/api/dev_request.cpp \
@@ -187,8 +187,8 @@ ASM_SRCS +=
 
 OBJS +=  \
 lib/api/lcd.o \
+lib/device/ssd1306.o \
 lib/device/stmpe811.o \
-lib/device/ug2832hsweg04.o \
 main.o \
 Common/main_app.o \
 lib/api/dev_request.o \
@@ -286,8 +286,8 @@ xmega/sys/systime.o
 
 OBJS_AS_ARGS +=  \
 lib/api/lcd.o \
+lib/device/ssd1306.o \
 lib/device/stmpe811.o \
-lib/device/ug2832hsweg04.o \
 main.o \
 Common/main_app.o \
 lib/api/dev_request.o \
@@ -385,8 +385,8 @@ xmega/sys/systime.o
 
 C_DEPS +=  \
 lib/api/lcd.d \
+lib/device/ssd1306.d \
 lib/device/stmpe811.d \
-lib/device/ug2832hsweg04.d \
 main.d \
 Common/main_app.d \
 lib/api/dev_request.d \
@@ -484,8 +484,8 @@ xmega/sys/systime.d
 
 C_DEPS_AS_ARGS +=  \
 lib/api/lcd.d \
+lib/device/ssd1306.d \
 lib/device/stmpe811.d \
-lib/device/ug2832hsweg04.d \
 main.d \
 Common/main_app.d \
 lib/api/dev_request.d \

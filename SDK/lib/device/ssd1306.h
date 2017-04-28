@@ -1,5 +1,5 @@
 /*
- * ug2832hsweg04.h
+ * ssd1306.h
  */
 
 #ifndef LIB_DEVICE_UG2832HSWEG04_H_

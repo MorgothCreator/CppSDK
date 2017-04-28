@@ -26,7 +26,7 @@
 
 #include "interface/screen.h"
 #include <device/mi0283_gpio.h>
-#include <device/ug2832hsweg04.h>
+#include <device/ssd1306.h>
 #include "interface/screen_def.h"
 
 #if (USE_LWIP == 1)

@@ -1,9 +1,9 @@
 /*
- * ug2832hsweg04.cpp
+ * ssd1306.cpp
  */
 
 #include <avr/pgmspace.h>
-#include "ug2832hsweg04.h"
+#include "ssd1306.h"
 #include <api/dev_request.h>
 #include <api/gpio.h>
 #include <sys/core_init.h>
