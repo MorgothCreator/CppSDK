@@ -237,18 +237,20 @@ void main_app(void)
 #endif
 	//terminal.write((unsigned char *)buffer, bytesread);
 	
-#if (USE_SCREEN == true && USE_SCREEN_GUI == false)
+#if (USE_SCREEN == true && USE_SCREEN_GUI == false && SCREENS_COUNT > 0)
 	/* These functions interract directly with registered driver, the GUI library is not used */
 	dev.SCREEN[0]->drawPixel(3, 1, ClrWhite);
 	dev.SCREEN[0]->drawRectangle(1, 3, 5, 5, true, ClrWhite);
 	dev.SCREEN[0]->drawRectangle(1, 9, 5, 5, false, ClrWhite);
 	dev.SCREEN[0]->drawHLine(1, 16, 16, 1, ClrWhite);//Optimized linear horizontal line.
 	dev.SCREEN[0]->drawVLine(18, 10, 8, 1, ClrWhite);//Optimized linear verical line.
-	dev.SCREEN[0]->drawString("Morgoth CppSDK example application", 16, 0, NULL, true, 0, ClrWhite);
+	dev.SCREEN[0]->drawString((string)"Morgoth CppSDK example application", 16, 0, NULL, true, 0, ClrWhite);
 	dev.SCREEN[0]->drawCircle(32, 23, 8, 1, ClrWhite);
 	dev.SCREEN[0]->drawCircle(50, 23, 8, 0, ClrWhite);
+#ifndef SmartRf06// The TI CC1310 compiler has an issue with floating point operations that make the uC to go to generate a fault interrupt.
 	dev.SCREEN[0]->drawElipse(69, 23, 8, 4, 1, ClrWhite);
 	dev.SCREEN[0]->drawElipse(83, 23, 4, 8, 0, ClrWhite);
+#endif
 	dev.SCREEN[0]->drawLine(90, 16, 110, 25, 1, ClrWhite);//Complex inclined line.
 	dev.SCREEN[0]->drawLine(98, 16, 118, 25, 3, ClrWhite);//Complex inclined line.
 #endif
