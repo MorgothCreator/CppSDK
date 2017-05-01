@@ -72,7 +72,7 @@ At this moment include next features:
 		Drivers:
 			I2C(NOT TESTED).
 			UART.
-			SPI(NOT TESTED).
+			SPI.
 			GPIO.
       
  	ATxmega E5 (Atmel studio):
@@ -106,6 +106,8 @@ At this moment include next features:
 * MPL3115a2 pressure altimeter and temperature sensor using I2C interface.
 * MPR121 capacitive touch controller using I2C interface.
 * MPU60x0 and MPU9x50 accelerometer, giroscope and temperature sensor using I2C interface.
+* SSD1306 OLED display using SPI interface.
+* ST7565 LCD STN display using SPI interface.
 * STMPE811 resistive touchscreen controller using I2C interface.
 
 > On several platforms will be disponible next interfaces:
