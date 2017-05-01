@@ -176,6 +176,14 @@
       <SubType>compile</SubType>
       <Link>lib\device\ssd1306.h</Link>
     </Compile>
+    <Compile Include="..\..\SDK\lib\device\st7565.cpp">
+      <SubType>compile</SubType>
+      <Link>lib\device\st7565.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\SDK\lib\device\st7565.h">
+      <SubType>compile</SubType>
+      <Link>lib\device\st7565.h</Link>
+    </Compile>
     <Compile Include="..\..\SDK\lib\device\stmpe811.cpp">
       <SubType>compile</SubType>
       <Link>lib\device\stmpe811.cpp</Link>

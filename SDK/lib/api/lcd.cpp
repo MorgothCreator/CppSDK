@@ -607,7 +607,7 @@ extern const gfx_u8 CharTable6x8[];
 #endif
 int GI::Dev::Screen::drawString(GI::String *string, signed int X, signed int Y, tRectangle *box, bool WordWrap, unsigned int foreColor, unsigned int color)
 {
-	drawString(string->buff, X, Y, box, WordWrap, foreColor, color);
+	return drawString(string->buff, X, Y, box, WordWrap, foreColor, color);
 }
 
 
@@ -759,7 +759,6 @@ int GI::Dev::Screen::drawString(char *string, signed int X, signed int Y, tRecta
 		}
 		CharCnt++;
 	} while (1);
-	refresh();
 }
 //#######################################################################################
 SysErr GI::Dev::Screen::refresh()

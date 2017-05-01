@@ -81,7 +81,7 @@ all: ExampleKinetisKeaz.elf secondary-outputs
 ExampleKinetisKeaz.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "" -Xlinker --gc-sections -Wl,-Map,"ExampleKinetisKeaz.map" --specs=nano.specs -specs=nosys.specs -o "ExampleKinetisKeaz.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\GitHub\CppSDK\ExampleKinetisKeaz\LinkerScript.ld" -Xlinker --gc-sections -Wl,-Map,"ExampleKinetisKeaz.map" --specs=nano.specs -specs=nosys.specs -o "ExampleKinetisKeaz.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

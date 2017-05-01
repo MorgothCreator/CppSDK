@@ -5,7 +5,9 @@
 #ifndef LIB_LIB_GFX_STRING_H_
 #define LIB_LIB_GFX_STRING_H_
 
+#if __AVR_XMEGA__
 #include <avr/pgmspace.h>
+#endif
 #include <ctype.h>
 #include <string.h>
 #include <stdarg.h>

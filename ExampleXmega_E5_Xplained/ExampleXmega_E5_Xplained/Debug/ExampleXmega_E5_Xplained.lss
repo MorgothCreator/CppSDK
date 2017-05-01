@@ -5,27 +5,27 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .text         000037a8  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000021e  00802000  000037a8  0000383c  2**0
+  1 .data         00000218  00802000  000037a8  0000383c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          0000001c  0080221e  0080221e  00003a5a  2**0
+  2 .bss          0000001c  00802218  00802218  00003a54  2**0
                   ALLOC
-  3 .comment      0000005c  00000000  00000000  00003a5a  2**0
+  3 .comment      0000005c  00000000  00000000  00003a54  2**0
                   CONTENTS, READONLY
-  4 .debug_aranges 00000880  00000000  00000000  00003ab6  2**0
+  4 .debug_aranges 00000880  00000000  00000000  00003ab0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0001cf6b  00000000  00000000  00004336  2**0
+  5 .debug_info   0001cfed  00000000  00000000  00004330  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000037c9  00000000  00000000  000212a1  2**0
+  6 .debug_abbrev 000037fc  00000000  00000000  0002131d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000073d1  00000000  00000000  00024a6a  2**0
+  7 .debug_line   000073d1  00000000  00000000  00024b19  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00001c90  00000000  00000000  0002be3c  2**2
+  8 .debug_frame  00001c90  00000000  00000000  0002beec  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00004d95  00000000  00000000  0002dacc  2**0
+  9 .debug_str    00004e01  00000000  00000000  0002db7c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000fb15  00000000  00000000  00032861  2**0
+ 10 .debug_loc    0000fb15  00000000  00000000  0003297d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000009c0  00000000  00000000  00042376  2**0
+ 11 .debug_ranges 000009c0  00000000  00000000  00042492  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -195,13 +195,13 @@ Disassembly of section .text:
      336:	02 c0       	rjmp	.+4      	; 0x33c <__do_copy_data+0x10>
      338:	05 90       	lpm	r0, Z+
      33a:	0d 92       	st	X+, r0
-     33c:	ae 31       	cpi	r26, 0x1E	; 30
+     33c:	a8 31       	cpi	r26, 0x18	; 24
      33e:	b1 07       	cpc	r27, r17
      340:	d9 f7       	brne	.-10     	; 0x338 <__do_copy_data+0xc>
 
 00000342 <__do_clear_bss>:
      342:	22 e2       	ldi	r18, 0x22	; 34
-     344:	ae e1       	ldi	r26, 0x1E	; 30
+     344:	a8 e1       	ldi	r26, 0x18	; 24
      346:	b2 e2       	ldi	r27, 0x22	; 34
      348:	01 c0       	rjmp	.+2      	; 0x34c <.do_clear_bss_start>
 
@@ -209,7 +209,7 @@ Disassembly of section .text:
      34a:	1d 92       	st	X+, r1
 
 0000034c <.do_clear_bss_start>:
-     34c:	aa 33       	cpi	r26, 0x3A	; 58
+     34c:	a4 33       	cpi	r26, 0x34	; 52
      34e:	b2 07       	cpc	r27, r18
      350:	e1 f7       	brne	.-8      	; 0x34a <.do_clear_bss_loop>
 
@@ -1668,7 +1668,7 @@ Disassembly of section .text:
      ea2:	0c 94 e4 16 	jmp	0x2dc8	; 0x2dc8 <__epilogue_restores__>
 
 00000ea6 <_ZN2GI3Dev6Screen10drawStringEPciiP10tRectanglebjj>:
-	drawString(string->buff, X, Y, box, WordWrap, foreColor, color);
+	return drawString(string->buff, X, Y, box, WordWrap, foreColor, color);
 }
 
 
@@ -2161,11 +2161,11 @@ int GI::Dev::Screen::drawString(char *string, signed int X, signed int Y, tRecta
     10c2:	31 10       	cpse	r3, r1
     10c4:	1b cf       	rjmp	.-458    	; 0xefc <_ZN2GI3Dev6Screen10drawStringEPciiP10tRectanglebjj+0x56>
     10c6:	07 cf       	rjmp	.-498    	; 0xed6 <_ZN2GI3Dev6Screen10drawStringEPciiP10tRectanglebjj+0x30>
+			}
 			pcString++;
 		}
 		CharCnt++;
 	} while (1);
-	refresh();
 }
     10c8:	63 96       	adiw	r28, 0x13	; 19
     10ca:	e2 e1       	ldi	r30, 0x12	; 18
@@ -3038,9 +3038,9 @@ void GI::Dev::Ug2832hsweg04::reset()
     16fc:	08 95       	ret
 
 000016fe <_ZN2GI3Dev13Ug2832hsweg04C1EP11LCD_TIMINGSPc>:
-	0b01000000,
 	0b10000000
 };
+#endif
 
 
 GI::Dev::Ug2832hsweg04::Ug2832hsweg04(LCD_TIMINGS *timings, char *spiPath)
@@ -3062,18 +3062,18 @@ GI::Dev::Ug2832hsweg04::Ug2832hsweg04(LCD_TIMINGS *timings, char *spiPath)
     171a:	21 50       	subi	r18, 0x01	; 1
     171c:	30 40       	sbci	r19, 0x00	; 0
     171e:	e1 f7       	brne	.-8      	; 0x1718 <_ZN2GI3Dev13Ug2832hsweg04C1EP11LCD_TIMINGSPc+0x1a>
-    GI::Dev::DevRequest::request((char *)"ug2832-rst", &RESET);
+    GI::Dev::DevRequest::request((char *)"lcd-rst", &RESET);
     1720:	be 01       	movw	r22, r28
     1722:	62 5c       	subi	r22, 0xC2	; 194
     1724:	7f 4f       	sbci	r23, 0xFF	; 255
     1726:	82 ec       	ldi	r24, 0xC2	; 194
     1728:	91 e2       	ldi	r25, 0x21	; 33
     172a:	74 d1       	rcall	.+744    	; 0x1a14 <_ZN2GI3Dev10DevRequest7requestEPcPPNS0_4GpioE>
-    GI::Dev::DevRequest::request((char *)"ug2832-cd", &CD);
+    GI::Dev::DevRequest::request((char *)"lcd-cd", &CD);
     172c:	be 01       	movw	r22, r28
     172e:	60 5c       	subi	r22, 0xC0	; 192
     1730:	7f 4f       	sbci	r23, 0xFF	; 255
-    1732:	8d ec       	ldi	r24, 0xCD	; 205
+    1732:	8a ec       	ldi	r24, 0xCA	; 202
     1734:	91 e2       	ldi	r25, 0x21	; 33
     1736:	6e d1       	rcall	.+732    	; 0x1a14 <_ZN2GI3Dev10DevRequest7requestEPcPPNS0_4GpioE>
     GI::Dev::DevRequest::request((char *)spiPath, &spiDevice);
@@ -3235,7 +3235,7 @@ void main_app(void)
 
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 0)
 	GI::IO terminal = GI::IO((char *)CONSOLE_UART_OUT);
-    1818:	67 ed       	ldi	r22, 0xD7	; 215
+    1818:	61 ed       	ldi	r22, 0xD1	; 209
     181a:	71 e2       	ldi	r23, 0x21	; 33
     181c:	ce 01       	movw	r24, r28
     181e:	81 96       	adiw	r24, 0x21	; 33
@@ -3243,11 +3243,11 @@ void main_app(void)
 #endif
 	//terminal.write((unsigned char *)buffer, bytesread);
 	
-#if (USE_SCREEN == true && USE_SCREEN_GUI == false)
+#if (USE_SCREEN == true && USE_SCREEN_GUI == false && SCREENS_COUNT > 0)
 	/* These functions interract directly with registered driver, the GUI library is not used */
 	dev.SCREEN[0]->drawPixel(3, 1, ClrWhite);
     1822:	0f 2e       	mov	r0, r31
-    1824:	f6 e2       	ldi	r31, 0x26	; 38
+    1824:	f0 e2       	ldi	r31, 0x20	; 32
     1826:	8f 2e       	mov	r8, r31
     1828:	f2 e2       	ldi	r31, 0x22	; 34
     182a:	9f 2e       	mov	r9, r31
@@ -3318,7 +3318,7 @@ void main_app(void)
     18ac:	80 81       	ld	r24, Z
     18ae:	91 81       	ldd	r25, Z+1	; 0x01
     18b0:	0e 94 44 02 	call	0x488	; 0x488 <_ZN2GI3Dev6Screen9drawVLineEiiihj>
-	dev.SCREEN[0]->drawString("Morgoth CppSDK example application", 16, 0, NULL, true, 0, ClrWhite);
+	dev.SCREEN[0]->drawString((string)"Morgoth CppSDK example application", 16, 0, NULL, true, 0, ClrWhite);
     18b4:	aa 24       	eor	r10, r10
     18b6:	aa 94       	dec	r10
     18b8:	ba 2c       	mov	r11, r10
@@ -3332,7 +3332,7 @@ void main_app(void)
     18c8:	30 e0       	ldi	r19, 0x00	; 0
     18ca:	40 e1       	ldi	r20, 0x10	; 16
     18cc:	50 e0       	ldi	r21, 0x00	; 0
-    18ce:	6e ed       	ldi	r22, 0xDE	; 222
+    18ce:	68 ed       	ldi	r22, 0xD8	; 216
     18d0:	71 e2       	ldi	r23, 0x21	; 33
     18d2:	f4 01       	movw	r30, r8
     18d4:	80 81       	ld	r24, Z
@@ -3365,6 +3365,7 @@ void main_app(void)
     1908:	80 81       	ld	r24, Z
     190a:	91 81       	ldd	r25, Z+1	; 0x01
     190c:	0e 94 6a 02 	call	0x4d4	; 0x4d4 <_ZN2GI3Dev6Screen10drawCircleEiiihj>
+#ifndef SmartRf06// The TI CC1310 compiler has an issue with floating point operations that make the uC to go to generate a fault interrupt.
 	dev.SCREEN[0]->drawElipse(69, 23, 8, 4, 1, ClrWhite);
     1910:	cc 24       	eor	r12, r12
     1912:	ca 94       	dec	r12
@@ -3397,6 +3398,7 @@ void main_app(void)
     1946:	80 81       	ld	r24, Z
     1948:	91 81       	ldd	r25, Z+1	; 0x01
     194a:	3c d9       	rcall	.-3464   	; 0xbc4 <_ZN2GI3Dev6Screen10drawElipseEiiiihj>
+#endif
 	dev.SCREEN[0]->drawLine(90, 16, 110, 25, 1, ClrWhite);//Complex inclined line.
     194c:	ee 24       	eor	r14, r14
     194e:	e3 94       	inc	r14
@@ -3440,7 +3442,7 @@ void main_app(void)
 	{
 		//GI::Sys::Clock::sleep();
 		dev.idle();
-    198a:	8e e1       	ldi	r24, 0x1E	; 30
+    198a:	88 e1       	ldi	r24, 0x18	; 24
     198c:	92 e2       	ldi	r25, 0x22	; 34
     198e:	8d d1       	rcall	.+794    	; 0x1caa <_ZN2GI5Board4Init4idleEv>
 #endif
@@ -3469,8 +3471,8 @@ void main_app(void)
     19a0:	be 01       	movw	r22, r28
     19a2:	69 5d       	subi	r22, 0xD9	; 217
     19a4:	7f 4f       	sbci	r23, 0xFF	; 255
-    19a6:	81 e0       	ldi	r24, 0x01	; 1
-    19a8:	92 e2       	ldi	r25, 0x22	; 34
+    19a6:	8b ef       	ldi	r24, 0xFB	; 251
+    19a8:	91 e2       	ldi	r25, 0x21	; 33
     19aa:	37 d2       	rcall	.+1134   	; 0x1e1a <_ZN2GI2IO4readEPcPb>
 			if(state)
     19ac:	8f a1       	ldd	r24, Y+39	; 0x27
@@ -3517,8 +3519,8 @@ void main_app(void)
 				}
 				GI::IO::write((char *)"led-0", false);
     19ea:	60 e0       	ldi	r22, 0x00	; 0
-    19ec:	81 e0       	ldi	r24, 0x01	; 1
-    19ee:	92 e2       	ldi	r25, 0x22	; 34
+    19ec:	8b ef       	ldi	r24, 0xFB	; 251
+    19ee:	91 e2       	ldi	r25, 0x21	; 33
     19f0:	d1 d1       	rcall	.+930    	; 0x1d94 <_ZN2GI2IO5writeEPcb>
     19f2:	cb cf       	rjmp	.-106    	; 0x198a <_Z8main_appv+0x1a8>
 			}
@@ -3538,8 +3540,8 @@ void main_app(void)
     1a08:	6f d2       	rcall	.+1246   	; 0x1ee8 <_ZN2GI3Sys5Timer8intervalEy>
 				GI::IO::write((char *)"led-0", true);
     1a0a:	61 e0       	ldi	r22, 0x01	; 1
-    1a0c:	81 e0       	ldi	r24, 0x01	; 1
-    1a0e:	92 e2       	ldi	r25, 0x22	; 34
+    1a0c:	8b ef       	ldi	r24, 0xFB	; 251
+    1a0e:	91 e2       	ldi	r25, 0x21	; 33
     1a10:	c1 d1       	rcall	.+898    	; 0x1d94 <_ZN2GI2IO5writeEPcb>
     1a12:	bb cf       	rjmp	.-138    	; 0x198a <_Z8main_appv+0x1a8>
 
@@ -3968,7 +3970,7 @@ GI::Board::Init::~Init()
     1c8a:	ec 01       	movw	r28, r24
     1c8c:	00 97       	sbiw	r24, 0x00	; 0
     1c8e:	29 f0       	breq	.+10     	; 0x1c9a <_ZN2GI5Board4InitC1Ev+0xb6>
-    1c90:	47 e0       	ldi	r20, 0x07	; 7
+    1c90:	41 e0       	ldi	r20, 0x01	; 1
     1c92:	52 e2       	ldi	r21, 0x22	; 34
     1c94:	66 e0       	ldi	r22, 0x06	; 6
     1c96:	70 e2       	ldi	r23, 0x20	; 32
@@ -3997,11 +3999,11 @@ void GI::Board::Init::idle()
 extern ioSettings *ioSetCfg[];
 
 GI::Sys::Clock coreClk = GI::Sys::Clock();
-    1cac:	88 e2       	ldi	r24, 0x28	; 40
+    1cac:	82 e2       	ldi	r24, 0x22	; 34
     1cae:	92 e2       	ldi	r25, 0x22	; 34
     1cb0:	ec d5       	rcall	.+3032   	; 0x288a <_ZN2GI3Sys5ClockC1Ev>
 GI::Board::Init dev = GI::Board::Init();
-    1cb2:	8e e1       	ldi	r24, 0x1E	; 30
+    1cb2:	88 e1       	ldi	r24, 0x18	; 24
     1cb4:	92 e2       	ldi	r25, 0x22	; 34
     1cb6:	96 cf       	rjmp	.-212    	; 0x1be4 <_ZN2GI5Board4InitC1Ev>
     1cb8:	08 95       	ret
@@ -4013,7 +4015,7 @@ GI::Board::Init dev = GI::Board::Init();
 extern ioSettings *ioSetCfg[];
 
 GI::Sys::Clock coreClk = GI::Sys::Clock();
-    1cba:	88 e2       	ldi	r24, 0x28	; 40
+    1cba:	82 e2       	ldi	r24, 0x22	; 34
     1cbc:	92 e2       	ldi	r25, 0x22	; 34
     1cbe:	c4 c5       	rjmp	.+2952   	; 0x2848 <_ZN2GI3Sys5ClockD1Ev>
     1cc0:	08 95       	ret
@@ -4250,14 +4252,14 @@ SysErr GI::IO::read(char *path, bool *state)/* Bit device */
     1e56:	fc 01       	movw	r30, r24
     1e58:	66 23       	and	r22, r22
     1e5a:	19 f1       	breq	.+70     	; 0x1ea2 <_ZN2GI3Sys5Timer6enableEb+0x5c>
-    1e5c:	20 91 2d 22 	lds	r18, 0x222D
-    1e60:	30 91 2e 22 	lds	r19, 0x222E
-    1e64:	40 91 2f 22 	lds	r20, 0x222F
-    1e68:	50 91 30 22 	lds	r21, 0x2230
-    1e6c:	60 91 31 22 	lds	r22, 0x2231
-    1e70:	70 91 32 22 	lds	r23, 0x2232
-    1e74:	80 91 33 22 	lds	r24, 0x2233
-    1e78:	90 91 34 22 	lds	r25, 0x2234
+    1e5c:	20 91 27 22 	lds	r18, 0x2227
+    1e60:	30 91 28 22 	lds	r19, 0x2228
+    1e64:	40 91 29 22 	lds	r20, 0x2229
+    1e68:	50 91 2a 22 	lds	r21, 0x222A
+    1e6c:	60 91 2b 22 	lds	r22, 0x222B
+    1e70:	70 91 2c 22 	lds	r23, 0x222C
+    1e74:	80 91 2d 22 	lds	r24, 0x222D
+    1e78:	90 91 2e 22 	lds	r25, 0x222E
     1e7c:	a0 80       	ld	r10, Z
     1e7e:	b1 80       	ldd	r11, Z+1	; 0x01
     1e80:	c2 80       	ldd	r12, Z+2	; 0x02
@@ -4360,14 +4362,14 @@ SysErr GI::IO::read(char *path, bool *state)/* Bit device */
     1f36:	a0 e0       	ldi	r26, 0x00	; 0
     1f38:	86 d7       	rcall	.+3852   	; 0x2e46 <__cmpdi2_s8>
     1f3a:	2c f1       	brlt	.+74     	; 0x1f86 <_ZN2GI3Sys5Timer4tickEv+0x7c>
-    1f3c:	a0 90 2d 22 	lds	r10, 0x222D
-    1f40:	b0 90 2e 22 	lds	r11, 0x222E
-    1f44:	c0 90 2f 22 	lds	r12, 0x222F
-    1f48:	d0 90 30 22 	lds	r13, 0x2230
-    1f4c:	e0 90 31 22 	lds	r14, 0x2231
-    1f50:	f0 90 32 22 	lds	r15, 0x2232
-    1f54:	00 91 33 22 	lds	r16, 0x2233
-    1f58:	10 91 34 22 	lds	r17, 0x2234
+    1f3c:	a0 90 27 22 	lds	r10, 0x2227
+    1f40:	b0 90 28 22 	lds	r11, 0x2228
+    1f44:	c0 90 29 22 	lds	r12, 0x2229
+    1f48:	d0 90 2a 22 	lds	r13, 0x222A
+    1f4c:	e0 90 2b 22 	lds	r14, 0x222B
+    1f50:	f0 90 2c 22 	lds	r15, 0x222C
+    1f54:	00 91 2d 22 	lds	r16, 0x222D
+    1f58:	10 91 2e 22 	lds	r17, 0x222E
     1f5c:	9f 77       	andi	r25, 0x7F	; 127
     1f5e:	af ef       	ldi	r26, 0xFF	; 255
     1f60:	54 d7       	rcall	.+3752   	; 0x2e0a <__adddi3_s8>
@@ -4411,13 +4413,13 @@ void GI::Sys::Timer::delay(u32 milliSec) {
 }cmd_list;*/
 
 static GI::StringArray hystoryTable = GI::StringArray();
-    1f98:	89 e2       	ldi	r24, 0x29	; 41
+    1f98:	83 e2       	ldi	r24, 0x23	; 35
     1f9a:	92 e2       	ldi	r25, 0x22	; 34
     1f9c:	1b c0       	rjmp	.+54     	; 0x1fd4 <_ZN2GI11StringArrayC1Ev>
     1f9e:	08 95       	ret
 
 00001fa0 <_GLOBAL__sub_D_fs_err_table>:
-    1fa0:	89 e2       	ldi	r24, 0x29	; 41
+    1fa0:	83 e2       	ldi	r24, 0x23	; 35
     1fa2:	92 e2       	ldi	r25, 0x22	; 34
     1fa4:	28 c0       	rjmp	.+80     	; 0x1ff6 <_ZN2GI11StringArrayD1Ev>
     1fa6:	08 95       	ret
@@ -5222,7 +5224,7 @@ GI::Dev::Gpio::Gpio(ioSettings *cfg)
     2388:	df 0a       	sbc	r13, r31
     238a:	44 e0       	ldi	r20, 0x04	; 4
     238c:	50 e0       	ldi	r21, 0x00	; 0
-    238e:	6f e0       	ldi	r22, 0x0F	; 15
+    238e:	69 e0       	ldi	r22, 0x09	; 9
     2390:	72 e2       	ldi	r23, 0x22	; 34
     2392:	c6 01       	movw	r24, r12
     2394:	d4 d6       	rcall	.+3496   	; 0x313e <strncmp>
@@ -5262,7 +5264,7 @@ GI::Dev::Gpio::Gpio(ioSettings *cfg)
     23d8:	9f 93       	push	r25
     23da:	8f 93       	push	r24
     23dc:	0f 2e       	mov	r0, r31
-    23de:	f4 e1       	ldi	r31, 0x14	; 20
+    23de:	fe e0       	ldi	r31, 0x0E	; 14
     23e0:	cf 2e       	mov	r12, r31
     23e2:	f2 e2       	ldi	r31, 0x22	; 34
     23e4:	df 2e       	mov	r13, r31
@@ -5684,7 +5686,7 @@ GI::Dev::Uart::Uart(ioSettings *cfg)
 	if(strncmp(cfg->info.name, (char *)"uart-", sizeof("uart-") - 1))
     26ac:	45 e0       	ldi	r20, 0x05	; 5
     26ae:	50 e0       	ldi	r21, 0x00	; 0
-    26b0:	67 e1       	ldi	r22, 0x17	; 23
+    26b0:	61 e1       	ldi	r22, 0x11	; 17
     26b2:	72 e2       	ldi	r23, 0x22	; 34
     26b4:	c8 01       	movw	r24, r16
     26b6:	01 96       	adiw	r24, 0x01	; 1
@@ -6141,14 +6143,14 @@ void GI::Sys::Systime::sysDelay(unsigned long milliSec)
     28e0:	f4 e1       	ldi	r31, 0x14	; 20
     28e2:	61 c2       	rjmp	.+1218   	; 0x2da6 <__prologue_saves__+0x10>
 	TimerTimeoutValue = STimerCnt + (unsigned long long)milliSec;
-    28e4:	a0 90 2d 22 	lds	r10, 0x222D
-    28e8:	b0 90 2e 22 	lds	r11, 0x222E
-    28ec:	c0 90 2f 22 	lds	r12, 0x222F
-    28f0:	d0 90 30 22 	lds	r13, 0x2230
-    28f4:	e0 90 31 22 	lds	r14, 0x2231
-    28f8:	f0 90 32 22 	lds	r15, 0x2232
-    28fc:	00 91 33 22 	lds	r16, 0x2233
-    2900:	10 91 34 22 	lds	r17, 0x2234
+    28e4:	a0 90 27 22 	lds	r10, 0x2227
+    28e8:	b0 90 28 22 	lds	r11, 0x2228
+    28ec:	c0 90 29 22 	lds	r12, 0x2229
+    28f0:	d0 90 2a 22 	lds	r13, 0x222A
+    28f4:	e0 90 2b 22 	lds	r14, 0x222B
+    28f8:	f0 90 2c 22 	lds	r15, 0x222C
+    28fc:	00 91 2d 22 	lds	r16, 0x222D
+    2900:	10 91 2e 22 	lds	r17, 0x222E
     2904:	dc 01       	movw	r26, r24
     2906:	cb 01       	movw	r24, r22
     2908:	28 2f       	mov	r18, r24
@@ -6178,14 +6180,14 @@ void GI::Sys::Systime::sysDelay(unsigned long milliSec)
     294e:	70 91 bf 21 	lds	r23, 0x21BF
     2952:	80 91 c0 21 	lds	r24, 0x21C0
     2956:	90 91 c1 21 	lds	r25, 0x21C1
-    295a:	a0 90 2d 22 	lds	r10, 0x222D
-    295e:	b0 90 2e 22 	lds	r11, 0x222E
-    2962:	c0 90 2f 22 	lds	r12, 0x222F
-    2966:	d0 90 30 22 	lds	r13, 0x2230
-    296a:	e0 90 31 22 	lds	r14, 0x2231
-    296e:	f0 90 32 22 	lds	r15, 0x2232
-    2972:	00 91 33 22 	lds	r16, 0x2233
-    2976:	10 91 34 22 	lds	r17, 0x2234
+    295a:	a0 90 27 22 	lds	r10, 0x2227
+    295e:	b0 90 28 22 	lds	r11, 0x2228
+    2962:	c0 90 29 22 	lds	r12, 0x2229
+    2966:	d0 90 2a 22 	lds	r13, 0x222A
+    296a:	e0 90 2b 22 	lds	r14, 0x222B
+    296e:	f0 90 2c 22 	lds	r15, 0x222C
+    2972:	00 91 2d 22 	lds	r16, 0x222D
+    2976:	10 91 2e 22 	lds	r17, 0x222E
     297a:	5c d2       	rcall	.+1208   	; 0x2e34 <__cmpdi2>
     297c:	f0 f6       	brcc	.-68     	; 0x293a <_ZN2GI3Sys7Systime8sysDelayEm+0x60>
 	}
@@ -6217,24 +6219,24 @@ ISR(RTC_OVF_vect)
     299e:	9f 93       	push	r25
     29a0:	af 93       	push	r26
 	STimerCnt += 10;
-    29a2:	20 91 2d 22 	lds	r18, 0x222D
-    29a6:	30 91 2e 22 	lds	r19, 0x222E
-    29aa:	40 91 2f 22 	lds	r20, 0x222F
-    29ae:	50 91 30 22 	lds	r21, 0x2230
-    29b2:	60 91 31 22 	lds	r22, 0x2231
-    29b6:	70 91 32 22 	lds	r23, 0x2232
-    29ba:	80 91 33 22 	lds	r24, 0x2233
-    29be:	90 91 34 22 	lds	r25, 0x2234
+    29a2:	20 91 27 22 	lds	r18, 0x2227
+    29a6:	30 91 28 22 	lds	r19, 0x2228
+    29aa:	40 91 29 22 	lds	r20, 0x2229
+    29ae:	50 91 2a 22 	lds	r21, 0x222A
+    29b2:	60 91 2b 22 	lds	r22, 0x222B
+    29b6:	70 91 2c 22 	lds	r23, 0x222C
+    29ba:	80 91 2d 22 	lds	r24, 0x222D
+    29be:	90 91 2e 22 	lds	r25, 0x222E
     29c2:	aa e0       	ldi	r26, 0x0A	; 10
     29c4:	22 d2       	rcall	.+1092   	; 0x2e0a <__adddi3_s8>
-    29c6:	20 93 2d 22 	sts	0x222D, r18
-    29ca:	30 93 2e 22 	sts	0x222E, r19
-    29ce:	40 93 2f 22 	sts	0x222F, r20
-    29d2:	50 93 30 22 	sts	0x2230, r21
-    29d6:	60 93 31 22 	sts	0x2231, r22
-    29da:	70 93 32 22 	sts	0x2232, r23
-    29de:	80 93 33 22 	sts	0x2233, r24
-    29e2:	90 93 34 22 	sts	0x2234, r25
+    29c6:	20 93 27 22 	sts	0x2227, r18
+    29ca:	30 93 28 22 	sts	0x2228, r19
+    29ce:	40 93 29 22 	sts	0x2229, r20
+    29d2:	50 93 2a 22 	sts	0x222A, r21
+    29d6:	60 93 2b 22 	sts	0x222B, r22
+    29da:	70 93 2c 22 	sts	0x222C, r23
+    29de:	80 93 2d 22 	sts	0x222D, r24
+    29e2:	90 93 2e 22 	sts	0x222E, r25
 }
     29e6:	af 91       	pop	r26
     29e8:	9f 91       	pop	r25
@@ -6258,13 +6260,13 @@ ISR(RTC_OVF_vect)
 #include <avr/interrupt.h>
 #include <sys/systime.h>
 GI::Sys::Systime systime = GI::Sys::Systime();
-    2a02:	85 e3       	ldi	r24, 0x35	; 53
+    2a02:	8f e2       	ldi	r24, 0x2F	; 47
     2a04:	92 e2       	ldi	r25, 0x22	; 34
     2a06:	4b cf       	rjmp	.-362    	; 0x289e <_ZN2GI3Sys7SystimeC1Ev>
     2a08:	08 95       	ret
 
 00002a0a <_GLOBAL__sub_D_systime>:
-    2a0a:	85 e3       	ldi	r24, 0x35	; 53
+    2a0a:	8f e2       	ldi	r24, 0x2F	; 47
     2a0c:	92 e2       	ldi	r25, 0x22	; 34
     2a0e:	62 cf       	rjmp	.-316    	; 0x28d4 <_ZN2GI3Sys7SystimeD1Ev>
     2a10:	08 95       	ret
@@ -6951,8 +6953,8 @@ GI::Sys::Systime systime = GI::Sys::Systime();
     2ec2:	10 f4       	brcc	.+4      	; 0x2ec8 <malloc+0xe>
     2ec4:	82 e0       	ldi	r24, 0x02	; 2
     2ec6:	90 e0       	ldi	r25, 0x00	; 0
-    2ec8:	e0 91 38 22 	lds	r30, 0x2238
-    2ecc:	f0 91 39 22 	lds	r31, 0x2239
+    2ec8:	e0 91 32 22 	lds	r30, 0x2232
+    2ecc:	f0 91 33 22 	lds	r31, 0x2233
     2ed0:	20 e0       	ldi	r18, 0x00	; 0
     2ed2:	30 e0       	ldi	r19, 0x00	; 0
     2ed4:	a0 e0       	ldi	r26, 0x00	; 0
@@ -6976,8 +6978,8 @@ GI::Sys::Systime systime = GI::Sys::Systime();
     2ef8:	9c 93       	st	X, r25
     2efa:	13 97       	sbiw	r26, 0x03	; 3
     2efc:	2c c0       	rjmp	.+88     	; 0x2f56 <malloc+0x9c>
-    2efe:	80 93 38 22 	sts	0x2238, r24
-    2f02:	90 93 39 22 	sts	0x2239, r25
+    2efe:	80 93 32 22 	sts	0x2232, r24
+    2f02:	90 93 33 22 	sts	0x2233, r25
     2f06:	27 c0       	rjmp	.+78     	; 0x2f56 <malloc+0x9c>
     2f08:	21 15       	cp	r18, r1
     2f0a:	31 05       	cpc	r19, r1
@@ -7013,8 +7015,8 @@ GI::Sys::Systime systime = GI::Sys::Systime();
     2f46:	82 83       	std	Z+2, r24	; 0x02
     2f48:	93 83       	std	Z+3, r25	; 0x03
     2f4a:	04 c0       	rjmp	.+8      	; 0x2f54 <malloc+0x9a>
-    2f4c:	80 93 38 22 	sts	0x2238, r24
-    2f50:	90 93 39 22 	sts	0x2239, r25
+    2f4c:	80 93 32 22 	sts	0x2232, r24
+    2f50:	90 93 33 22 	sts	0x2233, r25
     2f54:	fe 01       	movw	r30, r28
     2f56:	32 96       	adiw	r30, 0x02	; 2
     2f58:	44 c0       	rjmp	.+136    	; 0x2fe2 <malloc+0x128>
@@ -7028,14 +7030,14 @@ GI::Sys::Systime systime = GI::Sys::Systime();
     2f68:	28 83       	st	Y, r18
     2f6a:	39 83       	std	Y+1, r19	; 0x01
     2f6c:	3a c0       	rjmp	.+116    	; 0x2fe2 <malloc+0x128>
-    2f6e:	20 91 36 22 	lds	r18, 0x2236
-    2f72:	30 91 37 22 	lds	r19, 0x2237
+    2f6e:	20 91 30 22 	lds	r18, 0x2230
+    2f72:	30 91 31 22 	lds	r19, 0x2231
     2f76:	23 2b       	or	r18, r19
     2f78:	41 f4       	brne	.+16     	; 0x2f8a <malloc+0xd0>
     2f7a:	20 91 02 20 	lds	r18, 0x2002
     2f7e:	30 91 03 20 	lds	r19, 0x2003
-    2f82:	20 93 36 22 	sts	0x2236, r18
-    2f86:	30 93 37 22 	sts	0x2237, r19
+    2f82:	20 93 30 22 	sts	0x2230, r18
+    2f86:	30 93 31 22 	sts	0x2231, r19
     2f8a:	20 91 00 20 	lds	r18, 0x2000
     2f8e:	30 91 01 20 	lds	r19, 0x2001
     2f92:	21 15       	cp	r18, r1
@@ -7047,8 +7049,8 @@ GI::Sys::Systime systime = GI::Sys::Systime();
     2fa0:	50 91 05 20 	lds	r21, 0x2005
     2fa4:	24 1b       	sub	r18, r20
     2fa6:	35 0b       	sbc	r19, r21
-    2fa8:	e0 91 36 22 	lds	r30, 0x2236
-    2fac:	f0 91 37 22 	lds	r31, 0x2237
+    2fa8:	e0 91 30 22 	lds	r30, 0x2230
+    2fac:	f0 91 31 22 	lds	r31, 0x2231
     2fb0:	e2 17       	cp	r30, r18
     2fb2:	f3 07       	cpc	r31, r19
     2fb4:	a0 f4       	brcc	.+40     	; 0x2fde <malloc+0x124>
@@ -7065,8 +7067,8 @@ GI::Sys::Systime systime = GI::Sys::Systime();
     2fca:	48 f0       	brcs	.+18     	; 0x2fde <malloc+0x124>
     2fcc:	4e 0f       	add	r20, r30
     2fce:	5f 1f       	adc	r21, r31
-    2fd0:	40 93 36 22 	sts	0x2236, r20
-    2fd4:	50 93 37 22 	sts	0x2237, r21
+    2fd0:	40 93 30 22 	sts	0x2230, r20
+    2fd4:	50 93 31 22 	sts	0x2231, r21
     2fd8:	81 93       	st	Z+, r24
     2fda:	91 93       	st	Z+, r25
     2fdc:	02 c0       	rjmp	.+4      	; 0x2fe2 <malloc+0x128>
@@ -7087,21 +7089,21 @@ GI::Sys::Systime systime = GI::Sys::Systime();
     2ff6:	32 97       	sbiw	r30, 0x02	; 2
     2ff8:	12 82       	std	Z+2, r1	; 0x02
     2ffa:	13 82       	std	Z+3, r1	; 0x03
-    2ffc:	c0 91 38 22 	lds	r28, 0x2238
-    3000:	d0 91 39 22 	lds	r29, 0x2239
+    2ffc:	c0 91 32 22 	lds	r28, 0x2232
+    3000:	d0 91 33 22 	lds	r29, 0x2233
     3004:	20 97       	sbiw	r28, 0x00	; 0
     3006:	81 f4       	brne	.+32     	; 0x3028 <__stack+0x29>
     3008:	20 81       	ld	r18, Z
     300a:	31 81       	ldd	r19, Z+1	; 0x01
     300c:	28 0f       	add	r18, r24
     300e:	39 1f       	adc	r19, r25
-    3010:	80 91 36 22 	lds	r24, 0x2236
-    3014:	90 91 37 22 	lds	r25, 0x2237
+    3010:	80 91 30 22 	lds	r24, 0x2230
+    3014:	90 91 31 22 	lds	r25, 0x2231
     3018:	82 17       	cp	r24, r18
     301a:	93 07       	cpc	r25, r19
     301c:	79 f5       	brne	.+94     	; 0x307c <__stack+0x7d>
-    301e:	e0 93 36 22 	sts	0x2236, r30
-    3022:	f0 93 37 22 	sts	0x2237, r31
+    301e:	e0 93 30 22 	sts	0x2230, r30
+    3022:	f0 93 31 22 	sts	0x2231, r31
     3026:	6d c0       	rjmp	.+218    	; 0x3102 <__stack+0x103>
     3028:	de 01       	movw	r26, r28
     302a:	20 e0       	ldi	r18, 0x00	; 0
@@ -7145,8 +7147,8 @@ GI::Sys::Systime systime = GI::Sys::Systime();
     3076:	21 15       	cp	r18, r1
     3078:	31 05       	cpc	r19, r1
     307a:	29 f4       	brne	.+10     	; 0x3086 <__stack+0x87>
-    307c:	e0 93 38 22 	sts	0x2238, r30
-    3080:	f0 93 39 22 	sts	0x2239, r31
+    307c:	e0 93 32 22 	sts	0x2232, r30
+    3080:	f0 93 33 22 	sts	0x2233, r31
     3084:	3e c0       	rjmp	.+124    	; 0x3102 <__stack+0x103>
     3086:	d9 01       	movw	r26, r18
     3088:	12 96       	adiw	r26, 0x02	; 2
@@ -7190,20 +7192,20 @@ GI::Sys::Systime systime = GI::Sys::Systime();
     30d4:	39 81       	ldd	r19, Y+1	; 0x01
     30d6:	82 0f       	add	r24, r18
     30d8:	93 1f       	adc	r25, r19
-    30da:	20 91 36 22 	lds	r18, 0x2236
-    30de:	30 91 37 22 	lds	r19, 0x2237
+    30da:	20 91 30 22 	lds	r18, 0x2230
+    30de:	30 91 31 22 	lds	r19, 0x2231
     30e2:	28 17       	cp	r18, r24
     30e4:	39 07       	cpc	r19, r25
     30e6:	69 f4       	brne	.+26     	; 0x3102 <__stack+0x103>
     30e8:	30 97       	sbiw	r30, 0x00	; 0
     30ea:	29 f4       	brne	.+10     	; 0x30f6 <__stack+0xf7>
-    30ec:	10 92 38 22 	sts	0x2238, r1
-    30f0:	10 92 39 22 	sts	0x2239, r1
+    30ec:	10 92 32 22 	sts	0x2232, r1
+    30f0:	10 92 33 22 	sts	0x2233, r1
     30f4:	02 c0       	rjmp	.+4      	; 0x30fa <__stack+0xfb>
     30f6:	12 82       	std	Z+2, r1	; 0x02
     30f8:	13 82       	std	Z+3, r1	; 0x03
-    30fa:	c0 93 36 22 	sts	0x2236, r28
-    30fe:	d0 93 37 22 	sts	0x2237, r29
+    30fa:	c0 93 30 22 	sts	0x2230, r28
+    30fe:	d0 93 31 22 	sts	0x2231, r29
     3102:	df 91       	pop	r29
     3104:	cf 91       	pop	r28
     3106:	08 95       	ret

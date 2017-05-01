@@ -53,6 +53,8 @@ typedef signed long long s64;
 typedef float ff;
 typedef double dd;
 
+typedef char* string;
+
 /*
  * Graphic definitions.
  */
