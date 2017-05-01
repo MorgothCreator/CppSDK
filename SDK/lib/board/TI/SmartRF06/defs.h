@@ -3,6 +3,7 @@
 
 #if defined(SmartRf06)
 
+#include <include/global.h>
 #include "../SmartRF06/ffconf.h"
 #include "../SmartRF06/lwipopts.h"
 #include <api/lcd_def.h>
@@ -42,9 +43,10 @@
  * Screen settings
  */
 
-#define SCREENS_COUNT					0
-//#define SCREEN_CONFIG_1						lcd_ILI9341_PORTRAIT
-//#define USED_SCREEN_CONTROLLER_1			IntScreen
+#define SCREENS_COUNT                   1
+#define SCREEN_CONFIG_1                 lcd_DOGM128W_6_LANDSCAPE_FLIP
+#define USED_SCREEN_CONTROLLER_1        St7565
+#define OTHER_SCREEN_1_PARAMS           ((string)"spi-0.1")
 
 /*
  * !Screen settings

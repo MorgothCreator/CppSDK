@@ -2,12 +2,13 @@
  * ssd1306.cpp
  */
 
-#include <avr/pgmspace.h>
 #include "ssd1306.h"
 #include <api/dev_request.h>
 #include <api/gpio.h>
 #include <sys/core_init.h>
 
+#if __AVR_XMEGA__
+#include <avr/pgmspace.h>
 const unsigned char SSD1306_BIT_MASK_TABLE [] PROGMEM = {
 	0b00000001,
 	0b00000010,
@@ -18,13 +19,14 @@ const unsigned char SSD1306_BIT_MASK_TABLE [] PROGMEM = {
 	0b01000000,
 	0b10000000
 };
+#endif
 
 
 GI::Dev::Ug2832hsweg04::Ug2832hsweg04(LCD_TIMINGS *timings, char *spiPath)
 {
     memset(this, 0, sizeof(*this));
-    GI::Dev::DevRequest::request((char *)"ug2832-rst", &RESET);
-    GI::Dev::DevRequest::request((char *)"ug2832-cd", &CD);
+    GI::Dev::DevRequest::request((char *)"lcd-rst", &RESET);
+    GI::Dev::DevRequest::request((char *)"lcd-cd", &CD);
     GI::Dev::DevRequest::request((char *)spiPath, &spiDevice);
     if(!spiDevice || !RESET || !CD)
     {
@@ -195,10 +197,17 @@ void GI::Dev::Ug2832hsweg04::_drawPixel(void *driverHandlerPtr, signed int X_Coo
 		break;
 	}
 	unsigned char *tmp_buff = driverHandler->buff + (((_Y_Coordonate >> 3) * X_Limit) + (_X_Coordonate % X_Limit));
+#if __AVR_XMEGA__
 	if (color)
 		*tmp_buff |= pgm_read_byte(&SSD1306_BIT_MASK_TABLE[_Y_Coordonate & 0x07]);
 	else
 		*tmp_buff &= ~pgm_read_byte(&SSD1306_BIT_MASK_TABLE[_Y_Coordonate & 0x07]);
+#else
+    if (color)
+        *tmp_buff |= 1 << (_Y_Coordonate & 0x07);
+    else
+        *tmp_buff &= ~(1 << (_Y_Coordonate & 0x07));
+#endif
 }
 
 void GI::Dev::Ug2832hsweg04::_drawRectangle(void *driverHandlerPtr, signed int x_start, signed int y_start, signed int x_len, signed int y_len, bool fill, unsigned int color)

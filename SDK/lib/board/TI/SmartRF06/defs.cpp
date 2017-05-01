@@ -22,22 +22,22 @@ ioSetCfgGpio(hbtn_2,    "hbtn-2",   pin_mux_convert_to_pin(IOA, 15),CfgGpio::GPI
 ioSetCfgGpio(hbtn_3,    "hbtn-3",   pin_mux_convert_to_pin(IOA, 18),CfgGpio::GPIO_IN_PULL_UP,       false, false, 0);
 ioSetCfgGpio(hbtn_4,    "hbtn-4",   pin_mux_convert_to_pin(IOA, 11),CfgGpio::GPIO_IN_PULL_UP,       false, false, 0);
 
-ioSetCfgGpio(lv33_en,   "lv33-en",  pin_mux_convert_to_pin(IOA, 13),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 0);
+ioSetCfgGpio(lv33_en,   "lv33-en",  pin_mux_convert_to_pin(IOA, 13),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 1);
 ioSetCfgGpio(acc_pwr,   "acc-pwr",  pin_mux_convert_to_pin(IOA, 20),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 0);
 ioSetCfgGpio(accint_1,  "accint-1", pin_mux_convert_to_pin(IOA, 28),CfgGpio::GPIO_IN_PULL_UP,      false, false, 0);
 ioSetCfgGpio(accint_2,  "accint-2", pin_mux_convert_to_pin(IOA, 29),CfgGpio::GPIO_IN_PULL_UP,      false, false, 0);
 ioSetCfgGpio(als_pwr,   "als-pwr",  pin_mux_convert_to_pin(IOA, 26),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 0);
 ioSetCfgGpio(als_out,   "als-out",  pin_mux_convert_to_pin(IOA, 23),CfgGpio::GPIO_IN_FLOATING,     false, false, 0);
 ioSetCfgGpio(lcd_rst,   "lcd-rst",  pin_mux_convert_to_pin(IOA,  5),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 1);
-ioSetCfgGpio(lcd_mode,  "lcd-mode", pin_mux_convert_to_pin(IOA,  4),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 0);
+ioSetCfgGpio(lcd_cd,    "lcd-cd",   pin_mux_convert_to_pin(IOA,  4),CfgGpio::GPIO_OUT_PUSH_PULL,   false, false, 0);
 
 ioSetCfgUart(uart_0,    "uart-0",   pin_mux_convert_to_pin(IOA,  3) , pin_mux_convert_to_pin(IOA, 2)    , 115200    , CfgUart::WORD_LEN_8   , CfgUart::STOP_BITS_ONE    , CfgUart::PAR_NONE , CfgUart::MODE_ASYNC);
 
 //ioSetCfgI2c(i2c_0,      "i2c-0",    pin_mux_convert_to_pin(IOA,  8) , pin_mux_convert_to_pin(IOC, 9), CfgI2c::i2cMode0, 100000);
 
-ioSetCfgSpi(spi_4_0,    "spi-4.0",  pin_mux_convert_to_pin(IOA, 10) , pin_mux_convert_to_pin(IOA, 9), pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOA,14), CfgSpi::spiMode0, 500000, false);//LCD
-ioSetCfgSpi(spi_4_1,    "spi-4.1",  pin_mux_convert_to_pin(IOA, 10) , pin_mux_convert_to_pin(IOA, 9), pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOA,30), CfgSpi::spiMode0,2500000, false);//uSD
-ioSetCfgSpi(spi_4_2,    "spi-4.2",  pin_mux_convert_to_pin(IOA, 10) , pin_mux_convert_to_pin(IOA, 9), pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOA,24), CfgSpi::spiMode0, 500000, false);//Accelerometer
+ioSetCfgSpi(spi_0_0,    "spi-0.0",  pin_mux_convert_to_pin(IOA, 10) , pin_mux_convert_to_pin(IOA, 9), pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOA,14), CfgSpi::spiMode0,10000000, false);//LCD
+ioSetCfgSpi(spi_0_1,    "spi-0.1",  pin_mux_convert_to_pin(IOA, 10) , pin_mux_convert_to_pin(IOA, 9), pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOA,30), CfgSpi::spiMode0,10000000, false);//uSD
+ioSetCfgSpi(spi_0_2,    "spi-0.2",  pin_mux_convert_to_pin(IOA, 10) , pin_mux_convert_to_pin(IOA, 9), pin_mux_convert_to_pin(IOA, 8), pin_mux_convert_to_pin(IOA,24), CfgSpi::spiMode0, 5000000, false);//Accelerometer
 
 ioSetCfgEnd(ioTableEnd);
 
@@ -58,12 +58,12 @@ ioSettings *ioSetCfg[] = {
         &als_pwr,
         &als_out,
         &lcd_rst,
-        &lcd_mode,
+        &lcd_cd,
         &uart_0,
         //&i2c_0,
-        &spi_4_0,
-        &spi_4_1,
-        &spi_4_2,
+        &spi_0_0,
+        &spi_0_1,
+        &spi_0_2,
         &ioTableEnd,
         (ioSettings *)-1/* This is an artifice to force linker to put this structure ito .data section, to be secure that this will be initiated before the call of init() function. */
 };
