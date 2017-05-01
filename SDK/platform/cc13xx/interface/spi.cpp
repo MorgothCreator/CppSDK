@@ -50,9 +50,11 @@ GI::Dev::Spi::Spi(ioSettings *cfg)
 		err = SYS_ERR_INVALID_PATH;
 		return;
 	}
-	int _nr_of_items = sscanf(port + 1, (const char *)"%u", &_portNr);
-	_nr_of_items += sscanf(chan + 1, (const char *)"%u", &_channel);
-	if (_nr_of_items != 2 || _portNr >= SPI_INTERFACE_COUNT || _channel >= SPI_CHANNELS_PER_INTERFACE_COUNT)
+	//int _nr_of_items = sscanf(port + 1, (const char *)"%u", &_portNr);
+	//_nr_of_items += sscanf(chan + 1, (const char *)"%u", &_channel);
+    _portNr = port[1] - '0';
+    _channel = chan[1] - '0';
+	if (/*_nr_of_items != 2 || */_portNr >= SPI_INTERFACE_COUNT || _channel >= SPI_CHANNELS_PER_INTERFACE_COUNT)
 	{
 		err = SYS_ERR_INVALID_PATH;
 		return;
@@ -194,7 +196,7 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
     spi_semaphore[unitNr] = true;
 #endif
@@ -205,11 +207,15 @@ SysErr GI::Dev::Spi::writeRead(unsigned char *buffWrite, unsigned int lenWrite,
 	unsigned int transfer_cnt = 0;
 	for(; transfer_cnt < lenWrite; transfer_cnt++) {
 		SSIDataPut((unsigned int)userData, buffWrite[transfer_cnt]);
+        while(SSIBusy((unsigned int)userData));
+        unsigned long ui32Dummy;
+        while(SSIDataGetNonBlocking((unsigned int)userData, &ui32Dummy));
 	}
 	transfer_cnt = 0;
 	for(; transfer_cnt < lenRead; transfer_cnt++) {
 		SSIDataPut((unsigned int)userData, 0xFF);
 		uint32_t pui32Data;
+        while(SSIBusy((unsigned int)userData));
 		SSIDataGet((unsigned int)userData, &pui32Data);
 		buffRead[transfer_cnt] = pui32Data;
 	}
@@ -230,7 +236,7 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
     spi_semaphore[unitNr] = true;
 #endif
@@ -241,6 +247,7 @@ int GI::Dev::Spi::readBytes(unsigned char *buff, unsigned int len)
 	unsigned int transfer_cnt = 0;
 	for(; transfer_cnt < len; transfer_cnt++) {
 		SSIDataPut((unsigned int)userData, 0xFF);
+        while(SSIBusy((unsigned int)userData));
 		uint32_t pui32Data;
 		SSIDataGet((unsigned int)userData, &pui32Data);
 		buff[transfer_cnt] = pui32Data;
@@ -263,7 +270,7 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 		return SYS_ERR_INVALID_HANDLER;
 	}
 #if (USE_DRIVER_SEMAPHORE == true)
-	if (!spi_semaphore[unitNr])
+	if (spi_semaphore[unitNr])
 		return SYS_ERR_BUSY;
     spi_semaphore[unitNr] = true;
 #endif
@@ -274,6 +281,9 @@ int GI::Dev::Spi::writeBytes(unsigned char *buff, unsigned int len)
 	unsigned int transfer_cnt = 0;
 	for(; transfer_cnt < len; transfer_cnt++) {
 		SSIDataPut((unsigned int)userData, buff[transfer_cnt]);
+	    while(SSIBusy((unsigned int)userData));
+	    unsigned long ui32Dummy;
+	    while(SSIDataGetNonBlocking((unsigned int)userData, &ui32Dummy));
 	}
 
 	if (!disableCsHandle)

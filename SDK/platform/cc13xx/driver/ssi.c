@@ -111,6 +111,8 @@ SSIConfigSetExpClk(uint32_t ui32Base, uint32_t ui32SSIClk,
     {
         ui32PreDiv += 2;
         ui32SCR = (ui32MaxBitRate / ui32PreDiv) - 1;
+        if(ui32SCR == -1)
+            ui32SCR = 0;
     }
     while(ui32SCR > 255);
     HWREG(ui32Base + SSI_O_CPSR) = ui32PreDiv;
