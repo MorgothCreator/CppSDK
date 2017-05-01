@@ -27,6 +27,7 @@
 #include "interface/screen.h"
 #include <device/mi0283_gpio.h>
 #include <device/ssd1306.h>
+#include <device/st7565.h>
 #include "interface/screen_def.h"
 
 #if (USE_LWIP == 1)
@@ -65,7 +66,7 @@ public:
 #if (USBHMSC_INTERFACE_COUNT > 0)
 	GI::Dev::UsbHMsc *USBHMSC[USBHMSC_INTERFACE_COUNT];
 #endif
-#if (defined(SCREEN_CONFIG_1) && defined(USED_SCREEN_CONTROLLER_1))
+#if (defined(SCREEN_CONFIG_1) && defined(USED_SCREEN_CONTROLLER_1) && (SCREENS_COUNT > 0))
 	GI::Dev::Screen *SCREEN[SCREENS_COUNT];
 #ifdef USED_TOUCHSCREEN_1
 	GI::Sensor::USED_TOUCHSCREEN_1 *CURSORCTRL[1];
