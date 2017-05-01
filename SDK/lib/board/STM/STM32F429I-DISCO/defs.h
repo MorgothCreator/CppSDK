@@ -65,7 +65,10 @@
 
 #define SCREENS_COUNT					1
 #define SCREEN_CONFIG_1					lcd_ILI9341_PORTRAIT
-#define USED_SCREEN_CONTROLLER_1			IntScreen
+#define USED_SCREEN_CONTROLLER_1		IntScreen
+#define USE_SCREEN_TYPE_DSI				0
+#define OTHER_SCREEN_1_PARAMS			(NULL)
+
 /*
  * !Screen settings
  */

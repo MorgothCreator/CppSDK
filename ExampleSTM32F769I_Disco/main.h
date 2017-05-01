@@ -13,6 +13,9 @@
 
 #define CALIBRATE_TOUCH_ON_STARTUP		false
 
+#define USE_SCREEN_GUI					true
+#define _USE_PASSWORD_PROTECTION		false
+
 #if USE_SPI
 #define USE_MMCSD_SPI                   false
 #define USED_MMCSD_SPI_UNIT             "spi-0.0"
@@ -51,8 +54,6 @@
 #define USE_SNTP						true
 #define SNTP_SERVER_ADDRESS 			"82.197.164.46" /* google */
 #define SNTP_UPDATE_DELAY 				90000 /* SNTP update every 90 seconds */
-
-#define _USE_PASSWORD_PROTECTION		false
 
 #define _USE_MPU60x0_9150				false
 #define _USE_HIH613x					false

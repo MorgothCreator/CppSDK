@@ -68,6 +68,8 @@
 #define SCREEN_CONFIG_1					lcd_OTM8009A_PORTRAIT
 #define USED_SCREEN_CONTROLLER_1		IntScreen
 #define USE_SCREEN_TYPE_DSI				1
+#define OTHER_SCREEN_1_PARAMS			(NULL)
+
 /*
  * !Screen settings
  */

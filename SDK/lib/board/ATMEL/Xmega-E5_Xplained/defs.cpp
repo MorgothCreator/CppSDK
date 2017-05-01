@@ -20,8 +20,8 @@ ioSetCfgGpio(led_1, 		"led-1",		pin_mux_convert_to_pin(IOD,  5),CfgGpio::GPIO_OU
 ioSetCfgGpio(hbtn_0, 		"hbtn-0",		pin_mux_convert_to_pin(IOD,  0),CfgGpio::GPIO_IN_FLOATING,		false,	true,	0);
 ioSetCfgGpio(hbtn_1, 		"hbtn-1",		pin_mux_convert_to_pin(IOD,  2),CfgGpio::GPIO_IN_FLOATING,		false,	true,	0);
 
-ioSetCfgGpio(ug2832_rst,	"ug2832-rst",	pin_mux_convert_to_pin(IOD,  3),CfgGpio::GPIO_OUT_PUSH_PULL, 	false,	false,	0);
-ioSetCfgGpio(ug2832_cd,		"ug2832-cd",	pin_mux_convert_to_pin(IOR,  0),CfgGpio::GPIO_OUT_PUSH_PULL, 	false,	false,	0);
+ioSetCfgGpio(ug2832_rst,	"lcd-rst",	pin_mux_convert_to_pin(IOD,  3),CfgGpio::GPIO_OUT_PUSH_PULL, 	false,	false,	0);
+ioSetCfgGpio(ug2832_cd,		"lcd-cd",	pin_mux_convert_to_pin(IOR,  0),CfgGpio::GPIO_OUT_PUSH_PULL, 	false,	false,	0);
 
 ioSetCfgUart(uart_3, "uart-3", pin_mux_convert_to_pin(IOA, 1)	, pin_mux_convert_to_pin(IOA, 1)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC);
 

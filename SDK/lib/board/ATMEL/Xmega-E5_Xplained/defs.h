@@ -3,6 +3,7 @@
 
 #if defined(Xmega_E5_Xplained)
 
+#include <include/global.h>
 #include <board/ATMEL/Xmega-E5_Xplained/ffconf.h>
 #include <board/ATMEL/Xmega-E5_Xplained/lwipopts.h>
 
@@ -63,7 +64,7 @@
 #define SCREENS_COUNT					1
 #define SCREEN_CONFIG_1					lcd_UG2832HSWEG04_LANDSCAPE_FLIP
 #define USED_SCREEN_CONTROLLER_1		Ug2832hsweg04
-#define OTHER_SCREEN_1_PARAMS			("spi-0.0")
+#define OTHER_SCREEN_1_PARAMS			((string)"spi-0.0")
 
 /*
  * !Screen settings

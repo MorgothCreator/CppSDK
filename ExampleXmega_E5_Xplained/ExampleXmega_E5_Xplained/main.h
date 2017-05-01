@@ -30,9 +30,9 @@
 
 #define USE_TERMINAL                    false
 
-#define USE_DHCP						false
-
 #define USE_LWIP						false
+
+#define USE_DHCP						false
 
 #define USE_LWIP_HTTPD_SERVER			false
 /* HTTP settings */
