@@ -57,6 +57,11 @@ typedef struct
 	LCD_ORIENTATION orientation;
 } LCD_TIMINGS;
 //*****************************************************************************
+extern LCD_TIMINGS lcd_DOGM128W_6_LANDSCAPE;
+extern LCD_TIMINGS lcd_DOGM128W_6_LANDSCAPE_FLIP;
+extern LCD_TIMINGS lcd_DOGM128W_6_PORTRAIT;
+extern LCD_TIMINGS lcd_DOGM128W_6_PORTRAIT_FLIP;
+
 extern LCD_TIMINGS lcd_UG2832HSWEG04_LANDSCAPE;
 extern LCD_TIMINGS lcd_UG2832HSWEG04_LANDSCAPE_FLIP;
 extern LCD_TIMINGS lcd_UG2832HSWEG04_PORTRAIT;
