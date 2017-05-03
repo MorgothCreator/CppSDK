@@ -18,8 +18,10 @@
 
 #include "api/uart.h"
 
+#include "api/mmcsd.h"
 #include "interface/mmcsd.h"
 #include "interface/mmcsd_def.h"
+#include <device/mmcsd_spi.h>
 
 #include "interface/usbh_msc.h"
 #include "interface/usbh_msc_def.h"
@@ -61,7 +63,7 @@ public:
 	GI::Std *_stderr;
 	ioSettings **ioTable;
 #if (MMCSD_INTERFACE_COUNT > 0)
-	GI::Dev::MmcSd *MMCSD[SCREEN_INTERFACE_COUNT];
+	GI::Dev::MmcSd *MMCSD[MMCSD_INTERFACE_COUNT];
 #endif
 #if (USBHMSC_INTERFACE_COUNT > 0)
 	GI::Dev::UsbHMsc *USBHMSC[USBHMSC_INTERFACE_COUNT];

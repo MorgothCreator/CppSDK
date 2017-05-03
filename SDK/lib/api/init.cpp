@@ -15,6 +15,7 @@
 #include <api/init.h>
 #include <api/init_def.h>
 #include <lib/operators.h>
+#include <include/global.h>
 
 extern ioSettings *ioSetCfg[];
 
@@ -78,9 +79,9 @@ GI::Board::Init::Init()
 #if defined(STD_ERR_PATH)
     _stderr = new GI::Std((char *)STD_ERR_PATH);
 #endif
-#if (USE_MMCSD_ENABLE == 1 && MMCSD_INTERFACE_COUNT > 0)
-    MMCSD[0] = new GI::Dev::MmcSd(0, (char *)MMCSD_CARD_DETECT_PIN, (char *)MMCSD_STATUS_LED_PIN);
-    MMCSD[0]->idle(0);
+#if (MMCSD_INTERFACE_COUNT > 0)
+    MMCSD[0] = new GI::Dev::USED_MMCSD_CONTROLLER_1(0, OTHER_MMCSD_1_PARAMS);
+    MMCSD[0]->idle();
 #endif
 #if (USE_LWIP == 1)
     LWIP[0] = new GI::Dev::Eth(0, 0);
@@ -106,8 +107,8 @@ GI::Board::Init::~Init()
 
 void GI::Board::Init::idle()
 {
-#if (USE_MMCSD_ENABLE == 1 && MMCSD_INTERFACE_COUNT > 0)
-    MMCSD[0]->idle(0);
+#if (MMCSD_INTERFACE_COUNT > 0)
+    MMCSD[0]->idle();
 #endif
 #if (USE_LWIP == 1)
     LWIP[0]->idle(0);
