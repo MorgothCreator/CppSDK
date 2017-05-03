@@ -44,7 +44,7 @@ typedef enum
 	IOZ
 } gpio_port_enum;
 /*#####################################################*/
-#define pin_mux_convert_to_pin(port, pin) ((port<<5) + (pin) % 32)
+#define pin_mux_convert_to_pin(port, pin) ((port<<5) + ((pin) % 32))
 
 #define pin_mux_convert_to_port_pin(pin) (pin>>5), ((pin %32) - ((pin>>5)<<5))
 /*#####################################################*/
