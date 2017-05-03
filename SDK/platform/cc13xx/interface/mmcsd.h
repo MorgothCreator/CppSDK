@@ -7,6 +7,7 @@
 /*#####################################################*/
 #ifndef HS_MMCSD_INTERFACE_H_
 #define HS_MMCSD_INTERFACE_H_
+
 /*#####################################################*/
 /*#####################################################*/
 /**
@@ -62,7 +63,7 @@
 #include "lib/fs/fat/inc/ff.h"
 #include "sys/systime.h"
 #include "api/gpio.h"
-#include "api/mmcsd_def.h"
+#include "../../../lib/api/mmcsd.h"
 #include "gpio.h"
 #include <include/global.h>
 
@@ -108,30 +109,6 @@
 
 
 
-namespace GI
-{
-namespace Dev
-{
-class MmcSd
-{
-public:
-	MmcSd(unsigned int unit_nr, char *cardDetectPinPath, char *cardStatusLedPinPath);
-	~MmcSd();
-	bool idle(unsigned int unit_nr);
-
-	static unsigned int read(void *handler, void *ptr, unsigned long block,
-			unsigned int nblks);
-	static unsigned int write(void *handler, void *ptr, unsigned long block,
-			unsigned int nblks);
-	static void ioctl(void *handler, unsigned int command,
-			unsigned int *buffer);
-private:
-	GI::Dev::Gpio *cardDetectGpio;
-	GI::Dev::Gpio *cardStatusLedPinGpio;
-	bool cardDetected;
-};
-}
-}
 
 #endif /* __STM324xG_EVAL_SDIO_SD_H */
 /**
