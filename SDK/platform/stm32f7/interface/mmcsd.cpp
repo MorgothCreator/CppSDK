@@ -248,6 +248,7 @@
 #include "driver/stm32f7xx_hal_cortex.h"
 #include "driver/stm32f7xx_hal.h"
 
+#include <api/io_handle.h>
 #include <interface/mmcsd.h>
 #include "include/global.h"
 #include <api/dev_request.h>
@@ -373,7 +374,7 @@ volatile unsigned long TransferEnd = 0, DMAEndOfTransfer = 0;
 /**
  * @}
  */
-fatfs MmcSdFatFs;
+fatfs *intMmcSdFatFs;
 
 #define PATH_BUF_SIZE   6
 static char g_cCwdBuf0[PATH_BUF_SIZE] = "SD1:/";
@@ -386,7 +387,7 @@ SD_HandleTypeDef uSdHandle[2];
  * @brief  Initializes the SD card device.
  * @retval SD status
  */
-unsigned char GI::Dev::MmcSd::BSP_SD_Init(GI::Dev::MmcSd *heandler)
+unsigned char GI::Dev::IntMmcSd::BSP_SD_Init(GI::Dev::IntMmcSd *heandler)
 {
 	uint8_t sd_state = MSD_OK;
 
@@ -438,7 +439,7 @@ unsigned char GI::Dev::MmcSd::BSP_SD_Init(GI::Dev::MmcSd *heandler)
  * @brief  DeInitializes the SD card device.
  * @retval SD status
  */
-unsigned char GI::Dev::MmcSd::BSP_SD_DeInit(void)
+unsigned char GI::Dev::IntMmcSd::BSP_SD_DeInit(void)
 {
 	uint8_t sd_state = MSD_OK;
 
@@ -484,7 +485,7 @@ uint8_t BSP_SD_ITConfig(void)
  * @brief  Detects if SD card is correctly plugged in the memory slot or not.
  * @retval Returns if SD is detected or not
  */
-unsigned char GI::Dev::MmcSd::BSP_SD_IsDetected(GI::Dev::MmcSd *heandler)
+unsigned char GI::Dev::IntMmcSd::BSP_SD_IsDetected(GI::Dev::IntMmcSd *heandler)
 {
 	if(!heandler)
 		return 0;
@@ -506,7 +507,7 @@ unsigned char GI::Dev::MmcSd::BSP_SD_IsDetected(GI::Dev::MmcSd *heandler)
  * @param  NumOfBlocks: Number of SD blocks to read
  * @retval SD status
  */
-unsigned char GI::Dev::MmcSd::BSP_SD_ReadBlocks(unsigned long *pData,
+unsigned char GI::Dev::IntMmcSd::BSP_SD_ReadBlocks(unsigned long *pData,
 		unsigned long long ReadAddr, unsigned long BlockSize,
 		unsigned long NumOfBlocks)
 {
@@ -529,7 +530,7 @@ unsigned char GI::Dev::MmcSd::BSP_SD_ReadBlocks(unsigned long *pData,
  * @param  NumOfBlocks: Number of SD blocks to write
  * @retval SD status
  */
-unsigned char GI::Dev::MmcSd::BSP_SD_WriteBlocks(unsigned long *pData,
+unsigned char GI::Dev::IntMmcSd::BSP_SD_WriteBlocks(unsigned long *pData,
 		unsigned long long WriteAddr, unsigned long BlockSize,
 		unsigned long NumOfBlocks)
 {
@@ -552,7 +553,7 @@ unsigned char GI::Dev::MmcSd::BSP_SD_WriteBlocks(unsigned long *pData,
  * @param  NumOfBlocks: Number of SD blocks to read
  * @retval SD status
  */
-unsigned char GI::Dev::MmcSd::BSP_SD_ReadBlocks_DMA(unsigned long *pData,
+unsigned char GI::Dev::IntMmcSd::BSP_SD_ReadBlocks_DMA(unsigned long *pData,
 		unsigned long long ReadAddr, unsigned long BlockSize,
 		unsigned long NumOfBlocks)
 {
@@ -590,7 +591,7 @@ unsigned char GI::Dev::MmcSd::BSP_SD_ReadBlocks_DMA(unsigned long *pData,
  * @param  NumOfBlocks: Number of SD blocks to write
  * @retval SD status
  */
-unsigned char GI::Dev::MmcSd::BSP_SD_WriteBlocks_DMA(unsigned long *pData,
+unsigned char GI::Dev::IntMmcSd::BSP_SD_WriteBlocks_DMA(unsigned long *pData,
 		unsigned long long WriteAddr, unsigned long BlockSize,
 		unsigned long NumOfBlocks)
 {
@@ -626,7 +627,7 @@ unsigned char GI::Dev::MmcSd::BSP_SD_WriteBlocks_DMA(unsigned long *pData,
  * @param  EndAddr: End byte address
  * @retval SD status
  */
-unsigned char GI::Dev::MmcSd::BSP_SD_Erase(unsigned long long StartAddr,
+unsigned char GI::Dev::IntMmcSd::BSP_SD_Erase(unsigned long long StartAddr,
 		unsigned long long EndAddr)
 {
 	if (HAL_SD_Erase(&uSdHandle[0], StartAddr, EndAddr) != SD_OK)
@@ -644,7 +645,7 @@ unsigned char GI::Dev::MmcSd::BSP_SD_Erase(unsigned long long StartAddr,
  * @param  hsd: SD handle
  * @param  Params : pointer on additional configuration parameters, can be NULL.
  */
-void GI::Dev::MmcSd::BSP_SD_MspInit(SD_HandleTypeDef *hsd, void *Params)
+void GI::Dev::IntMmcSd::BSP_SD_MspInit(SD_HandleTypeDef *hsd, void *Params)
 {
 	static DMA_HandleTypeDef dma_rx_handle;
 	static DMA_HandleTypeDef dma_tx_handle;
@@ -773,7 +774,7 @@ __weak void BSP_SD_Detect_MspInit(SD_HandleTypeDef *hsd, void *Params)
  * @param  hsd: SD handle
  * @param  Params : pointer on additional configuration parameters, can be NULL.
  */
-void GI::Dev::MmcSd::BSP_SD_MspDeInit(SD_HandleTypeDef *hsd, void *Params)
+void GI::Dev::IntMmcSd::BSP_SD_MspDeInit(SD_HandleTypeDef *hsd, void *Params)
 {
 	static DMA_HandleTypeDef dma_rx_handle;
 	static DMA_HandleTypeDef dma_tx_handle;
@@ -811,7 +812,7 @@ void GI::Dev::MmcSd::BSP_SD_MspDeInit(SD_HandleTypeDef *hsd, void *Params)
  *            @arg  SD_TRANSFER_BUSY: Data transfer is acting
  *            @arg  SD_TRANSFER_ERROR: Data transfer error
  */
-HAL_SD_TransferStateTypedef GI::Dev::MmcSd::BSP_SD_GetStatus(void)
+HAL_SD_TransferStateTypedef GI::Dev::IntMmcSd::BSP_SD_GetStatus(void)
 {
 	return (HAL_SD_GetStatus(&uSdHandle[0]));
 }
@@ -820,13 +821,13 @@ HAL_SD_TransferStateTypedef GI::Dev::MmcSd::BSP_SD_GetStatus(void)
  * @brief  Get SD information about specific SD card.
  * @param  CardInfo: Pointer to HAL_SD_CardInfoTypedef structure
  */
-void GI::Dev::MmcSd::BSP_SD_GetCardInfo(HAL_SD_CardInfoTypedef *CardInfo)
+void GI::Dev::IntMmcSd::BSP_SD_GetCardInfo(HAL_SD_CardInfoTypedef *CardInfo)
 {
 	/* Get SD card Information */
 	HAL_SD_Get_CardInfo(&uSdHandle[0], CardInfo);
 }
 
-void GI::Dev::MmcSd::ioctl(void *heandler, unsigned int command,
+void GI::Dev::IntMmcSd::intIoctl(void *heandler, unsigned int command,
 		unsigned int *buffer)
 {
 	if(!heandler)
@@ -834,7 +835,7 @@ void GI::Dev::MmcSd::ioctl(void *heandler, unsigned int command,
 		*buffer = 0;
 		return;
 	}
-	GI::Dev::MmcSd *_heandler = (GI::Dev::MmcSd *)heandler;
+	GI::Dev::IntMmcSd *_heandler = (GI::Dev::IntMmcSd *)heandler;
 	HAL_SD_CardInfoTypedef* _SdCtrlStruct = &_heandler->uSdCardInfo;
 	switch (command)
 	{
@@ -868,7 +869,7 @@ void GI::Dev::MmcSd::ioctl(void *heandler, unsigned int command,
 //HAL_SD_ErrorTypedef SD_ReadMultiBlocks(unsigned char *readbuff, unsigned long ReadAddr, uint16_t BlockSize, unsigned long NumberOfBlocks)
 //HAL_SD_ErrorTypedef SD_ReadBlock(unsigned char *readbuff, unsigned long ReadAddr, uint16_t BlockSize)
 
-unsigned int GI::Dev::MmcSd::read(void *heandler, void *ptr,
+unsigned int GI::Dev::IntMmcSd::intRead(void *heandler, void *ptr,
 		unsigned long block, unsigned int nblks)
 {
 	//if(!card_detected)
@@ -876,7 +877,7 @@ unsigned int GI::Dev::MmcSd::read(void *heandler, void *ptr,
 	//HAL_SD_CardInfoTypedef *_SDCardInfo = (HAL_SD_CardInfoTypedef *)SdStruct;
 	if(!heandler)
 		return 0;
-	GI::Dev::MmcSd *_heandler = (GI::Dev::MmcSd *)heandler;
+	GI::Dev::IntMmcSd *_heandler = (GI::Dev::IntMmcSd *)heandler;
 	if (_heandler->cardStatusLedPinGpio)
 		_heandler->cardStatusLedPinGpio->setOut(1);
 	unsigned char status = MSD_OK;
@@ -896,13 +897,13 @@ unsigned int GI::Dev::MmcSd::read(void *heandler, void *ptr,
 	}
 }
 
-unsigned int GI::Dev::MmcSd::write(void *heandler, void *ptr,
+unsigned int GI::Dev::IntMmcSd::intWrite(void *heandler, void *ptr,
 		unsigned long block, unsigned int nblks)
 {
 	//HAL_SD_CardInfoTypedef *_SDCardInfo = (HAL_SD_CardInfoTypedef *)SdStruct;
 	if(!heandler)
 		return 0;
-	GI::Dev::MmcSd *_heandler = (GI::Dev::MmcSd *)heandler;
+	GI::Dev::IntMmcSd *_heandler = (GI::Dev::IntMmcSd *)heandler;
 	if (_heandler->cardStatusLedPinGpio)
 		_heandler->cardStatusLedPinGpio->setOut(1);
 	unsigned char status = MSD_OK;
@@ -922,98 +923,78 @@ unsigned int GI::Dev::MmcSd::write(void *heandler, void *ptr,
 	}
 }
 
-bool GI::Dev::MmcSd::idle(unsigned int unit_nr)
+void GI::Dev::IntMmcSd::intIdle(void *handler)
 {
-	if (cardDetectGpio != NULL)
+	GI::Dev::IntMmcSd *intHandler = (GI::Dev::IntMmcSd *)handler;
+	if (intHandler->cardDetectGpio != NULL)
 	{
-		cardDetectGpio->idle();
-		if (cardDetectGpio->events.stateUp)
+		intHandler->cardDetectGpio->idle();
+		if (intHandler->cardDetectGpio->events.stateUp)
 		{
-			cardDetectGpio->events.stateUp = false;
-			cardDetected = false;
+			intHandler->cardDetectGpio->events.stateUp = false;
+			intHandler->cardDetected = false;
 		}
 	}
-	if (cardDetectGpio == NULL || cardDetectGpio->events.stateDown)
+	if (intHandler->cardDetectGpio == NULL || intHandler->cardDetectGpio->events.stateDown)
 	{
 		unsigned char res = SD_OK;
-		res = BSP_SD_Init(this);
+		res = BSP_SD_Init(intHandler);
 		if (res != MSD_OK)
 		{
-			if (cardDetectGpio != NULL)
-				cardDetectGpio->events.stateDown = false;
+			if (intHandler->cardDetectGpio != NULL)
+				intHandler->cardDetectGpio->events.stateDown = false;
 			//if(DebugCom)
 			//UARTprintf(DebugCom,   "MMCSD%d ERROR initializing card.\n\r" , 0);
-			cardDetected = false;
-			return false;
+			intHandler->cardDetected = false;
+			return;
 		}
-		if (cardDetectGpio != NULL)
-			cardDetectGpio->events.stateDown = false;
-		MmcSdFatFs.fs.drv_rw_func.DriveStruct = (void *) this;//SdStruct;
-		MmcSdFatFs.fs.drv_rw_func.drv_ioctl_func = ioctl;
-		MmcSdFatFs.fs.drv_rw_func.drv_r_func = read;
-		MmcSdFatFs.fs.drv_rw_func.drv_w_func = write;
+		if (intHandler->cardDetectGpio != NULL)
+			intHandler->cardDetectGpio->events.stateDown = false;
+		intMmcSdFatFs->fs.drv_rw_func.DriveStruct = (void *) intHandler;//SdStruct;
+		intMmcSdFatFs->fs.drv_rw_func.drv_ioctl_func = intIoctl;
+		intMmcSdFatFs->fs.drv_rw_func.drv_r_func = intRead;
+		intMmcSdFatFs->fs.drv_rw_func.drv_w_func = intWrite;
 #if (_FFCONF == 82786)
-		if(!f_mount(2, &MmcSdFatFs))
+		if(!f_mount(2, &intMmcSdFatFs))
 #else
-		if (MmcSdFatFs.mount((const char *)"SD1:", 1) == FR_OK)
+		if (intMmcSdFatFs->mount("SD1:", 1) == FR_OK)
 #endif
 		{
 			dir g_sDirObject = dir();
 			if (g_sDirObject.fopendir(g_cCwdBuf0) == FR_OK)
 			{
-#ifdef MMCSD_DEBUG_EN
-				if(DebugCom)
-				{
-					uart.printf(DebugCom, "MMCSD%d drive %d mounted\n\r" , 0 , 0);
-					uart.printf(DebugCom, "MMCSD%d Fat fs detected\n\r" , 0);
-					uart.printf(DebugCom, "MMCSD%d Fs type:                 " , 0);
-					if(MmcSdFatFs.fs_type == FS_FAT12)
-					{
-						uart.printf(DebugCom, "Fat12");}
-					else if(MmcSdFatFs.fs_type == FS_FAT16)
-					{
-						uart.printf(DebugCom, "Fat16");}
-					else if(MmcSdFatFs.fs_type == FS_FAT32)
-					{
-						uart.printf(DebugCom, "Fat32");}
-					else if(MmcSdFatFs.fs_type == FS_EXFAT)
-					{
-						uart.printf(DebugCom, "exFat");}
-					else
-					{	uart.printf(DebugCom, "None");}
-					uart.printf(DebugCom, "\n\r");
-					//UARTprintf(DebugCom, "MMCSD0 BootSectorAddress:       %u \n\r",(unsigned int)g_sFatFs.);
-					uart.printf(DebugCom, "MMCSD%d BytesPerSector:          %d \n\r",0, /*(int)g_sFatFs.s_size*/512);
-					uart.printf(DebugCom, "MMCSD%d SectorsPerCluster:       %d \n\r",0, (int)MmcSdFatFs.csize);
-					//UARTprintf(DebugCom, "MMCSD0 AllocTable1Begin:        %u \n\r",(unsigned int)g_sFatFs.fatbase);
-					//UARTprintf(DebugCom, "MMCSD%d NumberOfFats:            %d \n\r",0, (int)MmcSdFatFs.n_fats);
-					//UARTprintf(DebugCom, "MMCSD0 MediaType:               %d \n\r",Drives_Table[0]->DiskInfo_MediaType);
-					//UARTprintf(DebugCom, "MMCSD0 AllocTableSize:          %u \n\r",Drives_Table[0]->DiskInfo_AllocTableSize);
-					//UARTprintf(DebugCom, "MMCSD%d DataSectionBegin:        %d \n\r",0, (int)MmcSdFatFs.fatbase);
-					uart.printf(DebugCom, "MMCSD%d uSD DiskCapacity:        %uMB\n\r",0, (unsigned long)((unsigned long long)((unsigned long long)MmcSdFatFs.n_fatent * (unsigned long long)/*g_sFatFs.s_size*/512 *(unsigned long long)MmcSdFatFs.csize) / 1000000));
-				}
+#if (MMCSD_DEBUG_EN == true)
+				GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD%d drive %d mounted\n\r" , intHandler->unitNr , intHandler->unitNr);
+				GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD%d Fat fs detected\n\r" , intHandler->unitNr);
+				GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD%d Fs type:                 " , intHandler->unitNr);
+				if(intMmcSdFatFs->fs.fs_type == FS_FAT12)
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"Fat12");
+				else if(intMmcSdFatFs->fs.fs_type == FS_FAT16)
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"Fat16");
+				else if(intMmcSdFatFs->fs.fs_type == FS_FAT32)
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"Fat32");
+				else if(intMmcSdFatFs->fs.fs_type == FS_EXFAT)
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"exFat");
+				else
+					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"None");
+				GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"\n\r");
+				//UARTprintf(DebugCom, "MMCSD0 BootSectorAddress:       %u \n\r",(unsigned int)g_sFatFs.);
+				GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD%d BytesPerSector:          %d \n\r",0, /*(int)g_sFatFs.s_size*/512);
+				GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD%d SectorsPerCluster:       %d \n\r",0, (int)intMmcSdFatFs->fs.csize);
+				//UARTprintf(DebugCom, "MMCSD0 AllocTable1Begin:        %u \n\r",(unsigned int)g_sFatFs.fatbase);
+				//UARTprintf(DebugCom, "MMCSD%d NumberOfFats:            %d \n\r",0, (int)intMmcSdFatFs.n_fats);
+				//UARTprintf(DebugCom, "MMCSD0 MediaType:               %d \n\r",Drives_Table[0]->DiskInfo_MediaType);
+				//UARTprintf(DebugCom, "MMCSD0 AllocTableSize:          %u \n\r",Drives_Table[0]->DiskInfo_AllocTableSize);
+				//UARTprintf(DebugCom, "MMCSD%d DataSectionBegin:        %d \n\r",0, (int)intMmcSdFatFs.fatbase);
+				GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD%d uSD DiskCapacity:        %uMB\n\r",0, (unsigned long)((unsigned long long)((unsigned long long)intMmcSdFatFs->fs.n_fatent * (unsigned long long)/*g_sFatFs.s_size*/512 *(unsigned long long)intMmcSdFatFs->fs.csize) / 1000000));
 #endif
-				cardDetected = true;
+				intHandler->cardDetected = true;
 			}
-			else
-			{
-#ifdef MMCSD_DEBUG_EN
-				if(DebugCom)
-				uart.printf(DebugCom, "MMCSD%d ERROR oppening path\n\r" , 0);
-#endif
-				cardDetected = false;
-			}
+			else GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d ERROR oppening path\n\r" , intHandler->unitNr);
 		}
-		else
-		{
-#ifdef MMCSD_DEBUG_EN
-			if(DebugCom)
-			uart.printf(DebugCom, "MMCSD%d ERROR mounting disk\n\r" , 0);
-#endif
-			cardDetected = false;
-		}
+		else GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d ERROR mounting disk\n\r" , intHandler->unitNr);
 	}
-	return cardDetected;
+	return;
 }
 /*#####################################################*/
 
@@ -1021,15 +1002,22 @@ bool GI::Dev::MmcSd::idle(unsigned int unit_nr)
 /* Inidialize a Drive                                                    */
 /*-----------------------------------------------------------------------*/
 
-GI::Dev::MmcSd::MmcSd(unsigned int unit_nr, char *cardDetectPinPath, char *cardStatusLedPinPath) :
+GI::Dev::IntMmcSd::IntMmcSd(unsigned int unitNr, char *cardDetectPinPath, char *cardStatusLedPinPath) :
 		cardDetected(false)
 {
 	if(GI::Dev::DevRequest::request(cardDetectPinPath, &cardDetectGpio) == SYS_ERR_OK)
 		cardDetectGpio->lastState = true;
 	GI::Dev::DevRequest::request(cardStatusLedPinPath, &cardStatusLedPinGpio);
+	intMmcSdFatFs = new fatfs();
+    idle_Ptr = &GI::Dev::IntMmcSd::intIdle;
+    read_Ptr = &GI::Dev::IntMmcSd::intRead;
+    write_Ptr = &GI::Dev::IntMmcSd::intWrite;
+    ioctl_Ptr = &GI::Dev::IntMmcSd::intIoctl;
+    this->unitNr = unitNr;
+    driverHandler_Ptr = (void*)this;
 }
 
-GI::Dev::MmcSd::~MmcSd()
+GI::Dev::IntMmcSd::~IntMmcSd()
 {
 }
 /******************************************************************************/

@@ -63,7 +63,7 @@
 #include "lib/fs/fat/inc/ff.h"
 #include "sys/systime.h"
 #include "api/gpio.h"
-#include "api/mmcsd_def.h"
+#include "api/mmcsd.h"
 #include "gpio.h"
 #include <include/global.h>
 
@@ -113,21 +113,22 @@ namespace GI
 {
 namespace Dev
 {
-class MmcSd
+class IntMmcSd : public MmcSd
 {
 public:
-	MmcSd(unsigned int unit_nr, char *cardDetectPinPath, char *cardStatusLedPinPath);
-	~MmcSd();
-	bool idle(unsigned int unit_nr);
-
-	static unsigned int read(void *handler, void *ptr, unsigned long block,
+	IntMmcSd(unsigned int unitNr, char *cardDetectPinPath, char *cardStatusLedPinPath);
+	~IntMmcSd();
+	static void intIdle(void *handler);
+	static unsigned int intRead(void *handler, void *ptr, unsigned long block,
 			unsigned int nblks);
-	static unsigned int write(void *handler, void *ptr, unsigned long block,
+	static unsigned int intWrite(void *handler, void *ptr, unsigned long block,
 			unsigned int nblks);
-	static void ioctl(void *handler, unsigned int command,
+	static void intIoctl(void *handler, unsigned int command,
 			unsigned int *buffer);
+    FATFS mmcFatFs;
+    unsigned int unitNr;
 private:
-	static unsigned char BSP_SD_Init(GI::Dev::MmcSd *heandler);
+	static unsigned char BSP_SD_Init(GI::Dev::IntMmcSd *heandler);
 	static unsigned char BSP_SD_DeInit(void);
 	static unsigned char BSP_SD_ITConfig(void);
 
@@ -150,7 +151,7 @@ private:
 	static void BSP_SD_DMA_Rx_IRQHandler(void);
 	static HAL_SD_TransferStateTypedef BSP_SD_GetStatus(void);
 	static void BSP_SD_GetCardInfo(HAL_SD_CardInfoTypedef *CardInfo);
-	static unsigned char BSP_SD_IsDetected(GI::Dev::MmcSd *heandler);
+	static unsigned char BSP_SD_IsDetected(GI::Dev::IntMmcSd *heandler);
 
 	/* These __weak function can be surcharged by application code in case the current settings (e.g. DMA stream)
 	 need to be changed for specific needs */
