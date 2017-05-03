@@ -35,7 +35,7 @@ At this moment include next features:
 			UART.
 			SPI.
 			GPIO.
-			MMCSD (no SPI mode).
+			MMCSD (dedicated controller and SPI).
 			LCD using DSI interface.
 		Dedicated evices:
  			OTM8009a TFT display controller.
@@ -50,7 +50,7 @@ At this moment include next features:
 			UART.
 			SPI.
 			GPIO.
-			MMCSD.
+			MMCSD (dedicated controller and SPI).
 			ETH with LwIp.
 			LCD using DSI interface.
 		Dedicated evices:
@@ -74,6 +74,7 @@ At this moment include next features:
 			UART.
 			SPI.
 			GPIO.
+			MMCSD (SPI mode).
       
  	ATxmega E5 (Atmel studio):
 		Board:
@@ -83,6 +84,7 @@ At this moment include next features:
 			UART.
 			SPI.
 			GPIO.
+			MMCSD (SPI mode).
       
  	ATSAMD21 (Atmel studio):
 		Board:
@@ -93,9 +95,10 @@ At this moment include next features:
 			SPI(NOT TESTED).
 			GPIO.
       
-> On all platforms will be ready to work with next list of sensors:
+> On all platforms will be ready to work with next list of sensors and devices:
 
 * AK8975 magnetometer sensor using I2C interface.
+* BMA250 accelerometer sensor using I2C and SPI interface
 * BMP180 pressure, altimeter and temperature sensor using I2C interface.
 * FT5x06 capacitive touch screen using I2C interface
 * HIH613x humidity and temperature sensor using I2C interface.
@@ -103,6 +106,7 @@ At this moment include next features:
 * L3GD20 Gyroscope using SPI interface.
 * Lepton FLIR sensor using SPI interface.
 * MI0283 color LCD display controller using GPIO interface.
+* MMCSD using SPI interface.
 * MPL3115a2 pressure altimeter and temperature sensor using I2C interface.
 * MPR121 capacitive touch controller using I2C interface.
 * MPU60x0 and MPU9x50 accelerometer, giroscope and temperature sensor using I2C interface.
