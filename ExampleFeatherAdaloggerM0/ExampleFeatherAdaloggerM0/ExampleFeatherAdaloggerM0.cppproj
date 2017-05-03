@@ -213,6 +213,38 @@
       <SubType>compile</SubType>
       <Link>lib\api\lcd.cpp</Link>
     </Compile>
+    <Compile Include="..\..\SDK\lib\api\mmcsd.cpp">
+      <SubType>compile</SubType>
+      <Link>lib\api\mmcsd.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\SDK\lib\api\mmcsd.h">
+      <SubType>compile</SubType>
+      <Link>lib\api\mmcsd.h</Link>
+    </Compile>
+    <Compile Include="..\..\SDK\lib\device\bma250.cpp">
+      <SubType>compile</SubType>
+      <Link>lib\device\bma250.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\SDK\lib\device\bma250.h">
+      <SubType>compile</SubType>
+      <Link>lib\device\bma250.h</Link>
+    </Compile>
+    <Compile Include="..\..\SDK\lib\device\mmcsd_spi.cpp">
+      <SubType>compile</SubType>
+      <Link>lib\device\mmcsd_spi.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\SDK\lib\device\mmcsd_spi.h">
+      <SubType>compile</SubType>
+      <Link>lib\device\mmcsd_spi.h</Link>
+    </Compile>
+    <Compile Include="..\..\SDK\lib\device\st7565.cpp">
+      <SubType>compile</SubType>
+      <Link>lib\device\st7565.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\SDK\lib\device\st7565.h">
+      <SubType>compile</SubType>
+      <Link>lib\device\st7565.h</Link>
+    </Compile>
     <Compile Include="..\..\SDK\platform\atsamd21\driver\i2c_common.h">
       <SubType>compile</SubType>
       <Link>atsamd21\driver\i2c_common.h</Link>
@@ -485,10 +517,6 @@
     </Compile>
     <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\lcd_def.h">
       <Link>lib\api\lcd_def.h</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\mmcsd_def.h">
-      <Link>lib\api\mmcsd_def.h</Link>
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="C:\GitHub\CppSDK\SDK\lib\api\qspi_def.h">

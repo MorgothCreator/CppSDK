@@ -13,19 +13,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .debug_aranges 00000880  00000000  00000000  00003ab0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0001cfed  00000000  00000000  00004330  2**0
+  5 .debug_info   0001d0c5  00000000  00000000  00004330  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000037fc  00000000  00000000  0002131d  2**0
+  6 .debug_abbrev 000037fc  00000000  00000000  000213f5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000073d1  00000000  00000000  00024b19  2**0
+  7 .debug_line   000073d1  00000000  00000000  00024bf1  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00001c90  00000000  00000000  0002beec  2**2
+  8 .debug_frame  00001c90  00000000  00000000  0002bfc4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00004e01  00000000  00000000  0002db7c  2**0
+  9 .debug_str    00004e39  00000000  00000000  0002dc54  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000fb15  00000000  00000000  0003297d  2**0
+ 10 .debug_loc    0000fb15  00000000  00000000  00032a8d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000009c0  00000000  00000000  00042492  2**0
+ 11 .debug_ranges 000009c0  00000000  00000000  000425a2  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -3365,7 +3365,7 @@ void main_app(void)
     1908:	80 81       	ld	r24, Z
     190a:	91 81       	ldd	r25, Z+1	; 0x01
     190c:	0e 94 6a 02 	call	0x4d4	; 0x4d4 <_ZN2GI3Dev6Screen10drawCircleEiiihj>
-#ifndef SmartRf06// The TI CC1310 compiler has an issue with floating point operations that make the uC to go to generate a fault interrupt.
+#ifndef SmartRf06// The TI CC1310 compiler has an issue with floating point operations that make the uC to generate a fault interrupt, I think that is a stack problem.
 	dev.SCREEN[0]->drawElipse(69, 23, 8, 4, 1, ClrWhite);
     1910:	cc 24       	eor	r12, r12
     1912:	ca 94       	dec	r12
@@ -3993,8 +3993,8 @@ void GI::Board::Init::idle()
     1caa:	08 95       	ret
 
 00001cac <_GLOBAL__sub_I_coreClk>:
-#include <api/init_def.h>
 #include <lib/operators.h>
+#include <include/global.h>
 
 extern ioSettings *ioSetCfg[];
 
@@ -4009,8 +4009,8 @@ GI::Board::Init dev = GI::Board::Init();
     1cb8:	08 95       	ret
 
 00001cba <_GLOBAL__sub_D_coreClk>:
-#include <api/init_def.h>
 #include <lib/operators.h>
+#include <include/global.h>
 
 extern ioSettings *ioSetCfg[];
 

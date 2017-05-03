@@ -81,7 +81,11 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../../../SDK/lib/api/lcd.cpp \
+../../../SDK/lib/api/mmcsd.cpp \
+../../../SDK/lib/device/bma250.cpp \
+../../../SDK/lib/device/mmcsd_spi.cpp \
 ../../../SDK/lib/device/ssd1306.cpp \
+../../../SDK/lib/device/st7565.cpp \
 ../../../SDK/lib/device/stmpe811.cpp \
 ../main.cpp \
 C:/GitHub/CppSDK/Common/main_app.cpp \
@@ -187,7 +191,11 @@ ASM_SRCS +=
 
 OBJS +=  \
 lib/api/lcd.o \
+lib/api/mmcsd.o \
+lib/device/bma250.o \
+lib/device/mmcsd_spi.o \
 lib/device/ssd1306.o \
+lib/device/st7565.o \
 lib/device/stmpe811.o \
 main.o \
 Common/main_app.o \
@@ -286,7 +294,11 @@ xmega/sys/systime.o
 
 OBJS_AS_ARGS +=  \
 lib/api/lcd.o \
+lib/api/mmcsd.o \
+lib/device/bma250.o \
+lib/device/mmcsd_spi.o \
 lib/device/ssd1306.o \
+lib/device/st7565.o \
 lib/device/stmpe811.o \
 main.o \
 Common/main_app.o \
@@ -385,7 +397,11 @@ xmega/sys/systime.o
 
 C_DEPS +=  \
 lib/api/lcd.d \
+lib/api/mmcsd.d \
+lib/device/bma250.d \
+lib/device/mmcsd_spi.d \
 lib/device/ssd1306.d \
+lib/device/st7565.d \
 lib/device/stmpe811.d \
 main.d \
 Common/main_app.d \
@@ -484,7 +500,11 @@ xmega/sys/systime.d
 
 C_DEPS_AS_ARGS +=  \
 lib/api/lcd.d \
+lib/api/mmcsd.d \
+lib/device/bma250.d \
+lib/device/mmcsd_spi.d \
 lib/device/ssd1306.d \
+lib/device/st7565.d \
 lib/device/stmpe811.d \
 main.d \
 Common/main_app.d \
@@ -595,6 +615,14 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
+
+
+
+
 
 
 

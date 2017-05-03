@@ -15,23 +15,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .comment      0000005b  00000000  00000000  00010154  2**0
                   CONTENTS, READONLY
-  6 .debug_info   00026a44  00000000  00000000  000101af  2**0
+  6 .debug_info   00026ac2  00000000  00000000  000101af  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00004a6a  00000000  00000000  00036bf3  2**0
+  7 .debug_abbrev 00004a6a  00000000  00000000  00036c71  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_loc    0000a15d  00000000  00000000  0003b65d  2**0
+  8 .debug_loc    0000a15d  00000000  00000000  0003b6db  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_aranges 000009a0  00000000  00000000  000457ba  2**0
+  9 .debug_aranges 000009a0  00000000  00000000  00045838  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 00000928  00000000  00000000  0004615a  2**0
+ 10 .debug_ranges 00000928  00000000  00000000  000461d8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_macro  0000962f  00000000  00000000  00046a82  2**0
+ 11 .debug_macro  00008da2  00000000  00000000  00046b00  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_line   000149eb  00000000  00000000  000500b1  2**0
+ 12 .debug_line   00014aa4  00000000  00000000  0004f8a2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_str    0008a6cb  00000000  00000000  00064a9c  2**0
+ 13 .debug_str    0008b88c  00000000  00000000  00064346  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_frame  00001c98  00000000  00000000  000ef168  2**2
+ 14 .debug_frame  00001c98  00000000  00000000  000efbd4  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -5728,7 +5728,7 @@ GI::Board::Init::Init()
     1698:	00001b8d 	.word	0x00001b8d
 
 0000169c <_ZN2GI5Board4Init4idleEv>:
-    MMCSD[0]->idle(0);
+    MMCSD[0]->idle();
 #endif
 #if (USE_LWIP == 1)
     LWIP[0]->idle(0);
@@ -5739,8 +5739,8 @@ GI::Board::Init::Init()
 
 000016a0 <_GLOBAL__sub_I_coreClk>:
     16a0:	b570      	push	{r4, r5, r6, lr}
-#include <api/init_def.h>
 #include <lib/operators.h>
+#include <include/global.h>
 
 extern ioSettings *ioSetCfg[];
 
@@ -5764,7 +5764,7 @@ GI::Board::Init dev = GI::Board::Init();
     16c0:	4908      	ldr	r1, [pc, #32]	; (16e4 <_GLOBAL__sub_I_coreClk+0x44>)
     16c2:	1c2a      	adds	r2, r5, #0
     16c4:	47a0      	blx	r4
-    MMCSD[0]->idle(0);
+    MMCSD[0]->idle();
 #endif
 #if (USE_LWIP == 1)
     LWIP[0]->idle(0);
