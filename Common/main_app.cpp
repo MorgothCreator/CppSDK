@@ -16,26 +16,29 @@
 #endif
 
 
-#if _USE_HIH613x == 1
+#ifdef _USE_HIH613x
 #include <device/hih6130.h>
 #endif
-#if _USE_MPU60x0_9150 == 1
+#ifdef _USE_MPU60x0_9150
 #include <device/mpu60x0_9x50.h>
 #endif
-#if (_USE_AK8975 == 1)
+#ifdef _USE_AK8975
 #include <device/ak8975.h>
 #endif
-#if _USE_BMP180 == 1
+#ifdef _USE_BMP180
 #include <device/bmp180.h>
 #endif
-#if _USE_MPL3115A2 == 1
+#ifdef _USE_MPL3115A2
 #include <device/mpl3115a2.h>
 #endif
-#if _USE_MPR121 == 1
+#ifdef _USE_MPR121
 #include <device/mpr121.h>
 #endif
-#if _USE_L3GD20 == 1
+#ifdef _USE_L3GD20
 #include <device/l3gd20.h>
+#endif
+#ifdef _USE_BMA250
+#include <device/bma250.h>
 #endif
 #include <sys/core_init.h>
 #include <app/sys/cmd.h>
@@ -63,23 +66,26 @@ void main_app(void)
 
 	bool led_state = false;
 
-#if (_USE_HIH613x == 1)
+#ifdef _USE_HIH613x
 	GI::Sys::Timer hih613timer = GI::Sys::Timer(1000);
 #endif
-#if (_USE_MPU60x0_9150 == 1 && _USE_AK8975 == 1)
+#if defined(_USE_MPU60x0_9150) && defined(_USE_AK8975)
 	GI::Sys::Timer mpu60x0_9x50_timer = GI::Sys::Timer(200);
 #endif
-#if (_USE_BMP180 == 1)
+#ifdef _USE_BMP180
 	GI::Sys::Timer bmp180_timer = GI::Sys::Timer(1000);
 #endif
-#if (_USE_MPL3115A2 == 1)
+#ifdef _USE_MPL3115A2
 	GI::Sys::Timer mpl3115_timer = GI::Sys::Timer(1000);
 #endif
-#if (_USE_MPR121 == 1)
+#ifdef _USE_MPR121
 	GI::Sys::Timer mpr121_timer = GI::Sys::Timer(50);
 #endif
-#if (_USE_L3GD20 == 1)
-	GI::Sys::Timer l3gd20_timer = GI::Sys::Timer(50);
+#ifdef _USE_L3GD20
+    GI::Sys::Timer l3gd20_timer = GI::Sys::Timer(50);
+#endif
+#ifdef _USE_BMA250
+    GI::Sys::Timer bma250_timer = GI::Sys::Timer(50);
 #endif
 
 
@@ -197,29 +203,32 @@ void main_app(void)
 	//dev._stdout->printF("IP:%s\n\r", ip_str_buff.buff);
 #endif
 
-#if (_USE_HIH613x == 1)
-	GI::Sensor::Hih613x hih6130 = GI::Sensor::Hih613x((char *)"i2c-0");
+#ifdef _USE_HIH613x
+	GI::Sensor::Hih613x hih6130 = GI::Sensor::Hih613x((string)_USE_HIH613x);
 #endif
-#if (_USE_MPU60x0_9150 == 1)
-	GI::Sensor::Mpu60x0_9x50 mpu60x0_9x50 = GI::Sensor::Mpu60x0_9x50((char *)"i2c-0", 0);
+#ifdef _USE_MPU60x0_9150
+	GI::Sensor::Mpu60x0_9x50 mpu60x0_9x50 = GI::Sensor::Mpu60x0_9x50((string)_USE_MPU60x0_9150, 0);
 #endif
-#if (_USE_AK8975 == 1)
+#if defined(_USE_AK8975) && defined(_USE_MPU60x0_9150)
 	/*
 	 * If AK8975 is inside MPU9150 you need to put this after you initialize the MPU device.
 	 */
-	GI::Sensor::Ak8975 ak8975_0 = GI::Sensor::Ak8975((char *)"i2c-0", 0);
+	GI::Sensor::Ak8975 ak8975_0 = GI::Sensor::Ak8975((string)_USE_AK8975, 0);
 #endif
-#if (_USE_BMP180 == 1)
-	GI::Sensor::Bmp180 bmp180_0 = GI::Sensor::Bmp180((char *)"i2c-0", 0);
+#ifdef _USE_BMP180
+	GI::Sensor::Bmp180 bmp180_0 = GI::Sensor::Bmp180((string)_USE_BMP180, 0);
 #endif
-#if (_USE_MPL3115A2 == 1)
-	GI::Sensor::Mpl3115a2 mpl3115a2 = GI::Sensor::Mpl3115a2((char *)"i2c-0");
+#ifdef _USE_MPL3115A2
+	GI::Sensor::Mpl3115a2 mpl3115a2 = GI::Sensor::Mpl3115a2((string)_USE_MPL3115A2);
 #endif
-#if (_USE_MPR121 == 1)
-	GI::Sensor::Mpr121 mpr121_0 = GI::Sensor::Mpr121((char *)"i2c-0", (char *)"", 0);
+#ifdef _USE_MPR121
+	GI::Sensor::Mpr121 mpr121_0 = GI::Sensor::Mpr121((string)_USE_MPR121, (string)"", 0);
 #endif
-#if (_USE_L3GD20 == 1)
-	GI::Sensor::L3gd20 l3gd20_0 = GI::Sensor::L3gd20((char *)"spi-4.1");
+#ifdef _USE_L3GD20
+    GI::Sensor::L3gd20 l3gd20_0 = GI::Sensor::L3gd20((string)_USE_L3GD20);
+#endif
+#ifdef _USE_BMA250
+    GI::Sensor::Bma250 bma250_0 = GI::Sensor::Bma250((string)_USE_BMA250);
 #endif
 
 #if (USE_UART == 1 && USE_TERMINAL == 1)
@@ -247,7 +256,7 @@ void main_app(void)
 	dev.SCREEN[0]->drawString((string)"Morgoth CppSDK example application", 16, 0, NULL, true, 0, ClrWhite);
 	dev.SCREEN[0]->drawCircle(32, 23, 8, 1, ClrWhite);
 	dev.SCREEN[0]->drawCircle(50, 23, 8, 0, ClrWhite);
-#ifndef SmartRf06// The TI CC1310 compiler has an issue with floating point operations that make the uC to go to generate a fault interrupt.
+#ifndef SmartRf06// The TI CC1310 compiler has an issue with floating point operations that make the uC to generate a fault interrupt, I think that is a stack problem.
 	dev.SCREEN[0]->drawElipse(69, 23, 8, 4, 1, ClrWhite);
 	dev.SCREEN[0]->drawElipse(83, 23, 4, 8, 0, ClrWhite);
 #endif
@@ -338,7 +347,7 @@ void main_app(void)
 				GI::IO::write((char *)"led-0", true);
 			}
 		}
-#if _USE_HIH613x == 1
+#ifdef _USE_HIH613x
 			if(hih613timer.tick())
 			{
 				unsigned char hih613x_status = 0;;
@@ -386,7 +395,7 @@ void main_app(void)
 #endif
 			}
 #endif
-#if _USE_MPU60x0_9150 == 1
+#ifdef _USE_MPU60x0_9150
 			bool mpu60x0_9x50_timer_ticked = false;
 			if(mpu60x0_9x50_timer.tick())
 			{
@@ -438,7 +447,7 @@ void main_app(void)
 #endif
 			}
 #endif
-#if (_USE_AK8975 == 1)
+#if defined(_USE_AK8975) && defined(_USE_MPU60x0_9150)
 			if(mpu60x0_9x50_timer_ticked)
 			{
 				signed short AK8975_X_Axis = 0, AK8975_Y_Axis = 0, AK8975_Z_Axis = 0;
@@ -456,7 +465,7 @@ void main_app(void)
 #endif
 			}
 #endif
-#if _USE_BMP180 == 1
+#ifdef _USE_BMP180
 			if(bmp180_timer.tick())
 			{
 				float bmp180_temperature = 0.0;
@@ -478,7 +487,7 @@ void main_app(void)
 #endif
 			}
 #endif
-#if _USE_MPL3115A2 == 1
+#ifdef _USE_MPL3115A2
 			if(mpl3115_timer.tick())
 			{
 				float mpl3115a2_pressure = 0.0, mpl3115a2_altitude = 0.0, mpl3115a2_temp = 0.0;
@@ -496,7 +505,7 @@ void main_app(void)
 #endif
 			}
 #endif
-#if _USE_MPR121 == 1
+#ifdef _USE_MPR121
 			if(mpr121_timer.tick())
 			{
 				mpr121_ret_t mpr121_return;
@@ -517,7 +526,7 @@ void main_app(void)
 				}
 			}
 #endif
-#if _USE_L3GD20 == 1
+#ifdef _USE_L3GD20
 			if(l3gd20_timer.tick())
 			{
 				float l3gd20_Xg = 0;
@@ -525,15 +534,48 @@ void main_app(void)
 				float l3gd20_Zg = 0;
 				if(!l3gd20_0.read(&l3gd20_Xg, &l3gd20_Yg, &l3gd20_Zg))
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
-					ListBox->Items[2]->Caption->setTextF((char *)"L3GD20: Giro:  Xg = %6.4f, Yg = %6.4f, Zg = %6.4f", l3gd20_Xg, l3gd20_Yg, l3gd20_Zg);
+					ListBox->Items[8]->Caption->setTextF((char *)"L3GD20: Giro:  Xg = %6.4f, Yg = %6.4f, Zg = %6.4f", l3gd20_Xg, l3gd20_Yg, l3gd20_Zg);
 #else
 					GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"L3GD20: Giro:  Xg = %6.4f, Yg = %6.4f, Zg = %6.4f\r", l3gd20_Xg, l3gd20_Yg, l3gd20_Zg);
 #endif
 				else
 #if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
-					ListBox->Items[2]->Caption->setText((char *)"L3GD20: error reading giroscope");
+					ListBox->Items[8]->Caption->setText((char *)"L3GD20: error reading giroscope");
 #else
 					GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"L3GD20: error reading giroscope\r");
+#endif
+			}
+#endif
+#ifdef _USE_BMA250
+			if(bma250_timer.tick())
+			{
+                signed short bma250_Xg = 0;
+                signed short bma250_Yg = 0;
+                signed short bma250_Zg = 0;
+                if(!bma250_0.read(&bma250_Xg, &bma250_Yg, &bma250_Zg))
+#if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
+                    ListBox->Items[9]->Caption->setTextF((char *)"BMA250: Accel:  Xa = %6d, Ya = %6d, Za = %6d", bma250_Xg, bma250_Yg, bma250_Zg);
+#else
+                    GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"BMA250: Accel:  Xa = %6d, Ya = %6d, Za = %6d\r", bma250_Xg, bma250_Yg, bma250_Zg);
+#endif
+                else
+#if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
+                    ListBox->Items[9]->Caption->setText((char *)"BMA250: error reading accelerometer");
+#else
+                    GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"BMA250: error reading accelerometer\r");
+#endif
+                float bma250_temp = 0.0;
+                if(!bma250_0.read(&bma250_temp))
+#if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
+                    ListBox->Items[10]->Caption->setTextF((char *)"BMA250: Temp:  %2.2f Gr Celsius", bma250_temp);
+#else
+                    GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"BMA250: Temp:  %2.2f Gr Celsius\r", bma250_temp);
+#endif
+                else
+#if (SHOW_SENSORS_RESULT_ON_SCREEN == 1)
+                    ListBox->Items[10]->Caption->setText((char *)"BMA250: error reading temperature");
+#else
+                    GI::IO::write((char *)CONSOLE_UART_OUT, (char *)"BMA250: error reading temperature\r");
 #endif
 			}
 #endif
