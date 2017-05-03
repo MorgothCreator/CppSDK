@@ -17,12 +17,6 @@ typedef struct
 	unsigned int scl;
 	unsigned int sda;
 	unsigned long speed;
-	enum i2cMode_e{
-		i2cMode0,
-		i2cMode1,
-		i2cMode2,
-		i2cMode3
-	}i2cMode;
 } CfgI2c;
 /*#####################################################*/
 /*#####################################################*/
