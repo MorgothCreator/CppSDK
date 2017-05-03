@@ -11,7 +11,7 @@
 /* Multiple byte read/write command */
 #define MULTIPLEBYTE_CMD           ((unsigned char)0x40)
 
-GI::Sensor::L3gd20::L3gd20(char *spiPath)
+GI::Sensor::L3gd20::L3gd20(string spiPath)
 {
 	memset(this, 0, sizeof(*this));
 	SPI = new GI::IO(spiPath);
@@ -35,20 +35,20 @@ GI::Sensor::L3gd20::~L3gd20()
 
 }
 
-bool GI::Sensor::L3gd20::writeRegs(unsigned char* pBuffer,
+SysErr GI::Sensor::L3gd20::writeRegs(unsigned char* pBuffer,
 		unsigned char WriteAddr, unsigned short NumByteToWrite)
 {
 	unsigned char *tmp_buff = (unsigned char *) malloc(NumByteToWrite + 1);
 	if (!tmp_buff)
-		return false;
+		return SYS_ERR_OUT_OF_MEMORY;
 	tmp_buff[0] = WriteAddr;
 	memcpy(tmp_buff + 1, pBuffer, NumByteToWrite);
 	if (SPI->write(tmp_buff, NumByteToWrite + 1) != (int)NumByteToWrite + 1)
-		return false;
-	return true;
+		return SYS_ERR_UNKNOWN;
+	return SYS_ERR_OK;
 }
 
-bool GI::Sensor::L3gd20::readRegs(unsigned char* pBuffer,
+SysErr GI::Sensor::L3gd20::readRegs(unsigned char* pBuffer,
 		unsigned char ReadAddr, unsigned short NumByteToRead)
 {
 	if (NumByteToRead > 0x01)

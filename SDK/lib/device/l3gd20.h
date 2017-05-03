@@ -4,6 +4,7 @@
 #ifndef LIB_DEVICE_L3GD20_H_
 #define LIB_DEVICE_L3GD20_H_
 
+#include <include/global.h>
 #include <api/io_handle.h>
 
 #define L3GD20_WHO_AM_I_ADDR          0x0F  /* device identification register */
@@ -205,7 +206,7 @@ namespace Sensor {
 class L3gd20
 {
 public:
-	L3gd20(char *spiPath);
+	L3gd20(string spiPath);
 	~L3gd20();
 
 	SysErr filterCfg(unsigned char cfg);
@@ -215,8 +216,8 @@ public:
 	bool busy;
 	GI::IO *SPI;
 private:
-	bool writeRegs(unsigned char* pBuffer, unsigned char WriteAddr, unsigned short NumByteToWrite);
-	bool readRegs(unsigned char* pBuffer, unsigned char ReadAddr, unsigned short NumByteToRead);
+	SysErr writeRegs(unsigned char* pBuffer, unsigned char WriteAddr, unsigned short NumByteToWrite);
+	SysErr readRegs(unsigned char* pBuffer, unsigned char ReadAddr, unsigned short NumByteToRead);
 };
 }
 }
