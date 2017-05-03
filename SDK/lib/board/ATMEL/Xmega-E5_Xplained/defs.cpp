@@ -25,7 +25,7 @@ ioSetCfgGpio(ug2832_cd,		"lcd-cd",	pin_mux_convert_to_pin(IOR,  0),CfgGpio::GPIO
 
 ioSetCfgUart(uart_3, "uart-3", pin_mux_convert_to_pin(IOA, 1)	, pin_mux_convert_to_pin(IOA, 1)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC);
 
-//ioSetCfgI2c(i2c_0, "i2c-0", pin_mux_convert_to_pin(IOB, 8), pin_mux_convert_to_pin(IOB, 9), CfgI2c::i2cMode0, 100000);
+//ioSetCfgI2c(i2c_0, "i2c-0", pin_mux_convert_to_pin(IOB, 8), pin_mux_convert_to_pin(IOB, 9), 100000);
 
 ioSetCfgSpi(spi_0_0, "spi-0.0", pin_mux_convert_to_pin(IOC,  5), pin_mux_convert_to_pin(IOC,  7), pin_mux_convert_to_pin(IOC,  6), pin_mux_convert_to_pin(IOR, 1), CfgSpi::spiMode0, 5000000, false);
 

@@ -22,8 +22,8 @@ ioSetCfgGpio(touchirq, 	"touchirq",	pin_mux_convert_to_pin(IOI, 13),CfgGpio::GPI
 ioSetCfgGpio(mmcsdcd, 	"mmcsdcd",	pin_mux_convert_to_pin(IOI, 15),CfgGpio::GPIO_IN_PULL_UP, 		false, false, 1);
 ioSetCfgUart(uart_0, 	"uart-0", 	pin_mux_convert_to_pin(IOA, 9)	, 	pin_mux_convert_to_pin(IOA,10)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC);
 ioSetCfgUart(usbcdc_0, 	"usbcdc-0", pin_mux_convert_to_pin(IOA, 0)	, 	pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC);
-ioSetCfgI2c(i2c_0, 		"i2c-0", 	pin_mux_convert_to_pin(IOB, 8), 	pin_mux_convert_to_pin(IOB, 9), CfgI2c::i2cMode0, 100000);
-ioSetCfgI2c(i2c_3, 		"i2c-3", 	pin_mux_convert_to_pin(IOD,12), 	pin_mux_convert_to_pin(IOB, 7), CfgI2c::i2cMode0, 100000);
+ioSetCfgI2c(i2c_0, 		"i2c-0", 	pin_mux_convert_to_pin(IOB, 8), 	pin_mux_convert_to_pin(IOB, 9), 100000);
+ioSetCfgI2c(i2c_3, 		"i2c-3", 	pin_mux_convert_to_pin(IOD,12), 	pin_mux_convert_to_pin(IOB, 7), 100000);
 ioSetCfgSpi(spi_1_0, 	"spi-1.0", 	pin_mux_convert_to_pin(IOA,12), 	pin_mux_convert_to_pin(IOB,15), pin_mux_convert_to_pin(IOB,14), pin_mux_convert_to_pin(IOA,11), CfgSpi::spiMode0, 500000, false);
 ioSetCfgEnd(ioTableEnd);
 

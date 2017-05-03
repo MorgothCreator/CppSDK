@@ -26,7 +26,7 @@ ioSetCfgGpio(vs1053_rst,"vs1053-rst",	pin_mux_convert_to_pin(IOC,  7),CfgGpio::G
 ioSetCfgGpio(vs1053_dreq,"vs1053-dreq",	pin_mux_convert_to_pin(IOC,  6),CfgGpio::GPIO_OUT_PUSH_PULL, 	false, false, 1);
 ioSetCfgUart(uart_0, 	"uart-1", 		pin_mux_convert_to_pin(IOD,  5)	, pin_mux_convert_to_pin(IOD, 6)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC);
 ioSetCfgUart(usbcdc_0, 	"usbcdc-0", 	pin_mux_convert_to_pin(IOA,  0)	, pin_mux_convert_to_pin(IOA, 0)	, 115200	, CfgUart::WORD_LEN_8	, CfgUart::STOP_BITS_ONE	, CfgUart::PAR_NONE	, CfgUart::MODE_ASYNC);
-ioSetCfgI2c(i2c_0, 		"i2c-0", 		pin_mux_convert_to_pin(IOB,  6)	, pin_mux_convert_to_pin(IOB, 7), CfgI2c::i2cMode0, 100000);
+ioSetCfgI2c(i2c_0, 		"i2c-0", 		pin_mux_convert_to_pin(IOB,  6)	, pin_mux_convert_to_pin(IOB, 7), 100000);
 ioSetCfgSpi(spi_2_0, 	"spi-2.0", 		pin_mux_convert_to_pin(IOC, 10)	, pin_mux_convert_to_pin(IOC,11), pin_mux_convert_to_pin(IOC,12), pin_mux_convert_to_pin(IOD, 3), CfgSpi::spiMode0,25000000, false);//uSD CS
 ioSetCfgSpi(spi_2_1, 	"spi-2.1", 		pin_mux_convert_to_pin(IOC, 10)	, pin_mux_convert_to_pin(IOC,11), pin_mux_convert_to_pin(IOC,12), pin_mux_convert_to_pin(IOD, 7), CfgSpi::spiMode0,25000000, false);//M25P80 CS
 ioSetCfgSpi(spi_2_2, 	"spi-2.2", 		pin_mux_convert_to_pin(IOC, 10)	, pin_mux_convert_to_pin(IOC,11), pin_mux_convert_to_pin(IOC,12), pin_mux_convert_to_pin(IOC, 8), CfgSpi::spiMode0, 5000000, false);//VS1053 CS

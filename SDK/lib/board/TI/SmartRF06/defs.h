@@ -46,7 +46,7 @@
 #define SCREENS_COUNT                   1
 #define SCREEN_CONFIG_1                 lcd_DOGM128W_6_LANDSCAPE_FLIP
 #define USED_SCREEN_CONTROLLER_1        St7565
-#define OTHER_SCREEN_1_PARAMS           ((string)"spi-0.1")
+#define OTHER_SCREEN_1_PARAMS           (string)"spi-0.0"
 
 /*
  * !Screen settings
@@ -118,9 +118,9 @@
  * MmcSd settings
  */
 
-#define USE_MMCSD_ENABLE					0
-#define MMCSD_CARD_DETECT_PIN				"mmcsdcd"
-#define MMCSD_STATUS_LED_PIN				"led-1"
+#define MMCSD_INTERFACE_COUNT				1
+#define USED_MMCSD_CONTROLLER_1             MmcSd_Spi
+#define OTHER_MMCSD_1_PARAMS                (string)"spi-0.1", (string)NULL, (string)"led-1"
 /*
  * !MmcSd settings
  */

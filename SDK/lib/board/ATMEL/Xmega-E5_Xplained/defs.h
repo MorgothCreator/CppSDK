@@ -136,9 +136,10 @@
  * MmcSd settings
  */
 
-#define USE_MMCSD_ENABLE					1
-#define MMCSD_CARD_DETECT_PIN				"mmcsdcd"
-#define MMCSD_STATUS_LED_PIN				"led-1"
+#define MMCSD_INTERFACE_COUNT				0
+#define USED_MMCSD_CONTROLLER_1             MmcSd_Spi
+#define OTHER_MMCSD_1_PARAMS                (string)"spi-0.1", (string)NULL, (string)"led-1"
+
 /*
  * !MmcSd settings
  */
