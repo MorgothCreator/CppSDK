@@ -590,7 +590,7 @@ bool GI::Dev::MmcSd_Spi::initCard()
             tranSpeed = SD_CARD1_TRANSPEED(this);
             blkLen = 1 << (SD_CARD1_RDBLKLEN(this));
             size = SD_CARD1_SIZE(this);
-            nBlks = size / blkLen;
+            nBlks = size >> 9;// blkLen;
         }
         else
         {
@@ -835,23 +835,24 @@ void GI::Dev::MmcSd_Spi::mmcSdSpiIoctl(void *handler, unsigned int  command,  un
     }
 }
 //#######################################################################################
-void GI::Dev::MmcSd_Spi::idle(unsigned char unitNr)
+void GI::Dev::MmcSd_Spi::mmcSdSpiIdle(void *handler)
 {
-    if(unitNr > 9)
+    GI::Dev::MmcSd_Spi *intHandler = (GI::Dev::MmcSd_Spi *)handler;
+    if(intHandler->unitNr > 9)
         return;
-    if(sdPresent && sdPresent->in() == false)
+    if(!intHandler->sdPresent || intHandler->sdPresent->in() == false)
     {
-        if(initFlg)
+        if(intHandler->initFlg)
         {
-            initFlg = 0;
+            intHandler->initFlg = 0;
             GI::Sys::Timer::delay(400);
-            if(initCard())
+            if(intHandler->initCard())
             {
-                connected = true;
-                g_s_mmcFatFs.drv_rw_func.DriveStruct = (void *)this;
-                g_s_mmcFatFs.drv_rw_func.drv_r_func = mmcSdSpiRead;
-                g_s_mmcFatFs.drv_rw_func.drv_w_func = mmcSdSpiWrite;
-                g_s_mmcFatFs.drv_rw_func.drv_ioctl_func = mmcSdSpiIoctl;
+                intHandler->connected = true;
+                intHandler->mmcFatFs.drv_rw_func.DriveStruct = (void *)intHandler;
+                intHandler->mmcFatFs.drv_rw_func.drv_r_func = mmcSdSpiRead;
+                intHandler->mmcFatFs.drv_rw_func.drv_w_func = mmcSdSpiWrite;
+                intHandler->mmcFatFs.drv_rw_func.drv_ioctl_func = mmcSdSpiIoctl;
 #if (_FFCONF == 82786)
                 char drv_name_buff[4];
                 if(!f_mount(3 + unit_nr, &g_s_mmcFatFs))
@@ -862,10 +863,10 @@ void GI::Dev::MmcSd_Spi::idle(unsigned char unitNr)
                 drv_name_buff[2] = 'I';
                 drv_name_buff[3] = 'S';
                 drv_name_buff[4] = 'D';
-                drv_name_buff[5] = '1' + unitNr;
+                drv_name_buff[5] = '1' + intHandler->unitNr;
                 drv_name_buff[6] = ':';
                 drv_name_buff[7] = '\0';
-                if(!f_mount(&g_s_mmcFatFs, drv_name_buff, 1))
+                if(!f_mount(&intHandler->mmcFatFs, drv_name_buff, 1))
 #endif
                 {
 #if (_FFCONF == 82786)
@@ -880,54 +881,63 @@ void GI::Dev::MmcSd_Spi::idle(unsigned char unitNr)
                    DIR g_sDirObject;
                    if(f_opendir(&g_sDirObject, drv_name_buff) == FR_OK)
                     {
-                        fs_mounted = true;
-#ifdef MMCSD_DEBUG_EN
-                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d drive %d mounted\n\r" , unit_nr + 3 , unit_nr + 3);
-                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d Fat fs detected\n\r" , unit_nr + 3);
-                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d Fs type:                 " , unit_nr + 3);
-                            if(g_s_mmcFatFs.fs_type == FS_FAT12) {               GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"Fat12");}
-                            else if(g_s_mmcFatFs.fs_type == FS_FAT16){           GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"Fat16");}
-                            else if(g_s_mmcFatFs.fs_type == FS_FAT32){           GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"Fat32");}
-                            else if(g_s_mmcFatFs.fs_type == FS_EXFAT){           GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"exFat");}
+                       intHandler->fs_mounted = true;
+#if (MMCSD_DEBUG_EN == true)
+                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d drive %d mounted\n\r" , intHandler->unitNr , intHandler->unitNr);
+                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d Fat fs detected\n\r" , intHandler->unitNr);
+                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d Fs type:                 " , intHandler->unitNr);
+                            if(intHandler->mmcFatFs.fs_type == FS_FAT12) {               	GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"Fat12");}
+                            else if(intHandler->mmcFatFs.fs_type == FS_FAT16){           	GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"Fat16");}
+                            else if(intHandler->mmcFatFs.fs_type == FS_FAT32){           	GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"Fat32");}
+                            else if(intHandler->mmcFatFs.fs_type == FS_EXFAT){           	GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"exFat");}
                             else                                {                GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"None");}
                             GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"\n\r");
-                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d BytesPerSector:          %d \n\r",unit_nr + 3, /*(int)g_sFatFs.s_size*/512);
-                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d SectorsPerCluster:       %d \n\r",unit_nr + 3, (int)g_s_mmcFatFs.csize);
-                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d NumberOfFats:            %d \n\r",unit_nr + 3, (int)g_s_mmcFatFs.n_fats);
-                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d DataSectionBegin:        %d \n\r",unit_nr + 3, (int)g_s_mmcFatFs.fatbase);
-                            unsigned long tmp = (unsigned long long)((unsigned long long)g_s_mmcFatFs.n_fatent * (unsigned long long)512 *(unsigned long long)g_s_mmcFatFs.csize) >> 20;
-                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d uSD DiskCapacity:        %uMB\n\r",unit_nr + 3, tmp);
+                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d BytesPerSector:          %d \n\r",intHandler->unitNr + 3, /*(int)g_sFatFs.s_size*/512);
+                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d SectorsPerCluster:       %d \n\r",intHandler->unitNr + 3, (int)intHandler->mmcFatFs.csize);
+                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d NumberOfFats:            %d \n\r",intHandler->unitNr + 3, (int)intHandler->mmcFatFs.n_fats);
+                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d DataSectionBegin:        %d \n\r",intHandler->unitNr + 3, (int)intHandler->mmcFatFs.fatbase);
+                            unsigned long tmp = (unsigned long long)((unsigned long long)intHandler->mmcFatFs.n_fatent * (unsigned long long)512 *(unsigned long long)intHandler->mmcFatFs.csize) >> 20;
+                            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d uSD DiskCapacity:        %uMB\n\r",intHandler->unitNr + 3, tmp);
 #endif
                     }
-                   else     GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d ERROR oppening path\n\r" , unitNr);
+                   else     GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d ERROR oppening path\n\r" , intHandler->unitNr);
                 }
 
-                else        GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d ERROR mounting disk\n\r" , unitNr);
+                else        GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d ERROR mounting disk\n\r" , intHandler->unitNr);
             }
 
-            else            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d not detected\n\r" , unitNr);
+            else            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d not detected\n\r" , intHandler->unitNr);
         }
     }
     else
     {
         GI::Sys::Timer::delay(1);
-        if(initFlg != 1)
+        if(intHandler->initFlg != 1)
         {
-            fs_mounted = false;
-            connected = false;
-            initFlg = 1;
+            intHandler->fs_mounted = false;
+            intHandler->connected = false;
+            intHandler->initFlg = 1;
 #ifdef MMCSD_DEBUG_EN
-            uart.printf(DebugCom,   "MMCSD%d Disconnected\n\r" , unit_nr + 3);
+            GI::IO::writeF((char *)CONSOLE_UART_OUT, (char *)"MMCSD_SPI%d Disconnected\n\r" , intHandler->unitNr);
 #endif
         }
     }
 }
 //#######################################################################################
-GI::Dev::MmcSd_Spi::MmcSd_Spi(char *spiPath, char *cdPath)
+GI::Dev::MmcSd_Spi::MmcSd_Spi(unsigned int unitNr, char *spiPath, char *cdPath, char *ledPath)
 {
+    memset(this, 0, sizeof(*this));
     GI::Dev::DevRequest::request(spiPath, &spiUnit);
+    GI::Dev::DevRequest::request(ledPath, &led);
     GI::Dev::DevRequest::request(cdPath, &sdPresent);
+    idle_Ptr = &GI::Dev::MmcSd_Spi::mmcSdSpiIdle;
+    read_Ptr = &GI::Dev::MmcSd_Spi::mmcSdSpiRead;
+    write_Ptr = &GI::Dev::MmcSd_Spi::mmcSdSpiWrite;
+    ioctl_Ptr = &GI::Dev::MmcSd_Spi::mmcSdSpiIoctl;
+    this->unitNr = unitNr;
+    driverHandler_Ptr = (void*)this;
     initCard();
+    initFlg = true;
 }
 
 GI::Dev::MmcSd_Spi::~MmcSd_Spi()

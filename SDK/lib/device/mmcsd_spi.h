@@ -7,7 +7,7 @@
 
 #include <api/spi.h>
 #include <api/gpio.h>
-#include <api/mmcsd_def.h>
+#include "../api/mmcsd.h"
 #include "lib/fs/fat/inc/ff.h"
 
 /*
@@ -192,12 +192,11 @@
 
 namespace GI {
 namespace Dev {
-class MmcSd_Spi {
+class MmcSd_Spi : public MmcSd{
 public:
-    MmcSd_Spi(char *spiPath, char *cdPath);
+    MmcSd_Spi(unsigned int unitNr, char *spiPath, char *cdPath, char *ledPath);
     ~MmcSd_Spi();
-    void idle(unsigned char unitNr);
-
+    static void mmcSdSpiIdle(void *handler);
     static unsigned int mmcSdSpiRead(void *handler, void* _Buffer, unsigned long _block, unsigned int nblks);
     static unsigned int mmcSdSpiWrite(void *handler, void* _Buffer, unsigned long _block, unsigned int nblks);
     static void mmcSdSpiIoctl(void *handler, unsigned int  command,  unsigned int *buffer);
@@ -361,10 +360,12 @@ public:
      unsigned int initFlg;
      mmcsd_type_e sdType;
      GI::Dev::Gpio *sdPresent;
+     GI::Dev::Gpio *led;
      //FATFS g_s_mmcFatFs;
      GI::Dev::Spi *spiUnit;
      bool fs_mounted;
-     FATFS g_s_mmcFatFs;
+     FATFS mmcFatFs;
+     unsigned int unitNr;
 private:
      void decodeExtCsd(unsigned char *buffer);
      void getCsdPar();
