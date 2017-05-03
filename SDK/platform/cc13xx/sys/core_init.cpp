@@ -10,6 +10,7 @@
 //#include "board_properties.h"
 #include "driver/sys_ctrl.h"
 #include <sys/systime.h>
+#include <driver/rfc.h>
 
 unsigned long CoreFreq = 48000000;
 unsigned long FCPU = CORE_CLOCK_DEFAULT;
@@ -19,7 +20,15 @@ static void SystemClock_Config(unsigned long int_osc_freq,
 		unsigned long ext_osc_freq, unsigned long core_freq)
 {
 	SysCtrlPowerEverything();
+    OSCHF_TurnOnXosc();
+    do{}while(!OSCHF_AttemptToSwitchToXosc());
 	CoreFreq = core_freq;
+    volatile int cnt = 0;
+
+    for(cnt = 0; cnt < 250000; cnt++);
+    RFCClockEnable();//clocks bits are enabled properly
+    for(cnt = 0; cnt < 250000; cnt++);
+    PRCMPowerDomainOn(PRCM_DOMAIN_RFCORE | PRCM_DOMAIN_CPU | PRCM_DOMAIN_VIMS);
 }
 
 GI::Sys::Clock::Clock()
