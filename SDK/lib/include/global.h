@@ -33,7 +33,10 @@ typedef enum {
 	SYS_ERR_DEVICE_NOT_FOUND		= -22,
 	SYS_ERR_TIMEOUT					= -23,
 	SYS_ERR_NOTHING_CHANGED			= -24,
-	SYS_ERR_NOT_RECEIVED			= -25
+    SYS_ERR_NOT_RECEIVED            = -25,
+    SYS_ERR_TRANSMISSION            = -26,
+    SYS_ERR_RECEPTION               = -27,
+    SYS_ERR_TOO_LONG                = -28,
 }SysErr;
 
 /*
