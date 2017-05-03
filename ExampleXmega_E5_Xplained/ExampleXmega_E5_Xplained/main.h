@@ -19,11 +19,6 @@
 #define USE_SCREEN_GUI					false
 #define _USE_PASSWORD_PROTECTION		false
 
-#if USE_SPI
-#define USE_MMCSD_SPI                   false
-#define USED_MMCSD_SPI_UNIT             "spi-0.0"
-#endif
-
 #define CONSOLE_UART_IN		            "uart-3"
 #define CONSOLE_UART_OUT	            "uart-3"
 #define CONSOLE_UART_ERR	            "uart-3"
@@ -56,25 +51,33 @@
 #define SNTP_SERVER_ADDRESS 			"82.197.164.46" /* google */
 #define SNTP_UPDATE_DELAY 				90000 /* SNTP update every 90 seconds */
 
-#define _USE_MPU60x0_9150				false
-#define _USE_HIH613x					false
-#define _USE_AK8975						false
-#define _USE_BMP180						false
-#define _USE_MPL3115A2					false
-#define _USE_MPR121						false
-#define _USE_L3GD20						false
-#define _USE_MS5611						false
-#define _USE_MHC5883					false
-#define _USE_ADXL345					false
-#define _USE_SHT11 						false
-#define _USE_SX150x						false
-#define _USE_SRF02						false
-#define _USE_LEPTON_FLIR				false
-#define _USE_nRF25l01					false
+//#define _USE_AK8975                     "i2c-0"
+//#define _USE_BMA250                     "spi-0.2"
+//#define _USE_BMP180                     "i2c-0"
+//#define _USE_HIH613x                    "i2c-0"
+//#define _USE_L3GD20                     "spi-4.1"
+//#define _USE_LEPTON_FLIR                false
+//#define _USE_MPL3115A2                  "i2c-0"
+//#define _USE_MPR121                     "i2c-0"
+//#define _USE_MPU60x0_9150               "i2c-0"
+
+
+//#define _USE_MS5611                     false
+//#define _USE_MHC5883                    false
+//#define _USE_ADXL345                    false
+//#define _USE_SHT11                      false
+//#define _USE_SX150x                     false
+//#define _USE_SRF02                      false
+//#define _USE_nRF25l01                   false
+
+#define SHOW_SENSORS_RESULT_ON_SCREEN   false
 
 #define _USE_INT_ADC					false
 
 #define USE_DRIVER_SEMAPHORE			false
+
+/* Debug */
+#define MMCSD_DEBUG_EN                  false
 
 #include <main_app.h>
 
