@@ -20,7 +20,8 @@ void* operator new(size_t sz) throw()
 void operator delete(void* ptr) throw()
 {
 //    cerr << "deallocating at " << ptr << endl;
-    free(ptr);
+    if(ptr)
+        free(ptr);
 }
 
 
