@@ -21,6 +21,8 @@
 #include <board/ATMEL/Xmega-E5_Xplained/defs.h>
 #elif defined(FeatherAdaloggerM0)
 #include <board/ATMEL/FeatherAdaloggerM0/defs.h>
+#elif defined(mikroXmega)
+#include <board/ATMEL/mikroXmega/defs.h>
 #endif
 
 #endif /* _BOARD_BOARD_H_ */
