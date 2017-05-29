@@ -18,7 +18,7 @@ namespace GI
 			public:
 			Systime();
 			~Systime();
-			static void sysDelay(unsigned long milliSec);
+			static void sysDelay(unsigned long long milliSec);
 		};
 	}
 }

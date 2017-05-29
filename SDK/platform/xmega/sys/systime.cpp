@@ -13,7 +13,7 @@ GI::Sys::Systime systime = GI::Sys::Systime();
 /******************************************************************************
 **                      INTERNAL VARIABLE DEFINITIONS
 *******************************************************************************/
-volatile unsigned long long TimerTimeoutValue = 1;
+//volatile unsigned long long TimerTimeoutValue = 1;
 volatile unsigned long long STimerCnt = 0;
 //#####################################################
 GI::Sys::Systime::Systime()
@@ -35,9 +35,9 @@ GI::Sys::Systime::~Systime()
 	RTC.CTRL = RTC_PRESCALER_OFF_gc;
 }
 //#####################################################
-void GI::Sys::Systime::sysDelay(unsigned long milliSec)
+void GI::Sys::Systime::sysDelay(unsigned long long milliSec)
 {
-	TimerTimeoutValue = STimerCnt + (unsigned long long)milliSec;
+	unsigned long long TimerTimeoutValue = STimerCnt + (unsigned long long)milliSec;
 	while(1) {
 		if(TimerTimeoutValue < STimerCnt) break;
 	}
