@@ -54,9 +54,9 @@ static void SystemClock_Config(unsigned long int_osc_freq, unsigned long ext_osc
 #endif
 		FCPU = ext_osc_freq;
 	}
-	else if(CORE_CLOCK_DEFAULT)
+	else if(core_freq)
 	{
-		if(CORE_CLOCK_DEFAULT == 32000000)
+		if(core_freq == 32000000)
 		{
 			OSC.CTRL |= OSC_RC32MEN_bm;
 			while(!(OSC.STATUS & OSC_RC32MRDY_bm));
@@ -66,7 +66,7 @@ static void SystemClock_Config(unsigned long int_osc_freq, unsigned long ext_osc
 			FCPU = 32000000;
 		}
 #if defined(__AVR_ATxmega8E5__) || defined(__AVR_ATxmega16E5__) || defined(__AVR_ATxmega32E5__)
-		else if(CORE_CLOCK_DEFAULT == 8000000)
+		else if(core_freq == 8000000)
 		{
 			OSC.CTRL |= OSC_RC8MEN_bm;
 			while(!(OSC.STATUS & OSC_RC8MRDY_bm));
@@ -77,7 +77,7 @@ static void SystemClock_Config(unsigned long int_osc_freq, unsigned long ext_osc
 			FCPU = 8000000;
 		}
 #endif
-		else if(CORE_CLOCK_DEFAULT == 32768)
+		else if(core_freq == 32768)
 		{
 			OSC.CTRL |= OSC_RC32KEN_bm;
 			while(!(OSC.STATUS & OSC_RC32KRDY_bm));
@@ -89,7 +89,17 @@ static void SystemClock_Config(unsigned long int_osc_freq, unsigned long ext_osc
 		}
 		else
 		{
-			
+			if(ext_osc_freq != 0)
+			{
+				OSC_DFLLCTRL = OSC_RC2MCREF_bm;
+			}
+			else OSC_DFLLCTRL = 0;
+			DFLLRC2M_CTRL |= DFLL_ENABLE_bm;
+			OSC_PLLCTRL = (OSC_PLLSRC_RC2M_gc) | (core_freq / /*(ext_osc_freq == 0) ? */2000000/* : ext_osc_freq*/);
+			OSC_CTRL|= OSC_PLLEN_bm;
+			while(~OSC_STATUS & OSC_PLLRDY_bm);
+			PROTECTED_WRITE(CLK.CTRL, CLK_SCLKSEL_PLL_gc);
+			OSC.CTRL &= ~OSC_RC32MEN_bm;
 		}
 	}
 	else
