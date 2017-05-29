@@ -5,17 +5,23 @@
  *      Author: John Smith
  */
 
+#include <avr/interrupt.h>
 #include <string.h>
 #include <api/uart.h>
 #include <api/init.h>
 #include "uart.h"
 #include <driver/uart.h>
 
+#define USE_UART_TX_INTERRUPT	true
+
 extern CfgUart uartCfg[];
 #if (USE_DRIVER_SEMAPHORE == true)
 volatile bool uart_semaphore[UART_INTERFACE_COUNT];
 #endif
 extern unsigned long FCPU;
+
+static volatile unsigned char *nonblockingTxBuffPtr[8];
+static volatile unsigned int bytesLeft[8];
 
 USART_t* UART_BASE_PTRS[] =
 {
@@ -276,7 +282,7 @@ GI::Dev::Uart::Uart(ioSettings *cfg)
 		break;
 #endif
 #ifdef USARTE0
-	case 0:
+	case 4:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
 		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
@@ -297,7 +303,7 @@ GI::Dev::Uart::Uart(ioSettings *cfg)
 		break;
 #endif
 #ifdef USARTE1
-	case 1:
+	case 5:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
 		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
@@ -318,7 +324,7 @@ GI::Dev::Uart::Uart(ioSettings *cfg)
 		break;
 #endif
 #ifdef USARTF0
-	case 2:
+	case 6:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
 		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
@@ -339,7 +345,7 @@ GI::Dev::Uart::Uart(ioSettings *cfg)
 		break;
 #endif
 #ifdef USARTF1
-	case 3:
+	case 7:
 #if UART_HAVE_MODE_SYNCHRONOUS == 1 && UART_HAVE_MODE_SPI == 1
 		if(int_cfg->uartMode == CfgUart::uartMode_e::MODE_SYNC || int_cfg->uartMode == CfgUart::uartMode_e::MODE_SPI)
 #elif UART_HAVE_MODE_SYNCHRONOUS == 1
@@ -413,6 +419,12 @@ GI::Dev::Uart::Uart(ioSettings *cfg)
 	if(int_cfg->tx)
 		tmp |= USART_TXEN_bm;
 	((USART_t*)udata)->CTRLB = tmp;
+#if USE_UART_TX_INTERRUPT == true
+	((USART_t*)udata)->CTRLA = USART_TXCINTLVL_LO_gc;
+	unsigned char pmic_reg = PMIC.CTRL;
+	pmic_reg |= PMIC_LOLVLEN_bm;
+	PROTECTED_WRITE(PMIC.CTRL, pmic_reg);
+#endif
 }
 /*#####################################################*/
 GI::Dev::Uart::~Uart()
@@ -718,11 +730,145 @@ int GI::Dev::Uart::print(GI::String *string)
 /*#####################################################*/
 int GI::Dev::Uart::write(char *data, unsigned int len)
 {
+#if USE_UART_TX_INTERRUPT == true
+	if(!bytesLeft[this->unitNr])
+	{
+		nonblockingTxBuffPtr[this->unitNr] = (volatile unsigned char *)data;
+		bytesLeft[this->unitNr] = len - 1;
+		((USART_t*)udata)->DATA = *nonblockingTxBuffPtr[this->unitNr]++;
+		return len;
+	}
+	else
+		return 0;
+#else
 	unsigned int len_cnt = len;
-	while(!len_cnt--)
+	while(len_cnt--)
 	{
 		putChar(*data++);
 	}
 	return len - len_cnt;
+#endif
+	return len;
 }
 /*#####################################################*/
+void uartTx(volatile unsigned char *buff, USART_t *instance, volatile unsigned int bytesLeft)
+{
+	if(buff)
+	{
+		instance->DATA = *buff;
+	}
+}
+/*#####################################################*/
+#if USE_UART_TX_INTERRUPT == true
+#ifdef USARTC0
+ISR(USARTC0_TXC_vect)
+{
+	if(!bytesLeft[0])
+	{
+		nonblockingTxBuffPtr[0] = NULL;
+		return;
+	}
+	uartTx(nonblockingTxBuffPtr[0], &USARTC0, bytesLeft[0]);
+	nonblockingTxBuffPtr[0]++;
+	bytesLeft[0]--;
+}
+#endif
+
+#ifdef USARTC1
+ISR(USARTC1_TXC_vect)
+{
+	if(!bytesLeft[1])
+	{
+		nonblockingTxBuffPtr[1] = NULL;
+		return;
+	}
+	uartTx(nonblockingTxBuffPtr[1], &USARTC0, bytesLeft[1]);
+	nonblockingTxBuffPtr[1]++;
+	bytesLeft[1]--;
+}
+#endif
+
+#ifdef USARTD0
+ISR(USARTD0_TXC_vect)
+{
+	if(!bytesLeft[2])
+	{
+		nonblockingTxBuffPtr[2] = NULL;
+		return;
+	}
+	uartTx(nonblockingTxBuffPtr[2], &USARTC0, bytesLeft[2]);
+	nonblockingTxBuffPtr[2]++;
+	bytesLeft[2]--;
+}
+#endif
+
+#ifdef USARTD1
+ISR(USARTD1_TXC_vect)
+{
+	if(!bytesLeft[3])
+	{
+		nonblockingTxBuffPtr[3] = NULL;
+		return;
+	}
+	uartTx(nonblockingTxBuffPtr[3], &USARTC0, bytesLeft[3]);
+	nonblockingTxBuffPtr[3]++;
+	bytesLeft[3]--;
+}
+#endif
+
+#ifdef USARTE0
+ISR(USARTE0_TXC_vect)
+{
+	if(!bytesLeft[4])
+	{
+		nonblockingTxBuffPtr[4] = NULL;
+		return;
+	}
+	uartTx(nonblockingTxBuffPtr[4], &USARTC0, bytesLeft[4]);
+	nonblockingTxBuffPtr[4]++;
+	bytesLeft[4]--;
+}
+#endif
+
+#ifdef USARTE1
+ISR(USARTE1_TXC_vect)
+{
+	if(!bytesLeft[5])
+	{
+		nonblockingTxBuffPtr[5] = NULL;
+		return;
+	}
+	uartTx(nonblockingTxBuffPtr[5], &USARTC0, bytesLeft[5]);
+	nonblockingTxBuffPtr[5]++;
+	bytesLeft[5]--;
+}
+#endif
+
+#ifdef USARTF0
+ISR(USARTF0_TXC_vect)
+{
+	if(!bytesLeft[6])
+	{
+		nonblockingTxBuffPtr[6] = NULL;
+		return;
+	}
+	uartTx(nonblockingTxBuffPtr[6], &USARTC0, bytesLeft[6]);
+	nonblockingTxBuffPtr[6]++;
+	bytesLeft[6]--;
+}
+#endif
+
+#ifdef USARTF1
+ISR(USARTF1_TXC_vect)
+{
+	if(!bytesLeft[7])
+	{
+		nonblockingTxBuffPtr[7] = NULL;
+		return;
+	}
+	uartTx(nonblockingTxBuffPtr[7], &USARTC0, bytesLeft[7]);
+	nonblockingTxBuffPtr[7]++;
+	bytesLeft[7]--;
+}
+#endif
+#endif
