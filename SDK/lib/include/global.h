@@ -37,7 +37,37 @@ typedef enum {
     SYS_ERR_TRANSMISSION            = -26,
     SYS_ERR_RECEPTION               = -27,
     SYS_ERR_TOO_LONG                = -28,
+    SYS_ERR_OUT_OF_PAGE            =  -29,
+    SYS_ERR_INVALID_SIZE           =  -30,
 }SysErr;
+
+typedef enum {
+    size1 = 0,
+    size2,
+    size4,
+    size8,
+    size16,
+    size32,
+    size64,
+    size128,
+    size256,
+    size512,
+    size1024,
+    size2048,
+    size4096,
+    size8192,
+    size16384,
+    size32768,
+    size65536,
+    size131072,
+    size262144,
+    size524288,
+    size1048576,
+    size2097152,
+    size4194304,
+    size8388608,
+    size16777216,
+}Sizes;
 
 /*
  * Int definitions.
