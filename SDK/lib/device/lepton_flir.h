@@ -177,11 +177,6 @@ typedef enum Result
    #define LEP_SYS_MAX_FRAMES_TO_AVERAGE               128          /* Scale is 1x    */
    #define LEP_SYS_MAX_SERIAL_NUMBER_CHAR_SIZE         32
 
-typedef struct LEPTON_FLIR_s{
-	//STimer_t Timeout_Timer;
-	bool busy;
-	//unsigned s8 Stage;
-}LEPTON_FLIR_t;
 /*#####################################################*/
 namespace GI
 {
@@ -196,8 +191,8 @@ public:
 		TOP_HEAT,
 	}medianRef;
 
-	LeptonFLIR(s8 *spiPath, s8 *i2cPath);
-	LeptonFLIR(s8 *spiPath, s8 *i2cPath, GI::Sensor::LeptonFLIR::medianRef_s medianRef);
+	LeptonFLIR(string spiPath, string i2cPath);
+	LeptonFLIR(string spiPath, string i2cPath, GI::Sensor::LeptonFLIR::medianRef_s medianRef);
 	~LeptonFLIR();
 	bool runCommand(u16 commandID);
 	bool regWrite(u16 commandID, u16 *attributePtr, u16 attributeWordLength);
@@ -207,9 +202,12 @@ public:
 	bool getImage(u16 *image);
 	bool getImageBW(Color::ARGB *image, u8 alpha);
 	bool getImageARGB(Color::ARGB *image, u8 alpha);
+	bool getStartFrame(u16 *lineBuff);
+	bool getLine(u16 *lineBuff);
 	bool customMedian;
 
 	s16 median;
+	u8 lineCount;
 private:
 	GI::IO* SPI;
 	GI::IO* I2C;

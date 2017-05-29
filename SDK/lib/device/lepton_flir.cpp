@@ -96,7 +96,7 @@ u16 CalcCRC16Bytes(u32 count, s8 *buffer) {
     return crc;
 }
 
-GI::Sensor::LeptonFLIR::LeptonFLIR(s8 *spiPath, s8 *i2cPath) {
+GI::Sensor::LeptonFLIR::LeptonFLIR(string spiPath, string i2cPath) {
 	memset(this, 0, sizeof(*this));
 	SPI = new GI::IO((char *)spiPath);
 	if(!SPI->devHandler || !SPI->ioDevType)
@@ -112,7 +112,7 @@ GI::Sensor::LeptonFLIR::LeptonFLIR(s8 *spiPath, s8 *i2cPath) {
 	}
 }
 
-GI::Sensor::LeptonFLIR::LeptonFLIR(s8 *spiPath, s8 *i2cPath, GI::Sensor::LeptonFLIR::medianRef_s medianRef)
+GI::Sensor::LeptonFLIR::LeptonFLIR(string spiPath, string i2cPath, GI::Sensor::LeptonFLIR::medianRef_s medianRef)
 {
 	memset(this, 0, sizeof(*this));
 	SPI = new GI::IO((char *)spiPath);
@@ -585,6 +585,30 @@ bool GI::Sensor::LeptonFLIR::directWriteReg(u16 regAddress, u16 regValue) {
 	if(write(tmp, 4))
 		return false;
 	return true;
+}
+
+bool GI::Sensor::LeptonFLIR::getStartFrame(u16 *lineBuff)
+{
+	u8 line_buff[(LEPTON_FLIR_LINE_SIZE * 2) + 4];
+	SPI->read(line_buff, (LEPTON_FLIR_LINE_SIZE * 2) + 4);
+	if((line_buff[0] & 0x0F) == 0x0F || line_buff[1] != 0)
+		return false;
+	memcpy(lineBuff, line_buff + 4, LEPTON_FLIR_LINE_SIZE * 2);
+	lineCount = 0;
+	return true;	
+}
+
+bool GI::Sensor::LeptonFLIR::getLine(u16 *lineBuff)
+{
+	u8 line_buff[(LEPTON_FLIR_LINE_SIZE * 2) + 4];
+	SPI->read(line_buff, (LEPTON_FLIR_LINE_SIZE * 2) + 4);
+	if(/*lineCount != line_buff[1] && */(line_buff[0] & 0x0F) != 0x0F)
+	{
+		memcpy(lineBuff, line_buff + 4, LEPTON_FLIR_LINE_SIZE * 2);
+		lineCount = line_buff[1];
+		return true;
+	}
+	return false;
 }
 
 bool GI::Sensor::LeptonFLIR::getImage(u16 *image) {
