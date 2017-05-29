@@ -35,6 +35,8 @@ SysErr GI::Sensor::Mpl3115a2::regWrite(unsigned char reg, unsigned char *data, u
 	if(!I2C)
 		return SYS_ERR_NO_ASSIGNED_DEVICE;
 	unsigned char *tmp = (unsigned char *)malloc(len + 1);
+    if(!tmp)
+        return SYS_ERR_OUT_OF_MEMORY;
 	tmp[0] = reg;
 	memcpy(tmp + 1, data, len);
 	if(I2C->writeBytes(MPL3115A2_ADDR, tmp, 1 + len) != 1 + len)
