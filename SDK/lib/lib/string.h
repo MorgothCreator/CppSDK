@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdarg.h>
 
 #include <include/global.h>
 
@@ -28,9 +29,13 @@ namespace GI
 		void removeNewLine(GI::String *string);
 		void set(char* string);
 		void set(GI::String *string);
+		void setF(const char *pcString, ...);
+		void setF(GI::String *string, ...);
 		void append(GI::String *string);
 		void append(char* string);
 		void append(char Char);
+		void appendF(const char *pcString, ...);
+		void appendF(GI::String *string, ...);
 		void insert(GI::String* string, unsigned int location);
 		void insert(char *string, unsigned int location);
 		void clone(GI::String* string);

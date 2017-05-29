@@ -150,6 +150,52 @@ void GI::String::set(GI::String *string)
 	error = SYS_ERR_OK;
 }
 
+void GI::String::setF(const char *pcString, ...)
+{
+    clear();
+    va_list args;
+    va_start (args, pcString);
+    char buff[1];
+    s32 len = vsnprintf(buff, 0, pcString, args);
+    va_end (args);
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, pcString);
+            vsnprintf(tmp_str, len + 1, pcString, args);
+            va_end (args);
+            set(tmp_str);
+            free(tmp_str);
+        }
+    }
+}
+
+void GI::String::setF(GI::String *string, ...)
+{
+    clear();
+    va_list args;
+    char *pcString = string->buff;
+    va_start (args, pcString);
+    char buff[1];
+    s32 len = vsnprintf(buff, 0, pcString, args);
+    va_end (args);
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, pcString);
+            vsnprintf(tmp_str, len + 1, pcString, args);
+            va_end (args);
+            set(tmp_str);
+            free(tmp_str);
+        }
+    }
+}
+
+
 void GI::String::append(GI::String *string)
 {
 	if(!buff || !string)
@@ -206,6 +252,49 @@ void GI::String::append(char Char)
 	length = LenDest + LenSrc;
 	modifyed = true;
 	error = SYS_ERR_OK;
+}
+
+void GI::String::appendF(const char *pcString, ...)
+{
+    va_list args;
+    va_start (args, pcString);
+    char buff[1];
+    s32 len = vsnprintf(buff, 0, pcString, args);
+    va_end (args);
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, pcString);
+            vsnprintf(tmp_str, len + 1, pcString, args);
+            va_end (args);
+            append(tmp_str);
+            free(tmp_str);
+        }
+    }
+}
+
+void GI::String::appendF(GI::String *string, ...)
+{
+    va_list args;
+    char *pcString = string->buff;
+    va_start (args, pcString);
+    char buff[1];
+    s32 len = vsnprintf(buff, 0, pcString, args);
+    va_end (args);
+    if(len > 0)
+    {
+        char *tmp_str = (char *)malloc(len + 1);
+        if(tmp_str)
+        {
+            va_start (args, pcString);
+            vsnprintf(tmp_str, len + 1, pcString, args);
+            va_end (args);
+            append(tmp_str);
+            free(tmp_str);
+        }
+    }
 }
 
 void GI::String::insert(GI::String* string, unsigned int location)
