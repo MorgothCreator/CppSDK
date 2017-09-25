@@ -204,7 +204,7 @@ pbuf_alloc(pbuf_layer layer, u16_t length, pbuf_type type)
 	struct pbuf *p, *q, *r;
 	u16_t offset;
 	s32_t rem_len; /* remaining length */
-	LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_alloc(length=%"U16_F")\n", length));
+	LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_alloc(length=%" U16_F ")\n", length));
 
 	/* determine header offset */
 	switch (layer)
@@ -355,7 +355,7 @@ pbuf_alloc(pbuf_layer layer, u16_t length, pbuf_type type)
 	p->ref = 1;
 	/* set flags */
 	p->flags = 0;
-	LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_alloc(length=%"U16_F") == %p\n", length, (void *)p));
+	LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_alloc(length=%" U16_F ") == %p\n", length, (void *)p));
 	return p;
 }
 
@@ -379,7 +379,7 @@ pbuf_alloced_custom(pbuf_layer l, u16_t length, pbuf_type type,
 		struct pbuf_custom *p, void *payload_mem, u16_t payload_mem_len)
 {
 	u16_t offset;
-	LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_alloced_custom(length=%"U16_F")\n", length));
+	LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_alloced_custom(length=%" U16_F ")\n", length));
 
 	/* determine header offset */
 	switch (l)
@@ -411,7 +411,7 @@ pbuf_alloced_custom(pbuf_layer l, u16_t length, pbuf_type type,
 
 	if (LWIP_MEM_ALIGN_SIZE(offset) + length > payload_mem_len)
 	{
-		LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_LEVEL_WARNING, ("pbuf_alloced_custom(length=%"U16_F") buffer too short\n", length));
+		LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_LEVEL_WARNING, ("pbuf_alloced_custom(length=%" U16_F ") buffer too short\n", length));
 		return NULL ;
 	}
 
@@ -612,7 +612,7 @@ static u8_t pbuf_header_impl(struct pbuf *p, s16_t header_size_increment,
 	p->len += header_size_increment;
 	p->tot_len += header_size_increment;
 
-	LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_header: old %p new %p (%"S16_F")\n",
+	LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_header: old %p new %p (%" S16_F ")\n",
 					(void *)payload, (void *)p->payload, header_size_increment));
 
 	return 0;
@@ -765,7 +765,7 @@ u8_t pbuf_free(struct pbuf *p)
 		}
 		else
 		{
-			LWIP_DEBUGF( PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_free: %p has ref %"U16_F", ending here.\n", (void *)p, ref));
+			LWIP_DEBUGF( PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_free: %p has ref %" U16_F ", ending here.\n", (void *)p, ref));
 			/* stop walking through the chain */
 			p = NULL;
 		}

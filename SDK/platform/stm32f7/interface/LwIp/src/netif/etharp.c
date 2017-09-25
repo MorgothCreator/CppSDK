@@ -187,7 +187,7 @@ static void etharp_free_entry(int i)
 	if (arp_table[i].q != NULL)
 	{
 		/* remove all queued packets */
-		LWIP_DEBUGF(ETHARP_DEBUG, ("etharp_free_entry: freeing entry %"U16_F", packet queue %p.\n", (u16_t)i, (void *)(arp_table[i].q)));
+		LWIP_DEBUGF(ETHARP_DEBUG, ("etharp_free_entry: freeing entry %" U16_F ", packet queue %p.\n", (u16_t)i, (void *)(arp_table[i].q)));
 		free_etharp_q(arp_table[i].q);
 		arp_table[i].q = NULL;
 	}
@@ -229,7 +229,7 @@ void etharp_tmr(void)
 							&& (arp_table[i].ctime >= ARP_MAXPENDING)))
 			{
 				/* pending or stable entry has become old! */
-				LWIP_DEBUGF(ETHARP_DEBUG, ("etharp_timer: expired %s entry %"U16_F".\n",
+				LWIP_DEBUGF(ETHARP_DEBUG, ("etharp_timer: expired %s entry %" U16_F ".\n",
 								arp_table[i].state >= ETHARP_STATE_STABLE ? "stable" : "pending", (u16_t)i));
 				/* clean up entries that have just been expired */
 				etharp_free_entry(i);
@@ -309,7 +309,7 @@ static s8_t etharp_find_entry(const ip4_addr_t *ipaddr, u8_t flags,
 		/* no empty entry found yet and now we do find one? */
 		if ((empty == ARP_TABLE_SIZE) && (state == ETHARP_STATE_EMPTY))
 		{
-			LWIP_DEBUGF(ETHARP_DEBUG, ("etharp_find_entry: found empty entry %"U16_F"\n", (u16_t)i));
+			LWIP_DEBUGF(ETHARP_DEBUG, ("etharp_find_entry: found empty entry %" U16_F "\n", (u16_t)i));
 			/* remember first empty entry */
 			empty = i;
 		}
@@ -326,7 +326,7 @@ static s8_t etharp_find_entry(const ip4_addr_t *ipaddr, u8_t flags,
 #endif /* ETHARP_TABLE_MATCH_NETIF */
 			)
 			{
-				LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: found matching entry %"U16_F"\n", (u16_t)i));
+				LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: found matching entry %" U16_F "\n", (u16_t)i));
 				/* found exact IP address match, simply bail out */
 				return i;
 			}
@@ -394,7 +394,7 @@ static s8_t etharp_find_entry(const ip4_addr_t *ipaddr, u8_t flags,
 	if (empty < ARP_TABLE_SIZE)
 	{
 		i = empty;
-		LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: selecting empty entry %"U16_F"\n", (u16_t)i));
+		LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: selecting empty entry %" U16_F "\n", (u16_t)i));
 	}
 	else
 	{
@@ -403,7 +403,7 @@ static s8_t etharp_find_entry(const ip4_addr_t *ipaddr, u8_t flags,
 		{
 			/* recycle oldest stable*/
 			i = old_stable;
-			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: selecting oldest stable entry %"U16_F"\n", (u16_t)i));
+			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: selecting oldest stable entry %" U16_F "\n", (u16_t)i));
 			/* no queued packets should exist on stable entries */
 			LWIP_ASSERT("arp_table[i].q == NULL", arp_table[i].q == NULL);
 			/* 3) found recyclable pending entry without queued packets? */
@@ -412,14 +412,14 @@ static s8_t etharp_find_entry(const ip4_addr_t *ipaddr, u8_t flags,
 		{
 			/* recycle oldest pending */
 			i = old_pending;
-			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: selecting oldest pending entry %"U16_F" (without queue)\n", (u16_t)i));
+			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: selecting oldest pending entry %" U16_F " (without queue)\n", (u16_t)i));
 			/* 4) found recyclable pending entry with queued packets? */
 		}
 		else if (old_queue < ARP_TABLE_SIZE)
 		{
 			/* recycle oldest pending (queued packets are free in etharp_free_entry) */
 			i = old_queue;
-			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: selecting oldest pending entry %"U16_F", freeing packet queue %p\n", (u16_t)i, (void *)(arp_table[i].q)));
+			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_find_entry: selecting oldest pending entry %" U16_F ", freeing packet queue %p\n", (u16_t)i, (void *)(arp_table[i].q)));
 			/* no empty or recyclable entries found */
 		}
 		else
@@ -515,7 +515,8 @@ static err_t etharp_update_arp_entry(struct netif *netif,
 {
 	s8_t i;
 	LWIP_ASSERT("netif->hwaddr_len == ETHARP_HWADDR_LEN",
-			netif->hwaddr_len == ETHARP_HWADDR_LEN);LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_update_arp_entry: %"U16_F".%"U16_F".%"U16_F".%"U16_F" - %02"X16_F":%02"X16_F":%02"X16_F":%02"X16_F":%02"X16_F":%02"X16_F"\n",
+			netif->hwaddr_len == ETHARP_HWADDR_LEN);
+	LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_update_arp_entry: %" U16_F ".%" U16_F ".%" U16_F ".%" U16_F " - %02" X16_F ":%02" X16_F ":%02" X16_F ":%02" X16_F ":%02" X16_F ":%02" X16_F "\n",
 					ip4_addr1_16(ipaddr), ip4_addr2_16(ipaddr), ip4_addr3_16(ipaddr), ip4_addr4_16(ipaddr),
 					ethaddr->addr[0], ethaddr->addr[1], ethaddr->addr[2],
 					ethaddr->addr[3], ethaddr->addr[4], ethaddr->addr[5]));
@@ -553,7 +554,7 @@ static err_t etharp_update_arp_entry(struct netif *netif,
 	/* insert in SNMP ARP index tree */
 	mib2_add_arp_entry(netif, &arp_table[i].ipaddr);
 
-	LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_update_arp_entry: updating stable entry %"S16_F"\n", (s16_t)i));
+	LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_update_arp_entry: updating stable entry %" S16_F "\n", (s16_t)i));
 	/* update address */
 	ETHADDR32_COPY(&arp_table[i].ethaddr, ethaddr);
 	/* reset time stamp */
@@ -598,7 +599,7 @@ err_t
 etharp_add_static_entry(const ip4_addr_t *ipaddr, struct eth_addr *ethaddr)
 {
 	struct netif *netif;
-	LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_add_static_entry: %"U16_F".%"U16_F".%"U16_F".%"U16_F" - %02"X16_F":%02"X16_F":%02"X16_F":%02"X16_F":%02"X16_F":%02"X16_F"\n",
+	LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_add_static_entry: %" U16_F ".%" U16_F ".%" U16_F ".%" U16_F " - %02" X16_F ":%02" X16_F ":%02" X16_F ":%02" X16_F ":%02" X16_F ":%02" X16_F "\n",
 					ip4_addr1_16(ipaddr), ip4_addr2_16(ipaddr), ip4_addr3_16(ipaddr), ip4_addr4_16(ipaddr),
 					ethaddr->addr[0], ethaddr->addr[1], ethaddr->addr[2],
 					ethaddr->addr[3], ethaddr->addr[4], ethaddr->addr[5]));
@@ -624,7 +625,7 @@ err_t
 etharp_remove_static_entry(const ip4_addr_t *ipaddr)
 {
 	s8_t i;
-	LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_remove_static_entry: %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+	LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_remove_static_entry: %" U16_F ".%" U16_F ".%" U16_F ".%" U16_F "\n",
 					ip4_addr1_16(ipaddr), ip4_addr2_16(ipaddr), ip4_addr3_16(ipaddr), ip4_addr4_16(ipaddr)));
 
 	/* find or create ARP entry */
@@ -811,7 +812,7 @@ static void etharp_arp_input(struct netif *netif, struct eth_addr *ethaddr,
 	if (p->len < SIZEOF_ETHARP_PACKET)
 	{
 		LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_WARNING,
-				("etharp_arp_input: packet dropped, too short (%"S16_F"/%"S16_F")\n", p->tot_len,
+				("etharp_arp_input: packet dropped, too short (%" S16_F "/%" S16_F ")\n", p->tot_len,
 						(s16_t)SIZEOF_ETHARP_PACKET));ETHARP_STATS_INC(etharp.lenerr);ETHARP_STATS_INC(etharp.drop);
 		pbuf_free(p);
 		return;
@@ -833,7 +834,7 @@ static void etharp_arp_input(struct netif *netif, struct eth_addr *ethaddr,
 			|| (hdr->proto != PP_HTONS(ETHTYPE_IP)))
 	{
 		LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_WARNING,
-				("etharp_arp_input: packet dropped, wrong hw type, hwlen, proto, protolen or ethernet type (%"U16_F"/%"U16_F"/%"U16_F"/%"U16_F")\n",
+				("etharp_arp_input: packet dropped, wrong hw type, hwlen, proto, protolen or ethernet type (%" U16_F "/%" U16_F "/%" U16_F "/%" U16_F ")\n",
 						hdr->hwtype, hdr->hwlen, hdr->proto, hdr->protolen));ETHARP_STATS_INC(etharp.proterr);ETHARP_STATS_INC(etharp.drop);
 		pbuf_free(p);
 		return;
@@ -943,7 +944,7 @@ static void etharp_arp_input(struct netif *netif, struct eth_addr *ethaddr,
 #endif /* (LWIP_DHCP && DHCP_DOES_ARP_CHECK) */
 		break;
 	default:
-		LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_arp_input: ARP unknown opcode type %"S16_F"\n", htons(hdr->opcode)));
+		LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_arp_input: ARP unknown opcode type %" S16_F "\n", htons(hdr->opcode)));
 		ETHARP_STATS_INC(etharp.err);
 		break;
 	}
@@ -1327,7 +1328,7 @@ err_t etharp_query(struct netif *netif, const ip4_addr_t *ipaddr,
 					memp_free(MEMP_ARP_QUEUE, old);
 				}
 #endif
-				LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_query: queued packet %p on ARP entry %"S16_F"\n", (void *)q, (s16_t)i));
+				LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_query: queued packet %p on ARP entry %" S16_F "\n", (void *)q, (s16_t)i));
 				result = ERR_OK;
 			}
 			else
@@ -1341,17 +1342,18 @@ err_t etharp_query(struct netif *netif, const ip4_addr_t *ipaddr,
 			/* always queue one packet per ARP request only, freeing a previously queued packet */
 			if (arp_table[i].q != NULL)
 			{
-				LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_query: dropped previously queued packet %p for ARP entry %"S16_F"\n", (void *)q, (s16_t)i));
+				LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_query: dropped previously queued packet %p for ARP entry %" S16_F "\n", (void *)q, (s16_t)i));
 				pbuf_free(arp_table[i].q);
 			}
 			arp_table[i].q = p;
 			result = ERR_OK;
-			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_query: queued packet %p on ARP entry %"S16_F"\n", (void *)q, (s16_t)i));
+			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_query: queued packet %p on ARP entry %" S16_F "\n", (void *)q, (s16_t)i));
 #endif /* ARP_QUEUEING */
 		}
 		else
 		{
-			ETHARP_STATS_INC(etharp.memerr);LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_query: could not queue a copy of PBUF_REF packet %p (out of memory)\n", (void *)q));
+			ETHARP_STATS_INC(etharp.memerr);
+			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("etharp_query: could not queue a copy of PBUF_REF packet %p (out of memory)\n", (void *)q));
 			result = ERR_MEM;
 		}
 	}
@@ -1535,7 +1537,7 @@ err_t ethernet_input(struct pbuf *p, struct netif *netif)
 	/* points to packet payload, which starts with an Ethernet header */
 	ethhdr = (struct eth_hdr *) p->payload;
 	LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE,
-			("ethernet_input: dest:%"X8_F":%"X8_F":%"X8_F":%"X8_F":%"X8_F":%"X8_F", src:%"X8_F":%"X8_F":%"X8_F":%"X8_F":%"X8_F":%"X8_F", type:%"X16_F"\n",
+			("ethernet_input: dest:%" X8_F ":%" X8_F ":%" X8_F ":%" X8_F ":%" X8_F ":%" X8_F ", src:%" X8_F ":%" X8_F ":%" X8_F ":%" X8_F ":%" X8_F ":%" X8_F ", type:%" X16_F "\n",
 					(unsigned)ethhdr->dest.addr[0], (unsigned)ethhdr->dest.addr[1], (unsigned)ethhdr->dest.addr[2],
 					(unsigned)ethhdr->dest.addr[3], (unsigned)ethhdr->dest.addr[4], (unsigned)ethhdr->dest.addr[5],
 					(unsigned)ethhdr->src.addr[0], (unsigned)ethhdr->src.addr[1], (unsigned)ethhdr->src.addr[2],
@@ -1616,7 +1618,7 @@ err_t ethernet_input(struct pbuf *p, struct netif *netif)
 		if ((p->len < ip_hdr_offset) || pbuf_header(p, (s16_t) -ip_hdr_offset))
 		{
 			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_WARNING,
-					("ethernet_input: IPv4 packet dropped, too short (%"S16_F"/%"S16_F")\n",
+					("ethernet_input: IPv4 packet dropped, too short (%" S16_F "/%" S16_F ")\n",
 							p->tot_len, ip_hdr_offset));LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("Can't move over header in packet"));
 			goto free_and_return;
 		}
@@ -1652,7 +1654,7 @@ err_t ethernet_input(struct pbuf *p, struct netif *netif)
 		if ((p->len < ip_hdr_offset) || pbuf_header(p, (s16_t)-ip_hdr_offset))
 		{
 			LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_WARNING,
-					("ethernet_input: IPv6 packet dropped, too short (%"S16_F"/%"S16_F")\n",
+					("ethernet_input: IPv6 packet dropped, too short (%" S16_F "/%" S16_F ")\n",
 							p->tot_len, ip_hdr_offset));
 			goto free_and_return;
 		}

@@ -45,10 +45,10 @@
 #include "interface/LwIp/src/include/lwip/ip6.h"
 #include "interface/LwIp/src/include/lwip/ip6_addr.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+//#ifdef __cplusplus
+//extern "C"
+//{
+//#endif
 
 /* Functions for interfacing with TCP: */
 
@@ -535,9 +535,9 @@ void tcp_netif_ipv4_addr_changed(const ip4_addr_t* old_addr,
 		const ip4_addr_t* new_addr);
 #endif /* LWIP_IPV4 */
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 
 #endif /* LWIP_TCP */
 

@@ -442,14 +442,15 @@ void netif_set_ipaddr(struct netif *netif, const ip4_addr_t *ipaddr)
 
 		mib2_remove_ip4(netif);mib2_remove_route_ip4(0, netif);
 		/* set new IP address to netif */
-		ip4_addr_set(ip_2_ip4(&netif->ip_addr), ipaddr);IP_SET_TYPE_VAL(netif->ip_addr, IPADDR_TYPE_V4);mib2_add_ip4(netif);mib2_add_route_ip4(0, netif);
+		ip4_addr_set(ip_2_ip4(&netif->ip_addr), ipaddr);
+		IP_SET_TYPE_VAL(netif->ip_addr, IPADDR_TYPE_V4);mib2_add_ip4(netif);mib2_add_route_ip4(0, netif);
 
 		netif_issue_reports(netif, NETIF_REPORT_TYPE_IPV4);
 
 		NETIF_STATUS_CALLBACK(netif);
 	}
 
-	LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: IP address of interface %c%c set to %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+	LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: IP address of interface %c%c set to %" U16_F ".%" U16_F ".%" U16_F ".%" U16_F "\n",
 					netif->name[0], netif->name[1],
 					ip4_addr1_16(netif_ip4_addr(netif)),
 					ip4_addr2_16(netif_ip4_addr(netif)),
@@ -467,7 +468,8 @@ void netif_set_ipaddr(struct netif *netif, const ip4_addr_t *ipaddr)
  */
 void netif_set_gw(struct netif *netif, const ip4_addr_t *gw)
 {
-	ip4_addr_set(ip_2_ip4(&netif->gw), gw);IP_SET_TYPE_VAL(netif->gw, IPADDR_TYPE_V4);LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: GW address of interface %c%c set to %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+	ip4_addr_set(ip_2_ip4(&netif->gw), gw);IP_SET_TYPE_VAL(netif->gw, IPADDR_TYPE_V4);
+	LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: GW address of interface %c%c set to %" U16_F ".%" U16_F ".%" U16_F ".%" U16_F "\n",
 					netif->name[0], netif->name[1],
 					ip4_addr1_16(netif_ip4_gw(netif)),
 					ip4_addr2_16(netif_ip4_gw(netif)),
@@ -488,7 +490,9 @@ void netif_set_netmask(struct netif *netif, const ip4_addr_t *netmask)
 {
 	mib2_remove_route_ip4(0, netif);
 	/* set new netmask to netif */
-	ip4_addr_set(ip_2_ip4(&netif->netmask), netmask);IP_SET_TYPE_VAL(netif->netmask, IPADDR_TYPE_V4);mib2_add_route_ip4(0, netif);LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: netmask of interface %c%c set to %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+	ip4_addr_set(ip_2_ip4(&netif->netmask), netmask);IP_SET_TYPE_VAL(netif->netmask, IPADDR_TYPE_V4);
+	mib2_add_route_ip4(0, netif);
+	LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: netmask of interface %c%c set to %" U16_F ".%" U16_F ".%" U16_F ".%" U16_F "\n",
 					netif->name[0], netif->name[1],
 					ip4_addr1_16(netif_ip4_netmask(netif)),
 					ip4_addr2_16(netif_ip4_netmask(netif)),

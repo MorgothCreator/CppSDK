@@ -26,6 +26,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#include <stdint.h>
 #include "usbd_storage.h"
 #include "lib/fs/fat/inc/diskio.h"
 #include "interface/usb_dev_msc_interface.h"
@@ -44,7 +45,7 @@ extern DRV_RW_FUNC usbd_drv_func[];
 int8_t STORAGE_Inquirydata[] = { /* 36 */
   /* LUN 0 */
   0x00,		
-  (char)128,
+  (int8_t)128,
   0x02,		
   0x02,
   (STANDARD_INQUIRY_DATA_LEN - 5),

@@ -767,7 +767,7 @@ u8_t n;
 u8_t pcb_idx;
 struct dns_table_entry* entry = &dns_table[idx];
 
-LWIP_DEBUGF(DNS_DEBUG, ("dns_send: dns_servers[%"U16_F"] \"%s\": request\n",
+LWIP_DEBUGF(DNS_DEBUG, ("dns_send: dns_servers[%" U16_F "] \"%s\": request\n",
 			(u16_t)(entry->server_idx), entry->name));
 LWIP_ASSERT("dns server out of array", entry->server_idx < DNS_MAX_SERVERS);
 if (ip_addr_isany_val(dns_servers[entry->server_idx]))
@@ -1467,7 +1467,7 @@ req = &dns_requests[i];
 #endif
 
 /* use this entry */
-LWIP_DEBUGF(DNS_DEBUG, ("dns_enqueue: \"%s\": use DNS entry %"U16_F"\n", name, (u16_t)(i)));
+LWIP_DEBUGF(DNS_DEBUG, ("dns_enqueue: \"%s\": use DNS entry %" U16_F "\n", name, (u16_t)(i)));
 
 /* fill the entry */
 entry->state = DNS_STATE_NEW;
@@ -1488,7 +1488,7 @@ LWIP_DEBUGF(DNS_DEBUG, ("dns_enqueue: \"%s\": failed to allocate a pcb\n", name)
 entry->state = DNS_STATE_UNUSED;
 req->found = NULL;
 return ERR_MEM;
-} LWIP_DEBUGF(DNS_DEBUG, ("dns_enqueue: \"%s\": use DNS pcb %"U16_F"\n", name, (u16_t)(entry->pcb_idx)));
+} LWIP_DEBUGF(DNS_DEBUG, ("dns_enqueue: \"%s\": use DNS pcb %" U16_F "\n", name, (u16_t)(entry->pcb_idx)));
 #endif
 
 dns_seqno++;
