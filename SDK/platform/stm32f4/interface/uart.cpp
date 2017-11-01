@@ -427,6 +427,7 @@ void GI::Dev::Uart::putChar(unsigned char byteTx)
 		{
 			volatile char tmp = ((UART_HandleTypeDef *) udata)->Instance->SR;
 			//tmp = ((UART_HandleTypeDef *) udata)->Instance->DR;
+			UNUSED(tmp);
 		}
 		HAL_UART_Transmit((UART_HandleTypeDef*) udata, &byteTx, 1, 10);
 	}
@@ -516,6 +517,7 @@ signed short GI::Dev::Uart::getCharNb()
 		{
 			volatile char tmp = ((UART_HandleTypeDef *) udata)->Instance->SR;
 			//tmp = ((UART_HandleTypeDef *) udata)->Instance->DR;
+			UNUSED(tmp);
 		}
 		HAL_StatusTypeDef status = HAL_UART_Receive((UART_HandleTypeDef *) udata, (unsigned char *) &data, 1, 2);
 		if (status == HAL_TIMEOUT || status == HAL_BUSY || status == HAL_ERROR)
@@ -669,7 +671,10 @@ void USART3_IRQHandler(void)
 	if(construct->charReceive_Callback)
 		construct->charReceive_Callback(((UART_HandleTypeDef *)construct->udata)->Instance->DR);
 	else
+	{
 		char tmp = ((UART_HandleTypeDef *)construct->udata)->Instance->DR;
+		UNUSED(tmp);
+	}
 }
 #endif
 
