@@ -51,7 +51,7 @@ SysErr GI::Dev::Screen::copyScreen(void *pDisplayFrom, bool put_cursor,
 		return SYS_ERR_NOT_IMPLEMENTED;
 	return SYS_ERR_OK;
 }
-//#######################################################################################
+/*//#######################################################################################
 SysErr GI::Dev::Screen::cacheClean(signed int x_start, signed int y_start,
 			signed int x_len, signed int y_len)
 {
@@ -60,7 +60,7 @@ SysErr GI::Dev::Screen::cacheClean(signed int x_start, signed int y_start,
 	else
 		return SYS_ERR_NOT_IMPLEMENTED;
 	return SYS_ERR_OK;
-}
+}*/
 //#######################################################################################
 SysErr GI::Dev::Screen::drawRectangle(signed int x_start, signed int y_start,
 			signed int x_len, signed int y_len, bool fill, unsigned int color)

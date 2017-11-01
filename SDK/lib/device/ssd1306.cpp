@@ -35,7 +35,7 @@ GI::Dev::Ug2832hsweg04::Ug2832hsweg04(LCD_TIMINGS *timings, char *spiPath)
     LcdTimings = timings;
 	setOn_Ptr = &GI::Dev::Ug2832hsweg04::_setOn;
 	setOff_Ptr = &GI::Dev::Ug2832hsweg04::_setOff;
-    cacheClean_Ptr = &GI::Dev::Ug2832hsweg04::_cacheClean;
+    //cacheClean_Ptr = &GI::Dev::Ug2832hsweg04::_cacheClean;
     drawPixel_Ptr = &GI::Dev::Ug2832hsweg04::_drawPixel;
     drawRectangle_Ptr = &GI::Dev::Ug2832hsweg04::_drawRectangle;
     drawHLine_Ptr = &GI::Dev::Ug2832hsweg04::_drawHLine;
@@ -156,10 +156,11 @@ bool GI::Dev::Ug2832hsweg04::_setOrientation(void *driverHandlerPtr, LCD_ORIENTA
 	return false;
 }
 
-void GI::Dev::Ug2832hsweg04::_cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start, signed int x_len, signed int y_len)
+/*void GI::Dev::Ug2832hsweg04::_cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start, signed int x_len, signed int y_len)
 {
-	
-}
+	GI::Dev::Ug2832hsweg04 *driverHandler = (GI::Dev::Ug2832hsweg04 *)driverHandlerPtr;
+	driverHandler->_refresh(driverHandlerPtr);
+}*/
 
 void GI::Dev::Ug2832hsweg04::_drawPixel(void *driverHandlerPtr, signed int X_Coordonate, signed int Y_Coordonate, unsigned int color)
 {

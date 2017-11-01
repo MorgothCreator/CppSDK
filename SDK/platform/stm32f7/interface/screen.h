@@ -260,8 +260,8 @@ public:
 	static SysErr _setBacklight(void *driverHandlerPtr, unsigned char value);
 	static bool _copyScreen(void *driverHandlerPtr, void *pDisplayFrom, bool put_cursor,
 			signed int X, signed int Y, unsigned int color);
-	static void _cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start,
-			signed int x_len, signed int y_len);
+	//static void _cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start,
+			//signed int x_len, signed int y_len);
 	static void _drawRectangle(void *driverHandlerPtr, signed int x_start, signed int y_start,
 			signed int x_len, signed int y_len, bool fill, unsigned int color);
 	static void _drawPixel(void *driverHandlerPtr, signed int X, signed int Y, unsigned int color);

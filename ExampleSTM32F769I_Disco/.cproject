@@ -62,11 +62,6 @@
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
 							</tool>
-							<tool id="org.eclipse.cdt.msvc.cl.cpp.2054465432" name="C++ Compiler (cl)">
-								<option id="org.eclipse.cdt.msvc.cl.option.optimization.1844463577" name="Optimization" superClass="org.eclipse.cdt.msvc.cl.option.optimization" value="org.eclipse.cdt.msvc.cl.option.optimization.default" valueType="enumerated"/>
-								<option id="org.eclipse.cdt.msvc.cl.option.debugFormat.1142482092" name="Debug Information Format" superClass="org.eclipse.cdt.msvc.cl.option.debugFormat" value="org.eclipse.cdt.msvc.cl.option.debugFormat.complete" valueType="enumerated"/>
-								<inputType id="org.eclipse.cdt.msvc.cl.inputType.1070660007"/>
-							</tool>
 							<tool id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.334728087" name="MCU G++ Compiler" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler">
 								<option id="fr.ac6.managedbuild.gnu.cpp.compiler.option.optimization.level.1496231212" name="Optimization Level" superClass="fr.ac6.managedbuild.gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1746649926" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
@@ -109,7 +104,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="stm32f7/interface/LwIp/src/apps|stm32f7/interface/LwIp/src/apps/httpd|stm32f7/interface/LwIp/src/apps/sntp|stm32f7/interface/LwIp/src/apps/snmp|stm32f7/interface/LwIp/src/apps/netbiosns|stm32f7/interface/LwIp/src/apps/lwiperf|stm32f7/interface/LwIp/src/core/ipv6|stm32f7/driver/stm32f7xx_hal_timebase_tim_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_wakeup_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_alarm_template.c|stm32f7/interface/adc_interface.h|stm32f7/interface/adc_interface.c|stm32f7/interface/usb_host_mouse_interface.h|stm32f7/interface/usb_host_mouse_interface.c|stm32f7/interface/usb_dev_msc_interface.h|stm32f7/interface/usb_dev_msc_interface.c|stm32f7/interface/i2s_interface.h|stm32f7/interface/i2s_interface.c|stm32f7/sys/startup_stm32f779xx.s|stm32f7/sys/startup_stm32f777xx.s|stm32f7/sys/startup_stm32f767xx.s|stm32f7/sys/startup_stm32f765xx.s|stm32f7/sys/startup_stm32f756xx.s|stm32f7/sys/startup_stm32f746xx.s|stm32f7/sys/startup_stm32f745xx.s" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="lib/board/TI|lib/board/STM/STM32F469I-DISCO|lib/board/STM/STM32F429I-DISCO|lib/board/STM/MikromediaForSTM32M4|lib/board/NXP|lib/board/ATMEL|stm32f7/interface/LwIp/src/apps|stm32f7/interface/LwIp/src/apps/httpd|stm32f7/interface/LwIp/src/apps/sntp|stm32f7/interface/LwIp/src/apps/snmp|stm32f7/interface/LwIp/src/apps/netbiosns|stm32f7/interface/LwIp/src/apps/lwiperf|stm32f7/interface/LwIp/src/core/ipv6|stm32f7/driver/stm32f7xx_hal_timebase_tim_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_wakeup_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_alarm_template.c|stm32f7/interface/adc_interface.h|stm32f7/interface/adc_interface.c|stm32f7/interface/usb_host_mouse_interface.h|stm32f7/interface/usb_host_mouse_interface.c|stm32f7/interface/usb_dev_msc_interface.h|stm32f7/interface/usb_dev_msc_interface.c|stm32f7/interface/i2s_interface.h|stm32f7/interface/i2s_interface.c|stm32f7/sys/startup_stm32f779xx.s|stm32f7/sys/startup_stm32f777xx.s|stm32f7/sys/startup_stm32f767xx.s|stm32f7/sys/startup_stm32f765xx.s|stm32f7/sys/startup_stm32f756xx.s|stm32f7/sys/startup_stm32f746xx.s|stm32f7/sys/startup_stm32f745xx.s" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -186,7 +181,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="stm32f7/interface/LwIp/src/apps/httpd|stm32f7/interface/LwIp/src/apps/sntp|stm32f7/interface/LwIp/src/apps/snmp|stm32f7/interface/LwIp/src/apps/netbiosns|stm32f7/interface/LwIp/src/apps/lwiperf|stm32f7/interface/LwIp/src/core/ipv6|stm32f7/driver/stm32f7xx_hal_timebase_tim_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_wakeup_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_alarm_template.c|stm32f7/sys/startup_stm32f779xx.s|stm32f7/sys/startup_stm32f777xx.s|stm32f7/sys/startup_stm32f767xx.s|stm32f7/sys/startup_stm32f765xx.s|stm32f7/sys/startup_stm32f756xx.s|stm32f7/sys/startup_stm32f746xx.s|stm32f7/sys/startup_stm32f745xx.s" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="lib/board/TI|lib/board/STM/STM32F469I-DISCO|lib/board/STM/STM32F429I-DISCO|lib/board/STM/MikromediaForSTM32M4|lib/board/NXP|lib/board/ATMEL|stm32f7/interface/LwIp/src/apps/httpd|stm32f7/interface/LwIp/src/apps/sntp|stm32f7/interface/LwIp/src/apps/snmp|stm32f7/interface/LwIp/src/apps/netbiosns|stm32f7/interface/LwIp/src/apps/lwiperf|stm32f7/interface/LwIp/src/core/ipv6|stm32f7/driver/stm32f7xx_hal_timebase_tim_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_wakeup_template.c|stm32f7/driver/stm32f7xx_hal_timebase_rtc_alarm_template.c|stm32f7/sys/startup_stm32f779xx.s|stm32f7/sys/startup_stm32f777xx.s|stm32f7/sys/startup_stm32f767xx.s|stm32f7/sys/startup_stm32f765xx.s|stm32f7/sys/startup_stm32f756xx.s|stm32f7/sys/startup_stm32f746xx.s|stm32f7/sys/startup_stm32f745xx.s" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

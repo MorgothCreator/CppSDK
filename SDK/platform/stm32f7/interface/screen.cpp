@@ -921,7 +921,7 @@ void GI::Dev::IntScreen::init(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
 	setOn_Ptr = &GI::Dev::IntScreen::_setOn;
 	setOff_Ptr = &GI::Dev::IntScreen::_setOff;
 	setBacklight_Ptr = &GI::Dev::IntScreen::_setBacklight;
-    cacheClean_Ptr = &GI::Dev::IntScreen::_cacheClean;
+    //cacheClean_Ptr = &GI::Dev::IntScreen::_cacheClean;
     drawPixel_Ptr = &GI::Dev::IntScreen::_drawPixel;
     drawRectangle_Ptr = &GI::Dev::IntScreen::_drawRectangle;
     drawHLine_Ptr = &GI::Dev::IntScreen::_drawHLine;
@@ -1021,12 +1021,12 @@ bool GI::Dev::IntScreen::_copyScreen(void *driverHandlerPtr, void *_pDisplayFrom
 	}
 	return true;
 }
-//#######################################################################################
+/*//#######################################################################################
 void GI::Dev::IntScreen::_cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start,
 		signed int x_len, signed int y_len)
 {
 	GI::Dev::IntScreen *driverHandler = (GI::Dev::IntScreen *)driverHandlerPtr;
-}
+}*/
 //#######################################################################################
 void GI::Dev::IntScreen::_drawRectangle(void *driverHandlerPtr, signed int x_start, signed int y_start,
 		signed int x_len, signed int y_len, bool fill, unsigned int color)

@@ -85,7 +85,8 @@ void GI::Screen::Gfx::Picturebox::paint(void *pDisplay, gfx_s32 x_start, gfx_s32
 	LcdStruct->sClipRegion.sXMax = x_start + x_len;
 	LcdStruct->sClipRegion.sYMax = y_start + y_len;
 	GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
-	LcdStruct->cacheClean(x_start, y_start, x_len, y_len);
+	//LcdStruct->cacheClean(x_start, y_start, x_len, y_len);
+	LcdStruct->refresh();
 	LcdStruct->sClipRegion = back_up_clip;
 	control_comand->WindowRefresh |= true;
 }
@@ -198,7 +199,8 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 			LcdStruct->sClipRegion.sYMax = Y_StartBox + Y_LenBox;
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 			LcdStruct->drawRectangle(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, true, Color.Scren);
-			LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			LcdStruct->refresh();
 			LcdStruct->sClipRegion = back_up_clip;
 			control_comand->WindowRefresh |= true;
 			if(!Visible)
@@ -276,7 +278,8 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 				Events.OnDown.CallbackReturnData = Events.OnDown.CallBack(this, control_comand);
 				control_comand->X = X;
 				control_comand->Y = Y;
-				LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+				//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+				LcdStruct->refresh();
 				LcdStruct->sClipRegion = back_up_clip;
 				control_comand->WindowRefresh |= true;
 			}
@@ -301,7 +304,8 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 				Events.OnUp.CallbackReturnData = Events.OnUp.CallBack(this, control_comand);
 				control_comand->X = X;
 				control_comand->Y = Y;
-				LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+				//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+				LcdStruct->refresh();
 				LcdStruct->sClipRegion = back_up_clip;
 				control_comand->WindowRefresh |= true;
 			}
@@ -327,7 +331,8 @@ void GI::Screen::Gfx::Picturebox::idle(tControlCommandData* control_comand)
 				Events.OnMove.CallbackReturnData = Events.OnMove.CallBack(this, control_comand);
 				control_comand->X = X;
 				control_comand->Y = Y;
-				LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+				//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+				LcdStruct->refresh();
 				LcdStruct->sClipRegion = back_up_clip;
 				control_comand->WindowRefresh |= true;
 			}

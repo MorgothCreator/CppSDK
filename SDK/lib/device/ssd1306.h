@@ -22,7 +22,7 @@ public:
     static void _setOn(void *driverHandlerPtr);
 	static void _setOff(void *driverHandlerPtr);
     static bool _setOrientation(void *driverHandlerPtr, LCD_ORIENTATION orientation);
-    static void _cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start, signed int x_len, signed int y_len);
+    //static void _cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start, signed int x_len, signed int y_len);
     static void _drawPixel(void *driverHandlerPtr, signed int X_Coordonate, signed int Y_Coordonate, unsigned int color);
     static void _drawRectangle(void *driverHandlerPtr, signed int x_start, signed int y_start, signed int x_len, signed int y_len, bool fill, unsigned int color);
     static void _drawHLine(void *driverHandlerPtr, signed int X1, signed int X2, signed int Y, unsigned char width, unsigned int color);

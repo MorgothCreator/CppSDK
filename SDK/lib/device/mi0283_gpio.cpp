@@ -24,7 +24,7 @@ GI::Dev::Mi0283Gpio::Mi0283Gpio(LCD_TIMINGS *timings, GI::Dev::Gpio* backlight)
     LcdTimings = timings;
     reset();
     GI::Dev::Mi0283Gpio::_setOrientation(this, LcdTimings->orientation);
-    cacheClean_Ptr = &GI::Dev::Mi0283Gpio::_cacheClean;
+    //cacheClean_Ptr = &GI::Dev::Mi0283Gpio::_cacheClean;
     drawPixel_Ptr = &GI::Dev::Mi0283Gpio::_drawPixel;
     drawRectangle_Ptr = &GI::Dev::Mi0283Gpio::_drawRectangle;
     drawHLine_Ptr = &GI::Dev::Mi0283Gpio::_drawHLine;
@@ -358,12 +358,12 @@ SysErr GI::Dev::Mi0283Gpio::_setBacklight(void *driverHandlerPtr, unsigned char 
 	driverHandler->err = SYS_ERR_NOT_INITIALIZED;
 	return SYS_ERR_NOT_INITIALIZED;
 }
-//#######################################################################################
+/*//#######################################################################################
 void GI::Dev::Mi0283Gpio::_cacheClean(void *driverHandlerPtr, signed int x_start, signed int y_start,
 		signed int x_len, signed int y_len)
 {
 
-}
+}*/
 //#######################################################################################
 void GI::Dev::Mi0283Gpio::_drawPixel(void *driverHandlerPtr, signed int X, signed int Y, unsigned int color)
 {

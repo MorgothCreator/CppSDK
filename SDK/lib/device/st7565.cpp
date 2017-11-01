@@ -34,7 +34,7 @@ GI::Dev::St7565::St7565(LCD_TIMINGS *timings, char *spiPath)
     LcdTimings = timings;
     setOn_Ptr = &GI::Dev::St7565::_setOn;
     setOff_Ptr = &GI::Dev::St7565::_setOff;
-    cacheClean_Ptr = &GI::Dev::St7565::_cacheClean;
+    //cacheClean_Ptr = &GI::Dev::St7565::_cacheClean;
     drawPixel_Ptr = &GI::Dev::St7565::_drawPixel;
     drawRectangle_Ptr = &GI::Dev::St7565::_drawRectangle;
     drawHLine_Ptr = &GI::Dev::St7565::_drawHLine;

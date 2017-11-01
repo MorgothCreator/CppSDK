@@ -916,7 +916,8 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		gfx_s32 y_str_location = LcdStruct->sClipRegion.sYMin;
 		LcdStruct->drawRectangle(_X_StartBox_ + 1, _Y_StartBox_ + 1, _X_LenBox_ - 2, _Y_LenBox_ - 1, true, WindowColor.Enabled.WindowHeader);
 		//LcdStruct->put_rectangle(pDisplay, X_StartBox + 1, (Y_StartBox + HeaderSize) - 1, X_LenBox - 2, Y_LenBox - HeaderSize - 0, true, controls_color.Scren);
-		LcdStruct->cacheClean(_X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_);
+		//LcdStruct->cacheClean(_X_StartBox_, _Y_StartBox_, _X_LenBox_, _Y_LenBox_);
+		LcdStruct->refresh();
 		if(Caption->textAlign == alignCenter){
 			StringProperties_t str_properties = Caption->getStrProp();
 			x_str_location = _X_StartBox_ + ((_X_LenBox_>>1)-(str_properties.StringRowsMaxLength_Pixels>>1));
@@ -1013,7 +1014,8 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &WindowMoveLimits);
 			LcdStruct->drawRectangle(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, true, Color.Scren);
-			LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			LcdStruct->refresh();
 			LcdStruct->sClipRegion = back_up_clip;
 		}
 		if(Internals.OldStateVisible != Visible)
@@ -1225,7 +1227,8 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		//put_rectangle(pDisplay, X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, false, settings->WindowColor.Enabled.WindowBorder);
 		LcdStruct->drawRectangle(X_StartBox + 1, Y_StartBox + 1, X_LenBox - 2, HeaderSize - 1, true, WindowColor.Enabled.WindowHeader);
 		LcdStruct->drawRectangle(X_StartBox + 1, (Y_StartBox + HeaderSize) - 1, X_LenBox - 2, Y_LenBox - HeaderSize - 0, true, controls_color.Scren);
-		LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+		//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+		LcdStruct->refresh();
 
 
 		CursorState cursor = control_comand->Cursor;
@@ -1610,7 +1613,8 @@ void GI::Screen::Gfx::Window::idle(tControlCommandData* control_comand)
 		if(Internals.HideHeader == false)
 			HeaderSize = Internals.Header.Size.Y;
 		LcdStruct->drawRectangle(X_StartBox + 1, (Y_StartBox + HeaderSize) - 1, X_LenBox - 3 - Internals.V_ScrollBar->Size.X, Y_LenBox - Internals.H_ScrollBar->Size.Y - 1 - HeaderSize, true, /*controlls_change_color(*/controls_color.Scren/*, 1.2)*/);
-		LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+		//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+		LcdStruct->refresh();
 		Internals.Position.ChildrenPosition_X = -Internals.H_ScrollBar->Value;
 		Internals.Position.ChildrenPosition_Y = -Internals.V_ScrollBar->Value;
 		CursorState cursor = control_comand->Cursor;

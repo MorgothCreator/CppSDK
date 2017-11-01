@@ -113,6 +113,8 @@ typedef struct charDev_s
 
 } charDev;
 
+#define UNUSED(x) (void(x))
+
 /*#####################################################*/
 #ifdef USE_VISUAL_STUDIO
 #include "global_color.cpp"

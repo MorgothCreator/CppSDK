@@ -226,7 +226,8 @@ void GI::Screen::Gfx::KbdQwerty::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 
 	LcdStruct->sClipRegion.sXMax = x_start + x_len;
 	LcdStruct->sClipRegion.sYMax = y_start + y_len;
 	GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
-	LcdStruct->cacheClean(x_start, y_start, x_len, y_len);
+	//LcdStruct->cacheClean(x_start, y_start, x_len, y_len);
+	LcdStruct->refresh();
 	LcdStruct->sClipRegion = back_up_clip;
 }
 //#######################################################################################
@@ -303,7 +304,8 @@ void GI::Screen::Gfx::KbdQwerty::idle(tControlCommandData* control_comand)
 			LcdStruct->sClipRegion.sYMax = Y_StartBox + Y_LenBox;
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 			LcdStruct->drawRectangle(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, true, Color.Scren);
-			LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			LcdStruct->refresh();
 			LcdStruct->sClipRegion = back_up_clip;
 		}
 	}

@@ -75,7 +75,8 @@ bool GI::Screen::Gfx::ListBox::paint(listboxItem* settings, void *pDisplay, gfx_
 		LcdStruct->sClipRegion.sXMax = x_start + settings->Size.X;
 		LcdStruct->sClipRegion.sYMax = y_start + settings->Size.Y;
 		GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
-		LcdStruct->cacheClean(x_start, y_start, settings->Size.X, settings->Size.Y);
+		//LcdStruct->cacheClean(x_start, y_start, settings->Size.X, settings->Size.Y);
+		LcdStruct->refresh();
 		LcdStruct->sClipRegion = back_up_clip;
 		control_comand->WindowRefresh |= true;
 	}
@@ -206,7 +207,8 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 			LcdStruct->sClipRegion.sYMax = Y_StartBox + Y_LenBox;
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 			LcdStruct->drawRectangle(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, true, Color.Scren);
-			LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			LcdStruct->refresh();
 			LcdStruct->sClipRegion = back_up_clip;
 			if(!Visible)
 				return;
@@ -290,7 +292,8 @@ void GI::Screen::Gfx::ListBox::idle(tControlCommandData* control_comand)
 		else
 			LcdStruct->drawRectangle(X_StartBox + 1, Y_StartBox + 1, X_LenBox - 2, Y_LenBox - 2, true, Color.Disabled.BackGround);
 
-		LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+		//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+		LcdStruct->refresh();
 
 
 		CursorState cursor = control_comand->Cursor;

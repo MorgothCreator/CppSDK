@@ -179,8 +179,8 @@ public:
 	SysErr (*setBacklight_Ptr)(void *driverHandlerPtr, unsigned char value);
 	bool (*copyScreen_Ptr)(void *driverHandlerPtr, void *pDisplayFrom, bool put_cursor,
 				signed int X, signed int Y, unsigned int color);
-	void (*cacheClean_Ptr)(void *driverHandlerPtr, signed int x_start, signed int y_start,
-				signed int x_len, signed int y_len);
+	//void (*cacheClean_Ptr)(void *driverHandlerPtr, signed int x_start, signed int y_start,
+				//signed int x_len, signed int y_len);
 	void (*drawRectangle_Ptr)(void *driverHandlerPtr, signed int x_start, signed int y_start,
 				signed int x_len, signed int y_len, bool fill, unsigned int color);
 	void (*drawPixel_Ptr)(void *driverHandlerPtr, signed int X, signed int Y, unsigned int color);

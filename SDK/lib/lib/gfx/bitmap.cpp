@@ -30,7 +30,7 @@ SysErr Bitmap::setPixel(gfx_s32 x, gfx_s32 y, Color::ARGB color)
 		return SYS_ERR_OUT_OF_RANGE;
 	if(!buff)
 		return SYS_ERR_BUFF_NOT_ALLOCATED;
-	if(!this)
+	if(!(void *)this)
 		return SYS_ERR_INVALID_HANDLER;
 	buff[(x * width) + y] = color;
 	return SYS_ERR_OK;

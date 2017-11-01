@@ -78,7 +78,8 @@ void GI::Screen::Gfx::Button::paint(void *pDisplay, gfx_s32 x_start, gfx_s32 y_s
 	LcdStruct->sClipRegion.sXMax = x_start + x_len;
 	LcdStruct->sClipRegion.sYMax = y_start + y_len;
 	GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
-	LcdStruct->cacheClean( x_start, y_start, x_len, y_len);
+	//LcdStruct->cacheClean( x_start, y_start, x_len, y_len);
+	LcdStruct->refresh();
 	LcdStruct->sClipRegion = back_up_clip;
 	control_comand->WindowRefresh |= true;
 }
@@ -188,7 +189,8 @@ void GI::Screen::Gfx::Button::idle(tControlCommandData* control_comand)
 			LcdStruct->sClipRegion.sYMax = Y_StartBox + Y_LenBox;
 			GI::Screen::Util::clipLimit(&LcdStruct->sClipRegion, &back_up_clip);
 			LcdStruct->drawRectangle(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox, true, Color.Enabled.BackGround);
-			LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			//LcdStruct->cacheClean(X_StartBox, Y_StartBox, X_LenBox, Y_LenBox);
+			LcdStruct->refresh();
 			LcdStruct->sClipRegion = back_up_clip;
 			if(!Visible)
 				return;
