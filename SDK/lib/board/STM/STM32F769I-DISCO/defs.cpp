@@ -41,7 +41,7 @@ ioSettings *ioSetCfg[] = {
 		&i2c_3,
 		&spi_1_0,
 		&ioTableEnd,
-		(ioSettings *)-1/* This is an artifice to force linker to put this structure ito .data section, to be secure that this will be initiated before the call of init() function. */
+		(ioSettings *)-1/* This is an artifice to force linker to put this structure into .data section, to be sure that this will be initiated before the call of init() function. */
 };
 
 #endif/*!STM32F769I_DISCO*/

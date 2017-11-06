@@ -7,13 +7,9 @@
 /*#####################################################*/
 
 #include <include/global.h>
+#include "mmcsd_common.h"
 
 #define ctrlInfo uSdCardInfo
-
-typedef enum
-{
-	IsNoCard = 0, IsSd, IsSdhc,
-} mmcsd_type_e;
 
 namespace GI
 {
@@ -32,6 +28,8 @@ public:
             unsigned int nblks);
     void (*ioctl_Ptr)(void *handler, unsigned int command,
             unsigned int *buffer);
+    void (*getRawCid_Ptr)(void *handler, unsigned long *rawCid);
+    void (*getRawCsd_Ptr)(void *handler, unsigned long *rawCsd);
 
     SysErr idle();
     SysErr read(void *ptr, unsigned long block,
@@ -40,6 +38,8 @@ public:
             unsigned int nblks);
     SysErr ioctl(unsigned int command,
             unsigned int *buffer);
+    SysErr getRawCid(unsigned long *rawCid);
+    SysErr getRawCsd(unsigned long *rawCid);
     void *driverHandler_Ptr;
 private:
     //GI::Dev::Gpio *cardDetectGpio;

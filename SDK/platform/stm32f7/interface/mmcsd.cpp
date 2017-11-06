@@ -997,6 +997,24 @@ void GI::Dev::IntMmcSd::intIdle(void *handler)
 	return;
 }
 /*#####################################################*/
+void GI::Dev::IntMmcSd::intGetRawCid(void *handler, unsigned long *rawCid)
+{
+	GI::Dev::IntMmcSd *intHandler = (GI::Dev::IntMmcSd *)handler;
+	rawCid[0] = uSdHandle[intHandler->unitNr].CID[0];
+	rawCid[1] = uSdHandle[intHandler->unitNr].CID[1];
+	rawCid[2] = uSdHandle[intHandler->unitNr].CID[2];
+	rawCid[3] = uSdHandle[intHandler->unitNr].CID[3];
+}
+
+void GI::Dev::IntMmcSd::intGetRawCsd(void *handler, unsigned long *rawCsd)
+{
+	GI::Dev::IntMmcSd *intHandler = (GI::Dev::IntMmcSd *)handler;
+	unsigned char *csd = (unsigned char *)uSdHandle[intHandler->unitNr].CSD;
+	rawCsd[0] = ((unsigned long)csd[15] + ((unsigned long)csd[14] << 8) +  ((unsigned long)csd[13] << 16) +  ((unsigned long)csd[12] << 24));
+	rawCsd[1] = ((unsigned long)csd[11] + ((unsigned long)csd[10] << 8) +  ((unsigned long)csd[9] << 16) +  ((unsigned long)csd[8] << 24));
+	rawCsd[2] = ((unsigned long)csd[7] + ((unsigned long)csd[6] << 8) +  ((unsigned long)csd[5] << 16) +  ((unsigned long)csd[4] << 24));
+	rawCsd[3] = ((unsigned long)csd[3] + ((unsigned long)csd[2] << 8) +  ((unsigned long)csd[1] << 16) +  ((unsigned long)csd[0] << 24));
+}
 
 /*-----------------------------------------------------------------------*/
 /* Inidialize a Drive                                                    */
@@ -1013,8 +1031,11 @@ GI::Dev::IntMmcSd::IntMmcSd(unsigned int unitNr, char *cardDetectPinPath, char *
     read_Ptr = &GI::Dev::IntMmcSd::intRead;
     write_Ptr = &GI::Dev::IntMmcSd::intWrite;
     ioctl_Ptr = &GI::Dev::IntMmcSd::intIoctl;
+    getRawCid_Ptr = &GI::Dev::IntMmcSd::intGetRawCid;
+    getRawCsd_Ptr = &GI::Dev::IntMmcSd::intGetRawCsd;
     this->unitNr = unitNr;
     driverHandler_Ptr = (void*)this;
+    intIdle(driverHandler_Ptr);
 }
 
 GI::Dev::IntMmcSd::~IntMmcSd()

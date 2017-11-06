@@ -133,6 +133,8 @@ public:
 			unsigned int nblks);
 	static void intIoctl(void *handler, unsigned int command,
 			unsigned int *buffer);
+	static void intGetRawCid(void *handler, unsigned long *rawCid);
+	static void intGetRawCsd(void *handler, unsigned long *rawCsd);
     FATFS mmcFatFs;
     unsigned int unitNr;
 private:

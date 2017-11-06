@@ -91,11 +91,11 @@ static void SystemClock_Config(unsigned long int_osc_freq, unsigned long ext_osc
 		{
 			if(ext_osc_freq != 0)
 			{
-				OSC_DFLLCTRL = OSC_RC2MCREF_bm;
+				OSC_DFLLCTRL = OSC_RC32MCREF_XOSC32K_gc;
 			}
-			else OSC_DFLLCTRL = 0;
-			DFLLRC2M_CTRL |= DFLL_ENABLE_bm;
-			OSC_PLLCTRL = (OSC_PLLSRC_RC2M_gc) | (core_freq / /*(ext_osc_freq == 0) ? */2000000/* : ext_osc_freq*/);
+			else OSC_DFLLCTRL = OSC_RC32MCREF_RC32K_gc;
+			DFLLRC32M_CTRL |= DFLL_ENABLE_bm;
+			OSC_PLLCTRL = (OSC_PLLSRC_RC2M_gc) | (core_freq / (ext_osc_freq) ? ext_osc_freq : 2000000);
 			OSC_CTRL|= OSC_PLLEN_bm;
 			while(~OSC_STATUS & OSC_PLLRDY_bm);
 			PROTECTED_WRITE(CLK.CTRL, CLK_SCLKSEL_PLL_gc);
