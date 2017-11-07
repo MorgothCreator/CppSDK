@@ -1,4 +1,7 @@
 # CppSDK
+
+# The project has been moved here https://morgothdisk.com:30001/explore/projects
+
 CPP embedded standalone collection software.
 
 This SDK is a mix of drivers provided by microcontroller manufacturers and library's developed by me and other developers.
